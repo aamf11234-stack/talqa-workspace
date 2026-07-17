@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, ChevronLeft, Calendar, Users, Tag, Zap, Flame, Star, ArrowLeft, Check, X } from 'lucide-react';
+import { EventIconMap, ICalendarIcon, IGift } from './HaizIcons';
 
 const logoImg = `${import.meta.env.BASE_URL}hyz-logo.jpeg`;
 
@@ -75,7 +76,6 @@ interface HaizEvent {
   title: string;
   subtitle: string;
   date: string;         // YYYY-MM-DD
-  emoji: string;
   color: string;
   benefit: string;      // what Haiz offers during this event
   badge?: string;       // "جارٍ الآن" etc
@@ -88,7 +88,6 @@ const haizEvents: HaizEvent[] = [
     title: 'الإجازة الصيفية',
     subtitle: 'نهايتها ٧ سبتمبر',
     date: '2026-09-07',
-    emoji: '☀️',
     color: '#E67E22',
     benefit: 'خصم ١٠٪ على المشروبات الباردة طول الصيف',
     badge: 'جارٍ الآن',
@@ -99,7 +98,6 @@ const haizEvents: HaizEvent[] = [
     title: 'اليوم الوطني ٩٦',
     subtitle: '٢٣ سبتمبر ٢٠٢٦',
     date: '2026-09-23',
-    emoji: '🇸🇦',
     color: '#1A6B3A',
     benefit: 'منيو وطني خاص + ضعف النقاط يوم ٢٣',
   },
@@ -108,7 +106,6 @@ const haizEvents: HaizEvent[] = [
     title: 'بداية الدراسة',
     subtitle: '٧ سبتمبر ٢٠٢٦',
     date: '2026-09-07',
-    emoji: '📚',
     color: '#2980B9',
     benefit: 'كوب قهوة ترحيبي بعد أول يوم دراسة',
   },
@@ -117,7 +114,6 @@ const haizEvents: HaizEvent[] = [
     title: 'إجازة الشتاء',
     subtitle: 'ديسمبر ٢٠٢٦',
     date: '2026-12-19',
-    emoji: '❄️',
     color: '#5D6D7E',
     benefit: 'منيو شتوي حصري + شوكولاتة مجانية',
   },
@@ -126,7 +122,6 @@ const haizEvents: HaizEvent[] = [
     title: 'إجازة النصف',
     subtitle: 'يناير ٢٠٢٧',
     date: '2027-01-15',
-    emoji: '🎯',
     color: '#8E44AD',
     benefit: 'جلسات قراءة بخصم ٢٠٪ على المشروبات',
   },
@@ -135,7 +130,6 @@ const haizEvents: HaizEvent[] = [
     title: 'يوم التأسيس',
     subtitle: '٢٢ فبراير ٢٠٢٧',
     date: '2027-02-22',
-    emoji: '🏛️',
     color: '#7B1618',
     benefit: 'مشروب مجاني لكل عضو حيز',
   },
@@ -144,7 +138,6 @@ const haizEvents: HaizEvent[] = [
     title: 'عيد الفطر',
     subtitle: 'مارس ٢٠٢٧ (تقريباً)',
     date: '2027-03-20',
-    emoji: '🌙',
     color: '#C9956A',
     benefit: 'هدية عيد خاصة + مضاعفة النقاط',
   },
@@ -177,7 +170,10 @@ function HaizCalendar() {
         <div>
           <p className="text-[8px] font-black tracking-[0.28em] text-[#C9956A] mb-1"
             style={{ fontFamily: 'ui-monospace,monospace' }}>HAIZ CALENDAR</p>
-          <h3 className="text-[17px] font-black text-white leading-none">📅 تقويم حيز</h3>
+          <div className="flex items-center gap-2">
+            <ICalendarIcon size={18} color="#C9956A" sw={1.4} />
+            <h3 className="text-[17px] font-black text-white leading-none">تقويم حيز</h3>
+          </div>
         </div>
         <div className="text-left">
           <p className="text-white/20 text-[8px] font-light">المناسبات والعروض</p>
@@ -203,15 +199,20 @@ function HaizCalendar() {
                 onClick={() => setExpanded(isOpen ? null : ev.id)}
               >
                 <div className="flex items-center gap-3.5 px-5 py-3.5">
-                  {/* Emoji badge */}
-                  <div className="w-10 h-10 rounded-[13px] flex items-center justify-center text-[20px] shrink-0"
-                    style={{
-                      background: `${ev.color}20`,
-                      border: `1px solid ${ev.color}35`,
-                      boxShadow: ev.isNow ? `0 0 12px ${ev.color}30` : 'none',
-                    }}>
-                    {ev.emoji}
-                  </div>
+                  {/* Icon badge */}
+                  {(() => {
+                    const EvIcon = EventIconMap[ev.id];
+                    return (
+                      <div className="w-10 h-10 rounded-[13px] flex items-center justify-center shrink-0"
+                        style={{
+                          background: `${ev.color}20`,
+                          border: `1px solid ${ev.color}35`,
+                          boxShadow: ev.isNow ? `0 0 14px ${ev.color}35` : 'none',
+                        }}>
+                        {EvIcon && <EvIcon size={20} color={ev.color} sw={1.4} />}
+                      </div>
+                    );
+                  })()}
 
                   {/* Info */}
                   <div className="flex-1 min-w-0">
@@ -257,7 +258,7 @@ function HaizCalendar() {
                   >
                     <div className="mx-5 mb-3.5 px-4 py-3 rounded-[14px] flex items-start gap-2.5"
                       style={{ background: `${ev.color}12`, border: `1px solid ${ev.color}25` }}>
-                      <span className="text-[14px] shrink-0 mt-0.5">🎁</span>
+                      <div className="shrink-0 mt-0.5"><IGift size={16} color={ev.color} sw={1.4} /></div>
                       <div>
                         <p className="text-[7.5px] font-black tracking-widest mb-1"
                           style={{ color: ev.color, fontFamily: 'ui-monospace,monospace' }}>

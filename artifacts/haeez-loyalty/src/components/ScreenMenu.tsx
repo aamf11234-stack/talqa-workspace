@@ -1,6 +1,7 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, Flame, Snowflake } from 'lucide-react';
+import { CategoryIconMap, IOriginPin, IVase, ILeaf, ICoffeeBean, IEspresso } from './HaizIcons';
 
 const logoImg = `${import.meta.env.BASE_URL}hyz-logo.jpeg`;
 
@@ -21,7 +22,6 @@ interface MenuCategory {
   id: string;
   name: string;
   nameEn: string;
-  emoji: string;
   color: string;
   liveLabel?: boolean;
   note?: string;
@@ -31,7 +31,7 @@ interface MenuCategory {
 
 const menu: MenuCategory[] = [
   {
-    id: 'espresso', name: 'إسبريسو', nameEn: 'ESPRESSO', emoji: '☕', color: '#7B1618',
+    id: 'espresso', name: 'إسبريسو', nameEn: 'ESPRESSO', color: '#7B1618',
     items: [
       { name: 'إسبريسو أثيوبي',   desc: 'تفاح مجفف · برتقال · كرز · ورد',         origin: 'إثيوبيا',  originFlag: '🇪🇹', price: 12, badge: 'تجفيف مطول', badgeColor: '#7B1618', featured: true },
       { name: 'إسبريسو يمني',     desc: 'بطيخ · توت · برتقال',                      origin: 'اليمن',    originFlag: '🇾🇪', price: 15 },
@@ -40,7 +40,7 @@ const menu: MenuCategory[] = [
     ],
   },
   {
-    id: 'filter', name: 'قهوة اليوم', nameEn: 'FILTER', emoji: '⚗️', color: '#2D7D46', liveLabel: true,
+    id: 'filter', name: 'قهوة اليوم', nameEn: 'FILTER', color: '#2D7D46', liveLabel: true,
     items: [
       { name: 'نيكاراغوا',           desc: 'كراميل ناعم · مكسرات',          origin: 'نيكاراغوا', originFlag: '🇳🇮', priceHot: 10, priceCold: 11 },
       { name: 'إثيوبيا يرقاشيفي',   desc: 'زهري · توت · برتقال', origin: 'إثيوبيا',   originFlag: '🇪🇹', priceHot: 11, priceCold: 12, featured: true },
@@ -48,7 +48,7 @@ const menu: MenuCategory[] = [
     ],
   },
   {
-    id: 'milk', name: 'بالحليب', nameEn: 'MILK BASED', emoji: '🥛', color: '#B5651D',
+    id: 'milk', name: 'بالحليب', nameEn: 'MILK BASED', color: '#B5651D',
     note: 'تكهة للبارد: كراميل · موكا · بستاشيو',
     items: [
       { name: 'بيكولو',     price: 14 },
@@ -59,7 +59,7 @@ const menu: MenuCategory[] = [
     ],
   },
   {
-    id: 'pour', name: 'مقطرة', nameEn: 'POUR OVER', emoji: '💧', color: '#1A5276',
+    id: 'pour', name: 'مقطرة', nameEn: 'POUR OVER', color: '#1A5276',
     note: 'حجم كوب أكبر بريالين إضافية',
     items: [
       { name: 'مقطرة يمني في ٦٠',    desc: 'معالجة عميقة · ٦٠ دقيقة', origin: 'اليمن',    originFlag: '🇾🇪', priceHot: 18, priceCold: 19 },
@@ -67,7 +67,7 @@ const menu: MenuCategory[] = [
     ],
   },
   {
-    id: 'cold', name: 'مشروبات باردة', nameEn: 'COLD DRINKS', emoji: '🧊', color: '#0E6B8A',
+    id: 'cold', name: 'مشروبات باردة', nameEn: 'COLD DRINKS', color: '#0E6B8A',
     items: [
       { name: 'كوكدية حبحب',            price: 18 },
       { name: 'ماتشا حلوه',             price: 18, featured: true },
@@ -76,14 +76,14 @@ const menu: MenuCategory[] = [
     ],
   },
   {
-    id: 'winter', name: 'مشروبات الشتاء', nameEn: 'WINTER', emoji: '❄️', color: '#4A6274',
+    id: 'winter', name: 'مشروبات الشتاء', nameEn: 'WINTER', color: '#4A6274',
     items: [
       { name: 'شوكولاتة ساخنة',        desc: 'سعة كوب واحد', price: 22 },
       { name: 'شوكولاتة ساخنة مشتركة', desc: 'سعة كوبين',    price: 39, featured: true },
     ],
   },
   {
-    id: 'other', name: 'أخرى', nameEn: 'OTHERS', emoji: '🫖', color: '#6C3483',
+    id: 'other', name: 'أخرى', nameEn: 'OTHERS', color: '#6C3483',
     items: [
       { name: 'شاي أنجليزي',   price: 5  },
       { name: 'أفوقاتو',        price: 17 },
@@ -91,7 +91,7 @@ const menu: MenuCategory[] = [
     ],
   },
   {
-    id: 'croissant', name: 'كرواسون', nameEn: 'CROISSANT', emoji: '🥐', color: '#C9956A', allergyNote: true,
+    id: 'croissant', name: 'كرواسون', nameEn: 'CROISSANT', color: '#C9956A', allergyNote: true,
     items: [
       { name: 'سينابون',              price: 15, featured: true },
       { name: 'لوز بالشوكولاتة الداكن', price: 12 },
@@ -100,7 +100,7 @@ const menu: MenuCategory[] = [
     ],
   },
   {
-    id: 'danish', name: 'دانيش', nameEn: 'DANISH', emoji: '🍞', color: '#C8930A', allergyNote: true,
+    id: 'danish', name: 'دانيش', nameEn: 'DANISH', color: '#C8930A', allergyNote: true,
     items: [
       { name: 'موز مكرمل',          price: 14 },
       { name: 'لافندر وتوت أزرق',   price: 15, featured: true },
@@ -108,7 +108,7 @@ const menu: MenuCategory[] = [
     ],
   },
   {
-    id: 'cake', name: 'كيك', nameEn: 'CAKE', emoji: '🎂', color: '#922B21', allergyNote: true,
+    id: 'cake', name: 'كيك', nameEn: 'CAKE', color: '#922B21', allergyNote: true,
     items: [
       { name: 'كيكة حيز بالشوكولاتة', price: 23 },
       { name: 'كيكة حيز بالبيكان',    price: 25, badge: 'الأشهر', badgeColor: '#C9956A', featured: true },
@@ -117,7 +117,7 @@ const menu: MenuCategory[] = [
     ],
   },
   {
-    id: 'breakfast', name: 'الفطور', nameEn: 'BREAKFAST', emoji: '🍽️', color: '#117A65',
+    id: 'breakfast', name: 'الفطور', nameEn: 'BREAKFAST', color: '#117A65',
     items: [
       { name: 'بوراتا زعتر', desc: 'مع خبز الفوكاتشيا الإيطالي', price: 22, featured: true },
       { name: 'حلوي ترافل',  price: 19 },
@@ -170,9 +170,10 @@ function Section({ cat, index }: { cat: MenuCategory; index: number }) {
             {cat.nameEn}
           </p>
           {/* Arabic name */}
-          <h2 className="text-[22px] font-black text-[#111] leading-none tracking-tight">
-            {cat.emoji} {cat.name}
-          </h2>
+          <div className="flex items-center gap-2.5 mt-0.5">
+            {(() => { const Icon = CategoryIconMap[cat.id]; return Icon ? <Icon size={22} color={cat.color} sw={1.4} /> : null; })()}
+            <h2 className="text-[22px] font-black text-[#111] leading-none tracking-tight">{cat.name}</h2>
+          </div>
         </div>
         <div className="flex flex-col items-end gap-1 pb-0.5">
           {cat.liveLabel && (
@@ -223,13 +224,16 @@ function Section({ cat, index }: { cat: MenuCategory; index: number }) {
                   </span>
                 )}
               </div>
-              {(item.desc || item.originFlag) && (
+              {(item.desc || item.origin) && (
                 <div className="flex flex-wrap items-center gap-2">
                   {item.desc && (
                     <p className="text-[10px] text-[#AAA] font-light leading-snug">{item.desc}</p>
                   )}
-                  {item.originFlag && (
-                    <span className="text-[9px] text-[#C4B5A8]">{item.originFlag} {item.origin}</span>
+                  {item.origin && (
+                    <div className="flex items-center gap-1">
+                      <IOriginPin size={10} color={cat.color} sw={1.5} />
+                      <span className="text-[9px] font-medium" style={{ color: `${cat.color}90` }}>{item.origin}</span>
+                    </div>
                   )}
                 </div>
               )}
@@ -256,21 +260,21 @@ function Section({ cat, index }: { cat: MenuCategory; index: number }) {
 /* ══════════════════════════════════════════ SHELF ══ */
 const shelfItems = [
   {
-    icon: '🏺',
+    IconComp: IVase,
     title: 'أكواب الفخار',
     desc: 'مصنوع ومرسوم يدوياً — نسخة لك فقط، اسمك على الرف',
     tag: 'حصري',
     color: '#C9956A',
   },
   {
-    icon: '🌿',
+    IconComp: ILeaf,
     title: 'هدايا حيز',
     desc: 'حوض فخار بهوية حيز مع نبتة البوتس — هدية تذكارية مثالية',
     tag: 'هدية',
     color: '#2D7D46',
   },
   {
-    icon: '☕',
+    IconComp: ICoffeeBean,
     title: 'محاصيل الرف',
     desc: 'اقتنِ محاصيلنا المميزة من الرف الحصري وجرّبها بنفسك',
     tag: 'محدود',
@@ -286,7 +290,10 @@ function Shelf() {
         <div>
           <p className="text-[8px] font-black tracking-[0.28em] text-[#C9956A] mb-1"
             style={{ fontFamily: 'ui-monospace, monospace' }}>SHELF EXCLUSIVES</p>
-          <h2 className="text-[19px] font-black text-[#111] leading-none tracking-tight">🏺 مبيعات الرف</h2>
+          <div className="flex items-center gap-2 mt-0.5">
+            <IVase size={20} color="#C9956A" sw={1.4} />
+            <h2 className="text-[19px] font-black text-[#111] leading-none tracking-tight">مبيعات الرف</h2>
+          </div>
         </div>
         <span className="text-[9px] text-[#C4B5A8] pb-0.5">اسأل الفريق ✦</span>
       </div>
@@ -311,9 +318,9 @@ function Shelf() {
               style={{ background: `${s.color}15`, filter: 'blur(20px)', transform: 'translate(30%,-30%)' }} />
 
             {/* Icon */}
-            <div className="w-11 h-11 rounded-[14px] flex items-center justify-center text-[22px] shrink-0"
+            <div className="w-11 h-11 rounded-[14px] flex items-center justify-center shrink-0"
               style={{ background: `${s.color}18`, border: `1px solid ${s.color}28` }}>
-              {s.icon}
+              <s.IconComp size={22} color={s.color} sw={1.4} />
             </div>
 
             {/* Text */}
@@ -350,7 +357,7 @@ function SearchResults({ results, query, onClear }: {
 }) {
   if (results.length === 0) return (
     <div className="flex flex-col items-center justify-center py-20 px-8 text-center">
-      <span className="text-5xl mb-4">☕</span>
+      <div className="mb-4 opacity-30"><IEspresso size={52} color="#7B1618" sw={1.2} /></div>
       <p className="text-[14px] font-bold text-[#888]">لا نتائج لـ "{query}"</p>
       <p className="text-[11px] text-[#CCC] mt-1.5">جرّب اسماً آخر</p>
       <button onClick={onClear} className="mt-4 text-[11px] font-bold" style={{ color: '#7B1618' }}>تصفح الكل</button>
@@ -365,8 +372,10 @@ function SearchResults({ results, query, onClear }: {
       {results.map(({ cat, item }, i) => (
         <div key={i} className="flex items-start gap-3 py-3.5"
           style={{ borderBottom: i < results.length - 1 ? '1px solid rgba(196,181,159,0.18)' : 'none' }}>
-          <div className="w-7 h-7 rounded-[8px] flex items-center justify-center text-[13px] shrink-0 mt-0.5"
-            style={{ background: `${cat.color}12` }}>{cat.emoji}</div>
+          <div className="w-7 h-7 rounded-[8px] flex items-center justify-center shrink-0 mt-0.5"
+            style={{ background: `${cat.color}12` }}>
+            {(() => { const I = CategoryIconMap[cat.id]; return I ? <I size={15} color={cat.color} sw={1.4} /> : null; })()}
+          </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 mb-0.5">
               <p className="text-[13px] font-bold text-[#111]">{item.name}</p>
@@ -558,7 +567,7 @@ export function ScreenMenu() {
                 ? { background: cat.color, color: '#fff', boxShadow: `0 3px 12px ${cat.color}45` }
                 : { background: 'rgba(196,181,159,0.12)', color: '#888' }
               }>
-              <span className="text-[10px]">{cat.emoji}</span>
+              {(() => { const I = CategoryIconMap[cat.id]; return I ? <I size={12} color={activeId === cat.id ? '#fff' : '#888'} sw={1.5} /> : null; })()}
               {cat.name}
               {cat.liveLabel && <span className="w-1.5 h-1.5 rounded-full bg-[#30D158]" />}
             </motion.button>
