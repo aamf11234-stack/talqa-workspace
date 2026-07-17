@@ -318,6 +318,28 @@ export default function App() {
         </motion.div>
       </div>
 
+      {/* ── Video Section ────────────────────────────────── */}
+      <div className="max-w-5xl mx-auto px-6 mb-10">
+        <div className="text-center mb-5">
+          <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1">الفيديو التعريفي</p>
+          <h2 className="text-[22px] font-bold text-[#111]">شاهد حيز في دقيقة</h2>
+        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="relative rounded-[24px] overflow-hidden shadow-2xl"
+          style={{ aspectRatio: '16/9', background: '#080002' }}
+        >
+          <iframe
+            src="/haiz-video/"
+            className="absolute inset-0 w-full h-full border-0"
+            allow="autoplay"
+            title="حيز — فيديو تعريفي"
+          />
+        </motion.div>
+      </div>
+
       {/* ── Apple Watch showcase ──────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div
