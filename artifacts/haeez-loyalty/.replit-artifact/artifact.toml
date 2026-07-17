@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "حيز — Membership App"
+version = "1.0.0"
+id = "artifacts/haeez-loyalty"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24826
+
+[services.development]
+run = "pnpm --filter @workspace/haeez-loyalty run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/haeez-loyalty", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/haeez-loyalty/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24826"
+BASE_PATH = "/"

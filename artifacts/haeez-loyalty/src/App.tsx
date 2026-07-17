@@ -1,0 +1,373 @@
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { PhoneFrame } from './components/PhoneFrame';
+import { BottomNav } from './components/BottomNav';
+import type { Tab } from './components/BottomNav';
+import { ScreenMembership }    from './components/ScreenMembership';
+import { ScreenPerks }         from './components/ScreenPerks';
+import { ScreenNotifications } from './components/ScreenNotifications';
+import { ScreenHome }          from './components/ScreenHome';
+import { ScreenReservations }  from './components/ScreenReservations';
+import { ScreenCommunity }     from './components/ScreenCommunity';
+import { ScreenMenu }          from './components/ScreenMenu';
+
+/* ── Badge helpers ───────────────────────────────────────────────── */
+function AppleBadge() {
+  return (
+    <a href="#" className="flex items-center gap-2.5 bg-[#111] text-white rounded-[14px] px-4 py-3 hover:bg-[#222] active:scale-95 transition-all duration-150 border border-white/8 shadow-[0_4px_16px_rgba(0,0,0,0.25)]">
+      <svg viewBox="0 0 24 24" className="w-6 h-6 fill-white shrink-0">
+        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+      </svg>
+      <div className="leading-tight text-right">
+        <p className="text-[9px] text-white/40 font-light">تحميل على</p>
+        <p className="text-[14px] font-semibold tracking-tight">App Store</p>
+      </div>
+    </a>
+  );
+}
+
+function PlayBadge() {
+  return (
+    <a href="#" className="flex items-center gap-2.5 bg-[#111] text-white rounded-[14px] px-4 py-3 hover:bg-[#222] active:scale-95 transition-all duration-150 border border-white/8 shadow-[0_4px_16px_rgba(0,0,0,0.25)]">
+      <svg viewBox="0 0 24 24" className="w-6 h-6 shrink-0">
+        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+      </svg>
+      <div className="leading-tight text-right">
+        <p className="text-[9px] text-white/40 font-light">تحميل على</p>
+        <p className="text-[14px] font-semibold tracking-tight">Google Play</p>
+      </div>
+    </a>
+  );
+}
+
+/* ── Pitch page features ─────────────────────────────────────────── */
+const pillars = [
+  { icon: '📱', title: 'تطبيق موبايل', sub: 'iOS + Android', desc: 'تجربة عضوية كاملة في جيب ضيفك', bg: 'linear-gradient(145deg,#0D0205,#3D0809,#0D0205)' },
+  { icon: '🌐', title: 'موقع إلكتروني', sub: 'متجاوب · سريع', desc: 'منيو + حجوزات + ولاء عبر الويب', bg: 'linear-gradient(145deg,#0A0A0A,#1E1E1E,#0A0A0A)' },
+  { icon: '💳', title: 'Apple & Google Wallet', sub: 'بطاقة رقمية دائمة', desc: 'تعمل بلا إنترنت · تحديث آني', bg: 'linear-gradient(145deg,#0A0800,#2E2000,#0A0800)' },
+  { icon: '👥', title: 'مجتمع وتحديات', sub: '١,٥٠٠+ عضو', desc: 'منصة اجتماعية داخل التطبيق', bg: 'linear-gradient(145deg,#040D08,#0D2814,#040D08)' },
+];
+
+const allFeatures = [
+  { icon: '🪪', title: 'بطاقة عضوية رقمية',    desc: 'QR فوري بدون بطاقة ورقية'         },
+  { icon: '🏆', title: 'نظام نقاط ومستويات',   desc: 'كلاسيك · فضي · ذهبي'             },
+  { icon: '🔔', title: 'إشعارات فورية ذكية',   desc: 'عروض وهدايا وتذكيرات شخصية'      },
+  { icon: '📅', title: 'حجز طاولات مباشر',     desc: 'تأكيد فوري + واتساب'             },
+  { icon: '👥', title: 'مجتمع أعضاء حيز',      desc: 'فيد اجتماعي + تحديات أسبوعية'   },
+  { icon: '💳', title: 'Apple & Google Wallet', desc: 'بلا إنترنت · تحديث آني'         },
+  { icon: '📊', title: 'لوحة تحليلات للإدارة', desc: 'أعضاء · زيارات · إيرادات'       },
+  { icon: '🌐', title: 'موقع إلكتروني كامل',   desc: 'منيو + حجوزات + ولاء'           },
+  { icon: '📱', title: 'تطبيق iOS + Android',  desc: 'نشر على المتجرين الرسميين'        },
+  { icon: '🎁', title: 'عروض وأكواد حصرية',   desc: 'جدولة تلقائية + قياس الأثر'     },
+  { icon: '☕', title: 'منيو رقمي تفاعلي',     desc: 'يُحدَّث لحظياً · صور + أسعار'   },
+  { icon: '🔗', title: 'تكامل واتساب',         desc: 'تأكيدات + رسائل تلقائية ذكية'   },
+];
+
+/* ── Main App ────────────────────────────────────────────────────── */
+export default function App() {
+  const [activeTab, setActiveTab] = useState<Tab>('card');
+
+  useEffect(() => {
+    document.documentElement.dir = 'rtl';
+    document.documentElement.lang = 'ar';
+  }, []);
+
+  return (
+    <div className="min-h-screen w-full font-sans" style={{ background: 'linear-gradient(180deg,#F2EAE0 0%,#EDE5DA 100%)' }} dir="rtl">
+
+      {/* ── Agency top bar ───────────────────────────────────── */}
+      <div className="sticky top-0 z-50 border-b border-[rgba(123,22,24,0.1)] bg-[#FDFBF7]/85 backdrop-blur-xl">
+        <div className="max-w-5xl mx-auto px-6 py-3.5 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#7B1618,#4A0D0F)' }}>
+              <span className="text-white text-[10px] font-bold">ت</span>
+            </div>
+            <span className="text-[14px] font-bold text-[#111]">تلقا تك</span>
+          </div>
+          <span className="text-[11px] text-[#AAA] font-light hidden sm:block">تصميم تطبيقات ومواقع احترافية · أبها</span>
+          <a href="https://wa.me/966" target="_blank" rel="noopener noreferrer"
+            className="text-[11px] font-semibold text-[#7B1618] border border-[rgba(123,22,24,0.2)] px-3.5 py-1.5 rounded-full hover:bg-[#7B1618]/5 transition-colors">
+            تواصل الآن
+          </a>
+        </div>
+      </div>
+
+      {/* ── Hero section ─────────────────────────────────────── */}
+      <div className="max-w-5xl mx-auto px-6 pt-10 pb-6 text-center">
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <span className="inline-flex items-center gap-2 bg-[#7B1618] text-[#C9956A] text-[11px] font-semibold px-4 py-1.5 rounded-full mb-4 tracking-widest shadow-[0_4px_20px_rgba(123,22,24,0.35)]">
+            <span className="w-1.5 h-1.5 bg-[#C9956A] rounded-full animate-pulse" />
+            عرض حصري · حيز كافيه · أبها
+          </span>
+          <h1 className="text-[34px] md:text-[44px] font-bold text-[#111] leading-tight mb-3 tracking-tight">
+            منصة <span className="text-[#7B1618]">حيز</span> الرقمية الكاملة
+          </h1>
+          <p className="text-[22px] md:text-[28px] font-light text-[#666] mb-4 leading-relaxed">
+            تطبيق · موقع · محفظة · مجتمع · حجوزات
+          </p>
+          <p className="text-[13px] text-[#888] font-light max-w-sm mx-auto leading-relaxed">
+            منظومة رقمية متكاملة تربط ضيوف حيز بمكانهم المفضل وتجعلهم يعودون دائماً
+          </p>
+        </motion.div>
+      </div>
+
+      {/* ── 4 Pillars ────────────────────────────────────────── */}
+      <div className="max-w-5xl mx-auto px-6 mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {pillars.map((p, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08 }}
+              className="rounded-[20px] p-5 relative overflow-hidden"
+              style={{ background: p.bg }}
+            >
+              <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 80% 10%,rgba(201,149,106,0.1) 0%,transparent 60%)' }} />
+              <span className="text-2xl mb-3 block">{p.icon}</span>
+              <p className="text-white text-[14px] font-bold mb-0.5 relative">{p.title}</p>
+              <p className="text-white/35 text-[10px] font-light mb-1.5 relative">{p.sub}</p>
+              <p className="text-white/55 text-[11px] font-light relative leading-snug">{p.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Phone mockup ─────────────────────────────────────── */}
+      <div className="flex flex-col items-center px-4 mb-8">
+        <motion.div
+          initial={{ opacity: 0, y: 28, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.65, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
+          style={{ width: 390 }}
+        >
+          <PhoneFrame>
+            <div className="flex-1 relative overflow-hidden h-full">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
+                  className="absolute inset-0 overflow-y-auto scrollbar-none"
+                >
+                  {activeTab === 'home'          && <ScreenHome />}
+                  {activeTab === 'menu'          && <ScreenMenu />}
+                  {activeTab === 'card'          && <ScreenMembership />}
+                  {activeTab === 'book'          && <ScreenReservations />}
+                  {activeTab === 'notifications' && <ScreenNotifications />}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+            <BottomNav activeTab={activeTab} onChangeTab={setActiveTab} notifCount={3} />
+          </PhoneFrame>
+        </motion.div>
+
+        {/* Download badges */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45 }}
+          className="flex flex-col items-center gap-3 mt-6"
+        >
+          <div className="flex gap-3">
+            <AppleBadge />
+            <PlayBadge />
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1.5 bg-black text-white px-3 py-1.5 rounded-full text-[11px] font-medium border border-white/8">
+              <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-white"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              Apple Wallet
+            </div>
+            <div className="flex items-center gap-1.5 bg-white text-[#111] px-3 py-1.5 rounded-full text-[11px] font-medium border border-[rgba(196,181,159,0.3)]">
+              <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 shrink-0"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+              Google Wallet
+            </div>
+          </div>
+          <p className="text-[11px] text-[#BBB] text-center">البطاقة في محفظتك — تعمل بلا إنترنت</p>
+        </motion.div>
+      </div>
+
+      {/* ── Full Features Grid ────────────────────────────────── */}
+      <div className="max-w-5xl mx-auto px-6 mb-10">
+        <div className="text-center mb-6">
+          <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1.5">كل ما يحصل عليه حيز</p>
+          <h2 className="text-[24px] font-bold text-[#111]">١٢ مزية في منظومة واحدة</h2>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          {allFeatures.map((f, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.04 * i }}
+              className="bg-white/75 rounded-[18px] p-4 border border-[rgba(123,22,24,0.07)] shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:border-[rgba(123,22,24,0.18)] transition-all duration-200 hover:-translate-y-0.5"
+            >
+              <span className="text-2xl mb-2 block">{f.icon}</span>
+              <p className="text-[12px] font-semibold text-[#111] mb-0.5 leading-snug">{f.title}</p>
+              <p className="text-[10px] text-[#999] font-light leading-relaxed">{f.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Wallet showcase ───────────────────────────────────── */}
+      <div className="max-w-5xl mx-auto px-6 mb-10">
+        <div
+          className="rounded-[28px] p-7 md:p-9 relative overflow-hidden"
+          style={{ background: 'linear-gradient(145deg,#0D0205 0%,#3D0809 45%,#0D0205 80%,#1A0406 100%)' }}
+        >
+          <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 85% 20%,rgba(201,149,106,0.12) 0%,transparent 55%)' }} />
+          <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 10% 80%,rgba(123,22,24,0.35) 0%,transparent 50%)' }} />
+          {/* Subtle dot pattern */}
+          <div className="absolute bottom-0 left-0 w-40 h-40 opacity-[0.05]"
+            style={{ backgroundImage: 'radial-gradient(circle,#C9956A 1.5px,transparent 1.5px)', backgroundSize: '10px 10px' }} />
+
+          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-7">
+            <div className="flex-1">
+              <p className="text-[#C9956A] text-[10px] font-semibold tracking-widest uppercase mb-2">Apple Wallet · Google Wallet</p>
+              <h3 className="text-white text-[24px] font-bold mb-2.5 leading-tight">
+                بطاقة حيز في جيبك
+                <br /><span className="text-[#C9956A]">حتى بدون إنترنت</span>
+              </h3>
+              <p className="text-white/45 text-[13px] font-light leading-relaxed mb-5 max-w-xs">
+                يضيف الأعضاء بطاقة العضوية لمحافظهم الرقمية بضغطة واحدة. تُحدَّث تلقائياً عند الترقية.
+              </p>
+              <div className="space-y-2">
+                {['تحديث فوري عند الترقية للمستوى التالي','تعمل بلا إنترنت في الصندوق','إشعارات جغرافية عند دخول منطقة حيز'].map((item) => (
+                  <div key={item} className="flex items-center gap-2 text-white/55 text-[12px]">
+                    <div className="w-1.5 h-1.5 bg-[#30D158] rounded-full shrink-0" />
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Wallet card preview */}
+            <div
+              className="w-full md:w-[260px] rounded-[22px] p-5 relative overflow-hidden shrink-0"
+              style={{ background: 'linear-gradient(145deg,#080003,#3D0809,#0D0003)', border: '1px solid rgba(201,149,106,0.18)' }}
+            >
+              <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 70% 0%,rgba(201,149,106,0.12) 0%,transparent 55%)' }} />
+              <div
+                className="absolute top-0 bottom-0 w-[40%] pointer-events-none"
+                style={{ background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.06),transparent)', transform: 'skewX(-20deg)', animation: 'card-shimmer 4s ease-in-out infinite' }}
+              />
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <p className="text-[#C9956A] font-bold text-[16px] leading-tight">حيز</p>
+                    <p className="text-white/25 text-[8px] font-inter tracking-wider">HYZ CAFÉ · ABHA</p>
+                  </div>
+                  <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white/15">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                  </svg>
+                </div>
+                <p className="text-white/25 text-[8px] mb-0.5">CARDHOLDER</p>
+                <p className="text-white text-[13px] font-semibold mb-4">عبد الإله المالكي</p>
+                <div className="flex justify-between">
+                  <div>
+                    <p className="text-white/25 text-[8px]">LEVEL</p>
+                    <p className="text-[#C9956A] text-[12px] font-bold">كلاسيك</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-white/25 text-[8px]">POINTS</p>
+                    <p className="text-white text-[14px] font-bold font-inter">480</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Community ─────────────────────────────────────────── */}
+      <div className="max-w-5xl mx-auto px-6 mb-10">
+        <div className="bg-white/75 rounded-[28px] p-6 border border-[rgba(123,22,24,0.07)] shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
+          <div className="flex items-start justify-between mb-5">
+            <div>
+              <p className="text-[10px] text-[#7B1618] font-semibold tracking-widest uppercase mb-1">مجتمع حيز</p>
+              <h3 className="text-[22px] font-bold text-[#111]">١,٥٠٠+ عضو نشط</h3>
+              <p className="text-[12px] text-[#888] font-light mt-1">منصة اجتماعية داخل التطبيق</p>
+            </div>
+            <div className="flex items-center gap-1.5 text-[11px] text-[#30D158] font-medium bg-[#30D158]/8 px-3 py-1.5 rounded-full">
+              <div className="w-1.5 h-1.5 bg-[#30D158] rounded-full animate-pulse" />
+              ٢٣ متصل الآن
+            </div>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { icon: '📍', title: 'تسجيل وصول',   desc: 'يشارك الأعضاء زياراتهم' },
+              { icon: '🏆', title: 'تحديات أسبوعية', desc: 'منافسات بين الأعضاء'   },
+              { icon: '💬', title: 'نصائح المجتمع', desc: 'توصيات حقيقية من أعضاء' },
+              { icon: '⭐', title: 'تقييمات حية',   desc: 'تغذية راجعة فورية'      },
+            ].map((item) => (
+              <div key={item.title} className="rounded-2xl p-3.5 text-center" style={{ background: 'rgba(242,234,224,0.7)' }}>
+                <span className="text-xl mb-2 block">{item.icon}</span>
+                <p className="text-[12px] font-semibold text-[#111] mb-0.5">{item.title}</p>
+                <p className="text-[10px] text-[#888] font-light">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Investment CTA ────────────────────────────────────── */}
+      <div className="max-w-lg mx-auto px-6 mb-10">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="rounded-[28px] p-8 text-center relative overflow-hidden"
+          style={{ background: 'linear-gradient(145deg,#080003 0%,#3D0809 45%,#0D0003 75%,#1A0406 100%)' }}
+        >
+          <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 50% 0%,rgba(201,149,106,0.18) 0%,transparent 60%)' }} />
+          <div className="absolute bottom-0 left-0 w-36 h-36 opacity-[0.04]"
+            style={{ backgroundImage: 'radial-gradient(circle,#C9956A 1.5px,transparent 1.5px)', backgroundSize: '10px 10px' }} />
+          <div className="relative z-10">
+            <p className="text-[#C9956A] text-[11px] font-semibold tracking-widest uppercase mb-3">الاستثمار الكلي</p>
+            <div className="flex items-start justify-center gap-1 mb-1">
+              <span className="text-white text-[52px] font-bold leading-none font-inter">18,000</span>
+            </div>
+            <p className="text-[#C9956A] text-[18px] font-light mb-1.5">ريال سعودي</p>
+            <p className="text-white/30 text-[12px] font-light mb-6">
+              iOS + Android · موقع · Wallet · مجتمع · حجوزات · دعم كامل
+            </p>
+            <div className="grid grid-cols-2 gap-2.5 mb-7">
+              {['تسليم خلال ٦٠ يوم','نشر على المتجرين','سنة دعم مجاني','تدريب الفريق'].map((item) => (
+                <div key={item} className="flex items-center gap-2 text-white/50 text-[11px]">
+                  <div className="w-1.5 h-1.5 bg-[#C9956A] rounded-full shrink-0" />
+                  {item}
+                </div>
+              ))}
+            </div>
+            <a
+              href="https://wa.me/966500000000"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full bg-white text-[#7B1618] font-bold text-[15px] py-4 rounded-[16px] hover:bg-[#FDF9F4] active:scale-95 transition-all duration-200 shadow-[0_8px_28px_rgba(0,0,0,0.2)]"
+            >
+              أبدأ مشروعي مع تلقا تك 🚀
+            </a>
+            <p className="text-white/25 text-[11px] mt-3 font-light">تواصل معنا على واتساب للاستفسار المجاني</p>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* ── Footer ───────────────────────────────────────────── */}
+      <div className="text-center pb-8 px-6">
+        <div className="flex items-center justify-center gap-2 mb-2">
+          <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#7B1618,#4A0D0F)' }}>
+            <span className="text-white text-[9px] font-bold">ت</span>
+          </div>
+          <span className="text-[13px] font-bold text-[#111]">تلقا تك</span>
+        </div>
+        <p className="text-[11px] text-[#CCC] font-light">تصميم وتطوير احترافي · جميع الحقوق محفوظة ٢٠٢٥</p>
+      </div>
+    </div>
+  );
+}
