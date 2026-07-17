@@ -143,8 +143,28 @@ const haizEvents: HaizEvent[] = [
   },
 ];
 
+/* ── Hijri + Gregorian date helpers ─── */
+function useTodayDates() {
+  const now = new Date();
+  const fmtHijri = (opts: Intl.DateTimeFormatOptions) =>
+    new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', opts).format(now);
+  const fmtGreg = (opts: Intl.DateTimeFormatOptions) =>
+    new Intl.DateTimeFormat('ar-SA', opts).format(now);
+
+  return {
+    hijriDay:     fmtHijri({ day: 'numeric' }),
+    hijriMonth:   fmtHijri({ month: 'long' }),
+    hijriYear:    fmtHijri({ year: 'numeric' }),
+    hijriWeekday: fmtHijri({ weekday: 'long' }),
+    gregDay:      fmtGreg({ day: 'numeric' }),
+    gregMonth:    fmtGreg({ month: 'long' }),
+    gregYear:     fmtGreg({ year: 'numeric' }),
+  };
+}
+
 function HaizCalendar() {
   const [expanded, setExpanded] = useState<string | null>(null);
+  const dt = useTodayDates();
 
   return (
     <motion.div
@@ -164,8 +184,80 @@ function HaizCalendar() {
       <div className="pointer-events-none absolute inset-0 opacity-[0.025]"
         style={{ backgroundImage: 'radial-gradient(circle,#fff 1px,transparent 1px)', backgroundSize: '10px 10px' }} />
 
-      {/* Header */}
-      <div className="relative px-5 pt-5 pb-4 flex items-center justify-between"
+      {/* ══ DATE WIDGET ══ */}
+      <div className="relative overflow-hidden"
+        style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+
+        {/* Background glow for date area */}
+        <div className="absolute inset-0 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse at 50% 120%,rgba(201,149,106,0.14) 0%,transparent 70%)' }} />
+
+        {/* HAIZ label */}
+        <div className="relative px-5 pt-4 pb-0 flex items-center justify-between">
+          <p className="text-[7.5px] font-black tracking-[0.3em] text-[#C9956A]/70"
+            style={{ fontFamily: 'ui-monospace,monospace' }}>HYZ CAFÉ · ABHA</p>
+          <div className="flex items-center gap-1.5">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#30D158] animate-pulse" />
+            <p className="text-[7px] text-white/20 font-inter">{dt.hijriWeekday}</p>
+          </div>
+        </div>
+
+        {/* Main date display — inspired by iOS widget */}
+        <div className="relative px-5 pt-1 pb-4 flex items-end justify-between">
+
+          {/* Hijri: big month + day */}
+          <div className="flex-1">
+            <div className="flex items-baseline gap-2.5">
+              {/* Day number — very large */}
+              <span
+                className="font-black leading-none tabular-nums text-white/90"
+                style={{ fontSize: 56, fontFamily: 'ui-monospace,monospace', letterSpacing: '-0.03em' }}
+              >
+                {dt.hijriDay}
+              </span>
+              {/* Month name — large Arabic */}
+              <span
+                className="font-black leading-none text-white"
+                style={{ fontSize: 34, letterSpacing: '-0.01em', marginBottom: 4 }}
+              >
+                {dt.hijriMonth}
+              </span>
+            </div>
+
+            {/* Hijri year line */}
+            <div className="flex items-center gap-1.5 mt-1">
+              <div className="h-px flex-1"
+                style={{ background: 'linear-gradient(90deg,rgba(201,149,106,0.4),transparent)', maxWidth: 80 }} />
+              <p className="text-[9px] font-bold font-inter" style={{ color: 'rgba(201,149,106,0.7)' }}>
+                {dt.hijriYear} هـ
+              </p>
+            </div>
+          </div>
+
+          {/* Right column: Gregorian date */}
+          <div className="text-right ml-4 flex flex-col items-end justify-end pb-1">
+            <p className="text-[8px] font-black tracking-[0.2em] text-white/20 mb-1"
+              style={{ fontFamily: 'ui-monospace,monospace' }}>GREGORIAN</p>
+            {/* Gregorian day big */}
+            <div className="flex items-baseline gap-1.5 mb-0.5">
+              <span className="text-[28px] font-black text-white/55 leading-none font-inter tabular-nums">
+                {dt.gregDay}
+              </span>
+              <span className="text-[12px] font-bold text-white/40 mb-0.5">{dt.gregMonth}</span>
+            </div>
+            <p className="text-[10px] font-inter text-white/25">{dt.gregYear}</p>
+
+            {/* Gold dot divider */}
+            <div className="flex items-center gap-1 mt-2">
+              <div className="w-1 h-1 rounded-full" style={{ background: '#C9956A' }} />
+              <div className="w-5 h-px" style={{ background: 'linear-gradient(90deg,#C9956A50,transparent)' }} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ══ CALENDAR HEADER ══ */}
+      <div className="relative px-5 pt-4 pb-3 flex items-center justify-between"
         style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div>
           <p className="text-[8px] font-black tracking-[0.28em] text-[#C9956A] mb-1"
