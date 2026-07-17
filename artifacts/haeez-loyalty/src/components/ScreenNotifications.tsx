@@ -41,7 +41,7 @@ const notifications: Notification[] = [
   },
   {
     id: 4,
-    title: 'عيد ميلاد سعيد يا عبد الإله 🎂',
+    title: 'عيد ميلاد سعيد يا عبدالإله 🎂',
     body: 'هدية من حيز: مشروب مجاني ينتظرك اليوم فقط. نحتفل معك!',
     time: 'أمس',
     dotColor: '#FF6B81',
@@ -67,9 +67,11 @@ const notifications: Notification[] = [
 
 export function ScreenNotifications() {
   const [dismissed, setDismissed] = useState<number[]>([]);
+  const [allRead, setAllRead] = useState(false);
 
+  const [readIds, setReadIds] = useState<number[]>([]);
   const visible = notifications.filter((n) => !dismissed.includes(n.id));
-  const unreadCount = visible.filter((n) => n.unread).length;
+  const unreadCount = visible.filter((n) => n.unread && !readIds.includes(n.id) && !allRead).length;
 
   return (
     <div className="flex flex-col px-5 pt-4 h-full">
@@ -84,9 +86,13 @@ export function ScreenNotifications() {
           )}
         </div>
         {unreadCount > 0 && (
-          <button className="text-[12px] text-[#C4B59F] font-medium px-3 py-1.5 rounded-full border border-[rgba(196,181,159,0.35)] active:scale-95 transition-transform">
+          <motion.button
+            whileTap={{ scale: 0.92 }}
+            onClick={() => setAllRead(true)}
+            className="text-[12px] text-[#7B1618] font-semibold px-3 py-1.5 rounded-full border border-[rgba(123,22,24,0.25)] bg-[rgba(123,22,24,0.05)] active:scale-95 transition-transform"
+          >
             قراءة الكل
-          </button>
+          </motion.button>
         )}
       </div>
 
@@ -102,14 +108,14 @@ export function ScreenNotifications() {
               exit={{ opacity: 0, x: -60, height: 0, marginBottom: 0 }}
               transition={{ delay: i * 0.05, duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
               className={`relative bg-white rounded-[18px] p-4 shadow-[0_2px_14px_rgba(0,0,0,0.06)] border overflow-hidden ${
-                notif.unread
+                notif.unread && !allRead && !readIds.includes(notif.id)
                   ? 'border-[rgba(196,181,159,0.3)]'
                   : 'border-[rgba(196,181,159,0.12)]'
               }`}
             >
               {/* Unread left stripe */}
-              {notif.unread && (
-                <div className="absolute right-0 top-4 bottom-4 w-[3px] rounded-l-full bg-[#111]" />
+              {notif.unread && !allRead && !readIds.includes(notif.id) && (
+                <div className="absolute right-0 top-4 bottom-4 w-[3px] rounded-l-full bg-[#7B1618]" />
               )}
 
               <div className="flex items-start gap-3">

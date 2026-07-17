@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Search, X } from 'lucide-react';
 
 const logoImg = `${import.meta.env.BASE_URL}hyz-logo.jpeg`;
 
@@ -347,15 +348,44 @@ function ShelfSection() {
 /* ─────────────────────────────────────────── Main ── */
 export function ScreenMenu() {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchFocused, setSearchFocused] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const pillsRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
 
-  const displayed = activeId ? menu.filter(c => c.id === activeId) : menu;
+  // Search filtering
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return null;
+    const q = searchQuery.trim().toLowerCase();
+    const results: { category: MenuCategory; item: MenuItem }[] = [];
+    menu.forEach(cat => {
+      cat.items.forEach(item => {
+        if (
+          item.name.toLowerCase().includes(q) ||
+          (item.desc && item.desc.toLowerCase().includes(q)) ||
+          cat.name.toLowerCase().includes(q) ||
+          (item.origin && item.origin.toLowerCase().includes(q))
+        ) {
+          results.push({ category: cat, item });
+        }
+      });
+    });
+    return results;
+  }, [searchQuery]);
+
+  const displayed = searchQuery ? null : (activeId ? menu.filter(c => c.id === activeId) : menu);
   const activeCategory = menu.find(c => c.id === activeId);
 
   const handleCat = (id: string | null) => {
     setActiveId(id);
+    setSearchQuery('');
     scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const clearSearch = () => {
+    setSearchQuery('');
+    searchRef.current?.blur();
   };
 
   return (
@@ -387,11 +417,34 @@ export function ScreenMenu() {
           </div>
         </div>
 
-        {/* Category count strip */}
+        {/* Search bar */}
         <div className="relative z-10 px-4 pb-3">
-          <p className="text-white/25 text-[9px] font-light">
-            {menu.length} تصنيف · {menu.reduce((a, c) => a + c.items.length, 0)} صنف
-          </p>
+          <div
+            className="flex items-center gap-2.5 rounded-[14px] px-3.5 py-2.5 transition-all duration-200"
+            style={{
+              background: searchFocused ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.07)',
+              border: searchFocused ? '1px solid rgba(201,149,106,0.4)' : '1px solid rgba(255,255,255,0.08)',
+            }}
+          >
+            <Search size={14} className="text-white/40 shrink-0" />
+            <input
+              ref={searchRef}
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setSearchFocused(false)}
+              placeholder="ابحث في القائمة..."
+              className="flex-1 bg-transparent text-white text-[12px] outline-none placeholder:text-white/25 font-light"
+              dir="rtl"
+            />
+            {searchQuery ? (
+              <button onClick={clearSearch} className="shrink-0 w-5 h-5 rounded-full bg-white/15 flex items-center justify-center">
+                <X size={10} className="text-white/60" />
+              </button>
+            ) : (
+              <span className="text-white/15 text-[9px] font-inter">{menu.reduce((a, c) => a + c.items.length, 0)} صنف</span>
+            )}
+          </div>
         </div>
       </div>
 
@@ -461,21 +514,69 @@ export function ScreenMenu() {
       {/* ── Body ── */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto scrollbar-none pt-4 pb-24">
         <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={activeId ?? 'all'}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
-          >
-            {displayed.map((cat, i) => (
-              <CategorySection key={cat.id} category={cat} index={i} />
-            ))}
-          </motion.div>
+
+          {/* ── Search results ── */}
+          {searchQuery && searchResults !== null ? (
+            <motion.div key="search" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
+              {searchResults.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-16 text-center px-8">
+                  <div className="text-4xl mb-3">☕</div>
+                  <p className="text-[14px] font-semibold text-[#888]">لا نتائج لـ "{searchQuery}"</p>
+                  <p className="text-[11px] text-[#CCC] mt-1.5 font-light">جرّب اسماً آخر أو تصفح الكل</p>
+                </div>
+              ) : (
+                <div className="mx-4 mb-4">
+                  <p className="text-[11px] text-[#AAA] mb-3 px-1">
+                    {searchResults.length} نتيجة لـ "<span className="text-[#7B1618] font-semibold">{searchQuery}</span>"
+                  </p>
+                  <div className="rounded-[18px] overflow-hidden bg-white border border-[rgba(196,181,159,0.15)]"
+                    style={{ boxShadow: '0 2px 16px rgba(0,0,0,0.05)' }}>
+                    <div className="h-[3px]" style={{ background: 'linear-gradient(90deg,#7B1618,#C9956A,transparent)' }} />
+                    {searchResults.map(({ category, item }, i) => (
+                      <div key={i} className={`flex items-start gap-3 px-4 py-3.5 ${i < searchResults.length - 1 ? 'border-b border-[#F0EBE3]' : ''}`}>
+                        <div className="w-6 h-6 rounded-[7px] flex items-center justify-center text-[13px] shrink-0 mt-0.5"
+                          style={{ background: `${category.color}15` }}>
+                          {category.emoji}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-wrap items-center gap-1.5 mb-0.5">
+                            <p className="text-[13px] font-semibold text-[#111] leading-snug">{item.name}</p>
+                            {item.badge && (
+                              <span className="text-[8px] font-bold text-white px-1.5 py-0.5 rounded-full"
+                                style={{ background: item.badgeColor ?? '#7B1618' }}>
+                                {item.badge}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-[9px] text-[#BBB]" style={{ color: category.color }}>{category.name}</p>
+                          {item.desc && <p className="text-[10px] text-[#AAA] mt-0.5 font-light">{item.desc}</p>}
+                        </div>
+                        <PriceTag item={item} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          ) : (
+            /* ── Normal view ── */
+            <motion.div
+              key={activeId ?? 'all'}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.15 }}
+            >
+              {(displayed ?? []).map((cat, i) => (
+                <CategorySection key={cat.id} category={cat} index={i} />
+              ))}
+            </motion.div>
+          )}
+
         </AnimatePresence>
 
         {/* Shelf */}
-        {activeId === null && <ShelfSection />}
+        {!searchQuery && activeId === null && <ShelfSection />}
 
         {/* Footer */}
         <div className="mx-4 mb-2 py-3 rounded-[14px] text-center" style={{ background: 'rgba(255,255,255,0.5)' }}>

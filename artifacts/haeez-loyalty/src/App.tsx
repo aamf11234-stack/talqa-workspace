@@ -72,11 +72,11 @@ const allFeatures = [
 
 /* ── App Screenshots strip ───────────────────────────────────────── */
 const screens: { tab: Tab; label: string; color: string }[] = [
-  { tab: 'home',          label: 'الرئيسية',  color: '#7B1618' },
-  { tab: 'menu',          label: 'المنيو',    color: '#2D7D46' },
-  { tab: 'card',          label: 'بطاقتي',   color: '#C9956A' },
-  { tab: 'book',          label: 'احجز',     color: '#1A5276' },
-  { tab: 'notifications', label: 'إشعارات',  color: '#6C3483' },
+  { tab: 'home',      label: 'الرئيسية', color: '#7B1618' },
+  { tab: 'menu',      label: 'المنيو',   color: '#2D7D46' },
+  { tab: 'card',      label: 'بطاقتي',  color: '#C9956A' },
+  { tab: 'book',      label: 'احجز',    color: '#1A5276' },
+  { tab: 'community', label: 'مجتمع',   color: '#6C3483' },
 ];
 
 function AppScreensStrip({ onTabSelect }: { onTabSelect: (t: Tab) => void }) {

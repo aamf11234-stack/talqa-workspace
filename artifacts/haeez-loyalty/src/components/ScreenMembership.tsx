@@ -78,7 +78,7 @@ function MembershipCard() {
         <div className="flex items-end justify-between">
           <div>
             <p className="text-white/30 text-[8px] tracking-widest mb-1 font-inter">CARDHOLDER</p>
-            <p className="text-white text-[13px] font-semibold tracking-wide">عبد الإله المالكي</p>
+            <p className="text-white text-[13px] font-semibold tracking-wide">عبدالإله علي</p>
             <p className="text-[#C9956A]/50 text-[8px] font-inter tracking-wider mt-0.5">MEMBER SINCE 2024</p>
           </div>
           <div className="text-right">
@@ -367,7 +367,7 @@ export function ScreenMembership() {
             </div>
           </div>
           <div>
-            <p className="text-[14px] font-bold text-[#111]">عبد الإله المالكي</p>
+            <p className="text-[14px] font-bold text-[#111]">عبدالإله علي</p>
             <p className="text-[11px] text-[#C4B59F] font-light">عضوية كلاسيكية · عضو منذ ٢٠٢٤</p>
           </div>
         </div>
