@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/haiz-video"
+title = "حيز — فيديو تعريفي"
+version = "1.0.0"
+id = "artifacts/haiz-video"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/haiz-video" ]
+localPort = 24828
+
+[services.development]
+run = "pnpm --filter @workspace/haiz-video run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/haiz-video", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/haiz-video/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24828"
+BASE_PATH = "/haiz-video"
