@@ -151,112 +151,133 @@ const haizEvents: HaizEvent[] = [
 ];
 
 function HaizCalendar() {
-  const [selected, setSelected] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState<string | null>(null);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.35 }}
-      className="mb-5"
+      transition={{ delay: 0.2, duration: 0.4 }}
+      className="mx-4 mb-6 rounded-[24px] overflow-hidden"
+      style={{
+        background: 'linear-gradient(170deg,#080002 0%,#200407 45%,#3D0809 75%,#0D0205 100%)',
+        boxShadow: '0 8px 40px rgba(0,0,0,0.25)',
+      }}
     >
-      {/* Section header */}
-      <div className="flex items-center justify-between mb-3 px-4">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-[7px] flex items-center justify-center"
-            style={{ background: 'rgba(123,22,24,0.1)' }}>
-            <Calendar size={13} className="text-[#7B1618]" />
-          </div>
-          <p className="text-[13px] font-bold text-[#111]">تقويم حيز</p>
+      {/* Ambient glow */}
+      <div className="pointer-events-none absolute inset-0 rounded-[24px]"
+        style={{ background: 'radial-gradient(ellipse at 70% 20%,rgba(201,149,106,0.12) 0%,transparent 60%)' }} />
+      {/* Dot texture */}
+      <div className="pointer-events-none absolute inset-0 opacity-[0.025]"
+        style={{ backgroundImage: 'radial-gradient(circle,#fff 1px,transparent 1px)', backgroundSize: '10px 10px' }} />
+
+      {/* Header */}
+      <div className="relative px-5 pt-5 pb-4 flex items-center justify-between"
+        style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <div>
+          <p className="text-[8px] font-black tracking-[0.28em] text-[#C9956A] mb-1"
+            style={{ fontFamily: 'ui-monospace,monospace' }}>HAIZ CALENDAR</p>
+          <h3 className="text-[17px] font-black text-white leading-none">📅 تقويم حيز</h3>
         </div>
-        <span className="text-[10px] text-[#C4B59F]">المناسبات والعروض</span>
+        <div className="text-left">
+          <p className="text-white/20 text-[8px] font-light">المناسبات والعروض</p>
+          <p className="text-white/15 text-[8px] mt-0.5 font-inter">{haizEvents.length} مناسبة</p>
+        </div>
       </div>
 
-      {/* Horizontal scroll */}
-      <div className="flex gap-3 overflow-x-auto scrollbar-none px-4 pb-1">
+      {/* Events list */}
+      <div className="relative divide-y" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
         {haizEvents.map((ev, i) => {
           const days = daysUntil(ev.date);
-          const isOpen = selected === ev.id;
+          const isOpen = expanded === ev.id;
           return (
-            <motion.button
+            <motion.div
               key={ev.id}
-              initial={{ opacity: 0, x: 16 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.38 + i * 0.06 }}
-              whileTap={{ scale: 0.94 }}
-              onClick={() => setSelected(isOpen ? null : ev.id)}
-              className="relative shrink-0 rounded-[20px] overflow-hidden text-right transition-all duration-200"
-              style={{
-                width: isOpen ? 200 : 130,
-                background: ev.isNow
-                  ? `linear-gradient(145deg,${ev.color}22,${ev.color}10)`
-                  : '#fff',
-                border: isOpen
-                  ? `1.5px solid ${ev.color}60`
-                  : ev.isNow
-                    ? `1.5px solid ${ev.color}40`
-                    : '1.5px solid rgba(196,181,159,0.15)',
-                boxShadow: isOpen
-                  ? `0 4px 20px ${ev.color}25`
-                  : '0 2px 10px rgba(0,0,0,0.04)',
-              }}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25 + i * 0.055 }}
             >
-              <div className="p-3.5">
-                {/* Badge */}
-                {ev.badge && (
-                  <div className="mb-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full"
-                    style={{ background: `${ev.color}18` }}>
-                    <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: ev.color }} />
-                    <span className="text-[8px] font-bold" style={{ color: ev.color }}>{ev.badge}</span>
+              <motion.button
+                className="w-full text-right"
+                whileTap={{ scale: 0.985 }}
+                onClick={() => setExpanded(isOpen ? null : ev.id)}
+              >
+                <div className="flex items-center gap-3.5 px-5 py-3.5">
+                  {/* Emoji badge */}
+                  <div className="w-10 h-10 rounded-[13px] flex items-center justify-center text-[20px] shrink-0"
+                    style={{
+                      background: `${ev.color}20`,
+                      border: `1px solid ${ev.color}35`,
+                      boxShadow: ev.isNow ? `0 0 12px ${ev.color}30` : 'none',
+                    }}>
+                    {ev.emoji}
                   </div>
-                )}
 
-                <div className="text-[26px] mb-2">{ev.emoji}</div>
-                <p className="text-[12px] font-bold text-[#111] leading-tight mb-0.5">{ev.title}</p>
-                <p className="text-[9px] text-[#AAA] font-light">{ev.subtitle}</p>
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <p className="text-[12px] font-bold text-white leading-snug">{ev.title}</p>
+                      {ev.isNow && (
+                        <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full shrink-0"
+                          style={{ background: `${ev.color}25`, border: `1px solid ${ev.color}40` }}>
+                          <div className="w-1 h-1 rounded-full animate-pulse" style={{ background: ev.color }} />
+                          <span className="text-[7px] font-black" style={{ color: ev.color }}>الآن</span>
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-white/30 text-[9px] font-light">{ev.subtitle}</p>
+                  </div>
 
-                {/* Countdown */}
-                <div className="mt-2.5 flex items-baseline gap-1">
-                  {ev.isNow ? (
-                    <>
-                      <span className="text-[18px] font-black font-inter" style={{ color: ev.color }}>{days}</span>
-                      <span className="text-[9px] font-medium" style={{ color: `${ev.color}90` }}>يوم متبقٍ</span>
-                    </>
-                  ) : days === 0 ? (
-                    <span className="text-[11px] font-bold" style={{ color: ev.color }}>اليوم! 🎉</span>
-                  ) : (
-                    <>
-                      <span className="text-[18px] font-black font-inter" style={{ color: ev.color }}>{days}</span>
-                      <span className="text-[9px] text-[#BBB]">يوم</span>
-                    </>
-                  )}
+                  {/* Countdown */}
+                  <div className="shrink-0 text-left flex flex-col items-end">
+                    <div className="flex items-baseline gap-0.5">
+                      <span className="text-[20px] font-black font-inter leading-none"
+                        style={{ color: ev.isNow ? ev.color : 'rgba(255,255,255,0.7)' }}>
+                        {days}
+                      </span>
+                      <span className="text-[8px] text-white/25 mb-0.5">يوم</span>
+                    </div>
+                    <span className="text-[7px] font-inter"
+                      style={{ color: isOpen ? ev.color : 'rgba(255,255,255,0.18)' }}>
+                      {isOpen ? '▲ إخفاء' : '▼ العرض'}
+                    </span>
+                  </div>
                 </div>
+              </motion.button>
 
-                {/* Expanded benefit */}
-                <AnimatePresence>
-                  {isOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="mt-3 pt-3 border-t" style={{ borderColor: `${ev.color}20` }}>
-                        <p className="text-[9px] text-[#888] mb-1 font-semibold tracking-wide">عرض حيز ✦</p>
-                        <p className="text-[10px] leading-relaxed text-[#444] text-right">{ev.benefit}</p>
+              {/* Expanded benefit */}
+              <AnimatePresence>
+                {isOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.22 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="mx-5 mb-3.5 px-4 py-3 rounded-[14px] flex items-start gap-2.5"
+                      style={{ background: `${ev.color}12`, border: `1px solid ${ev.color}25` }}>
+                      <span className="text-[14px] shrink-0 mt-0.5">🎁</span>
+                      <div>
+                        <p className="text-[7.5px] font-black tracking-widest mb-1"
+                          style={{ color: ev.color, fontFamily: 'ui-monospace,monospace' }}>
+                          عرض حيز الحصري
+                        </p>
+                        <p className="text-white/70 text-[11px] leading-relaxed">{ev.benefit}</p>
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Right color stripe */}
-              <div className="absolute left-0 top-4 bottom-4 w-[3px] rounded-r-full"
-                style={{ background: `linear-gradient(180deg,${ev.color},${ev.color}40)` }} />
-            </motion.button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </motion.div>
           );
         })}
+      </div>
+
+      {/* Footer */}
+      <div className="px-5 py-3 text-center"
+        style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <p className="text-white/15 text-[8px]">اضغط على أي مناسبة لتشوف عرض حيز ✦</p>
       </div>
     </motion.div>
   );
@@ -542,9 +563,6 @@ export function ScreenHome() {
           ))}
         </div>
 
-        {/* ── تقويم حيز ── */}
-        <HaizCalendar />
-
         {/* ── سؤال اليوم ── */}
         <QuestionOfDay />
 
@@ -634,6 +652,16 @@ export function ScreenHome() {
             </div>
           </motion.div>
         </div>
+
+        {/* ── تقويم حيز — آخر شي ── */}
+        <div className="pt-2">
+          <div className="flex items-center justify-between mb-4 px-4">
+            <p className="text-[13px] font-bold text-[#111]">تقويم حيز</p>
+            <span className="text-[10px] text-[#C4B59F]">المناسبات والعروض</span>
+          </div>
+          <HaizCalendar />
+        </div>
+
       </div>
     </div>
   );
