@@ -11,6 +11,7 @@ import { ScreenReservations }  from './components/ScreenReservations';
 import { ScreenCommunity }     from './components/ScreenCommunity';
 import { ScreenMenu }          from './components/ScreenMenu';
 import { AppleWatchHyz }       from './components/AppleWatch';
+import { OwnerDashboard }      from './components/OwnerDashboard';
 
 const cafeImg1 = `${import.meta.env.BASE_URL}cafe-1.jpeg`;
 
@@ -364,6 +365,75 @@ export default function App() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* ── Owner Dashboard Laptop Mockup ───────────────── */}
+      <div className="max-w-5xl mx-auto px-6 mb-10">
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+          <div className="text-center mb-6">
+            <span className="inline-flex items-center gap-2 bg-[#0D0205] text-[#C9956A] text-[10px] font-semibold px-3.5 py-1.5 rounded-full mb-3 tracking-widest">
+              <span className="w-1.5 h-1.5 bg-[#C9956A] rounded-full animate-pulse" />
+              لوحة تحكم المالك — OWNER DASHBOARD
+            </span>
+            <h2 className="text-[24px] font-bold text-[#111]">كل شيء في متناول يدك</h2>
+            <p className="text-[12px] text-[#888] font-light mt-1.5 max-w-md mx-auto">
+              راقب أعضاءك وإيراداتك وتحدياتك من لوحة تحكم ذكية — في الويب أو من جوالك
+            </p>
+          </div>
+
+          {/* Laptop frame */}
+          <div className="relative flex flex-col items-center">
+            {/* Screen body */}
+            <div
+              className="w-full rounded-t-[16px] overflow-hidden border-t border-l border-r"
+              style={{
+                borderColor: 'rgba(0,0,0,0.12)',
+                background: '#1a1a1a',
+                boxShadow: '0 -2px 0 0 rgba(255,255,255,0.06) inset, 0 20px 60px rgba(0,0,0,0.18)',
+              }}
+            >
+              {/* Browser chrome */}
+              <div className="flex items-center gap-2 px-3 py-2 border-b border-[rgba(255,255,255,0.05)]"
+                style={{ background: '#242424' }}>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#FEBC2E]" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
+                </div>
+                <div className="flex-1 mx-3">
+                  <div className="bg-[#1a1a1a] border border-[rgba(255,255,255,0.08)] rounded-[6px] px-3 py-1 flex items-center gap-2">
+                    <span className="text-[#30D158] text-[8px]">🔒</span>
+                    <span className="text-[#888] text-[9px] font-inter">admin.hyz-cafe.sa/dashboard</span>
+                  </div>
+                </div>
+                <div className="text-[8px] text-[#555] font-inter">حيز · لوحة التحكم</div>
+              </div>
+
+              {/* Dashboard iframe */}
+              <div style={{ height: 440 }}>
+                <OwnerDashboard />
+              </div>
+            </div>
+
+            {/* Laptop base */}
+            <div className="w-full h-3 rounded-b-[4px] relative"
+              style={{ background: 'linear-gradient(180deg,#cacaca,#b8b8b8)', boxShadow: '0 4px 20px rgba(0,0,0,0.15)' }}>
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-1 rounded-full"
+                style={{ background: 'rgba(0,0,0,0.12)', marginTop: '4px' }} />
+            </div>
+            <div className="w-[115%] h-2 rounded-b-[8px]"
+              style={{ background: 'linear-gradient(180deg,#b0b0b0,#a0a0a0)', boxShadow: '0 6px 24px rgba(0,0,0,0.2)' }} />
+          </div>
+
+          {/* Dashboard feature pills */}
+          <div className="flex flex-wrap justify-center gap-2 mt-5">
+            {['📊 إيرادات لحظية','👥 إدارة الأعضاء','🏆 التحديات','🎁 إدارة العروض','📣 إشعارات جماعية','📅 الحجوزات','📈 تقارير تفصيلية'].map((f) => (
+              <div key={f} className="bg-white/70 border border-[rgba(123,22,24,0.1)] px-3 py-1.5 rounded-full text-[10px] font-medium text-[#555] shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+                {f}
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
 
       {/* ── Full Features Grid ────────────────────────────── */}
