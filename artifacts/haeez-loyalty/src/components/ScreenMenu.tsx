@@ -254,39 +254,90 @@ function Section({ cat, index }: { cat: MenuCategory; index: number }) {
 }
 
 /* ══════════════════════════════════════════ SHELF ══ */
+const shelfItems = [
+  {
+    icon: '🏺',
+    title: 'أكواب الفخار',
+    desc: 'مصنوع ومرسوم يدوياً — نسخة لك فقط، اسمك على الرف',
+    tag: 'حصري',
+    color: '#C9956A',
+  },
+  {
+    icon: '🌿',
+    title: 'هدايا حيز',
+    desc: 'حوض فخار بهوية حيز مع نبتة البوتس — هدية تذكارية مثالية',
+    tag: 'هدية',
+    color: '#2D7D46',
+  },
+  {
+    icon: '☕',
+    title: 'محاصيل الرف',
+    desc: 'اقتنِ محاصيلنا المميزة من الرف الحصري وجرّبها بنفسك',
+    tag: 'محدود',
+    color: '#7B1618',
+  },
+];
+
 function Shelf() {
   return (
-    <div className="mx-5 mb-6 mt-2">
-      <div className="px-0 pt-5 pb-3 flex items-end justify-between">
+    <div className="mx-4 mt-5 mb-2">
+      {/* Section label */}
+      <div className="flex items-end justify-between mb-3 px-1">
         <div>
-          <p className="text-[9px] font-black tracking-[0.22em] mb-1 text-[#C9956A]"
-            style={{ fontFamily: 'ui-monospace, monospace' }}>SHELF</p>
-          <h2 className="text-[22px] font-black text-[#111] leading-none tracking-tight">🏺 مبيعات الرف</h2>
+          <p className="text-[8px] font-black tracking-[0.28em] text-[#C9956A] mb-1"
+            style={{ fontFamily: 'ui-monospace, monospace' }}>SHELF EXCLUSIVES</p>
+          <h2 className="text-[19px] font-black text-[#111] leading-none tracking-tight">🏺 مبيعات الرف</h2>
         </div>
-        <span className="text-[10px] text-[#C4B5A8] pb-1">٣ منتجات</span>
+        <span className="text-[9px] text-[#C4B5A8] pb-0.5">اسأل الفريق ✦</span>
       </div>
-      <div className="h-px mb-4" style={{ background: 'linear-gradient(90deg,#C9956A40,#C9956A10,transparent)' }} />
-      {[
-        { icon: '🏺', title: 'أكواب الفخار',   desc: 'مصنوع ومرسوم يدوياً — نسخة لك فقط مع مميزات حيز', tag: 'حصري' },
-        { icon: '🌿', title: 'هدايا حيز',       desc: 'حوض فخار بهوية حيز مع نبتة البوتس — هدية تذكارية', tag: 'هدية' },
-        { icon: '☕', title: 'محاصيل الرف',    desc: 'اقتنِ محاصيلنا المميزة وجرّبها بنفسك',             tag: 'محدود' },
-      ].map((s, i) => (
-        <div key={i} className="flex items-center gap-3 py-3.5"
-          style={{ borderBottom: i < 2 ? '1px solid rgba(196,181,159,0.18)' : 'none' }}>
-          <div className="w-9 h-9 rounded-[12px] flex items-center justify-center text-[18px] shrink-0"
-            style={{ background: 'rgba(201,149,106,0.1)', border: '1px solid rgba(201,149,106,0.18)' }}>
-            {s.icon}
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-[13px] font-bold text-[#111]">{s.title}</p>
-            <p className="text-[10px] text-[#AAA] font-light leading-snug mt-0.5">{s.desc}</p>
-          </div>
-          <span className="text-[8px] font-black shrink-0 px-2 py-1 rounded-full"
-            style={{ background: 'rgba(201,149,106,0.12)', color: '#C9956A', border: '1px solid rgba(201,149,106,0.2)' }}>
-            {s.tag}
-          </span>
-        </div>
-      ))}
+
+      {/* Cards row */}
+      <div className="flex flex-col gap-2.5">
+        {shelfItems.map((s, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.08 + i * 0.07, duration: 0.3 }}
+            className="relative overflow-hidden rounded-[18px] flex items-center gap-3 px-4 py-3.5"
+            style={{
+              background: `linear-gradient(135deg, ${s.color}14 0%, ${s.color}07 100%)`,
+              border: `1px solid ${s.color}25`,
+              boxShadow: `0 2px 16px ${s.color}10`,
+            }}
+          >
+            {/* Glow blob */}
+            <div className="absolute top-0 right-0 w-16 h-16 rounded-full pointer-events-none"
+              style={{ background: `${s.color}15`, filter: 'blur(20px)', transform: 'translate(30%,-30%)' }} />
+
+            {/* Icon */}
+            <div className="w-11 h-11 rounded-[14px] flex items-center justify-center text-[22px] shrink-0"
+              style={{ background: `${s.color}18`, border: `1px solid ${s.color}28` }}>
+              {s.icon}
+            </div>
+
+            {/* Text */}
+            <div className="flex-1 min-w-0">
+              <p className="text-[13px] font-black text-[#111] leading-snug">{s.title}</p>
+              <p className="text-[10px] text-[#AAA] font-light leading-snug mt-0.5">{s.desc}</p>
+            </div>
+
+            {/* Tag */}
+            <span className="text-[7.5px] font-black shrink-0 px-2 py-1 rounded-full"
+              style={{ background: `${s.color}18`, color: s.color, border: `1px solid ${s.color}30` }}>
+              {s.tag}
+            </span>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Divider before menu */}
+      <div className="flex items-center gap-3 mt-6 mb-1 px-1">
+        <div className="flex-1 h-px" style={{ background: 'rgba(196,181,159,0.3)' }} />
+        <p className="text-[8px] font-black tracking-[0.22em] text-[#C4B5A8]"
+          style={{ fontFamily: 'ui-monospace, monospace' }}>MENU</p>
+        <div className="flex-1 h-px" style={{ background: 'rgba(196,181,159,0.3)' }} />
+      </div>
     </div>
   );
 }
@@ -533,10 +584,10 @@ export function ScreenMenu() {
           ) : (
             <motion.div key={activeId ?? 'all'}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              {activeId === null && <Shelf />}
               {displayed.map((cat, i) => (
                 <Section key={cat.id} cat={cat} index={i} />
               ))}
-              {activeId === null && <Shelf />}
             </motion.div>
           )}
 
