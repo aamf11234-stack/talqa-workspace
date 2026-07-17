@@ -11,7 +11,7 @@ import { ScreenReservations }  from './components/ScreenReservations';
 import { ScreenCommunity }     from './components/ScreenCommunity';
 import { ScreenMenu }          from './components/ScreenMenu';
 import { AppleWatchHyz }       from './components/AppleWatch';
-import { OwnerDashboard }      from './components/OwnerDashboard';
+import { OwnerDashboard, MobileOwnerSummary } from './components/OwnerDashboard';
 
 const cafeImg1 = `${import.meta.env.BASE_URL}cafe-1.jpeg`;
 
@@ -367,74 +367,208 @@ export default function App() {
         </div>
       </div>
 
-      {/* ── Owner Dashboard Laptop Mockup ───────────────── */}
-      <div className="max-w-5xl mx-auto px-6 mb-10">
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
-          <div className="text-center mb-6">
-            <span className="inline-flex items-center gap-2 bg-[#0D0205] text-[#C9956A] text-[10px] font-semibold px-3.5 py-1.5 rounded-full mb-3 tracking-widest">
-              <span className="w-1.5 h-1.5 bg-[#C9956A] rounded-full animate-pulse" />
-              لوحة تحكم المالك — OWNER DASHBOARD
-            </span>
-            <h2 className="text-[24px] font-bold text-[#111]">كل شيء في متناول يدك</h2>
-            <p className="text-[12px] text-[#888] font-light mt-1.5 max-w-md mx-auto">
-              راقب أعضاءك وإيراداتك وتحدياتك من لوحة تحكم ذكية — في الويب أو من جوالك
-            </p>
-          </div>
+      {/* ── Owner Dashboard — Premium Device Section ─────── */}
+      <section className="relative overflow-hidden py-20 mb-2" style={{ background: 'linear-gradient(180deg,#06030A 0%,#0D0205 60%,#06030A 100%)' }}>
 
-          {/* Laptop frame */}
-          <div className="relative flex flex-col items-center">
-            {/* Screen body */}
-            <div
-              className="w-full rounded-t-[16px] overflow-hidden border-t border-l border-r"
-              style={{
-                borderColor: 'rgba(0,0,0,0.12)',
-                background: '#1a1a1a',
-                boxShadow: '0 -2px 0 0 rgba(255,255,255,0.06) inset, 0 20px 60px rgba(0,0,0,0.18)',
-              }}
-            >
-              {/* Browser chrome */}
-              <div className="flex items-center gap-2 px-3 py-2 border-b border-[rgba(255,255,255,0.05)]"
-                style={{ background: '#242424' }}>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#FEBC2E]" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#28C840]" />
-                </div>
-                <div className="flex-1 mx-3">
-                  <div className="bg-[#1a1a1a] border border-[rgba(255,255,255,0.08)] rounded-[6px] px-3 py-1 flex items-center gap-2">
-                    <span className="text-[#30D158] text-[8px]">🔒</span>
-                    <span className="text-[#888] text-[9px] font-inter">admin.hyz-cafe.sa/dashboard</span>
+        {/* Ambient glow blobs */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[380px] rounded-full blur-[130px]"
+            style={{ background: 'radial-gradient(ellipse,rgba(123,22,24,0.38) 0%,rgba(201,149,106,0.08) 55%,transparent 75%)' }} />
+          <div className="absolute bottom-0 left-1/4 w-[300px] h-[200px] rounded-full blur-[100px]"
+            style={{ background: 'rgba(201,149,106,0.07)' }} />
+          {/* Dot grid overlay */}
+          <svg className="absolute inset-0 w-full h-full opacity-[0.04]" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="dgrid" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+                <circle cx="1" cy="1" r="1" fill="white" />
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#dgrid)" />
+          </svg>
+        </div>
+
+        <div className="relative max-w-5xl mx-auto px-6">
+
+          {/* Section header */}
+          <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
+            className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 border border-[rgba(201,149,106,0.3)] bg-[rgba(201,149,106,0.06)] backdrop-blur-sm px-4 py-2 rounded-full mb-5">
+              <div className="w-1.5 h-1.5 bg-[#C9956A] rounded-full animate-pulse" />
+              <span className="text-[#C9956A] text-[10px] font-bold tracking-[0.18em] uppercase">Owner Dashboard</span>
+            </div>
+            <h2 className="text-[36px] font-extrabold text-white leading-tight mb-3">
+              كل شيء في <span style={{ background: 'linear-gradient(90deg,#C9956A,#E8C4A0)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>متناول يدك</span>
+            </h2>
+            <p className="text-[14px] text-white/40 font-light max-w-sm mx-auto leading-relaxed">
+              راقب الإيرادات والأعضاء والتحديات لحظة بلحظة — من الويب أو جوالك في أي مكان
+            </p>
+          </motion.div>
+
+          {/* ── Devices ── */}
+          <motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.5 }}
+            className="relative flex items-end justify-center">
+
+            {/* ── MacBook Pro ── */}
+            <div className="relative w-full max-w-[820px]" style={{ filter: 'drop-shadow(0 40px 80px rgba(0,0,0,0.7))' }}>
+
+              {/* Screen lid */}
+              <div className="relative rounded-[16px_16px_0_0] overflow-visible"
+                style={{
+                  background: 'linear-gradient(160deg,#3a3a3a 0%,#2a2a2a 40%,#222 100%)',
+                  padding: '2px',
+                  boxShadow: '0 0 0 1px rgba(255,255,255,0.08) inset, 0 -2px 0 0 rgba(255,255,255,0.04) inset',
+                }}>
+
+                {/* Inner bezel */}
+                <div className="rounded-[14px_14px_0_0] overflow-hidden"
+                  style={{ background: '#161616', padding: '10px 10px 0 10px' }}>
+
+                  {/* Camera notch */}
+                  <div className="flex justify-center mb-2">
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-1.5 h-1.5 rounded-full bg-[#333]" />
+                      <div className="w-2 h-2 rounded-full bg-[#2a2a2a] border border-[rgba(255,255,255,0.06)]" />
+                    </div>
+                  </div>
+
+                  {/* Screen glass */}
+                  <div className="relative rounded-[8px] overflow-hidden"
+                    style={{ boxShadow: '0 0 0 1px rgba(255,255,255,0.06) inset' }}>
+                    {/* Glass sheen */}
+                    <div className="absolute top-0 left-0 right-0 h-16 pointer-events-none z-10"
+                      style={{ background: 'linear-gradient(180deg,rgba(255,255,255,0.04) 0%,transparent 100%)' }} />
+                    {/* Browser chrome */}
+                    <div className="flex items-center gap-0 px-3 py-2.5 border-b border-white/[0.05]"
+                      style={{ background: '#1e1e1e' }}>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F57] shadow-[0_0_4px_rgba(255,95,87,0.5)]" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-[#FEBC2E] shadow-[0_0_4px_rgba(254,188,46,0.4)]" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-[#28C840] shadow-[0_0_4px_rgba(40,200,64,0.4)]" />
+                      </div>
+                      {/* Tab bar */}
+                      <div className="flex-1 flex justify-center">
+                        <div className="flex items-center bg-[#2a2a2a] rounded-[7px] px-3 py-1.5 gap-2 mx-4 flex-1 max-w-xs">
+                          <svg viewBox="0 0 12 12" className="w-2.5 h-2.5 fill-[#30D158] shrink-0"><path d="M6 1a5 5 0 100 10A5 5 0 006 1zm0 1.5a3.5 3.5 0 110 7 3.5 3.5 0 010-7z"/></svg>
+                          <span className="text-[8px] text-[#666] font-inter truncate">admin.hyz-cafe.sa/dashboard</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <div className="w-4 h-4 rounded flex items-center justify-center hover:bg-white/5">
+                          <span className="text-[8px] text-[#444]">⟨</span>
+                        </div>
+                        <div className="w-4 h-4 rounded flex items-center justify-center hover:bg-white/5">
+                          <span className="text-[8px] text-[#444]">⟩</span>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Dashboard */}
+                    <div style={{ height: 440 }}>
+                      <OwnerDashboard />
+                    </div>
                   </div>
                 </div>
-                <div className="text-[8px] text-[#555] font-inter">حيز · لوحة التحكم</div>
               </div>
 
-              {/* Dashboard iframe */}
-              <div style={{ height: 440 }}>
-                <OwnerDashboard />
+              {/* Hinge bar */}
+              <div className="h-[5px] mx-[-1px]"
+                style={{ background: 'linear-gradient(180deg,#3a3a3a 0%,#2e2e2e 100%)', boxShadow: '0 2px 0 rgba(0,0,0,0.4)' }} />
+
+              {/* Keyboard body */}
+              <div className="mx-[-3%] rounded-b-[6px] relative overflow-hidden"
+                style={{
+                  background: 'linear-gradient(180deg,#d4d4d4 0%,#c8c8c8 35%,#bdbdbd 100%)',
+                  height: '42px',
+                  boxShadow: '0 0 0 1px rgba(255,255,255,0.6) inset, 0 -1px 0 rgba(0,0,0,0.15)',
+                }}>
+                {/* Keyboard texture hint */}
+                <div className="absolute inset-0 opacity-[0.07]"
+                  style={{ backgroundImage: 'repeating-linear-gradient(90deg,#000 0px,#000 1px,transparent 1px,transparent 14px)', backgroundSize: '14px 100%' }} />
+                {/* Trackpad */}
+                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-20 h-[14px] rounded-[4px]"
+                  style={{ background: 'rgba(0,0,0,0.1)', boxShadow: '0 0 0 0.5px rgba(0,0,0,0.15) inset' }} />
+                {/* Apple logo hint */}
+                <div className="absolute top-2 right-4 w-5 h-5 opacity-20 flex items-center justify-center">
+                  <svg viewBox="0 0 18 22" className="w-3.5 h-3.5 fill-[#666]"><path d="M15.769 10.204c-.012-1.895 1.55-2.815 1.621-2.862-1.763-2.58-2.516-2.619-2.516-2.619-1.088-.112-2.139.644-2.698.644-.559 0-1.408-.631-2.323-.611-.592.012-2.283.353-3.234 1.882C4.516 9.064 5.316 13.37 7.334 15.88c.96 1.336 2.107 2.84 3.61 2.787 1.448-.059 1.998-.932 3.752-.932 1.748 0 2.249.932 3.772.905 1.567-.025 2.562-1.351 3.52-2.695.686-.97 1.276-2.047 1.566-3.252-3.266-1.263-3.786-4.489-3.786-4.489zm-3.504-8.247c.791-.961 1.33-2.302 1.184-3.643-1.145.046-2.531.762-3.353 1.724-.736.844-1.378 2.19-1.206 3.476 1.279.1 2.582-.65 3.375-1.557z"/></svg>
+                </div>
               </div>
+
+              {/* Base foot */}
+              <div className="mx-[-6%] h-[8px] rounded-b-[8px]"
+                style={{ background: 'linear-gradient(180deg,#b8b8b8 0%,#a8a8a8 100%)', boxShadow: '0 8px 32px rgba(0,0,0,0.55)' }} />
             </div>
 
-            {/* Laptop base */}
-            <div className="w-full h-3 rounded-b-[4px] relative"
-              style={{ background: 'linear-gradient(180deg,#cacaca,#b8b8b8)', boxShadow: '0 4px 20px rgba(0,0,0,0.15)' }}>
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-1 rounded-full"
-                style={{ background: 'rgba(0,0,0,0.12)', marginTop: '4px' }} />
-            </div>
-            <div className="w-[115%] h-2 rounded-b-[8px]"
-              style={{ background: 'linear-gradient(180deg,#b0b0b0,#a0a0a0)', boxShadow: '0 6px 24px rgba(0,0,0,0.2)' }} />
-          </div>
-
-          {/* Dashboard feature pills */}
-          <div className="flex flex-wrap justify-center gap-2 mt-5">
-            {['📊 إيرادات لحظية','👥 إدارة الأعضاء','🏆 التحديات','🎁 إدارة العروض','📣 إشعارات جماعية','📅 الحجوزات','📈 تقارير تفصيلية'].map((f) => (
-              <div key={f} className="bg-white/70 border border-[rgba(123,22,24,0.1)] px-3 py-1.5 rounded-full text-[10px] font-medium text-[#555] shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
-                {f}
+            {/* ── Floating iPhone ── */}
+            <motion.div
+              initial={{ opacity: 0, x: 30, y: 10 }}
+              animate={{ opacity: 1, x: 0, y: 0 }}
+              transition={{ delay: 0.25, duration: 0.5 }}
+              className="absolute -right-4 bottom-10 z-20"
+              style={{ filter: 'drop-shadow(0 24px 48px rgba(0,0,0,0.7))' }}
+            >
+              {/* iPhone chassis */}
+              <div className="relative w-[148px]"
+                style={{
+                  background: 'linear-gradient(160deg,#2e2e2e 0%,#1a1a1a 50%,#222 100%)',
+                  borderRadius: '34px',
+                  padding: '10px 6px',
+                  boxShadow: '0 0 0 1px rgba(255,255,255,0.12) inset, 0 0 0 1px rgba(0,0,0,0.4)',
+                }}>
+                {/* Side buttons */}
+                <div className="absolute -left-[3px] top-20 w-[3px] h-6 rounded-l-full bg-[#2a2a2a]" />
+                <div className="absolute -left-[3px] top-32 w-[3px] h-10 rounded-l-full bg-[#2a2a2a]" />
+                <div className="absolute -left-[3px] top-44 w-[3px] h-10 rounded-l-full bg-[#2a2a2a]" />
+                <div className="absolute -right-[3px] top-24 w-[3px] h-14 rounded-r-full bg-[#2a2a2a]" />
+                {/* Screen */}
+                <div className="overflow-hidden" style={{ borderRadius: '26px', height: '320px', background: '#000' }}>
+                  {/* Status bar */}
+                  <div className="flex items-center justify-between px-4 pt-2 pb-1.5"
+                    style={{ background: '#0D0205' }}>
+                    <span className="text-white text-[8px] font-bold font-inter">٩:٤١</span>
+                    <div className="w-14 h-3.5 bg-[#111] rounded-full" />
+                    <div className="flex items-center gap-1">
+                      <div className="flex gap-px items-end">
+                        {[3,5,7,9].map((h,i) => <div key={i} className="w-[2px] bg-white/70 rounded-full" style={{ height: h }} />)}
+                      </div>
+                      <span className="text-white/70 text-[7px]">📶</span>
+                      <span className="text-white text-[7px]">🔋</span>
+                    </div>
+                  </div>
+                  {/* Mobile dashboard content */}
+                  <div style={{ height: 'calc(100% - 32px)' }}>
+                    <MobileOwnerSummary />
+                  </div>
+                </div>
+                {/* Home indicator */}
+                <div className="flex justify-center mt-2">
+                  <div className="w-12 h-1 bg-white/20 rounded-full" />
+                </div>
               </div>
+            </motion.div>
+
+          </motion.div>
+
+          {/* ── Feature highlights ── */}
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.4 }}
+            className="mt-12 grid grid-cols-4 gap-3">
+            {[
+              { ic: '📊', t: 'إيرادات لحظية',   d: 'تابع دخلك ثانية بثانية' },
+              { ic: '👥', t: 'إدارة الأعضاء',    d: 'قائمة كاملة مع المستويات' },
+              { ic: '🏆', t: 'التحديات',          d: 'أطلق وتابع تحديات المجتمع' },
+              { ic: '📣', t: 'إشعارات جماعية',   d: 'أرسل لجميع الأعضاء فوراً' },
+            ].map((f, i) => (
+              <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.32 + i * 0.06 }}
+                className="rounded-[16px] p-4 border border-white/[0.07] backdrop-blur-sm"
+                style={{ background: 'rgba(255,255,255,0.04)' }}>
+                <div className="w-8 h-8 rounded-[10px] flex items-center justify-center text-[16px] mb-3"
+                  style={{ background: 'rgba(201,149,106,0.12)' }}>{f.ic}</div>
+                <p className="text-white text-[11px] font-bold mb-1">{f.t}</p>
+                <p className="text-white/35 text-[9px] leading-snug">{f.d}</p>
+              </motion.div>
             ))}
-          </div>
-        </motion.div>
-      </div>
+          </motion.div>
+
+        </div>
+      </section>
 
       {/* ── Full Features Grid ────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
