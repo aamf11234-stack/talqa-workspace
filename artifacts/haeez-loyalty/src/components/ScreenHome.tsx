@@ -187,103 +187,107 @@ function HaizCalendar() {
       {/* ══ DATE HERO ══ */}
       <div className="relative overflow-hidden" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
 
-        {/* Deep glow behind text */}
+        {/* Glows */}
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 30% 60%,rgba(123,22,24,0.55) 0%,transparent 65%)' }} />
+          style={{ background: 'radial-gradient(ellipse at 75% 50%,rgba(201,149,106,0.08) 0%,transparent 60%)' }} />
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 85% 30%,rgba(201,149,106,0.09) 0%,transparent 55%)' }} />
+          style={{ background: 'radial-gradient(ellipse at 25% 80%,rgba(123,22,24,0.4) 0%,transparent 55%)' }} />
 
-        {/* ── GHOST month name — full-bleed typographic backdrop ── */}
-        <div className="absolute inset-0 flex items-center justify-end pointer-events-none overflow-hidden"
-          style={{ paddingRight: 12 }}>
-          <span
-            className="font-black text-white select-none"
-            style={{
-              fontSize: 96,
-              opacity: 0.04,
-              letterSpacing: '-0.04em',
-              lineHeight: 1,
-              whiteSpace: 'nowrap',
-            }}
-          >{dt.hijriMonth}</span>
+        {/* Ghost day backdrop */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden">
+          <span style={{ fontSize: 160, fontWeight: 900, opacity: 0.03, letterSpacing: '-0.06em', color: '#fff', lineHeight: 1 }}>
+            {dt.hijriDay}
+          </span>
         </div>
 
-        {/* ── TOP micro-label row ── */}
-        <div className="relative flex items-center justify-between px-5 pt-4 pb-0">
-          <p className="text-[6.5px] font-black tracking-[0.35em] text-[#C9956A]/50"
-            style={{ fontFamily: 'ui-monospace,monospace' }}>HYZ CAFÉ · ABHA</p>
-          <div className="flex items-center gap-1.5">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#30D158]"
-              style={{ boxShadow: '0 0 5px #30D158' }} />
-            <p className="text-[7px] text-white/25 font-inter">{dt.hijriWeekday}</p>
+        {/* ── Weekday top bar ── */}
+        <div className="relative flex items-center justify-between px-5 pt-4 pb-3">
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#30D158]" style={{ boxShadow: '0 0 6px #30D158aa' }} />
+            <span className="text-white/30 text-[10px] font-semibold">{dt.hijriWeekday}</span>
           </div>
+          <span className="text-[6px] font-black tracking-[0.3em] text-[#C9956A]/40"
+            style={{ fontFamily: 'ui-monospace,monospace' }}>HYZ CAFÉ · ABHA</span>
         </div>
 
-        {/* ── MAIN date layout ── */}
-        <div className="relative px-5 pt-2 pb-5">
+        {/* ── Two-column date cards ── */}
+        <div className="relative flex gap-3 px-4 pb-5">
 
-          {/* Hijri block */}
-          <div className="flex items-end gap-0 mb-2">
+          {/* ─ HIJRI card ─ */}
+          <div className="flex-1 rounded-[18px] p-4 relative overflow-hidden"
+            style={{
+              background: 'linear-gradient(145deg,rgba(201,149,106,0.12),rgba(201,149,106,0.04))',
+              border: '1px solid rgba(201,149,106,0.22)',
+            }}>
+            {/* Card inner glow */}
+            <div className="absolute inset-0 pointer-events-none rounded-[18px]"
+              style={{ background: 'radial-gradient(ellipse at 50% 0%,rgba(201,149,106,0.15) 0%,transparent 70%)' }} />
 
-            {/* Day number — giant gold */}
-            <div className="relative leading-none" style={{ marginLeft: -2 }}>
-              <span
-                className="font-black tabular-nums leading-none"
-                style={{
-                  fontSize: 72,
-                  letterSpacing: '-0.05em',
-                  background: 'linear-gradient(160deg,#F0D4A8 0%,#C9956A 50%,#8A5A28 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  filter: 'drop-shadow(0 0 18px rgba(201,149,106,0.35))',
-                }}
-              >{dt.hijriDay}</span>
+            {/* هـ label */}
+            <p className="text-[8px] font-black tracking-[0.25em] mb-2 relative"
+              style={{ color: 'rgba(201,149,106,0.55)', fontFamily: 'ui-monospace,monospace' }}>HIJRI · هـ</p>
+
+            {/* Big day */}
+            <div className="relative leading-none mb-1">
+              <span style={{
+                fontSize: 54,
+                fontWeight: 900,
+                letterSpacing: '-0.04em',
+                lineHeight: 1,
+                background: 'linear-gradient(160deg,#F5DFB4 0%,#C9956A 55%,#8A5A28 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                filter: 'drop-shadow(0 0 14px rgba(201,149,106,0.4))',
+              }}>{dt.hijriDay}</span>
             </div>
 
-            {/* Month name + Hijri label stacked */}
-            <div className="flex flex-col justify-end mb-2 mr-2">
-              <span
-                className="font-black leading-none text-white"
-                style={{ fontSize: 36, letterSpacing: '-0.02em', textShadow: '0 2px 20px rgba(0,0,0,0.4)' }}
-              >{dt.hijriMonth}</span>
-              <span className="text-[9px] font-bold mt-1 font-inter"
-                style={{ color: 'rgba(201,149,106,0.6)', letterSpacing: '0.18em' }}>
-                {dt.hijriYear} هـ
+            {/* Month */}
+            <p className="text-white font-black leading-none mb-1.5" style={{ fontSize: 20, letterSpacing: '-0.01em' }}>
+              {dt.hijriMonth}
+            </p>
+
+            {/* Year */}
+            <div className="flex items-center gap-1.5">
+              <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg,rgba(201,149,106,0.5),transparent)' }} />
+              <span className="text-[9px] font-bold font-inter" style={{ color: 'rgba(201,149,106,0.7)' }}>
+                {dt.hijriYear}
               </span>
             </div>
           </div>
 
-          {/* Gold divider with dot */}
-          <div className="flex items-center gap-2 mb-3">
-            <div className="w-2 h-2 rounded-full shrink-0"
-              style={{ background: 'linear-gradient(135deg,#C9956A,#8A5A28)', boxShadow: '0 0 8px rgba(201,149,106,0.5)' }} />
-            <div className="flex-1 h-px"
-              style={{ background: 'linear-gradient(90deg,rgba(201,149,106,0.45),rgba(201,149,106,0.08),transparent)' }} />
-          </div>
+          {/* ─ GREGORIAN card ─ */}
+          <div className="flex-1 rounded-[18px] p-4 relative overflow-hidden"
+            style={{
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)',
+            }}>
+            <div className="absolute inset-0 pointer-events-none rounded-[18px]"
+              style={{ background: 'radial-gradient(ellipse at 50% 0%,rgba(255,255,255,0.05) 0%,transparent 70%)' }} />
 
-          {/* Gregorian date — elegant small row */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="flex flex-col">
-                <p className="text-[6.5px] font-black tracking-[0.28em] text-white/20 mb-0.5"
-                  style={{ fontFamily: 'ui-monospace,monospace' }}>GREGORIAN</p>
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-white/80 font-bold font-inter leading-none"
-                    style={{ fontSize: 22 }}>{dt.gregDay}</span>
-                  <span className="text-white/40 font-semibold" style={{ fontSize: 13 }}>{dt.gregMonth}</span>
-                  <span className="text-white/25 font-inter" style={{ fontSize: 11 }}>{dt.gregYear}</span>
-                </div>
-              </div>
+            {/* م label */}
+            <p className="text-[8px] font-black tracking-[0.25em] mb-2 relative text-white/25"
+              style={{ fontFamily: 'ui-monospace,monospace' }}>GREGORIAN · م</p>
+
+            {/* Big day */}
+            <div className="leading-none mb-1">
+              <span style={{
+                fontSize: 54,
+                fontWeight: 900,
+                letterSpacing: '-0.04em',
+                lineHeight: 1,
+                color: 'rgba(255,255,255,0.75)',
+              }}>{dt.gregDay}</span>
             </div>
-            {/* م badge */}
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
-              style={{
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.08)',
-              }}>
-              <span className="text-white/30 text-[10px] font-bold font-inter">م</span>
-              <span className="text-white/15 text-[8px]">·</span>
-              <span className="text-[#C9956A]/50 text-[10px] font-bold font-inter">هـ</span>
+
+            {/* Month */}
+            <p className="font-black leading-none mb-1.5 text-white/50" style={{ fontSize: 20, letterSpacing: '-0.01em' }}>
+              {dt.gregMonth}
+            </p>
+
+            {/* Year */}
+            <div className="flex items-center gap-1.5">
+              <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg,rgba(255,255,255,0.15),transparent)' }} />
+              <span className="text-[9px] font-bold font-inter text-white/30">{dt.gregYear}</span>
             </div>
           </div>
         </div>
