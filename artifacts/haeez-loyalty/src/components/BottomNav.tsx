@@ -1,9 +1,9 @@
 import React from 'react';
-import { Home, CreditCard, BookOpen, CalendarDays, Bell } from 'lucide-react';
+import { Home, CreditCard, BookOpen, CalendarDays, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
-type Tab = 'home' | 'menu' | 'card' | 'book' | 'notifications';
+type Tab = 'home' | 'menu' | 'card' | 'book' | 'community';
 
 interface BottomNavProps {
   activeTab: Tab;
@@ -12,11 +12,11 @@ interface BottomNavProps {
 }
 
 const tabs: { id: Tab; icon: React.ElementType; label: string }[] = [
-  { id: 'home',          icon: Home,         label: 'الرئيسية' },
-  { id: 'menu',          icon: BookOpen,      label: 'المنيو'   },
-  { id: 'card',          icon: CreditCard,    label: 'بطاقتي'  },
-  { id: 'book',          icon: CalendarDays,  label: 'احجز'    },
-  { id: 'notifications', icon: Bell,          label: 'إشعارات' },
+  { id: 'home',      icon: Home,         label: 'الرئيسية' },
+  { id: 'menu',      icon: BookOpen,     label: 'المنيو'   },
+  { id: 'card',      icon: CreditCard,   label: 'بطاقتي'  },
+  { id: 'book',      icon: CalendarDays, label: 'احجز'    },
+  { id: 'community', icon: Users,        label: 'مجتمع'   },
 ];
 
 export function BottomNav({ activeTab, onChangeTab, notifCount = 3 }: BottomNavProps) {
@@ -45,8 +45,8 @@ export function BottomNav({ activeTab, onChangeTab, notifCount = 3 }: BottomNavP
                 isActive ? 'text-white' : 'text-[#AAA]'
               )}
             />
-            {tab.id === 'notifications' && notifCount > 0 && !isActive && (
-              <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-[#FF3B30] rounded-full text-white text-[8px] font-bold flex items-center justify-center font-inter z-20">
+            {tab.id === 'community' && notifCount > 0 && !isActive && (
+              <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-[#30D158] rounded-full text-white text-[8px] font-bold flex items-center justify-center font-inter z-20">
                 {notifCount}
               </span>
             )}

@@ -216,11 +216,11 @@ export default function App() {
                     transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
                     className="absolute inset-0 overflow-y-auto scrollbar-none"
                   >
-                    {activeTab === 'home'          && <ScreenHome />}
-                    {activeTab === 'menu'          && <ScreenMenu />}
-                    {activeTab === 'card'          && <ScreenMembership />}
-                    {activeTab === 'book'          && <ScreenReservations />}
-                    {activeTab === 'notifications' && <ScreenNotifications />}
+                    {activeTab === 'home'      && <ScreenHome />}
+                    {activeTab === 'menu'      && <ScreenMenu />}
+                    {activeTab === 'card'      && <ScreenMembership />}
+                    {activeTab === 'book'      && <ScreenReservations />}
+                    {activeTab === 'community' && <ScreenCommunity />}
                   </motion.div>
                 </AnimatePresence>
               </div>
