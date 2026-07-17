@@ -497,54 +497,6 @@ export default function App() {
                 style={{ background: 'linear-gradient(180deg,#b8b8b8 0%,#a8a8a8 100%)', boxShadow: '0 8px 32px rgba(0,0,0,0.55)' }} />
             </div>
 
-            {/* ── Floating iPhone ── */}
-            <motion.div
-              initial={{ opacity: 0, x: 30, y: 10 }}
-              animate={{ opacity: 1, x: 0, y: 0 }}
-              transition={{ delay: 0.25, duration: 0.5 }}
-              className="absolute -right-4 bottom-10 z-20"
-              style={{ filter: 'drop-shadow(0 24px 48px rgba(0,0,0,0.7))' }}
-            >
-              {/* iPhone chassis */}
-              <div className="relative w-[148px]"
-                style={{
-                  background: 'linear-gradient(160deg,#2e2e2e 0%,#1a1a1a 50%,#222 100%)',
-                  borderRadius: '34px',
-                  padding: '10px 6px',
-                  boxShadow: '0 0 0 1px rgba(255,255,255,0.12) inset, 0 0 0 1px rgba(0,0,0,0.4)',
-                }}>
-                {/* Side buttons */}
-                <div className="absolute -left-[3px] top-20 w-[3px] h-6 rounded-l-full bg-[#2a2a2a]" />
-                <div className="absolute -left-[3px] top-32 w-[3px] h-10 rounded-l-full bg-[#2a2a2a]" />
-                <div className="absolute -left-[3px] top-44 w-[3px] h-10 rounded-l-full bg-[#2a2a2a]" />
-                <div className="absolute -right-[3px] top-24 w-[3px] h-14 rounded-r-full bg-[#2a2a2a]" />
-                {/* Screen */}
-                <div className="overflow-hidden" style={{ borderRadius: '26px', height: '320px', background: '#000' }}>
-                  {/* Status bar */}
-                  <div className="flex items-center justify-between px-4 pt-2 pb-1.5"
-                    style={{ background: '#0D0205' }}>
-                    <span className="text-white text-[8px] font-bold font-inter">٩:٤١</span>
-                    <div className="w-14 h-3.5 bg-[#111] rounded-full" />
-                    <div className="flex items-center gap-1">
-                      <div className="flex gap-px items-end">
-                        {[3,5,7,9].map((h,i) => <div key={i} className="w-[2px] bg-white/70 rounded-full" style={{ height: h }} />)}
-                      </div>
-                      <span className="text-white/70 text-[7px]">📶</span>
-                      <span className="text-white text-[7px]">🔋</span>
-                    </div>
-                  </div>
-                  {/* Mobile dashboard content */}
-                  <div style={{ height: 'calc(100% - 32px)' }}>
-                    <MobileOwnerSummary />
-                  </div>
-                </div>
-                {/* Home indicator */}
-                <div className="flex justify-center mt-2">
-                  <div className="w-12 h-1 bg-white/20 rounded-full" />
-                </div>
-              </div>
-            </motion.div>
-
           </motion.div>
 
           {/* ── Feature highlights ── */}
