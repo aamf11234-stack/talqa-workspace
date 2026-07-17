@@ -10,8 +10,11 @@ import { ScreenHome }          from './components/ScreenHome';
 import { ScreenReservations }  from './components/ScreenReservations';
 import { ScreenCommunity }     from './components/ScreenCommunity';
 import { ScreenMenu }          from './components/ScreenMenu';
+import { AppleWatchHyz }       from './components/AppleWatch';
 
-/* ── Badge helpers ───────────────────────────────────────────────── */
+const cafeImg1 = `${import.meta.env.BASE_URL}cafe-1.jpeg`;
+
+/* ── App Store badges ─────────────────────────────────────────────── */
 function AppleBadge() {
   return (
     <a href="#" className="flex items-center gap-2.5 bg-[#111] text-white rounded-[14px] px-4 py-3 hover:bg-[#222] active:scale-95 transition-all duration-150 border border-white/8 shadow-[0_4px_16px_rgba(0,0,0,0.25)]">
@@ -43,12 +46,12 @@ function PlayBadge() {
   );
 }
 
-/* ── Pitch page features ─────────────────────────────────────────── */
+/* ── Pillars ──────────────────────────────────────────────────────── */
 const pillars = [
-  { icon: '📱', title: 'تطبيق موبايل', sub: 'iOS + Android', desc: 'تجربة عضوية كاملة في جيب ضيفك', bg: 'linear-gradient(145deg,#0D0205,#3D0809,#0D0205)' },
-  { icon: '🌐', title: 'موقع إلكتروني', sub: 'متجاوب · سريع', desc: 'منيو + حجوزات + ولاء عبر الويب', bg: 'linear-gradient(145deg,#0A0A0A,#1E1E1E,#0A0A0A)' },
-  { icon: '💳', title: 'Apple & Google Wallet', sub: 'بطاقة رقمية دائمة', desc: 'تعمل بلا إنترنت · تحديث آني', bg: 'linear-gradient(145deg,#0A0800,#2E2000,#0A0800)' },
-  { icon: '👥', title: 'مجتمع وتحديات', sub: '١,٥٠٠+ عضو', desc: 'منصة اجتماعية داخل التطبيق', bg: 'linear-gradient(145deg,#040D08,#0D2814,#040D08)' },
+  { icon: '📱', title: 'تطبيق موبايل',      sub: 'iOS + Android',       desc: 'تجربة عضوية كاملة في جيب ضيفك',      bg: 'linear-gradient(145deg,#0D0205,#3D0809,#0D0205)' },
+  { icon: '🌐', title: 'موقع إلكتروني',     sub: 'متجاوب · سريع',      desc: 'منيو + حجوزات + ولاء عبر الويب',      bg: 'linear-gradient(145deg,#0A0A0A,#1E1E1E,#0A0A0A)' },
+  { icon: '💳', title: 'Apple & Google Wallet', sub: 'بطاقة رقمية دائمة', desc: 'تعمل بلا إنترنت · تحديث آني',       bg: 'linear-gradient(145deg,#0A0800,#2E2000,#0A0800)' },
+  { icon: '👥', title: 'مجتمع وتحديات',    sub: '١,٥٠٠+ عضو',         desc: 'منصة اجتماعية داخل التطبيق',          bg: 'linear-gradient(145deg,#040D08,#0D2814,#040D08)' },
 ];
 
 const allFeatures = [
@@ -56,17 +59,67 @@ const allFeatures = [
   { icon: '🏆', title: 'نظام نقاط ومستويات',   desc: 'كلاسيك · فضي · ذهبي'             },
   { icon: '🔔', title: 'إشعارات فورية ذكية',   desc: 'عروض وهدايا وتذكيرات شخصية'      },
   { icon: '📅', title: 'حجز طاولات مباشر',     desc: 'تأكيد فوري + واتساب'             },
-  { icon: '👥', title: 'مجتمع أعضاء حيز',      desc: 'فيد اجتماعي + تحديات أسبوعية'   },
+  { icon: '🎁', title: 'إهداء أصدقاء',         desc: 'أرسل كوب أو نقاط لصديق'          },
+  { icon: '⌚', title: 'Apple Watch',           desc: 'نقاطك ومستواك على معصمك'          },
   { icon: '💳', title: 'Apple & Google Wallet', desc: 'بلا إنترنت · تحديث آني'         },
   { icon: '📊', title: 'لوحة تحليلات للإدارة', desc: 'أعضاء · زيارات · إيرادات'       },
   { icon: '🌐', title: 'موقع إلكتروني كامل',   desc: 'منيو + حجوزات + ولاء'           },
   { icon: '📱', title: 'تطبيق iOS + Android',  desc: 'نشر على المتجرين الرسميين'        },
   { icon: '🎁', title: 'عروض وأكواد حصرية',   desc: 'جدولة تلقائية + قياس الأثر'     },
-  { icon: '☕', title: 'منيو رقمي تفاعلي',     desc: 'يُحدَّث لحظياً · صور + أسعار'   },
-  { icon: '🔗', title: 'تكامل واتساب',         desc: 'تأكيدات + رسائل تلقائية ذكية'   },
+  { icon: '☕', title: 'منيو رقمي تفاعلي',     desc: 'يُحدَّث لحظياً · أسعار دقيقة'   },
 ];
 
-/* ── Main App ────────────────────────────────────────────────────── */
+/* ── App Screenshots strip ───────────────────────────────────────── */
+const screens: { tab: Tab; label: string; color: string }[] = [
+  { tab: 'home',          label: 'الرئيسية',  color: '#7B1618' },
+  { tab: 'menu',          label: 'المنيو',    color: '#2D7D46' },
+  { tab: 'card',          label: 'بطاقتي',   color: '#C9956A' },
+  { tab: 'book',          label: 'احجز',     color: '#1A5276' },
+  { tab: 'notifications', label: 'إشعارات',  color: '#6C3483' },
+];
+
+function AppScreensStrip({ onTabSelect }: { onTabSelect: (t: Tab) => void }) {
+  return (
+    <div className="flex gap-3 overflow-x-auto scrollbar-none px-6 pb-2">
+      {screens.map((s, i) => (
+        <motion.button
+          key={s.tab}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 * i }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => onTabSelect(s.tab)}
+          className="shrink-0 flex flex-col items-center gap-2"
+        >
+          {/* Mini phone mockup */}
+          <div
+            className="w-[70px] h-[120px] rounded-[16px] relative overflow-hidden border border-white/10"
+            style={{ background: 'linear-gradient(145deg,#1a0a0b,#2d0d0e)' }}
+          >
+            {/* Screen tint */}
+            <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse at 60% 30%,${s.color}40 0%,transparent 70%)` }} />
+            {/* Dots */}
+            <div className="absolute top-2 left-1/2 -translate-x-1/2 w-5 h-1 bg-white/10 rounded-full" />
+            {/* Icon */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div
+                className="w-8 h-8 rounded-[10px] flex items-center justify-center text-[18px]"
+                style={{ background: `${s.color}25` }}
+              >
+                {s.tab === 'home' ? '🏠' : s.tab === 'menu' ? '☕' : s.tab === 'card' ? '💳' : s.tab === 'book' ? '📅' : '🔔'}
+              </div>
+            </div>
+            {/* Bottom bar */}
+            <div className="absolute bottom-2 left-2 right-2 h-0.5 rounded-full" style={{ background: `${s.color}60` }} />
+          </div>
+          <span className="text-[10px] font-semibold text-[#666]">{s.label}</span>
+        </motion.button>
+      ))}
+    </div>
+  );
+}
+
+/* ── Main App ─────────────────────────────────────────────────────── */
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('card');
 
@@ -78,7 +131,7 @@ export default function App() {
   return (
     <div className="min-h-screen w-full font-sans" style={{ background: 'linear-gradient(180deg,#F2EAE0 0%,#EDE5DA 100%)' }} dir="rtl">
 
-      {/* ── Agency top bar ───────────────────────────────────── */}
+      {/* ── Agency top bar ─────────────────────────────────── */}
       <div className="sticky top-0 z-50 border-b border-[rgba(123,22,24,0.1)] bg-[#FDFBF7]/85 backdrop-blur-xl">
         <div className="max-w-5xl mx-auto px-6 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -95,7 +148,7 @@ export default function App() {
         </div>
       </div>
 
-      {/* ── Hero section ─────────────────────────────────────── */}
+      {/* ── Hero ───────────────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 pt-10 pb-6 text-center">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <span className="inline-flex items-center gap-2 bg-[#7B1618] text-[#C9956A] text-[11px] font-semibold px-4 py-1.5 rounded-full mb-4 tracking-widest shadow-[0_4px_20px_rgba(123,22,24,0.35)]">
@@ -114,18 +167,12 @@ export default function App() {
         </motion.div>
       </div>
 
-      {/* ── 4 Pillars ────────────────────────────────────────── */}
+      {/* ── Pillars ────────────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {pillars.map((p, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.08 }}
-              className="rounded-[20px] p-5 relative overflow-hidden"
-              style={{ background: p.bg }}
-            >
+            <motion.div key={i} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
+              className="rounded-[20px] p-5 relative overflow-hidden" style={{ background: p.bg }}>
               <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 80% 10%,rgba(201,149,106,0.1) 0%,transparent 60%)' }} />
               <span className="text-2xl mb-3 block">{p.icon}</span>
               <p className="text-white text-[14px] font-bold mb-0.5 relative">{p.title}</p>
@@ -136,44 +183,74 @@ export default function App() {
         </div>
       </div>
 
-      {/* ── Phone mockup ─────────────────────────────────────── */}
-      <div className="flex flex-col items-center px-4 mb-8">
+      {/* ── Phone mockup + Watch ───────────────────────────── */}
+      <div className="flex flex-col items-center px-4 mb-4">
         <motion.div
           initial={{ opacity: 0, y: 28, scale: 0.96 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.65, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
-          style={{ width: 390 }}
+          className="flex items-end justify-center gap-6"
         >
-          <PhoneFrame>
-            <div className="flex-1 relative overflow-hidden h-full">
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.div
-                  key={activeTab}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
-                  className="absolute inset-0 overflow-y-auto scrollbar-none"
-                >
-                  {activeTab === 'home'          && <ScreenHome />}
-                  {activeTab === 'menu'          && <ScreenMenu />}
-                  {activeTab === 'card'          && <ScreenMembership />}
-                  {activeTab === 'book'          && <ScreenReservations />}
-                  {activeTab === 'notifications' && <ScreenNotifications />}
-                </motion.div>
-              </AnimatePresence>
-            </div>
-            <BottomNav activeTab={activeTab} onChangeTab={setActiveTab} notifCount={3} />
-          </PhoneFrame>
+          {/* Apple Watch */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="hidden md:flex flex-col items-center pb-8"
+          >
+            <AppleWatchHyz />
+            <p className="text-[10px] text-[#AAA] mt-3 font-light text-center">Apple Watch<br />حيز على معصمك</p>
+          </motion.div>
+
+          {/* Phone */}
+          <div style={{ width: 390 }}>
+            <PhoneFrame>
+              <div className="flex-1 relative overflow-hidden h-full">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
+                    className="absolute inset-0 overflow-y-auto scrollbar-none"
+                  >
+                    {activeTab === 'home'          && <ScreenHome />}
+                    {activeTab === 'menu'          && <ScreenMenu />}
+                    {activeTab === 'card'          && <ScreenMembership />}
+                    {activeTab === 'book'          && <ScreenReservations />}
+                    {activeTab === 'notifications' && <ScreenNotifications />}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+              <BottomNav activeTab={activeTab} onChangeTab={setActiveTab} notifCount={3} />
+            </PhoneFrame>
+          </div>
+
+          {/* Decorative side info */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.55, duration: 0.5 }}
+            className="hidden md:flex flex-col gap-3 pb-8 w-[130px]"
+          >
+            {[
+              { label: '١,٥٠٠+', sub: 'عضو نشط', color: '#7B1618' },
+              { label: '٤.٩ ★', sub: 'تقييم المتجر', color: '#C9956A' },
+              { label: '٦٠ يوم', sub: 'وقت التسليم', color: '#2D7D46' },
+            ].map((s, i) => (
+              <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.65 + i * 0.08 }}
+                className="bg-white/70 rounded-[16px] px-3.5 py-3 border border-[rgba(123,22,24,0.07)] text-right">
+                <p className="text-[16px] font-bold leading-tight" style={{ color: s.color }}>{s.label}</p>
+                <p className="text-[9px] text-[#999] font-light">{s.sub}</p>
+              </motion.div>
+            ))}
+          </motion.div>
         </motion.div>
 
         {/* Download badges */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.45 }}
-          className="flex flex-col items-center gap-3 mt-6"
-        >
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}
+          className="flex flex-col items-center gap-3 mt-6">
           <div className="flex gap-3">
             <AppleBadge />
             <PlayBadge />
@@ -184,15 +261,112 @@ export default function App() {
               Apple Wallet
             </div>
             <div className="flex items-center gap-1.5 bg-white text-[#111] px-3 py-1.5 rounded-full text-[11px] font-medium border border-[rgba(196,181,159,0.3)]">
-              <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 shrink-0"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-              Google Wallet
+              ⌚ Apple Watch
             </div>
           </div>
-          <p className="text-[11px] text-[#BBB] text-center">البطاقة في محفظتك — تعمل بلا إنترنت</p>
+          <p className="text-[11px] text-[#BBB] text-center">البطاقة في محفظتك والنقاط على ساعتك — بلا إنترنت</p>
         </motion.div>
       </div>
 
-      {/* ── Full Features Grid ────────────────────────────────── */}
+      {/* ── App Screens Strip ─────────────────────────────── */}
+      <div className="max-w-5xl mx-auto mb-10">
+        <div className="text-center mb-4 px-6">
+          <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1">شاشات التطبيق</p>
+          <h2 className="text-[22px] font-bold text-[#111]">٥ شاشات مصممة بالكامل</h2>
+        </div>
+        <AppScreensStrip onTabSelect={(t) => { setActiveTab(t); document.querySelector('[data-phone]')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); }} />
+      </div>
+
+      {/* ── Café photo hero ──────────────────────────────── */}
+      <div className="max-w-5xl mx-auto px-6 mb-10">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="relative rounded-[28px] overflow-hidden"
+          style={{ height: 320 }}
+        >
+          {/* Background photo */}
+          <img
+            src={cafeImg1}
+            alt="حيز كافيه أبها"
+            className="absolute inset-0 w-full h-full object-cover"
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+          />
+          {/* Dark overlay */}
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(8,0,3,0.92) 0%,rgba(8,0,3,0.55) 45%,rgba(8,0,3,0.15) 100%)' }} />
+          {/* Content */}
+          <div className="absolute inset-0 flex flex-col justify-end p-8">
+            <p className="text-[#C9956A] text-[10px] font-semibold tracking-widest uppercase mb-2">HYZ CAFÉ · ABHA · شارع لبنان</p>
+            <h3 className="text-white text-[26px] font-bold mb-2 leading-tight">
+              مكانك المفضل<br />يستحق أفضل تجربة رقمية
+            </h3>
+            <p className="text-white/50 text-[13px] font-light mb-4 max-w-sm">
+              من أول زيارة تكسب نقاطاً، وبكل كوب تقترب من المستوى التالي
+            </p>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm border border-white/15 px-3 py-1.5 rounded-full">
+                <div className="w-1.5 h-1.5 bg-[#30D158] rounded-full animate-pulse" />
+                <span className="text-white text-[10px] font-medium">١,٥٠٠+ عضو نشط</span>
+              </div>
+              <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm border border-white/15 px-3 py-1.5 rounded-full">
+                <span className="text-white text-[10px] font-medium">⭐ ٤.٩ تقييم</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* ── Apple Watch showcase ──────────────────────────── */}
+      <div className="max-w-5xl mx-auto px-6 mb-10">
+        <div
+          className="rounded-[28px] p-7 md:p-9 relative overflow-hidden"
+          style={{ background: 'linear-gradient(145deg,#0a0a0a 0%,#1a1a1a 50%,#0a0a0a 100%)' }}
+        >
+          <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 30% 50%,rgba(123,22,24,0.25) 0%,transparent 60%)' }} />
+          <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 80% 50%,rgba(201,149,106,0.08) 0%,transparent 55%)' }} />
+          <div className="absolute bottom-0 right-0 w-40 h-40 opacity-[0.04]"
+            style={{ backgroundImage: 'radial-gradient(circle,#C9956A 1.5px,transparent 1.5px)', backgroundSize: '10px 10px' }} />
+
+          <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
+            {/* Watch */}
+            <div className="flex flex-col items-center">
+              <AppleWatchHyz />
+              <div className="flex gap-1.5 mt-4">
+                {['#7B1618', '#C9956A', '#30D158'].map((c, i) => (
+                  <div key={i} className="w-2.5 h-2.5 rounded-full opacity-60" style={{ background: c }} />
+                ))}
+              </div>
+            </div>
+
+            {/* Copy */}
+            <div className="flex-1 text-right">
+              <p className="text-[#C9956A] text-[10px] font-semibold tracking-widest uppercase mb-2">Apple Watch · حيز</p>
+              <h3 className="text-white text-[22px] md:text-[26px] font-bold mb-3 leading-tight">
+                نقاطك ومستواك<br /><span className="text-[#C9956A]">على معصمك دائماً</span>
+              </h3>
+              <p className="text-white/45 text-[13px] font-light leading-relaxed mb-5 max-w-xs mr-auto ml-0 md:mr-0 md:ml-auto text-right">
+                واجهة حيز على Apple Watch تعرض نقاطك الحالية ومستواك ومدى اقترابك من الكوب التالي — بدون فتح التطبيق.
+              </p>
+              <div className="space-y-2.5">
+                {[
+                  'نقاطك الحالية دائماً على الشاشة',
+                  'تنبيه لحظي عند الوصول للكوب المجاني',
+                  'تذكير ذكي عند اقترابك من حيز',
+                  'مشاركة لحظية مع تطبيق الجوال',
+                ].map((item) => (
+                  <div key={item} className="flex items-center gap-2 text-white/55 text-[12px]">
+                    <div className="w-1.5 h-1.5 bg-[#30D158] rounded-full shrink-0" />
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Full Features Grid ────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="text-center mb-6">
           <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1.5">كل ما يحصل عليه حيز</p>
@@ -200,13 +374,8 @@ export default function App() {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {allFeatures.map((f, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.04 * i }}
-              className="bg-white/75 rounded-[18px] p-4 border border-[rgba(123,22,24,0.07)] shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:border-[rgba(123,22,24,0.18)] transition-all duration-200 hover:-translate-y-0.5"
-            >
+            <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.04 * i }}
+              className="bg-white/75 rounded-[18px] p-4 border border-[rgba(123,22,24,0.07)] shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:border-[rgba(123,22,24,0.18)] transition-all duration-200 hover:-translate-y-0.5">
               <span className="text-2xl mb-2 block">{f.icon}</span>
               <p className="text-[12px] font-semibold text-[#111] mb-0.5 leading-snug">{f.title}</p>
               <p className="text-[10px] text-[#999] font-light leading-relaxed">{f.desc}</p>
@@ -215,24 +384,19 @@ export default function App() {
         </div>
       </div>
 
-      {/* ── Wallet showcase ───────────────────────────────────── */}
+      {/* ── Wallet showcase ──────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
-        <div
-          className="rounded-[28px] p-7 md:p-9 relative overflow-hidden"
-          style={{ background: 'linear-gradient(145deg,#0D0205 0%,#3D0809 45%,#0D0205 80%,#1A0406 100%)' }}
-        >
+        <div className="rounded-[28px] p-7 md:p-9 relative overflow-hidden"
+          style={{ background: 'linear-gradient(145deg,#0D0205 0%,#3D0809 45%,#0D0205 80%,#1A0406 100%)' }}>
           <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 85% 20%,rgba(201,149,106,0.12) 0%,transparent 55%)' }} />
           <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 10% 80%,rgba(123,22,24,0.35) 0%,transparent 50%)' }} />
-          {/* Subtle dot pattern */}
           <div className="absolute bottom-0 left-0 w-40 h-40 opacity-[0.05]"
             style={{ backgroundImage: 'radial-gradient(circle,#C9956A 1.5px,transparent 1.5px)', backgroundSize: '10px 10px' }} />
-
           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-7">
             <div className="flex-1">
               <p className="text-[#C9956A] text-[10px] font-semibold tracking-widest uppercase mb-2">Apple Wallet · Google Wallet</p>
               <h3 className="text-white text-[24px] font-bold mb-2.5 leading-tight">
-                بطاقة حيز في جيبك
-                <br /><span className="text-[#C9956A]">حتى بدون إنترنت</span>
+                بطاقة حيز في جيبك<br /><span className="text-[#C9956A]">حتى بدون إنترنت</span>
               </h3>
               <p className="text-white/45 text-[13px] font-light leading-relaxed mb-5 max-w-xs">
                 يضيف الأعضاء بطاقة العضوية لمحافظهم الرقمية بضغطة واحدة. تُحدَّث تلقائياً عند الترقية.
@@ -246,17 +410,11 @@ export default function App() {
                 ))}
               </div>
             </div>
-
-            {/* Wallet card preview */}
-            <div
-              className="w-full md:w-[260px] rounded-[22px] p-5 relative overflow-hidden shrink-0"
-              style={{ background: 'linear-gradient(145deg,#080003,#3D0809,#0D0003)', border: '1px solid rgba(201,149,106,0.18)' }}
-            >
+            <div className="w-full md:w-[260px] rounded-[22px] p-5 relative overflow-hidden shrink-0"
+              style={{ background: 'linear-gradient(145deg,#080003,#3D0809,#0D0003)', border: '1px solid rgba(201,149,106,0.18)' }}>
               <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 70% 0%,rgba(201,149,106,0.12) 0%,transparent 55%)' }} />
-              <div
-                className="absolute top-0 bottom-0 w-[40%] pointer-events-none"
-                style={{ background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.06),transparent)', transform: 'skewX(-20deg)', animation: 'card-shimmer 4s ease-in-out infinite' }}
-              />
+              <div className="absolute top-0 bottom-0 w-[40%] pointer-events-none"
+                style={{ background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.06),transparent)', transform: 'skewX(-20deg)', animation: 'card-shimmer 4s ease-in-out infinite' }} />
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
                   <div>
@@ -285,7 +443,7 @@ export default function App() {
         </div>
       </div>
 
-      {/* ── Community ─────────────────────────────────────────── */}
+      {/* ── Community ────────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="bg-white/75 rounded-[28px] p-6 border border-[rgba(123,22,24,0.07)] shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
           <div className="flex items-start justify-between mb-5">
@@ -316,15 +474,11 @@ export default function App() {
         </div>
       </div>
 
-      {/* ── Investment CTA ────────────────────────────────────── */}
+      {/* ── CTA ──────────────────────────────────────────── */}
       <div className="max-w-lg mx-auto px-6 mb-10">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
           className="rounded-[28px] p-8 text-center relative overflow-hidden"
-          style={{ background: 'linear-gradient(145deg,#080003 0%,#3D0809 45%,#0D0003 75%,#1A0406 100%)' }}
-        >
+          style={{ background: 'linear-gradient(145deg,#080003 0%,#3D0809 45%,#0D0003 75%,#1A0406 100%)' }}>
           <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 50% 0%,rgba(201,149,106,0.18) 0%,transparent 60%)' }} />
           <div className="absolute bottom-0 left-0 w-36 h-36 opacity-[0.04]"
             style={{ backgroundImage: 'radial-gradient(circle,#C9956A 1.5px,transparent 1.5px)', backgroundSize: '10px 10px' }} />
@@ -335,7 +489,7 @@ export default function App() {
             </div>
             <p className="text-[#C9956A] text-[18px] font-light mb-1.5">ريال سعودي</p>
             <p className="text-white/30 text-[12px] font-light mb-6">
-              iOS + Android · موقع · Wallet · مجتمع · حجوزات · دعم كامل
+              iOS + Android · موقع · Wallet · Watch · مجتمع · حجوزات · دعم كامل
             </p>
             <div className="grid grid-cols-2 gap-2.5 mb-7">
               {['تسليم خلال ٦٠ يوم','نشر على المتجرين','سنة دعم مجاني','تدريب الفريق'].map((item) => (
@@ -345,12 +499,8 @@ export default function App() {
                 </div>
               ))}
             </div>
-            <a
-              href="https://wa.me/966500000000"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block w-full bg-white text-[#7B1618] font-bold text-[15px] py-4 rounded-[16px] hover:bg-[#FDF9F4] active:scale-95 transition-all duration-200 shadow-[0_8px_28px_rgba(0,0,0,0.2)]"
-            >
+            <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
+              className="block w-full bg-white text-[#7B1618] font-bold text-[15px] py-4 rounded-[16px] hover:bg-[#FDF9F4] active:scale-95 transition-all duration-200 shadow-[0_8px_28px_rgba(0,0,0,0.2)]">
               أبدأ مشروعي مع تلقا تك 🚀
             </a>
             <p className="text-white/25 text-[11px] mt-3 font-light">تواصل معنا على واتساب للاستفسار المجاني</p>
@@ -358,7 +508,7 @@ export default function App() {
         </motion.div>
       </div>
 
-      {/* ── Footer ───────────────────────────────────────────── */}
+      {/* ── Footer ────────────────────────────────────────── */}
       <div className="text-center pb-8 px-6">
         <div className="flex items-center justify-center gap-2 mb-2">
           <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#7B1618,#4A0D0F)' }}>
