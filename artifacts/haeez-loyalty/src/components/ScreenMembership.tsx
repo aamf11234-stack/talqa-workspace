@@ -7,154 +7,139 @@ import { BookingModal } from './BookingModal';
 const logoImg = `${import.meta.env.BASE_URL}hyz-logo.jpeg`;
 
 /* ══════════════════════════════════════════════════════════════════
-   Membership Card — Premium Redesign (not a bank card)
+   Membership Card — Apple Wallet Style
 ══════════════════════════════════════════════════════════════════ */
 function MembershipCard() {
   return (
     <motion.div
-      whileHover={{ scale: 1.02, rotateX: 2 }}
-      transition={{ type: 'spring', stiffness: 200, damping: 25 }}
-      style={{ transformStyle: 'preserve-3d', perspective: 1200 }}
+      whileHover={{ scale: 1.015 }}
+      whileTap={{ scale: 0.985 }}
+      transition={{ type: 'spring', stiffness: 260, damping: 28 }}
       className="relative w-full select-none"
       drag="x"
       dragConstraints={{ left: 0, right: 0 }}
-      dragElastic={0.04}
+      dragElastic={0.03}
     >
-      {/* Card shell */}
-      <div className="relative w-full rounded-[28px] overflow-hidden"
-        style={{ aspectRatio: '1.7/1', background: 'linear-gradient(145deg,#0A0002 0%,#280006 25%,#4A0A0D 50%,#1A0305 75%,#050001 100%)' }}>
+      {/* ── Card shell ── */}
+      <div className="relative w-full rounded-[24px] overflow-hidden"
+        style={{
+          aspectRatio: '1.586/1',
+          background: 'linear-gradient(155deg,#0C0002 0%,#2A0407 30%,#4D0C10 55%,#1C0406 78%,#060001 100%)',
+          boxShadow: '0 24px 60px rgba(0,0,0,0.55), 0 8px 20px rgba(123,22,24,0.3)',
+        }}>
 
-        {/* ── Decorative layers ── */}
-        {/* Large soft glow top-right */}
+        {/* Glows */}
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 85% -10%,rgba(201,149,106,0.22) 0%,transparent 50%)' }} />
-        {/* Deep red pool bottom-left */}
+          style={{ background: 'radial-gradient(ellipse at 80% 10%,rgba(201,149,106,0.18) 0%,transparent 52%)' }} />
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at -5% 115%,rgba(123,22,24,0.6) 0%,transparent 45%)' }} />
-        {/* Center soft warmth */}
-        <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 50% 60%,rgba(201,149,106,0.05) 0%,transparent 65%)' }} />
+          style={{ background: 'radial-gradient(ellipse at 0% 100%,rgba(123,22,24,0.55) 0%,transparent 48%)' }} />
 
-        {/* ── Geometric art element — large decorative circle ── */}
-        <div className="absolute pointer-events-none" style={{ right: '-18%', top: '-20%', width: '75%', aspectRatio: '1/1' }}>
-          <svg viewBox="0 0 200 200" fill="none" className="w-full h-full opacity-[0.07]">
-            <circle cx="100" cy="100" r="92" stroke="url(#cg1)" strokeWidth="1" />
-            <circle cx="100" cy="100" r="75" stroke="url(#cg1)" strokeWidth="0.8" />
-            <circle cx="100" cy="100" r="58" stroke="url(#cg1)" strokeWidth="0.6" />
-            <circle cx="100" cy="100" r="42" stroke="url(#cg1)" strokeWidth="0.5" />
-            {/* Radiating lines */}
-            {Array.from({ length: 24 }).map((_, i) => {
-              const angle = (i / 24) * 360;
-              const rad = (angle * Math.PI) / 180;
-              const x1 = 100 + Math.cos(rad) * 45;
-              const y1 = 100 + Math.sin(rad) * 45;
-              const x2 = 100 + Math.cos(rad) * 90;
-              const y2 = 100 + Math.sin(rad) * 90;
-              return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="url(#cg1)" strokeWidth="0.4" />;
+        {/* Dot grid texture */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
+          style={{ backgroundImage: 'radial-gradient(circle,#fff 1px,transparent 1px)', backgroundSize: '12px 12px' }} />
+
+        {/* Geometric circle art (top right) */}
+        <div className="absolute pointer-events-none" style={{ right: '-10%', top: '-25%', width: '58%', aspectRatio: '1/1' }}>
+          <svg viewBox="0 0 200 200" fill="none" className="w-full h-full opacity-[0.06]">
+            <circle cx="100" cy="100" r="90" stroke="#C9956A" strokeWidth="0.8" />
+            <circle cx="100" cy="100" r="72" stroke="#C9956A" strokeWidth="0.6" />
+            <circle cx="100" cy="100" r="54" stroke="#C9956A" strokeWidth="0.5" />
+            {Array.from({ length: 20 }).map((_, i) => {
+              const a = (i / 20) * 360, r = (a * Math.PI) / 180;
+              return <line key={i} x1={100+Math.cos(r)*55} y1={100+Math.sin(r)*55}
+                x2={100+Math.cos(r)*88} y2={100+Math.sin(r)*88}
+                stroke="#C9956A" strokeWidth="0.35" />;
             })}
             <defs>
               <linearGradient id="cg1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#C9956A" /><stop offset="100%" stopColor="#ffffff" />
+                <stop offset="0%" stopColor="#C9956A" /><stop offset="100%" stopColor="#fff" />
               </linearGradient>
             </defs>
           </svg>
         </div>
 
-        {/* ── Shimmer sweep ── */}
-        <div className="absolute top-0 bottom-0 w-[55%] pointer-events-none z-10"
+        {/* Shimmer */}
+        <div className="absolute top-0 bottom-0 w-[50%] pointer-events-none z-10"
           style={{
-            background: 'linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.04) 40%,rgba(201,149,106,0.07) 55%,rgba(255,255,255,0.03) 70%,transparent 100%)',
-            transform: 'skewX(-20deg)',
-            animation: 'card-shimmer 4s ease-in-out infinite',
+            background: 'linear-gradient(90deg,transparent,rgba(255,255,255,0.035),rgba(201,149,106,0.06),rgba(255,255,255,0.025),transparent)',
+            transform: 'skewX(-18deg)',
+            animation: 'card-shimmer 5s ease-in-out infinite',
           }} />
 
-        {/* ── Gold border ring ── */}
-        <div className="absolute inset-0 rounded-[28px] pointer-events-none"
-          style={{ boxShadow: 'inset 0 0 0 1px rgba(201,149,106,0.18), inset 0 0 0 0.5px rgba(255,255,255,0.04)' }} />
+        {/* Gold border */}
+        <div className="absolute inset-0 rounded-[24px] pointer-events-none"
+          style={{ boxShadow: 'inset 0 0 0 1px rgba(201,149,106,0.22)' }} />
 
         {/* ── Content ── */}
-        <div className="absolute inset-0 p-5 flex flex-col justify-between z-20">
+        <div className="absolute inset-0 flex flex-col justify-between z-20" style={{ padding: '18px 20px 16px' }}>
 
-          {/* Top row: logo + tier */}
+          {/* TOP ROW: Apple icon left + حيز branding right */}
           <div className="flex items-start justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="relative">
-                <img src={logoImg} alt="حيز" className="w-10 h-10 rounded-[13px] object-cover"
-                  style={{ border: '1px solid rgba(201,149,106,0.3)', boxShadow: '0 0 12px rgba(201,149,106,0.2)' }} />
-                <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full border-2"
-                  style={{ background: '#30D158', borderColor: '#0A0002' }} />
-              </div>
-              <div>
-                <p className="text-[#C9956A] font-black text-[18px] leading-none tracking-tight">حيز</p>
-                <p className="text-white/25 text-[7.5px] font-inter tracking-[0.16em] mt-0.5">HYZ CAFÉ · ABHA</p>
-              </div>
-            </div>
 
-            {/* Tier badge — premium pill */}
-            <div className="flex flex-col items-end gap-1">
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full"
-                style={{
-                  background: 'linear-gradient(135deg,rgba(201,149,106,0.18),rgba(201,149,106,0.06))',
-                  border: '1px solid rgba(201,149,106,0.3)',
-                  boxShadow: '0 2px 8px rgba(201,149,106,0.1)',
-                }}>
-                <Sparkles size={9} className="text-[#C9956A]" />
-                <span className="text-[#C9956A] text-[9px] font-bold tracking-widest">كلاسيك</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Middle: decorative coffee icon (replacing chip/NFC) */}
-          <div className="flex items-center justify-center">
-            <div className="flex flex-col items-center gap-1 opacity-20">
-              <svg viewBox="0 0 60 32" className="w-14 h-8" fill="none">
-                {/* stylized coffee bean / arabesque */}
-                <ellipse cx="30" cy="16" rx="28" ry="14" stroke="rgba(201,149,106,0.8)" strokeWidth="0.8" />
-                <path d="M30 2 C20 8 16 12 16 16 C16 20 20 24 30 30 C40 24 44 20 44 16 C44 12 40 8 30 2Z"
-                  stroke="rgba(201,149,106,0.5)" strokeWidth="0.6" fill="none" />
-                <path d="M2 16 Q16 10 30 16 Q44 22 58 16" stroke="rgba(201,149,106,0.4)" strokeWidth="0.5" />
+            {/* Apple Wallet mark */}
+            <div className="flex flex-col items-start gap-0.5">
+              <svg viewBox="0 0 24 24" className="w-6 h-6" style={{ fill: 'rgba(255,255,255,0.55)' }}>
+                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
               </svg>
+              <p className="text-white/18 text-[6px] font-inter tracking-[0.18em] uppercase">Wallet</p>
+            </div>
+
+            {/* Haiz branding */}
+            <div className="text-right flex flex-col gap-0.5">
+              <p className="text-[#C9956A] font-black leading-none tracking-tight" style={{ fontSize: 22 }}>حيز</p>
+              <p className="text-white/22 font-inter tracking-[0.2em]" style={{ fontSize: 7 }}>HYZ CAFÉ · ABHA</p>
             </div>
           </div>
 
-          {/* Bottom: name + points */}
-          <div className="flex items-end justify-between">
-            <div>
-              {/* Small label */}
-              <p className="text-white/20 text-[7px] tracking-[0.22em] mb-1.5 font-inter uppercase">Member</p>
-              {/* Name in large, elegant font */}
-              <p className="text-white text-[15px] font-bold tracking-wide leading-tight">عبدالإله علي</p>
-              {/* Since */}
-              <p className="text-[#C9956A]/40 text-[7.5px] font-inter tracking-widest mt-1">منذ ٢٠٢٤</p>
-            </div>
+          {/* MIDDLE: thin divider + CARDHOLDER block */}
+          <div>
+            <div className="mb-3" style={{ height: 1, background: 'linear-gradient(90deg,rgba(201,149,106,0.08),rgba(201,149,106,0.22),rgba(201,149,106,0.08))' }} />
+            <p className="text-white/22 font-inter tracking-[0.22em] mb-1" style={{ fontSize: 7 }}>CARDHOLDER</p>
+            <p className="text-white font-bold tracking-wide leading-none" style={{ fontSize: 16 }}>عبدالإله علي</p>
+          </div>
 
-            <div className="flex flex-col items-end gap-2">
-              {/* Points display */}
-              <div className="flex flex-col items-end">
+          {/* BOTTOM: points left, level right, ID below */}
+          <div>
+            <div className="flex items-end justify-between">
+              {/* Points */}
+              <div>
+                <p className="text-white/22 font-inter tracking-[0.22em] mb-1" style={{ fontSize: 7 }}>POINTS</p>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-[#C9956A] text-[22px] font-black font-inter leading-none">٤٨٠</span>
-                  <span className="text-[#C9956A]/50 text-[9px] font-inter">PTS</span>
+                  <span className="text-white font-black font-inter leading-none" style={{ fontSize: 26 }}>480</span>
+                  <span className="text-white/35 font-inter mb-0.5" style={{ fontSize: 9 }}>PTS</span>
                 </div>
-                <div className="flex items-center gap-1 mt-0.5">
+                {/* 7-bar progress */}
+                <div className="flex items-center gap-[3px] mt-1.5">
                   {[0,1,2,3,4,5,6].map(i => (
-                    <div key={i} className="w-3 h-0.5 rounded-full" style={{
+                    <div key={i} style={{
+                      width: 13, height: 2.5, borderRadius: 99,
                       background: i < 4
-                        ? 'linear-gradient(90deg,#C9956A,#F0D4A8)'
+                        ? 'linear-gradient(90deg,#C9956A,#E8C48A)'
                         : 'rgba(255,255,255,0.1)',
                     }} />
                   ))}
                 </div>
-                <p className="text-white/20 text-[7px] font-inter mt-0.5 tracking-wider">٤ من ٧ للفضي</p>
+                <p className="text-white/18 font-inter mt-1" style={{ fontSize: 7 }}>٤ من ٧ للمستوى الفضي</p>
               </div>
-              {/* Member ID */}
-              <p className="text-white/15 text-[8px] font-inter tracking-widest">#HC-2024-8821</p>
+
+              {/* Level + ID */}
+              <div className="text-right flex flex-col items-end gap-1">
+                <div>
+                  <p className="text-white/22 font-inter tracking-[0.22em] mb-1" style={{ fontSize: 7 }}>LEVEL</p>
+                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full"
+                    style={{ background: 'rgba(201,149,106,0.12)', border: '1px solid rgba(201,149,106,0.25)' }}>
+                    <Sparkles size={8} className="text-[#C9956A]" />
+                    <span className="text-[#C9956A] font-bold" style={{ fontSize: 10 }}>كلاسيك</span>
+                  </div>
+                </div>
+                <p className="text-white/12 font-inter tracking-widest" style={{ fontSize: 7 }}>#HC-2024-8821</p>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Bottom edge glow */}
-        <div className="absolute bottom-0 left-0 right-0 h-[1px]"
-          style={{ background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.3),transparent)' }} />
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ height: 1, background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.28),transparent)' }} />
       </div>
     </motion.div>
   );

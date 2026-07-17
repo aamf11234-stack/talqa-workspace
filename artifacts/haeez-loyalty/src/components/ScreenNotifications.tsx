@@ -1,184 +1,293 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Bell, Check, ChevronLeft, MapPin, Gift, Star, Zap, Coffee, Crown, Calendar } from 'lucide-react';
 const logoImg = `${import.meta.env.BASE_URL}hyz-logo.jpeg`;
 
-interface Notification {
+interface Notif {
   id: number;
+  type: 'gift' | 'points' | 'geo' | 'level' | 'event' | 'challenge' | 'birthday';
   title: string;
   body: string;
   time: string;
-  dotColor: string;
   unread: boolean;
   actionLabel?: string;
+  badge?: string;
+  badgeColor?: string;
 }
 
-const notifications: Notification[] = [
+const notifications: Notif[] = [
   {
     id: 1,
-    title: 'لك كوب مجاني! 🎉',
-    body: 'وصلت لـ ٧ أكواب — استمتع بمشروبك المجاني في زيارتك القادمة',
+    type: 'gift',
+    title: 'كوبك المجاني جاهز! 🎁',
+    body: 'وصلت لـ ٧ أكواب — مشروبك المجاني بانتظارك في الزيارة القادمة. أبرز الإشعار عند الصندوق.',
     time: 'الآن',
-    dotColor: '#34C759',
     unread: true,
     actionLabel: 'استخدم الآن',
+    badge: 'جديد',
+    badgeColor: '#30D158',
   },
   {
     id: 2,
-    title: 'دعوة حصرية: تذوق محصول إثيوبي',
-    body: 'الجمعة ٤–٦م — أماكن محدودة لأعضاء حيز فقط. لا تفوّت التجربة!',
-    time: 'منذ ساعة',
-    dotColor: '#C4B59F',
+    type: 'geo',
+    title: 'أنت قريب من حيز 📍',
+    body: 'مسافتك من الفرع الآن ٢٨٠م — سنحجز لك الطاولة المفضلة إن أردت',
+    time: 'منذ ٣ دقائق',
     unread: true,
-    actionLabel: 'احجز مكانك',
+    actionLabel: 'احجز الآن',
+    badge: 'قريب',
+    badgeColor: '#1A6B3A',
   },
   {
     id: 3,
-    title: 'طاولتك بعد ٣٠ دقيقة ⏰',
-    body: 'حجزك في حيز الساعة ٤:٠٠م — شارع لبنان، أبها',
-    time: 'منذ ٣ ساعات',
-    dotColor: '#5E9BF0',
+    type: 'level',
+    title: 'قريب من المستوى الفضي ✨',
+    body: 'كوبان فقط يفصلانك عن عضوية فضي — مزايا أكثر وأولوية في الحجوزات وعروض حصرية',
+    time: 'منذ ساعة',
     unread: true,
+    actionLabel: 'شوف مزاياي',
+    badge: '٢ أكواب',
+    badgeColor: '#C9956A',
   },
   {
     id: 4,
-    title: 'عيد ميلاد سعيد يا عبدالإله 🎂',
-    body: 'هدية من حيز: مشروب مجاني ينتظرك اليوم فقط. نحتفل معك!',
-    time: 'أمس',
-    dotColor: '#FF6B81',
-    unread: false,
+    type: 'event',
+    title: 'دعوة حصرية لأعضاء حيز ☕',
+    body: 'تذوق محصول إثيوبي يرقاشيفي نادر — الجمعة ٤–٦م، أماكن محدودة. لأعضاء الكلاسيك فما فوق.',
+    time: 'منذ ساعتين',
+    unread: true,
+    actionLabel: 'احجز مكانك',
+    badge: 'محدود',
+    badgeColor: '#2980B9',
   },
   {
     id: 5,
-    title: 'محصول بن نادر وصل للتو ☕',
-    body: 'بن يرقاشيفي إثيوبي بأعلى درجات التقييم — كميات محدودة جداً',
+    type: 'challenge',
+    title: 'تحدي الأسبوع: ٤ من ٥ ⚡',
+    body: 'كوب واحد فقط لإكمال التحدي وكسب ٥٠ نقطة إضافية — ينتهي الجمعة منتصف الليل',
     time: 'أمس',
-    dotColor: '#111111',
     unread: false,
+    actionLabel: 'اكمل التحدي',
+    badge: 'يتسع الوقت',
+    badgeColor: '#8E44AD',
   },
   {
     id: 6,
-    title: 'خصم ١٥٪ على المخبوزات اليوم',
-    body: 'عرض نهاية الأسبوع لأعضاء حيز — ينتهي الليلة الساعة ٦:٣٠م',
+    type: 'birthday',
+    title: 'عيد ميلاد سعيد يا عبدالإله 🎂',
+    body: 'من فريق حيز بالكامل — مشروبك الأول اليوم مجاني، وهدية مفاجئة بانتظارك عند الصندوق!',
+    time: 'أمس',
+    unread: false,
+  },
+  {
+    id: 7,
+    type: 'points',
+    title: '+١٥ نقطة أُضيفت لحسابك',
+    body: 'لاتيه إثيوبي — فلتر · زيارة الثلاثاء. رصيدك الآن ٤٨٠ نقطة 🎯',
     time: 'منذ يومين',
-    dotColor: '#C4B59F',
     unread: false,
   },
 ];
 
+const typeIcon: Record<Notif['type'], React.ReactNode> = {
+  gift:      <Gift size={16} className="text-[#30D158]" />,
+  points:    <Star size={16} className="text-[#C9956A]" fill="#C9956A" />,
+  geo:       <MapPin size={16} className="text-[#2980B9]" />,
+  level:     <Crown size={16} className="text-[#C9956A]" />,
+  event:     <Coffee size={16} className="text-[#7B1618]" />,
+  challenge: <Zap size={16} className="text-[#8E44AD]" />,
+  birthday:  <Bell size={16} className="text-[#FF6B81]" />,
+};
+
+const typeBg: Record<Notif['type'], string> = {
+  gift:      'rgba(48,209,88,0.1)',
+  points:    'rgba(201,149,106,0.1)',
+  geo:       'rgba(41,128,185,0.1)',
+  level:     'rgba(201,149,106,0.12)',
+  event:     'rgba(123,22,24,0.08)',
+  challenge: 'rgba(142,68,173,0.1)',
+  birthday:  'rgba(255,107,129,0.1)',
+};
+
 export function ScreenNotifications() {
   const [dismissed, setDismissed] = useState<number[]>([]);
-  const [allRead, setAllRead] = useState(false);
+  const [readIds, setReadIds]     = useState<number[]>([]);
+  const [allRead, setAllRead]     = useState(false);
 
-  const [readIds, setReadIds] = useState<number[]>([]);
-  const visible = notifications.filter((n) => !dismissed.includes(n.id));
-  const unreadCount = visible.filter((n) => n.unread && !readIds.includes(n.id) && !allRead).length;
+  const visible      = notifications.filter(n => !dismissed.includes(n.id));
+  const unreadCount  = visible.filter(n => n.unread && !readIds.includes(n.id) && !allRead).length;
+
+  const markRead = (id: number) => setReadIds(p => p.includes(id) ? p : [...p, id]);
 
   return (
-    <div className="flex flex-col px-5 pt-4 h-full">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-5">
-        <div>
-          <h1 className="text-[22px] font-bold text-[#111]">الإشعارات</h1>
-          {unreadCount > 0 && (
-            <p className="text-[12px] text-[#777] mt-0.5 font-light">
-              {unreadCount} إشعار غير مقروء
+    <div className="flex flex-col h-full" style={{ background: '#FDFBF7' }}>
+
+      {/* ── Header ── */}
+      <div className="shrink-0 px-5 pt-5 pb-4 border-b border-[rgba(196,181,159,0.18)]">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-[20px] font-black text-[#111]">الإشعارات</h1>
+              {unreadCount > 0 && (
+                <motion.div
+                  initial={{ scale: 0 }} animate={{ scale: 1 }}
+                  className="w-5 h-5 rounded-full flex items-center justify-center"
+                  style={{ background: 'linear-gradient(135deg,#7B1618,#C44)' }}>
+                  <span className="text-white text-[9px] font-black">{unreadCount}</span>
+                </motion.div>
+              )}
+            </div>
+            <p className="text-[10px] text-[#C4B59F] font-light mt-0.5">
+              {unreadCount > 0 ? `${unreadCount} إشعار غير مقروء` : 'كل شيء مقروء ✓'}
             </p>
+          </div>
+          {unreadCount > 0 && (
+            <motion.button whileTap={{ scale: 0.92 }}
+              onClick={() => setAllRead(true)}
+              className="px-3 py-1.5 rounded-full text-[10px] font-bold"
+              style={{ background: 'rgba(123,22,24,0.07)', color: '#7B1618', border: '1px solid rgba(123,22,24,0.12)' }}>
+              قراءة الكل
+            </motion.button>
           )}
         </div>
-        {unreadCount > 0 && (
-          <motion.button
-            whileTap={{ scale: 0.92 }}
-            onClick={() => setAllRead(true)}
-            className="text-[12px] text-[#7B1618] font-semibold px-3 py-1.5 rounded-full border border-[rgba(123,22,24,0.25)] bg-[rgba(123,22,24,0.05)] active:scale-95 transition-transform"
-          >
-            قراءة الكل
-          </motion.button>
-        )}
       </div>
 
-      {/* Notification List */}
-      <div className="flex-1 overflow-y-auto scrollbar-none pb-28 -mx-5 px-5 space-y-3">
+      {/* ── List ── */}
+      <div className="flex-1 overflow-y-auto scrollbar-none pb-24">
+
+        {/* Unread group */}
+        {visible.filter(n => n.unread && !readIds.includes(n.id) && !allRead).length > 0 && (
+          <div className="px-5 pt-4 pb-1">
+            <p className="text-[9px] font-black tracking-[0.22em] text-[#C9956A]"
+              style={{ fontFamily: 'ui-monospace,monospace' }}>UNREAD</p>
+          </div>
+        )}
+
         <AnimatePresence initial={false}>
-          {visible.map((notif, i) => (
-            <motion.div
-              key={notif.id}
-              layout
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -60, height: 0, marginBottom: 0 }}
-              transition={{ delay: i * 0.05, duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-              className={`relative bg-white rounded-[18px] p-4 shadow-[0_2px_14px_rgba(0,0,0,0.06)] border overflow-hidden ${
-                notif.unread && !allRead && !readIds.includes(notif.id)
-                  ? 'border-[rgba(196,181,159,0.3)]'
-                  : 'border-[rgba(196,181,159,0.12)]'
-              }`}
-            >
-              {/* Unread left stripe */}
-              {notif.unread && !allRead && !readIds.includes(notif.id) && (
-                <div className="absolute right-0 top-4 bottom-4 w-[3px] rounded-l-full bg-[#7B1618]" />
-              )}
-
-              <div className="flex items-start gap-3">
-                {/* Logo circle */}
-                <div className="relative shrink-0">
-                  <img
-                    src={logoImg}
-                    alt="حيز"
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                  {/* Color dot */}
-                  <div
-                    className="absolute -bottom-0.5 -left-0.5 w-3.5 h-3.5 rounded-full border-2 border-white"
-                    style={{ backgroundColor: notif.dotColor }}
-                  />
-                </div>
-
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2 mb-1">
-                    <p className={`text-[13px] leading-snug font-semibold ${notif.unread ? 'text-[#111]' : 'text-[#444]'}`}>
-                      {notif.title}
-                    </p>
-                    <span className="text-[10px] text-[#AAA] shrink-0 mt-0.5 font-inter">{notif.time}</span>
-                  </div>
-                  <p className="text-[12px] text-[#777] leading-relaxed font-light">
-                    {notif.body}
-                  </p>
-
-                  {/* Action buttons row */}
-                  {notif.actionLabel && (
-                    <div className="flex gap-2 mt-3">
-                      <button className="bg-[#111] text-white text-[11px] font-medium px-4 py-1.5 rounded-full active:scale-95 transition-transform">
-                        {notif.actionLabel}
-                      </button>
-                      <button
-                        onClick={() => setDismissed((d) => [...d, notif.id])}
-                        className="bg-[#F5F0EA] text-[#777] text-[11px] font-medium px-4 py-1.5 rounded-full active:scale-95 transition-transform"
-                      >
-                        لاحقاً
-                      </button>
-                    </div>
+          {visible.map((n, i) => {
+            const isUnread = n.unread && !readIds.includes(n.id) && !allRead;
+            const IconEl = typeIcon[n.type];
+            return (
+              <motion.div
+                key={n.id}
+                layout
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, x: 60, height: 0, marginBottom: 0 }}
+                transition={{ duration: 0.28, delay: i * 0.04 }}
+                className="px-4 py-1"
+              >
+                <motion.div
+                  whileTap={{ scale: 0.985 }}
+                  onClick={() => markRead(n.id)}
+                  className="relative rounded-[20px] p-4 overflow-hidden"
+                  style={{
+                    background: isUnread
+                      ? `linear-gradient(135deg,${typeBg[n.type]},rgba(255,255,255,0.7))`
+                      : '#fff',
+                    border: isUnread
+                      ? `1px solid rgba(123,22,24,0.1)`
+                      : '1px solid rgba(196,181,159,0.14)',
+                    boxShadow: isUnread
+                      ? '0 4px 20px rgba(0,0,0,0.07)'
+                      : '0 2px 8px rgba(0,0,0,0.03)',
+                    marginBottom: 8,
+                  }}
+                >
+                  {/* Unread glow line */}
+                  {isUnread && (
+                    <div className="absolute right-0 top-4 bottom-4 w-[3px] rounded-l-full"
+                      style={{ background: 'linear-gradient(180deg,#7B1618,#C9956A)' }} />
                   )}
-                </div>
-              </div>
-            </motion.div>
-          ))}
+
+                  <div className="flex gap-3">
+                    {/* Icon badge */}
+                    <div className="w-10 h-10 rounded-[14px] flex items-center justify-center shrink-0"
+                      style={{ background: typeBg[n.type], border: `1px solid rgba(0,0,0,0.06)` }}>
+                      {IconEl}
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <p className="text-[12.5px] font-bold text-[#111] leading-snug">{n.title}</p>
+                          {n.badge && (
+                            <span className="text-[7px] font-black px-1.5 py-0.5 rounded-full text-white"
+                              style={{ background: n.badgeColor ?? '#7B1618' }}>
+                              {n.badge}
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex flex-col items-end shrink-0 gap-1">
+                          <span className="text-[9px] text-[#C4B5A8] whitespace-nowrap font-inter">{n.time}</span>
+                          {isUnread && (
+                            <div className="w-2 h-2 rounded-full bg-[#7B1618]" />
+                          )}
+                        </div>
+                      </div>
+
+                      <p className="text-[10.5px] text-[#888] font-light leading-relaxed mb-2">{n.body}</p>
+
+                      {n.actionLabel && (
+                        <motion.button
+                          whileTap={{ scale: 0.92 }}
+                          className="flex items-center gap-1 text-[10px] font-bold"
+                          style={{ color: '#7B1618' }}>
+                          {n.actionLabel}
+                          <ChevronLeft size={10} />
+                        </motion.button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Dismiss button */}
+                  <motion.button
+                    whileTap={{ scale: 0.88 }}
+                    onClick={e => { e.stopPropagation(); setDismissed(p => [...p, n.id]); }}
+                    className="absolute top-3 left-3 w-5 h-5 rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity"
+                    style={{ background: 'rgba(196,181,159,0.2)' }}>
+                    <span className="text-[#AAA] text-[9px] font-bold leading-none">✕</span>
+                  </motion.button>
+                </motion.div>
+              </motion.div>
+            );
+          })}
         </AnimatePresence>
 
-        {visible.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex flex-col items-center justify-center h-48 text-center"
-          >
-            <div className="w-14 h-14 bg-[#F5F0EA] rounded-full flex items-center justify-center mb-3">
-              <svg viewBox="0 0 24 24" fill="none" stroke="#C4B59F" strokeWidth={1.5} className="w-7 h-7">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-              </svg>
-            </div>
-            <p className="text-[14px] text-[#777] font-light">لا توجد إشعارات</p>
-          </motion.div>
+        {/* Already read section label */}
+        {visible.filter(n => !n.unread || readIds.includes(n.id) || allRead).length > 0 &&
+         visible.filter(n => n.unread && !readIds.includes(n.id) && !allRead).length > 0 && (
+          <div className="px-5 pt-2 pb-1">
+            <p className="text-[9px] font-black tracking-[0.22em] text-[#C4B5A8]"
+              style={{ fontFamily: 'ui-monospace,monospace' }}>EARLIER</p>
+          </div>
         )}
+
+        {/* Empty state */}
+        {visible.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-64 gap-3 opacity-60">
+            <div className="w-14 h-14 rounded-[18px] flex items-center justify-center"
+              style={{ background: 'rgba(123,22,24,0.06)' }}>
+              <Check size={24} className="text-[#7B1618]" />
+            </div>
+            <p className="text-[13px] font-semibold text-[#AAA]">لا إشعارات جديدة</p>
+          </div>
+        )}
+
+        {/* Haiz notification footer */}
+        <div className="mx-5 mt-2 mb-4 p-4 rounded-[18px] flex items-center gap-3"
+          style={{ background: 'linear-gradient(135deg,rgba(123,22,24,0.05),rgba(201,149,106,0.05))', border: '1px solid rgba(201,149,106,0.12)' }}>
+          <div className="shrink-0">
+            <img src={logoImg} alt="حيز" className="w-9 h-9 rounded-[11px] object-cover"
+              style={{ border: '1px solid rgba(201,149,106,0.2)' }} />
+          </div>
+          <div className="flex-1">
+            <p className="text-[11px] font-bold text-[#111]">إشعارات حيز</p>
+            <p className="text-[9px] text-[#AAA] font-light mt-0.5">مخصصة لك بناءً على تاريخ زياراتك وتفضيلاتك</p>
+          </div>
+          <div className="w-2 h-2 rounded-full bg-[#30D158] animate-pulse" />
+        </div>
       </div>
     </div>
   );

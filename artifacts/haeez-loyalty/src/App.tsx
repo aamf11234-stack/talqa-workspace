@@ -526,7 +526,7 @@ export default function App() {
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="text-center mb-6">
           <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1.5">كل ما يحصل عليه حيز</p>
-          <h2 className="text-[24px] font-bold text-[#111]">١٢ مزية في منظومة واحدة</h2>
+          <h2 className="text-[24px] font-bold text-[#111]">١٢ مزايا في منظومة واحدة</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {allFeatures.map((f, i) => (
@@ -582,7 +582,7 @@ export default function App() {
                   </svg>
                 </div>
                 <p className="text-white/25 text-[8px] mb-0.5">CARDHOLDER</p>
-                <p className="text-white text-[13px] font-semibold mb-4">عبد الإله المالكي</p>
+                <p className="text-white text-[13px] font-semibold mb-4">عبدالإله علي</p>
                 <div className="flex justify-between">
                   <div>
                     <p className="text-white/25 text-[8px]">LEVEL</p>
