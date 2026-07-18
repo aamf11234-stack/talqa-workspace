@@ -350,7 +350,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full font-sans" style={{ background: 'linear-gradient(180deg,#F2EAE0 0%,#EDE5DA 100%)' }} dir="rtl">
+    <div className="min-h-screen w-full font-sans" style={{ background: 'linear-gradient(180deg,#F0E6D8 0%,#E8DDD0 35%,#EAE0D5 70%,#E5D9CC 100%)' }} dir="rtl">
 
       {/* ── Agency top bar ─────────────────────────────────── */}
       <div className="sticky top-0 z-50 border-b border-[rgba(123,22,24,0.1)] bg-[#FDFBF7]/85 backdrop-blur-xl">
@@ -856,6 +856,88 @@ export default function App() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* ── روح حيز — Editorial ──────────────────────────── */}
+      <div className="relative overflow-hidden mb-10" style={{ background: 'linear-gradient(180deg,#080002 0%,#0D0205 40%,#1A0406 80%,#080002 100%)' }}>
+
+        {/* Ambient */}
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 50%,rgba(201,149,106,0.09) 0%,transparent 65%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 20% 80%,rgba(123,22,24,0.3) 0%,transparent 50%)' }} />
+        <div className="absolute inset-0 pointer-events-none opacity-[0.025]"
+          style={{ backgroundImage: 'radial-gradient(circle,#fff 1px,transparent 1px)', backgroundSize: '12px 12px' }} />
+
+        <div className="relative max-w-5xl mx-auto px-6 py-16 md:py-20">
+
+          {/* Top label */}
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
+            className="flex items-center gap-3 mb-10 justify-center">
+            <div className="h-px flex-1 max-w-[60px]" style={{ background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.4))' }} />
+            <span className="text-[#C9956A]/50 text-[8px] font-black tracking-[0.32em]" style={{ fontFamily: 'ui-monospace,monospace' }}>روح المكان</span>
+            <div className="h-px flex-1 max-w-[60px]" style={{ background: 'linear-gradient(90deg,rgba(201,149,106,0.4),transparent)' }} />
+          </motion.div>
+
+          {/* Main editorial text */}
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }}
+            className="text-center mb-14">
+            <p className="text-white/20 text-[12px] font-light mb-5 tracking-widest">يقول أحد أعضاء حيز</p>
+            <blockquote className="text-white text-[26px] md:text-[32px] font-bold leading-relaxed mb-6 tracking-tight">
+              "حيز من مستدفئاتي<br />
+              <span style={{ background: 'linear-gradient(90deg,#C9956A,#E8C4A0)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                في أيام كل زاخر
+              </span>"
+            </blockquote>
+            <p className="text-white/25 text-[11px] font-light">عضو كلاسيك · ٣ سنوات في حيز</p>
+          </motion.div>
+
+          {/* Three moments */}
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-px"
+            style={{ border: '1px solid rgba(255,255,255,0.05)', borderRadius: 24, overflow: 'hidden' }}>
+            {[
+              {
+                time: '٦:٣٠ ص',
+                label: 'الفجر والفلتر',
+                text: 'أول كوب قهوة وأنت تشاهد أبها تصحو — اللحظة اللي تبدأ بيها يومك صح',
+                icon: '☕',
+                color: '#C9956A',
+              },
+              {
+                time: '١٢:٠٠ م',
+                label: 'ساعة هدوء',
+                text: 'جلسة عمل بعيداً عن الضجيج، كرواسون اللوز والشوكولاتة والكمبيوتر المفتوح',
+                icon: '💻',
+                color: '#7B1618',
+              },
+              {
+                time: '٦:٠٠ م',
+                label: 'نهاية اليوم',
+                text: 'شوكولاتة ساخنة مشتركة مع صاحبك — النوع الذي يصنعون منه الذكريات',
+                icon: '🍫',
+                color: '#4A8C5C',
+              },
+            ].map((m, i) => (
+              <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 + i * 0.1 }}
+                className="px-7 py-8 relative"
+                style={{ background: i === 1 ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.015)' }}>
+                <div className="absolute top-0 left-0 right-0 h-px" style={{ background: `linear-gradient(90deg,transparent,${m.color}25,transparent)` }} />
+                <p className="text-[9px] font-black tracking-[0.28em] mb-3" style={{ color: `${m.color}70`, fontFamily: 'ui-monospace,monospace' }}>{m.time}</p>
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-[20px]">{m.icon}</span>
+                  <p className="text-white text-[15px] font-bold">{m.label}</p>
+                </div>
+                <p className="text-white/35 text-[12px] font-light leading-relaxed">{m.text}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Bottom tagline */}
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+            className="text-center text-white/20 text-[11px] font-light mt-10 tracking-widest">
+            التطبيق يحفظ هذه اللحظات ويجعلها جزءاً من قصة كل عضو
+          </motion.p>
+
         </div>
       </div>
 
