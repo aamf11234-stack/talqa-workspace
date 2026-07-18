@@ -762,6 +762,9 @@ export default function App() {
         </div>
       </div>
 
+      {/* ── ROI Calculator ───────────────────────────────── */}
+      <RoiSection />
+
       {/* ── CTA ──────────────────────────────────────────── */}
       <div className="max-w-lg mx-auto px-6 mb-10">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
@@ -776,11 +779,6 @@ export default function App() {
             <div className="inline-flex items-center gap-2 border border-[rgba(201,149,106,0.3)] bg-[rgba(201,149,106,0.08)] px-4 py-1.5 rounded-full mb-4">
               <div className="w-1.5 h-1.5 bg-[#C9956A] rounded-full animate-pulse" />
               <span className="text-[#C9956A] text-[10px] font-black tracking-[0.2em]">هذا العرض مخصص لحيز فقط</span>
-            </div>
-
-            {/* ROI inline */}
-            <div className="mb-6 rounded-[20px] overflow-hidden text-right" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <RoiSection inline />
             </div>
 
             <p className="text-[#C9956A] text-[11px] font-semibold tracking-widest uppercase mb-3">الاستثمار الكلي</p>
