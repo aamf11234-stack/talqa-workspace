@@ -70,6 +70,107 @@ const allFeatures = [
   { icon: '☕', title: 'منيو رقمي تفاعلي',     desc: 'يُحدَّث لحظياً · أسعار دقيقة'   },
 ];
 
+/* ── ROI Calculator ───────────────────────────────────────────────── */
+function RoiSection() {
+  const [customers, setCustomers] = React.useState(80);
+  const [spend, setSpend] = React.useState(45);
+  const retention = 0.15;
+  const monthly = Math.round(customers * spend * 30 * retention);
+  const weeks = Math.round((18000 / monthly) * 4.3);
+
+  return (
+    <div className="max-w-5xl mx-auto px-6 mb-10">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="rounded-[28px] overflow-hidden"
+        style={{ background: 'linear-gradient(160deg,#FDFAF6 0%,#F5EDE0 100%)', border: '1.5px solid rgba(123,22,24,0.1)', boxShadow: '0 8px 40px rgba(123,22,24,0.08)' }}
+      >
+        {/* Header */}
+        <div className="px-7 pt-7 pb-5 border-b border-[rgba(123,22,24,0.08)]">
+          <div className="inline-flex items-center gap-2 bg-[#7B1618]/8 border border-[rgba(123,22,24,0.15)] px-3.5 py-1.5 rounded-full mb-3">
+            <span className="text-[10px] font-black tracking-[0.2em] text-[#7B1618]">حاسبة العائد</span>
+          </div>
+          <h2 className="text-[24px] font-bold text-[#111] leading-tight mb-1">
+            الـ ١٨,٠٠٠ ريال تسترجعها <span className="text-[#7B1618]">في أسابيع</span>
+          </h2>
+          <p className="text-[13px] text-[#888] font-light">عدّل الأرقام حسب حيز واشوف متى يرجع الاستثمار</p>
+        </div>
+
+        {/* Sliders */}
+        <div className="px-7 py-6 grid md:grid-cols-2 gap-6">
+          {/* Customers slider */}
+          <div>
+            <div className="flex justify-between mb-3">
+              <span className="text-[13px] font-semibold text-[#333]">عدد الزوار اليومي</span>
+              <span className="text-[18px] font-black text-[#7B1618] font-inter">{customers}</span>
+            </div>
+            <input
+              type="range" min={20} max={300} step={10} value={customers}
+              onChange={e => setCustomers(Number(e.target.value))}
+              className="w-full accent-[#7B1618] h-1.5 rounded-full"
+              style={{ accentColor: '#7B1618' }}
+            />
+            <div className="flex justify-between mt-1">
+              <span className="text-[10px] text-[#BBB]">٢٠</span>
+              <span className="text-[10px] text-[#BBB]">٣٠٠</span>
+            </div>
+          </div>
+
+          {/* Spend slider */}
+          <div>
+            <div className="flex justify-between mb-3">
+              <span className="text-[13px] font-semibold text-[#333]">متوسط الفاتورة</span>
+              <span className="text-[18px] font-black text-[#7B1618] font-inter">{spend} ريال</span>
+            </div>
+            <input
+              type="range" min={20} max={150} step={5} value={spend}
+              onChange={e => setSpend(Number(e.target.value))}
+              className="w-full h-1.5 rounded-full"
+              style={{ accentColor: '#7B1618' }}
+            />
+            <div className="flex justify-between mt-1">
+              <span className="text-[10px] text-[#BBB]">٢٠</span>
+              <span className="text-[10px] text-[#BBB]">١٥٠</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Result */}
+        <div className="mx-7 mb-7 rounded-[20px] p-5 relative overflow-hidden"
+          style={{ background: 'linear-gradient(145deg,#0D0205,#3D0809,#0D0205)' }}>
+          <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 80% 20%,rgba(201,149,106,0.14) 0%,transparent 55%)' }} />
+          <div className="relative z-10 grid grid-cols-3 gap-4 text-center">
+            <div>
+              <p className="text-white/30 text-[9px] font-semibold tracking-widest mb-1">إيراد شهري إضافي</p>
+              <p className="text-[#C9956A] text-[22px] font-black font-inter leading-none">
+                {monthly.toLocaleString('ar')}
+              </p>
+              <p className="text-white/25 text-[9px] mt-1">ريال/شهر</p>
+            </div>
+            <div className="border-x border-white/[0.07]">
+              <p className="text-white/30 text-[9px] font-semibold tracking-widest mb-1">الاسترداد</p>
+              <p className="text-[#30D158] text-[22px] font-black font-inter leading-none">{weeks}</p>
+              <p className="text-white/25 text-[9px] mt-1">أسبوع فقط</p>
+            </div>
+            <div>
+              <p className="text-white/30 text-[9px] font-semibold tracking-widest mb-1">نمو الاحتفاظ</p>
+              <p className="text-white text-[22px] font-black font-inter leading-none">١٥٪</p>
+              <p className="text-white/25 text-[9px] mt-1">بالحد الأدنى</p>
+            </div>
+          </div>
+          <div className="relative z-10 mt-4 pt-4 border-t border-white/[0.07] text-center">
+            <p className="text-white/40 text-[11px] font-light">
+              بزيادة <span className="text-[#C9956A] font-semibold">١٥٪ فقط</span> في معدل عودة زوارك · التطبيق يدفع نفسه خلال <span className="text-[#30D158] font-semibold">{weeks} أسبوع</span>
+            </p>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
 /* ── App Screenshots strip ───────────────────────────────────────── */
 const screens: { tab: Tab; label: string; color: string }[] = [
   { tab: 'home',      label: 'الرئيسية', color: '#7B1618' },
@@ -621,6 +722,9 @@ export default function App() {
         </div>
       </div>
 
+      {/* ── ROI Calculator ───────────────────────────────── */}
+      <RoiSection />
+
       {/* ── Community ────────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="bg-white/75 rounded-[28px] p-6 border border-[rgba(123,22,24,0.07)] shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
@@ -661,6 +765,13 @@ export default function App() {
           <div className="absolute bottom-0 left-0 w-36 h-36 opacity-[0.04]"
             style={{ backgroundImage: 'radial-gradient(circle,#C9956A 1.5px,transparent 1.5px)', backgroundSize: '10px 10px' }} />
           <div className="relative z-10">
+
+            {/* Exclusive badge */}
+            <div className="inline-flex items-center gap-2 border border-[rgba(201,149,106,0.3)] bg-[rgba(201,149,106,0.08)] px-4 py-1.5 rounded-full mb-4">
+              <div className="w-1.5 h-1.5 bg-[#C9956A] rounded-full animate-pulse" />
+              <span className="text-[#C9956A] text-[10px] font-black tracking-[0.2em]">هذا العرض مخصص لحيز فقط</span>
+            </div>
+
             <p className="text-[#C9956A] text-[11px] font-semibold tracking-widest uppercase mb-3">الاستثمار الكلي</p>
             <div className="flex items-start justify-center gap-1 mb-1">
               <span className="text-white text-[52px] font-bold leading-none font-inter">18,000</span>
@@ -669,19 +780,26 @@ export default function App() {
             <p className="text-white/30 text-[12px] font-light mb-6">
               iOS + Android · موقع · Wallet · Watch · مجتمع · حجوزات · دعم كامل
             </p>
-            <div className="grid grid-cols-2 gap-2.5 mb-7">
-              {['تسليم خلال ٦٠ يوم','نشر على المتجرين','سنة دعم مجاني','تدريب الفريق'].map((item) => (
-                <div key={item} className="flex items-center gap-2 text-white/50 text-[11px]">
-                  <div className="w-1.5 h-1.5 bg-[#C9956A] rounded-full shrink-0" />
+            <div className="grid grid-cols-2 gap-2.5 mb-7 text-right">
+              {['تسليم خلال ٦٠ يوم','نشر على المتجرين الرسميين','سنة دعم مجاني كامل','تدريب الفريق وتأهيله'].map((item) => (
+                <div key={item} className="flex items-center gap-2 text-white/55 text-[11px]">
+                  <div className="w-1.5 h-1.5 bg-[#30D158] rounded-full shrink-0" />
                   {item}
                 </div>
               ))}
             </div>
-            <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
-              className="block w-full bg-white text-[#7B1618] font-bold text-[15px] py-4 rounded-[16px] hover:bg-[#FDF9F4] active:scale-95 transition-all duration-200 shadow-[0_8px_28px_rgba(0,0,0,0.2)]">
-              أبدأ مشروعي مع تلقا تك 🚀
+
+            {/* WhatsApp CTA */}
+            <a href="https://wa.me/966500000000?text=السلام عليكم، أريد الاستفسار عن منصة حيز الرقمية" target="_blank" rel="noopener noreferrer"
+              className="flex items-center justify-center gap-3 w-full py-4 rounded-[16px] active:scale-95 transition-all duration-200 shadow-[0_8px_28px_rgba(0,0,0,0.3)] mb-3"
+              style={{ background: 'linear-gradient(135deg,#25D366,#128C7E)' }}>
+              <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white shrink-0">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+              </svg>
+              <span className="text-white font-bold text-[16px]">تواصل الآن عبر واتساب</span>
             </a>
-            <p className="text-white/25 text-[11px] mt-3 font-light">تواصل معنا على واتساب للاستفسار المجاني</p>
+
+            <p className="text-white/25 text-[10px] font-light">استشارة مجانية · بدون التزام</p>
           </div>
         </motion.div>
       </div>
