@@ -90,12 +90,29 @@ function RoiSection() {
         {/* Header */}
         <div className="px-7 pt-7 pb-5 border-b border-[rgba(123,22,24,0.08)]">
           <div className="inline-flex items-center gap-2 bg-[#7B1618]/8 border border-[rgba(123,22,24,0.15)] px-3.5 py-1.5 rounded-full mb-3">
-            <span className="text-[10px] font-black tracking-[0.2em] text-[#7B1618]">حاسبة العائد</span>
+            <span className="text-[10px] font-black tracking-[0.2em] text-[#7B1618]">حاسبة العائد على الاستثمار</span>
           </div>
-          <h2 className="text-[24px] font-bold text-[#111] leading-tight mb-1">
+          <h2 className="text-[24px] font-bold text-[#111] leading-tight mb-2">
             الـ ١٨,٠٠٠ ريال تسترجعها <span className="text-[#7B1618]">في أسابيع</span>
           </h2>
-          <p className="text-[13px] text-[#888] font-light">عدّل الأرقام حسب حيز واشوف متى يرجع الاستثمار</p>
+          <p className="text-[13px] text-[#555] leading-relaxed mb-4">
+            التطبيق يخلي زبائنك يرجعون بشكل أكثر — حتى لو بنسبة <strong>١٥٪ فقط</strong> زيادة في الزيارات، الأرقام تتكلم وحدها.
+          </p>
+          {/* How it works explainer */}
+          <div className="flex gap-2.5">
+            {[
+              { n: '١', text: 'غيّر أرقام مقهاك' },
+              { n: '٢', text: 'شوف الإيراد الإضافي' },
+              { n: '٣', text: 'احسب متى يرجع الاستثمار' },
+            ].map(s => (
+              <div key={s.n} className="flex-1 flex items-center gap-2 bg-[rgba(123,22,24,0.05)] rounded-[12px] px-3 py-2.5">
+                <div className="w-5 h-5 rounded-full bg-[#7B1618] flex items-center justify-center shrink-0">
+                  <span className="text-white text-[9px] font-black">{s.n}</span>
+                </div>
+                <span className="text-[10px] font-semibold text-[#444] leading-tight">{s.text}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Sliders */}
