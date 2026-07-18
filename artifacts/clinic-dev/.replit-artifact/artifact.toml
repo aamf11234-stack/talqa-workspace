@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/clinic-dev/"
+title = "تلقا للعيادات — Developer"
+version = "1.0.0"
+id = "artifacts/clinic-dev"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/clinic-dev/" ]
+localPort = 18498
+
+[services.development]
+run = "pnpm --filter @workspace/clinic-dev run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/clinic-dev", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/clinic-dev/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18498"
+BASE_PATH = "/clinic-dev/"
