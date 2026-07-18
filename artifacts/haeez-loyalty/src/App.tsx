@@ -739,9 +739,6 @@ export default function App() {
         </div>
       </div>
 
-      {/* ── ROI Calculator ───────────────────────────────── */}
-      <RoiSection />
-
       {/* ── Community ────────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="bg-white/75 rounded-[28px] p-6 border border-[rgba(123,22,24,0.07)] shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
@@ -772,6 +769,9 @@ export default function App() {
           </div>
         </div>
       </div>
+
+      {/* ── ROI Calculator ───────────────────────────────── */}
+      <RoiSection />
 
       {/* ── CTA ──────────────────────────────────────────── */}
       <div className="max-w-lg mx-auto px-6 mb-10">
