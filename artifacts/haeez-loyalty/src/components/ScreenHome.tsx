@@ -5,6 +5,134 @@ import { EventIconMap, ICalendarIcon, IGift } from './HaizIcons';
 
 const logoImg = `${import.meta.env.BASE_URL}hyz-logo.jpeg`;
 
+/* ── Weather Card ────────────────────────────────────────────────── */
+function CloudShape({ x, y, s, o, dur }: { x:number; y:number; s:number; o:number; dur:number }) {
+  return (
+    <motion.g
+      style={{ originX: x, originY: y }}
+      animate={{ x: [0, 20, 0] }}
+      transition={{ duration: dur, repeat: Infinity, ease: 'easeInOut' }}
+      opacity={o}
+    >
+      <g transform={`translate(${x},${y}) scale(${s})`}>
+        <ellipse cx="30" cy="22" rx="22" ry="14" fill="white" />
+        <ellipse cx="52" cy="26" rx="18" ry="12" fill="white" />
+        <ellipse cx="12" cy="26" rx="14" ry="10" fill="white" />
+        <ellipse cx="36" cy="32" rx="30" ry="10" fill="white" />
+      </g>
+    </motion.g>
+  );
+}
+
+function WeatherCard() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.25, duration: 0.6 }}
+      className="mx-4 mb-5 rounded-[24px] overflow-hidden relative"
+      style={{
+        background: 'linear-gradient(145deg,#243358 0%,#2C4070 35%,#3A5488 55%,#243358 100%)',
+        boxShadow: '0 10px 36px rgba(36,51,88,0.55)',
+      }}
+    >
+      {/* Glow layers */}
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at 85% 15%,rgba(255,255,255,0.08) 0%,transparent 55%)' }} />
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at 10% 90%,rgba(123,22,24,0.22) 0%,transparent 50%)' }} />
+
+      {/* Animated SVG clouds */}
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 320 130"
+        preserveAspectRatio="xMidYMid slice" style={{ opacity: 0.18 }}>
+        <CloudShape x={-10} y={5}  s={1.2}  o={1}   dur={8}  />
+        <CloudShape x={120} y={0}  s={0.8}  o={0.9} dur={11} />
+        <CloudShape x={225} y={15} s={1.0}  o={0.8} dur={7}  />
+        <CloudShape x={50}  y={52} s={0.65} o={0.6} dur={13} />
+        <CloudShape x={185} y={60} s={1.1}  o={0.65} dur={9} />
+        <CloudShape x={270} y={42} s={0.7}  o={0.45} dur={10} />
+      </svg>
+
+      {/* Main content */}
+      <div className="relative z-10 px-5 pt-5 pb-3 flex items-start justify-between">
+
+        {/* Left */}
+        <div>
+          <div className="flex items-center gap-1.5 mb-3">
+            <svg width="8" height="10" viewBox="0 0 8 10" fill="none">
+              <path d="M4 0C2.07 0 0.5 1.57 0.5 3.5C0.5 6.125 4 10 4 10C4 10 7.5 6.125 7.5 3.5C7.5 1.57 5.93 0 4 0ZM4 4.75C3.31 4.75 2.75 4.19 2.75 3.5C2.75 2.81 3.31 2.25 4 2.25C4.69 2.25 5.25 2.81 5.25 3.5C5.25 4.19 4.69 4.75 4 4.75Z" fill="rgba(255,255,255,0.5)"/>
+            </svg>
+            <span className="text-white/55 text-[10px] font-semibold tracking-[0.15em]">أبها · الآن</span>
+          </div>
+
+          {/* Temperature */}
+          <div className="flex items-start leading-none">
+            <span className="text-white font-thin" style={{ fontSize: 64, letterSpacing: '-3px', lineHeight: 1 }}>١٨</span>
+            <div className="mt-2 mr-1">
+              <span className="text-white/40 text-[22px] font-light">°م</span>
+            </div>
+          </div>
+
+          {/* Condition */}
+          <div className="flex items-center gap-1.5 mt-2.5">
+            <motion.span
+              animate={{ scale: [1, 1.12, 1], rotate: [0, -5, 5, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+              className="text-[20px]"
+            >☁️</motion.span>
+            <span className="text-white/85 text-[14px] font-semibold">غائم</span>
+            <span className="text-white/30 text-[10px] font-light">· يشعر بـ١٥°</span>
+          </div>
+        </div>
+
+        {/* Right */}
+        <div className="flex flex-col items-end gap-2.5 mt-1">
+          {/* Café message chip */}
+          <motion.div
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 }}
+            className="rounded-[14px] px-3 py-2.5 text-right"
+            style={{ background: 'rgba(123,22,24,0.6)', border: '1px solid rgba(201,149,106,0.28)' }}
+          >
+            <p className="text-[#E8C4A0] text-[10px] font-bold leading-snug">الغيم على أبها ☁️</p>
+            <p className="text-white/50 text-[9px] font-light leading-snug mt-0.5">كوب حيز أدفأ الليلة</p>
+          </motion.div>
+
+          {/* Min / Max */}
+          <div className="flex items-center gap-3">
+            <div className="text-center">
+              <p className="text-white/30 text-[8px] mb-0.5">عظمى</p>
+              <p className="text-white/75 text-[12px] font-bold font-inter">٢٢°</p>
+            </div>
+            <div className="w-px h-6 bg-white/15" />
+            <div className="text-center">
+              <p className="text-white/30 text-[8px] mb-0.5">صغرى</p>
+              <p className="text-white/75 text-[12px] font-bold font-inter">١٢°</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom strip */}
+      <div className="relative z-10 mx-4 mb-3 rounded-[14px] flex divide-x divide-white/8 overflow-hidden"
+        style={{ background: 'rgba(0,0,0,0.18)', border: '1px solid rgba(255,255,255,0.07)' }}>
+        {[
+          { icon: '💧', label: 'رطوبة', val: '٧٢٪'     },
+          { icon: '🌬️', label: 'رياح',  val: '١٢ كم/س'  },
+          { icon: '👁️', label: 'رؤية',  val: '٨ كم'     },
+        ].map((s, i) => (
+          <div key={i} className="flex-1 flex flex-col items-center py-2 gap-0.5">
+            <span className="text-[12px]">{s.icon}</span>
+            <p className="text-white/80 text-[10px] font-bold font-inter">{s.val}</p>
+            <p className="text-white/30 text-[8px]">{s.label}</p>
+          </div>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
 /* ── Counter hook ─────────────────────────────────────────────────── */
 function useCounter(target: number, duration = 1400, delay = 200) {
   const [value, setValue] = useState(0);
@@ -681,6 +809,9 @@ export function ScreenHome() {
             </motion.button>
           ))}
         </div>
+
+        {/* ── طقس أبها ── */}
+        <WeatherCard />
 
         {/* ── سؤال اليوم ── */}
         <QuestionOfDay />
