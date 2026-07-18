@@ -1,143 +1,214 @@
-import React from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { PhoneFrame } from './PhoneFrame';
+import { BottomNav } from './BottomNav';
+import type { ClinicTab } from './BottomNav';
+import { ScreenHome } from './ScreenHome';
+import { ScreenAppointments } from './ScreenAppointments';
+import { ScreenCard } from './ScreenCard';
+import { ScreenDoctors } from './ScreenDoctors';
+import { ScreenNotifications } from './ScreenNotifications';
+import { ScreenResults } from './ScreenResults';
+
+const tabLabels: Record<ClinicTab, string> = {
+  home: 'الرئيسية',
+  appointments: 'المواعيد',
+  card: 'البطاقة الطبية',
+  doctors: 'الأطباء',
+  notifications: 'الإشعارات',
+};
+
+const tabDescriptions: Record<ClinicTab, string> = {
+  home: 'صحة المريض، المؤشرات الحيوية، والموعد القادم — كل شيء في لمحة واحدة',
+  appointments: 'حجز موعد في ثوانٍ، مع تأكيد فوري ورسالة واتساب',
+  card: 'بطاقة المريض الرقمية مع QR للاستقبال، بدون ورق وبدون انتظار',
+  doctors: 'فريق الأطباء كاملاً مع التقييمات، التخصصات، والأوقات المتاحة',
+  notifications: 'تذكير دواء، نتيجة جاهزة، موعد غداً — كل شيء في مكان واحد',
+};
 
 export const AppShowcase = () => {
-  const { scrollYProgress } = useScroll();
-  const scale = useTransform(scrollYProgress, [0.2, 0.4], [0.8, 1]);
-  const opacity = useTransform(scrollYProgress, [0.2, 0.3], [0, 1]);
+  const [activeTab, setActiveTab] = useState<ClinicTab>('home');
+
+  // Auto-rotate tabs for demo effect
+  const tabs: ClinicTab[] = ['home', 'appointments', 'card', 'doctors', 'notifications'];
 
   return (
-    <section className="py-32 relative overflow-hidden">
-      {/* Decorative */}
-      <div className="absolute top-1/2 right-0 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-[120px] -translate-y-1/2" />
-      
+    <section className="py-24 relative overflow-hidden" id="app">
+      {/* Background glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full"
+          style={{ background: 'radial-gradient(ellipse, rgba(0,180,216,0.06) 0%, transparent 70%)' }} />
+      </div>
+
       <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-          
-          <motion.div 
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8 }}
+        {/* Section header */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="text-center mb-16"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border mb-4"
+            style={{ borderColor: 'rgba(0,180,216,0.3)', background: 'rgba(0,180,216,0.08)' }}>
+            <span className="w-2 h-2 rounded-full bg-[#00B4D8] animate-pulse" />
+            <span className="text-[#00B4D8] text-sm font-semibold">نموذج توضيحي حقيقي · مبني فعلياً</span>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-black text-white mb-4 leading-tight">
+            تطبيق <span className="text-transparent bg-clip-text bg-gradient-to-l from-[#C9A84C] to-[#F0D080]">عيادتك</span> الحقيقي
+          </h2>
+          <p className="text-gray-400 text-lg max-w-xl mx-auto">
+            جرّب التنقل بين الشاشات — هذا التطبيق مبني فعلياً وسيحمل هوية عيادتك الكاملة
+          </p>
+        </motion.div>
+
+        <div className="flex flex-col xl:flex-row items-center gap-16 justify-center">
+
+          {/* Phone mockup — real interactive app */}
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+            className="relative shrink-0"
           >
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
-              تجربة <span className="text-gradient-gold">المريض</span> <br/>
-              في راحة يده
-            </h2>
-            <p className="text-muted-foreground text-lg mb-8 leading-relaxed">
-              تطبيق موبايل (iOS & Android) يعكس هوية عيادتك بالكامل. تصميم عصري داكن يريح العين ويشعر المريض بالفخامة والتطور.
-            </p>
-            
-            <ul className="space-y-6">
-              {[
-                { title: "حجز موعد بـ 3 نقرات", desc: "لا مزيد من الانتظار على الهاتف. المريض يرى الأوقات المتاحة ويحجز فوراً." },
-                { title: "نتائج التحاليل المباشرة", desc: "تصل النتيجة لتطبيق المريض بمجرد اعتمادها من المختبر، مع تنبيه فوري." },
-                { title: "تذكير بالأدوية والمواعيد", desc: "إشعارات ذكية لضمان التزام المريض بالخطة العلاجية والعودة في الوقت المحدد." }
-              ].map((item, i) => (
-                <li key={i} className="flex gap-4 items-start">
-                  <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary shrink-0 mt-1">
-                    <span className="font-bold text-sm">{i + 1}</span>
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold text-lg mb-1">{item.title}</h4>
-                    <p className="text-gray-400 text-sm">{item.desc}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            {/* Glow behind phone */}
+            <div className="absolute inset-0 -z-10 blur-3xl opacity-30 scale-75"
+              style={{ background: 'radial-gradient(ellipse, #00B4D8 0%, #0B4A6F 50%, transparent 80%)' }} />
+
+            {/* Demo badge */}
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20 bg-white text-[#0B4A6F] text-[10px] font-bold px-3 py-1 rounded-full shadow-lg whitespace-nowrap flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 bg-[#22C55E] rounded-full animate-pulse" />
+              تفاعلي · جرّب الضغط على الشاشة
+            </div>
+
+            <PhoneFrame>
+              <div className="flex-1 relative overflow-hidden h-full">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
+                    className="absolute inset-0 overflow-y-auto scrollbar-none"
+                  >
+                    {activeTab === 'home'          && <ScreenHome />}
+                    {activeTab === 'appointments'  && <ScreenAppointments />}
+                    {activeTab === 'card'          && <ScreenCard />}
+                    {activeTab === 'doctors'       && <ScreenDoctors />}
+                    {activeTab === 'notifications' && <ScreenNotifications />}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+              <BottomNav activeTab={activeTab} onChangeTab={setActiveTab} notifCount={2} />
+            </PhoneFrame>
           </motion.div>
 
-          {/* Three App Screens Cascading */}
-          <motion.div 
-            style={{ scale, opacity }}
-            className="relative h-[600px] flex items-center justify-center"
+          {/* Feature list — tab description + click to switch */}
+          <motion.div
+            initial={{ opacity: 0, x: -40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="max-w-md w-full"
           >
-            {/* Screen 1 (Back) */}
-            <div className="absolute right-0 top-10 w-[240px] h-[500px] bg-[#111] rounded-[2rem] border-4 border-[#222] shadow-2xl opacity-60 scale-90 -rotate-6 transition-transform hover:scale-95 hover:z-20 hover:opacity-100 hover:rotate-0 duration-500">
-               <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=300&q=80" alt="Medical App Screen" className="w-full h-full object-cover rounded-[1.8rem] opacity-50 mix-blend-luminosity" />
-               <div className="absolute inset-0 bg-gradient-to-b from-[#050D1A]/80 to-[#050D1A] rounded-[1.8rem] flex flex-col p-4">
-                  <div className="w-full h-12 bg-white/5 rounded-xl mb-4" />
-                  <div className="w-full h-32 bg-white/5 rounded-xl mb-4" />
-                  <div className="w-full h-24 bg-white/5 rounded-xl mb-4" />
-               </div>
-            </div>
+            <h3 className="text-2xl font-bold text-white mb-8">
+              ٥ شاشات، تجربة واحدة متكاملة
+            </h3>
 
-            {/* Screen 2 (Middle) */}
-            <div className="absolute right-20 top-5 w-[240px] h-[500px] bg-[#111] rounded-[2rem] border-4 border-[#333] shadow-2xl opacity-80 scale-95 -rotate-3 z-10 transition-transform hover:scale-100 hover:z-30 hover:opacity-100 hover:rotate-0 duration-500">
-               <div className="w-full h-full bg-[#0a101d] rounded-[1.8rem] p-4 flex flex-col relative overflow-hidden">
-                 <div className="absolute -top-10 -right-10 w-32 h-32 bg-cyan-500/20 blur-2xl rounded-full" />
-                 <h3 className="text-white font-bold text-sm mb-4 mt-8 relative z-10">نتائج التحاليل</h3>
-                 <div className="space-y-3 relative z-10">
-                   {[1,2,3].map(i => (
-                     <div key={i} className="bg-white/5 border border-white/5 p-3 rounded-xl">
-                       <div className="flex justify-between items-center mb-2">
-                         <span className="text-xs text-white">صورة دم كاملة (CBC)</span>
-                         <span className="text-[10px] text-cyan-400 bg-cyan-400/10 px-2 py-1 rounded-full">مكتمل</span>
-                       </div>
-                       <div className="w-full bg-white/10 h-1 rounded-full overflow-hidden">
-                         <div className="w-full h-full bg-cyan-500" />
-                       </div>
-                     </div>
-                   ))}
-                 </div>
-               </div>
-            </div>
-
-            {/* Screen 3 (Front Focus) */}
-            <div className="absolute right-40 top-0 w-[260px] h-[540px] bg-[#000] rounded-[2.5rem] border-[6px] border-[#222] shadow-[0_0_50px_rgba(14,165,233,0.15)] z-20 transition-transform hover:scale-105 duration-500">
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-5 bg-[#222] rounded-b-xl z-30" />
-              <div className="w-full h-full bg-[#050D1A] rounded-[2rem] p-5 pt-10 overflow-hidden relative">
-                 <div className="flex justify-between items-center mb-6">
-                   <div className="text-white font-bold">المواعيد</div>
-                   <div className="text-primary text-xs">أغسطس 2023</div>
-                 </div>
-                 
-                 {/* Calendar Strip */}
-                 <div className="flex gap-2 mb-6 overflow-hidden">
-                    {[12,13,14,15,16].map((day, i) => (
-                      <div key={day} className={`flex flex-col items-center justify-center w-12 h-16 rounded-2xl ${i === 2 ? 'bg-primary text-[#050D1A] shadow-lg shadow-primary/20' : 'bg-white/5 text-gray-400'}`}>
-                        <span className="text-[10px] mb-1">{['أحد','إثن','ثلا','أرب','خمي'][i]}</span>
-                        <span className="font-bold text-sm">{day}</span>
-                      </div>
-                    ))}
-                 </div>
-
-                 <div className="text-xs text-gray-400 mb-3">الأطباء المتاحين</div>
-                 
-                 {/* Doctor List */}
-                 <div className="space-y-3">
-                    <div className="bg-white/5 border border-white/10 rounded-2xl p-3 flex gap-3 items-center">
-                      <div className="w-12 h-12 rounded-xl bg-gray-800 overflow-hidden shrink-0">
-                        <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=100&q=80" alt="Doctor" className="w-full h-full object-cover" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="text-sm font-bold text-white mb-1">د. أحمد محمد</div>
-                        <div className="text-[10px] text-cyan-400 mb-2">استشاري أمراض القلب</div>
-                        <div className="flex gap-2">
-                           <div className="text-[10px] bg-white/10 px-2 py-0.5 rounded text-gray-300">10:00 ص</div>
-                           <div className="text-[10px] bg-white/10 px-2 py-0.5 rounded text-gray-300">11:30 ص</div>
+            <div className="space-y-3">
+              {tabs.map((tab) => {
+                const isActive = activeTab === tab;
+                const icons: Record<ClinicTab, string> = {
+                  home: '🏥',
+                  appointments: '📅',
+                  card: '🪪',
+                  doctors: '👨‍⚕️',
+                  notifications: '🔔',
+                };
+                return (
+                  <motion.button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full text-right p-4 rounded-2xl border transition-all duration-300 relative overflow-hidden"
+                    style={{
+                      background: isActive ? 'rgba(11,74,111,0.3)' : 'rgba(255,255,255,0.03)',
+                      borderColor: isActive ? 'rgba(0,180,216,0.4)' : 'rgba(255,255,255,0.08)',
+                    }}
+                  >
+                    {isActive && (
+                      <motion.div
+                        layoutId="tab-bg"
+                        className="absolute inset-0 -z-10"
+                        style={{ background: 'linear-gradient(135deg, rgba(11,74,111,0.4), rgba(0,180,216,0.1))' }}
+                        transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
+                      />
+                    )}
+                    <div className="flex items-center gap-3">
+                      <span className="text-2xl shrink-0">{icons[tab]}</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                          <p className={`font-bold text-sm ${isActive ? 'text-white' : 'text-gray-400'}`}>
+                            {tabLabels[tab]}
+                          </p>
+                          {isActive && (
+                            <span className="text-[9px] font-bold px-2 py-0.5 rounded-full shrink-0"
+                              style={{ background: 'rgba(0,180,216,0.2)', color: '#00B4D8' }}>
+                              تشاهده الآن
+                            </span>
+                          )}
                         </div>
+                        <p className={`text-xs leading-snug ${isActive ? 'text-gray-300' : 'text-gray-600'}`}>
+                          {tabDescriptions[tab]}
+                        </p>
                       </div>
                     </div>
+                  </motion.button>
+                );
+              })}
+            </div>
 
-                    <div className="bg-white/5 border border-white/10 rounded-2xl p-3 flex gap-3 items-center">
-                      <div className="w-12 h-12 rounded-xl bg-gray-800 overflow-hidden shrink-0">
-                        <img src="https://images.unsplash.com/photo-1594824461559-ea49ce9fa50c?auto=format&fit=crop&w=100&q=80" alt="Doctor" className="w-full h-full object-cover" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="text-sm font-bold text-white mb-1">د. سارة فهد</div>
-                        <div className="text-[10px] text-cyan-400 mb-2">أخصائية جلدية</div>
-                        <div className="flex gap-2">
-                           <div className="text-[10px] bg-white/10 px-2 py-0.5 rounded text-gray-300">04:00 م</div>
-                           <div className="text-[10px] bg-primary text-[#050D1A] px-2 py-0.5 rounded font-bold">احجز</div>
-                        </div>
-                      </div>
-                    </div>
-                 </div>
-
+            {/* Results screen extra highlight */}
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5 }}
+              className="mt-4 p-4 rounded-2xl border"
+              style={{ background: 'rgba(34,197,94,0.05)', borderColor: 'rgba(34,197,94,0.15)' }}
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-xl">🧪</span>
+                <p className="font-bold text-sm text-white">نتائج التحاليل الرقمية</p>
               </div>
-            </div>
+              <p className="text-xs text-gray-400 leading-snug">
+                النتيجة تصل من المختبر مباشرة لتطبيق المريض — لا ورق، لا انتظار، لا اتصالات
+              </p>
+            </motion.div>
 
+            {/* CTA */}
+            <motion.a
+              href="https://wa.me/966500000000"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6 }}
+              className="mt-6 flex items-center justify-center gap-3 w-full py-4 rounded-2xl font-bold text-base transition-all"
+              style={{
+                background: 'linear-gradient(135deg,#0B4A6F,#00B4D8)',
+                boxShadow: '0 8px 30px rgba(0,180,216,0.25)',
+                color: 'white',
+              }}
+            >
+              <span>ابنِ تطبيق عيادتك الآن</span>
+              <span className="text-lg">🚀</span>
+            </motion.a>
           </motion.div>
 
         </div>
