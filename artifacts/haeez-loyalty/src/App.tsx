@@ -180,6 +180,188 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
   );
 }
 
+/* ── Notifications Showcase ──────────────────────────────────────── */
+const notifs = [
+  {
+    id: 1,
+    app: 'حيز',
+    icon: '🎂',
+    iconBg: 'linear-gradient(135deg,#7B1618,#C9956A)',
+    time: 'الآن',
+    title: 'عيد ميلادك اليوم! 🎉',
+    body: 'كوب مجاني في انتظارك — هدية حيز لك في يومك الخاص',
+    accent: '#C9956A',
+  },
+  {
+    id: 2,
+    app: 'حيز',
+    icon: '🌤️',
+    iconBg: 'linear-gradient(135deg,#1A5276,#2980B9)',
+    time: 'منذ دقيقة',
+    title: 'الجو اليوم في أبها حلو 🏔️',
+    body: '١٨° مئوية ومشمس — جلستك المفضلة على السطح تنتظرك',
+    accent: '#2980B9',
+  },
+  {
+    id: 3,
+    app: 'حيز',
+    icon: '⭐',
+    iconBg: 'linear-gradient(135deg,#C9956A,#E8C4A0)',
+    time: 'منذ ٣ دقائق',
+    title: '+٢٥ نقطة أُضيفت لرصيدك',
+    body: 'زيارة الرابعة هذا الأسبوع — ٣ أكواب فقط للمستوى الفضي',
+    accent: '#C9956A',
+  },
+  {
+    id: 4,
+    app: 'حيز',
+    icon: '🏆',
+    iconBg: 'linear-gradient(135deg,#117A65,#2D7D46)',
+    time: 'منذ ١٠ دقائق',
+    title: 'وصلت المستوى الفضي! 🥈',
+    body: 'مبروك — خصم ١٠٪ دائم وأولوية الحجز من الآن',
+    accent: '#2D7D46',
+  },
+  {
+    id: 5,
+    app: 'حيز',
+    icon: '☕',
+    iconBg: 'linear-gradient(135deg,#3D0809,#7B1618)',
+    time: 'منذ ٢٠ دقيقة',
+    title: 'محصول اليوم: إثيوبيا يرقاشيفي',
+    body: 'حموضة ناعمة ورائحة زهرية — كميات محدودة اليوم فقط',
+    accent: '#7B1618',
+  },
+  {
+    id: 6,
+    app: 'حيز',
+    icon: '📍',
+    iconBg: 'linear-gradient(135deg,#6C3483,#9B59B6)',
+    time: 'منذ ساعة',
+    title: 'اقتربت من حيز 📍',
+    body: 'أنت على بُعد ٥ دقائق — طاولتك المفضلة متاحة الآن',
+    accent: '#9B59B6',
+  },
+];
+
+function NotificationsShowcase() {
+  const [visible, setVisible] = React.useState<number[]>([]);
+  const [started, setStarted] = React.useState(false);
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting && !started) setStarted(true); },
+      { threshold: 0.3 }
+    );
+    const el = document.getElementById('notif-showcase');
+    if (el) observer.observe(el);
+    return () => observer.disconnect();
+  }, [started]);
+
+  React.useEffect(() => {
+    if (!started) return;
+    notifs.forEach((n, i) => {
+      setTimeout(() => setVisible(v => [...v, n.id]), i * 380);
+    });
+  }, [started]);
+
+  return (
+    <div id="notif-showcase" className="max-w-5xl mx-auto px-6 mb-10">
+      {/* Header */}
+      <div className="text-center mb-8">
+        <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1.5">إشعارات ذكية</p>
+        <h2 className="text-[24px] font-bold text-[#111]">حيز يعرف متى يتكلم</h2>
+        <p className="text-[13px] text-[#AAA] font-light mt-2">إشعارات تصل في اللحظة الصح — مش مجرد رسائل عشوائية</p>
+      </div>
+
+      {/* iPhone lock screen frame */}
+      <div className="relative rounded-[36px] overflow-hidden mx-auto max-w-[400px]"
+        style={{
+          background: 'linear-gradient(160deg,#0a0a1a 0%,#0d0d20 40%,#0a0a18 100%)',
+          boxShadow: '0 40px 100px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06)',
+          minHeight: 580,
+        }}>
+
+        {/* Wallpaper glow blobs */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-0 left-0 w-48 h-48 rounded-full blur-[60px]" style={{ background: 'rgba(123,22,24,0.35)', transform: 'translate(-30%,-30%)' }} />
+          <div className="absolute bottom-0 right-0 w-48 h-48 rounded-full blur-[60px]" style={{ background: 'rgba(201,149,106,0.2)', transform: 'translate(30%,30%)' }} />
+          <div className="absolute top-1/2 left-1/2 w-32 h-32 rounded-full blur-[50px]" style={{ background: 'rgba(41,128,185,0.15)', transform: 'translate(-50%,-50%)' }} />
+        </div>
+
+        {/* Status bar */}
+        <div className="relative z-10 flex items-center justify-between px-7 pt-5 pb-3">
+          <span className="text-white text-[15px] font-semibold">٩:٤١</span>
+          <div className="absolute left-1/2 -translate-x-1/2 w-28 h-7 bg-black rounded-full" />
+          <div className="flex items-center gap-1.5">
+            <svg viewBox="0 0 17 12" className="w-4 h-3 fill-white"><rect x="0" y="3" width="3" height="9" rx="1"/><rect x="4.5" y="2" width="3" height="10" rx="1"/><rect x="9" y="0.5" width="3" height="11.5" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1" opacity=".35"/></svg>
+            <svg viewBox="0 0 16 12" className="w-4 h-3 fill-white"><path d="M8 2.4C5.6 2.4 3.4 3.4 1.8 5L0 3.2C2.1 1.2 4.9 0 8 0s5.9 1.2 8 3.2L14.2 5C12.6 3.4 10.4 2.4 8 2.4z"/><path d="M8 5.6c-1.5 0-2.9.6-3.9 1.6L2.3 5.4C3.7 4 5.7 3.2 8 3.2s4.3.8 5.7 2.2l-1.8 1.8C10.9 6.2 9.5 5.6 8 5.6z"/><circle cx="8" cy="10" r="2"/></svg>
+            <div className="flex items-center gap-0.5">
+              <div className="w-6 h-3 rounded-[3px] border border-white/40 p-[2px] flex items-center">
+                <div className="h-full w-[70%] bg-white rounded-[1.5px]" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Lock screen time + date */}
+        <div className="relative z-10 text-center mb-5">
+          <p className="text-white text-[58px] font-thin tracking-tight leading-none">٩:٤١</p>
+          <p className="text-white/60 text-[14px] font-light mt-1">السبت، ١٨ يوليو</p>
+        </div>
+
+        {/* Notifications list */}
+        <div className="relative z-10 px-4 space-y-2.5 pb-8">
+          <AnimatePresence>
+            {notifs.map((n) =>
+              visible.includes(n.id) ? (
+                <motion.div
+                  key={n.id}
+                  initial={{ opacity: 0, y: -24, scale: 0.94 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ type: 'spring', damping: 22, stiffness: 300 }}
+                  className="rounded-[18px] px-4 py-3 flex items-start gap-3"
+                  style={{
+                    background: 'rgba(28,28,30,0.82)',
+                    backdropFilter: 'blur(20px)',
+                    WebkitBackdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    boxShadow: `0 4px 20px rgba(0,0,0,0.3), 0 0 0 0.5px rgba(255,255,255,0.04)`,
+                  }}
+                >
+                  {/* App icon */}
+                  <div className="w-9 h-9 rounded-[10px] flex items-center justify-center text-[18px] shrink-0 mt-0.5"
+                    style={{ background: n.iconBg }}>
+                    {n.icon}
+                  </div>
+
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-0.5">
+                      <span className="text-white/50 text-[10px] font-semibold tracking-wide">{n.app}</span>
+                      <span className="text-white/30 text-[10px] font-inter">{n.time}</span>
+                    </div>
+                    <p className="text-white text-[13px] font-semibold leading-snug mb-0.5">{n.title}</p>
+                    <p className="text-white/55 text-[11px] font-light leading-snug">{n.body}</p>
+                  </div>
+                </motion.div>
+              ) : null
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Home indicator */}
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-28 h-1 bg-white/25 rounded-full" />
+      </div>
+
+      {/* Caption */}
+      <p className="text-center text-[11px] text-[#BBB] font-light mt-5">
+        كل إشعار له سبب ← يوم الميلاد · الجو · نقاطك · قربك من حيز
+      </p>
+    </div>
+  );
+}
+
 /* ── App Screenshots strip ───────────────────────────────────────── */
 const screens: { tab: Tab; label: string; color: string; bg: string; preview: React.ReactNode }[] = [
   {
@@ -801,6 +983,9 @@ export default function App() {
           ))}
         </div>
       </div>
+
+      {/* ── Notifications Showcase ───────────────────────── */}
+      <NotificationsShowcase />
 
       {/* ── Wallet showcase ──────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
