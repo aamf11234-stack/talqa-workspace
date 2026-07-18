@@ -6,126 +6,113 @@ import { EventIconMap, ICalendarIcon, IGift } from './HaizIcons';
 const logoImg = `${import.meta.env.BASE_URL}hyz-logo.jpeg`;
 
 /* ── Weather Card ────────────────────────────────────────────────── */
-function CloudShape({ x, y, s, o, dur }: { x:number; y:number; s:number; o:number; dur:number }) {
-  return (
-    <motion.g
-      style={{ originX: x, originY: y }}
-      animate={{ x: [0, 20, 0] }}
-      transition={{ duration: dur, repeat: Infinity, ease: 'easeInOut' }}
-      opacity={o}
-    >
-      <g transform={`translate(${x},${y}) scale(${s})`}>
-        <ellipse cx="30" cy="22" rx="22" ry="14" fill="white" />
-        <ellipse cx="52" cy="26" rx="18" ry="12" fill="white" />
-        <ellipse cx="12" cy="26" rx="14" ry="10" fill="white" />
-        <ellipse cx="36" cy="32" rx="30" ry="10" fill="white" />
-      </g>
-    </motion.g>
-  );
-}
-
 function WeatherCard() {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 14 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.25, duration: 0.6 }}
-      className="mx-4 mb-5 rounded-[24px] overflow-hidden relative"
+      transition={{ delay: 0.25, duration: 0.55 }}
+      className="mx-4 mb-5 rounded-[22px] overflow-hidden relative"
       style={{
-        background: 'linear-gradient(145deg,#243358 0%,#2C4070 35%,#3A5488 55%,#243358 100%)',
-        boxShadow: '0 10px 36px rgba(36,51,88,0.55)',
+        background: 'linear-gradient(150deg,#100203 0%,#1E0405 40%,#2A0608 70%,#120203 100%)',
+        border: '1px solid rgba(201,149,106,0.12)',
+        boxShadow: '0 8px 30px rgba(0,0,0,0.45)',
       }}
     >
-      {/* Glow layers */}
+      {/* Ambient red glow */}
       <div className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 85% 15%,rgba(255,255,255,0.08) 0%,transparent 55%)' }} />
+        style={{ background: 'radial-gradient(ellipse at 30% 40%,rgba(123,22,24,0.5) 0%,transparent 60%)' }} />
+      {/* Amber glow right */}
       <div className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 10% 90%,rgba(123,22,24,0.22) 0%,transparent 50%)' }} />
+        style={{ background: 'radial-gradient(ellipse at 90% 80%,rgba(201,149,106,0.12) 0%,transparent 50%)' }} />
 
-      {/* Animated SVG clouds */}
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 320 130"
-        preserveAspectRatio="xMidYMid slice" style={{ opacity: 0.18 }}>
-        <CloudShape x={-10} y={5}  s={1.2}  o={1}   dur={8}  />
-        <CloudShape x={120} y={0}  s={0.8}  o={0.9} dur={11} />
-        <CloudShape x={225} y={15} s={1.0}  o={0.8} dur={7}  />
-        <CloudShape x={50}  y={52} s={0.65} o={0.6} dur={13} />
-        <CloudShape x={185} y={60} s={1.1}  o={0.65} dur={9} />
-        <CloudShape x={270} y={42} s={0.7}  o={0.45} dur={10} />
-      </svg>
+      {/* Floating cloud blobs — very subtle */}
+      {[
+        { w:80, h:28, top:'12%', left:'18%', blur:18, op:0.07, dx:12, dur:9  },
+        { w:60, h:22, top:'30%', left:'45%', blur:14, op:0.05, dx:8,  dur:12 },
+        { w:90, h:30, top:'8%',  left:'55%', blur:20, op:0.06, dx:15, dur:7  },
+        { w:50, h:18, top:'55%', left:'25%', blur:12, op:0.04, dx:10, dur:14 },
+      ].map((c, i) => (
+        <motion.div key={i}
+          className="absolute rounded-full pointer-events-none"
+          style={{ width: c.w, height: c.h, top: c.top, left: c.left,
+            background: 'rgba(255,255,255,1)',
+            filter: `blur(${c.blur}px)`, opacity: c.op }}
+          animate={{ x: [0, c.dx, 0] }}
+          transition={{ duration: c.dur, repeat: Infinity, ease: 'easeInOut' }}
+        />
+      ))}
 
-      {/* Main content */}
-      <div className="relative z-10 px-5 pt-5 pb-3 flex items-start justify-between">
+      {/* Top row: location + time */}
+      <div className="relative z-10 flex items-center justify-between px-5 pt-4 pb-0">
+        <div className="flex items-center gap-1.5">
+          <div className="w-1.5 h-1.5 rounded-full bg-[#C9956A] animate-pulse" />
+          <span className="text-[#C9956A]/70 text-[9px] font-bold tracking-[0.2em]">أبها · الآن</span>
+        </div>
+        <span className="text-white/20 text-[9px] font-inter">السبت ١٨ يوليو</span>
+      </div>
 
-        {/* Left */}
+      {/* Core: temp + condition + message */}
+      <div className="relative z-10 px-5 pt-3 pb-4 flex items-end justify-between">
+
+        {/* Temp block */}
         <div>
-          <div className="flex items-center gap-1.5 mb-3">
-            <svg width="8" height="10" viewBox="0 0 8 10" fill="none">
-              <path d="M4 0C2.07 0 0.5 1.57 0.5 3.5C0.5 6.125 4 10 4 10C4 10 7.5 6.125 7.5 3.5C7.5 1.57 5.93 0 4 0ZM4 4.75C3.31 4.75 2.75 4.19 2.75 3.5C2.75 2.81 3.31 2.25 4 2.25C4.69 2.25 5.25 2.81 5.25 3.5C5.25 4.19 4.69 4.75 4 4.75Z" fill="rgba(255,255,255,0.5)"/>
-            </svg>
-            <span className="text-white/55 text-[10px] font-semibold tracking-[0.15em]">أبها · الآن</span>
+          <div className="flex items-start leading-none gap-0.5">
+            <span className="text-white font-extralight" style={{ fontSize: 72, letterSpacing: '-4px', lineHeight: 1 }}>١٨</span>
+            <span className="text-white/30 text-[24px] font-light mt-3">°</span>
           </div>
-
-          {/* Temperature */}
-          <div className="flex items-start leading-none">
-            <span className="text-white font-thin" style={{ fontSize: 64, letterSpacing: '-3px', lineHeight: 1 }}>١٨</span>
-            <div className="mt-2 mr-1">
-              <span className="text-white/40 text-[22px] font-light">°م</span>
+          <div className="flex items-center gap-2 mt-1.5">
+            {/* Animated cloud icon */}
+            <motion.div
+              animate={{ y: [0, -3, 0] }}
+              transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
+              className="text-[22px]"
+            >☁️</motion.div>
+            <div>
+              <p className="text-white/75 text-[14px] font-semibold leading-none">غائم</p>
+              <p className="text-white/25 text-[9px] font-light mt-0.5">يشعر بـ١٥° · رطوبة ٧٢٪</p>
             </div>
-          </div>
-
-          {/* Condition */}
-          <div className="flex items-center gap-1.5 mt-2.5">
-            <motion.span
-              animate={{ scale: [1, 1.12, 1], rotate: [0, -5, 5, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              className="text-[20px]"
-            >☁️</motion.span>
-            <span className="text-white/85 text-[14px] font-semibold">غائم</span>
-            <span className="text-white/30 text-[10px] font-light">· يشعر بـ١٥°</span>
           </div>
         </div>
 
-        {/* Right */}
-        <div className="flex flex-col items-end gap-2.5 mt-1">
-          {/* Café message chip */}
+        {/* Right: message + hi/lo */}
+        <div className="flex flex-col items-end gap-3 pb-1">
           <motion.div
-            initial={{ opacity: 0, x: 10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.5 }}
-            className="rounded-[14px] px-3 py-2.5 text-right"
-            style={{ background: 'rgba(123,22,24,0.6)', border: '1px solid rgba(201,149,106,0.28)' }}
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.55 }}
+            className="rounded-[13px] px-3 py-2 text-right"
+            style={{ background: 'rgba(201,149,106,0.12)', border: '1px solid rgba(201,149,106,0.22)' }}
           >
-            <p className="text-[#E8C4A0] text-[10px] font-bold leading-snug">الغيم على أبها ☁️</p>
-            <p className="text-white/50 text-[9px] font-light leading-snug mt-0.5">كوب حيز أدفأ الليلة</p>
+            <p className="text-[#E8C4A0] text-[10px] font-bold leading-snug">الغيم على أبها</p>
+            <p className="text-white/40 text-[9px] font-light mt-0.5">كوب حيز يدفّئك الليلة ☕</p>
           </motion.div>
-
-          {/* Min / Max */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             <div className="text-center">
-              <p className="text-white/30 text-[8px] mb-0.5">عظمى</p>
-              <p className="text-white/75 text-[12px] font-bold font-inter">٢٢°</p>
+              <p className="text-white/25 text-[8px]">عظمى</p>
+              <p className="text-white/65 text-[12px] font-bold font-inter">٢٢°</p>
             </div>
-            <div className="w-px h-6 bg-white/15" />
+            <div className="w-px h-5 bg-white/10" />
             <div className="text-center">
-              <p className="text-white/30 text-[8px] mb-0.5">صغرى</p>
-              <p className="text-white/75 text-[12px] font-bold font-inter">١٢°</p>
+              <p className="text-white/25 text-[8px]">صغرى</p>
+              <p className="text-white/65 text-[12px] font-bold font-inter">١٢°</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Bottom strip */}
-      <div className="relative z-10 mx-4 mb-3 rounded-[14px] flex divide-x divide-white/8 overflow-hidden"
-        style={{ background: 'rgba(0,0,0,0.18)', border: '1px solid rgba(255,255,255,0.07)' }}>
+      <div className="relative z-10 flex border-t"
+        style={{ borderColor: 'rgba(201,149,106,0.1)' }}>
         {[
-          { icon: '💧', label: 'رطوبة', val: '٧٢٪'     },
-          { icon: '🌬️', label: 'رياح',  val: '١٢ كم/س'  },
-          { icon: '👁️', label: 'رؤية',  val: '٨ كم'     },
+          { emoji: '💧', label: 'رطوبة',  val: '٧٢٪'    },
+          { emoji: '🌬️', label: 'رياح',   val: '١٢ كم/س' },
+          { emoji: '🌡️', label: 'حرارة',  val: '١٨°م'   },
         ].map((s, i) => (
-          <div key={i} className="flex-1 flex flex-col items-center py-2 gap-0.5">
-            <span className="text-[12px]">{s.icon}</span>
-            <p className="text-white/80 text-[10px] font-bold font-inter">{s.val}</p>
-            <p className="text-white/30 text-[8px]">{s.label}</p>
+          <div key={i} className={`flex-1 flex flex-col items-center py-2.5 gap-0.5 ${i < 2 ? 'border-l border-[rgba(201,149,106,0.08)]' : ''}`}>
+            <span className="text-[11px]">{s.emoji}</span>
+            <p className="text-white/70 text-[10px] font-bold font-inter">{s.val}</p>
+            <p className="text-white/25 text-[7px]">{s.label}</p>
           </div>
         ))}
       </div>
