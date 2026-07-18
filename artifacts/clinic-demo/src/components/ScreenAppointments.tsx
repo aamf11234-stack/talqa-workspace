@@ -136,6 +136,26 @@ export function ScreenAppointments() {
                     </p>
                   </motion.div>
                 </div>
+              ) : done ? (
+                <div className="flex flex-col items-center py-10 px-6">
+                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', damping: 14, delay: 0.05 }}>
+                    <CheckCircle size={56} className="text-[#22C55E] mb-3" />
+                  </motion.div>
+                  <motion.div initial={{ opacity:0, y:8 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.25 }}>
+                    <p className="text-[18px] font-bold text-[#111] text-center mb-1">تم تسجيل موعدك!</p>
+                    <p className="text-[12px] text-[#888] text-center leading-snug mb-6">
+                      {selSpec} · {selTime}<br/>ستصلك رسالة تأكيد على الواتساب
+                    </p>
+                    <motion.button
+                      initial={{ opacity:0, y:8 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.5 }}
+                      whileTap={{ scale:0.95 }}
+                      className="w-full flex items-center justify-center gap-2 bg-black text-white font-bold text-[13px] py-3.5 rounded-[14px] shadow-[0_4px_20px_rgba(0,0,0,0.25)]"
+                    >
+                      <span className="text-[18px]">🎫</span>
+                      أضف إلى Apple Wallet
+                    </motion.button>
+                  </motion.div>
+                </div>
               ) : (
                 <>
                   {/* Modal header */}
