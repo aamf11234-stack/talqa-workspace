@@ -47,7 +47,7 @@ function WeatherCard() {
       <div className="relative z-10 flex items-center justify-between px-5 pt-4 pb-0">
         <div className="flex items-center gap-1.5">
           <div className="w-1.5 h-1.5 rounded-full bg-[#C9956A] animate-pulse" />
-          <span className="text-[#C9956A]/70 text-[9px] font-bold tracking-[0.2em]">أبها · الآن</span>
+          <span className="text-[#C9956A]/70 text-[9px] font-bold tracking-[0.2em]">حيز · الآن</span>
         </div>
         <span className="text-white/20 text-[9px] font-inter">السبت ١٨ يوليو</span>
       </div>
