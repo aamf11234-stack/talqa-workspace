@@ -181,12 +181,131 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
 }
 
 /* ── App Screenshots strip ───────────────────────────────────────── */
-const screens: { tab: Tab; label: string; color: string }[] = [
-  { tab: 'home',      label: 'الرئيسية', color: '#7B1618' },
-  { tab: 'menu',      label: 'المنيو',   color: '#2D7D46' },
-  { tab: 'card',      label: 'بطاقتي',  color: '#C9956A' },
-  { tab: 'book',      label: 'احجز',    color: '#1A5276' },
-  { tab: 'community', label: 'مجتمع',   color: '#6C3483' },
+const screens: { tab: Tab; label: string; color: string; bg: string; preview: React.ReactNode }[] = [
+  {
+    tab: 'home', label: 'الرئيسية', color: '#C9956A',
+    bg: 'linear-gradient(160deg,#050002 0%,#3D0809 55%,#0D0205 100%)',
+    preview: (
+      <div className="absolute inset-0 flex flex-col px-2 pt-3 gap-1.5">
+        <div className="flex justify-between items-center mb-0.5">
+          <div className="w-8 h-1.5 bg-white/20 rounded-full" />
+          <div className="w-4 h-4 rounded-full bg-[#C9956A]/30 border border-[#C9956A]/40" />
+        </div>
+        <div className="flex justify-center">
+          <div className="w-10 h-10 rounded-full border-2 border-[#C9956A]/50 flex items-center justify-center">
+            <div className="w-6 h-6 rounded-full border border-[#7B1618]/60" />
+          </div>
+        </div>
+        <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+          <div className="h-full w-3/5 bg-[#C9956A]/60 rounded-full" />
+        </div>
+        <div className="flex gap-1 mt-0.5">
+          {[1,2,3].map(i=><div key={i} className="flex-1 h-5 bg-white/8 rounded-[5px]"/>)}
+        </div>
+        <div className="w-full h-12 rounded-[7px] bg-white/5 border border-white/8 mt-0.5" />
+      </div>
+    ),
+  },
+  {
+    tab: 'menu', label: 'المنيو', color: '#2D7D46',
+    bg: 'linear-gradient(160deg,#080002 0%,#3D0809 60%,#0D0205 100%)',
+    preview: (
+      <div className="absolute inset-0 flex flex-col px-2 pt-3 gap-1.5">
+        <div className="flex justify-center mb-1">
+          <div className="w-8 h-8 rounded-[8px] bg-[#C9956A]/30 border border-[#C9956A]/40" />
+        </div>
+        <div className="w-full h-2 bg-white/10 rounded-full" />
+        <div className="flex gap-1">
+          {['#7B1618','#2D7D46','#B5651D'].map(c=><div key={c} className="h-4 flex-1 rounded-full" style={{background:`${c}50`}}/>)}
+        </div>
+        {[0.9,0.7,0.85].map((o,i)=>(
+          <div key={i} className="flex items-center gap-1.5 py-1 border-b border-white/5">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#C9956A]/60 shrink-0" />
+            <div className="flex-1 h-1.5 rounded-full bg-white/15" style={{opacity:o}} />
+            <div className="w-4 h-1.5 rounded-full bg-[#7B1618]/60" />
+          </div>
+        ))}
+      </div>
+    ),
+  },
+  {
+    tab: 'card', label: 'بطاقتي', color: '#C9956A',
+    bg: 'linear-gradient(145deg,#0D0205,#3D0809,#0D0205)',
+    preview: (
+      <div className="absolute inset-0 flex flex-col items-center px-2 pt-3 gap-2">
+        <div className="w-full rounded-[8px] p-2 flex-1 max-h-[55px] relative overflow-hidden"
+          style={{background:'linear-gradient(135deg,#1a0406,#3D0809,#0D0205)',border:'1px solid rgba(201,149,106,0.3)'}}>
+          <div className="absolute inset-0" style={{background:'radial-gradient(ellipse at 70% 20%,rgba(201,149,106,0.2) 0%,transparent 60%)'}} />
+          <div className="flex justify-between items-start">
+            <div className="w-6 h-1.5 bg-[#C9956A]/60 rounded-full" />
+            <div className="w-3 h-3 rounded-full bg-white/15" />
+          </div>
+          <div className="mt-1 w-8 h-2 bg-white/40 rounded-full" />
+          <div className="flex justify-between mt-1">
+            <div className="w-5 h-1 bg-[#C9956A]/40 rounded-full" />
+            <div className="w-5 h-1 bg-white/25 rounded-full" />
+          </div>
+        </div>
+        <div className="w-8 h-8 rounded-full border-2 border-white/20 flex items-center justify-center">
+          <div className="w-4 h-4 rounded-sm bg-white/20" />
+        </div>
+        <div className="w-full h-1 bg-white/8 rounded-full overflow-hidden">
+          <div className="h-full w-2/5 bg-[#C9956A]/60 rounded-full" />
+        </div>
+      </div>
+    ),
+  },
+  {
+    tab: 'book', label: 'احجز', color: '#1A5276',
+    bg: '#FAF7F3',
+    preview: (
+      <div className="absolute inset-0 flex flex-col px-2 pt-3 gap-1.5">
+        <div className="w-12 h-2 bg-[#111]/20 rounded-full" />
+        <div className="flex gap-1">
+          {[0,1,2,3].map(i=>(
+            <div key={i} className={`flex-1 h-7 rounded-[5px] flex flex-col items-center justify-center gap-0.5 ${i===1?'bg-[#7B1618]':'bg-white border border-[rgba(196,181,159,0.3)]'}`}>
+              <div className={`w-2 h-1 rounded-full ${i===1?'bg-white/50':'bg-[#888]/30'}`} />
+              <div className={`w-2.5 h-2 rounded-sm font-bold ${i===1?'bg-white/80':'bg-[#111]/20'}`} />
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-3 gap-1">
+          {[0,1,2,3,4,5].map(i=>(
+            <div key={i} className={`h-4 rounded-[4px] ${i===4?'bg-[#7B1618]/80':'bg-white border border-[rgba(196,181,159,0.25)]'}`} />
+          ))}
+        </div>
+        <div className="w-full h-6 rounded-[6px] bg-[#7B1618]/80" />
+      </div>
+    ),
+  },
+  {
+    tab: 'community', label: 'مجتمع', color: '#6C3483',
+    bg: '#F5EFE8',
+    preview: (
+      <div className="absolute inset-0 flex flex-col px-2 pt-3 gap-1.5">
+        <div className="flex gap-1.5">
+          {[0,1,2,3].map(i=>(
+            <div key={i} className="flex flex-col items-center gap-0.5">
+              <div className={`w-7 h-7 rounded-full p-[1.5px]`}
+                style={{background:i===0?'linear-gradient(135deg,#7B1618,#C9956A)':'rgba(196,181,159,0.3)'}}>
+                <div className="w-full h-full rounded-full bg-[#DDD]" />
+              </div>
+              <div className="w-4 h-1 bg-[#888]/30 rounded-full" />
+            </div>
+          ))}
+        </div>
+        {[1,0.7,0.9].map((o,i)=>(
+          <div key={i} className="w-full rounded-[6px] bg-white shadow-sm p-1.5 flex gap-1.5" style={{opacity:o}}>
+            <div className="w-5 h-5 rounded-full bg-[#7B1618]/20 shrink-0" />
+            <div className="flex-1 flex flex-col gap-0.5">
+              <div className="w-8 h-1 bg-[#111]/20 rounded-full" />
+              <div className="w-full h-1 bg-[#111]/10 rounded-full" />
+            </div>
+          </div>
+        ))}
+      </div>
+    ),
+  },
 ];
 
 function AppScreensStrip({ onTabSelect }: { onTabSelect: (t: Tab) => void }) {
@@ -197,31 +316,22 @@ function AppScreensStrip({ onTabSelect }: { onTabSelect: (t: Tab) => void }) {
           key={s.tab}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.05 * i }}
+          transition={{ delay: 0.06 * i }}
           whileTap={{ scale: 0.95 }}
           onClick={() => onTabSelect(s.tab)}
           className="shrink-0 flex flex-col items-center gap-2"
         >
           {/* Mini phone mockup */}
           <div
-            className="w-[70px] h-[120px] rounded-[16px] relative overflow-hidden border border-white/10"
-            style={{ background: 'linear-gradient(145deg,#1a0a0b,#2d0d0e)' }}
+            className="w-[72px] h-[128px] rounded-[18px] relative overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.18)]"
+            style={{ background: s.bg, border: `1.5px solid ${s.color}30` }}
           >
-            {/* Screen tint */}
-            <div className="absolute inset-0" style={{ background: `radial-gradient(ellipse at 60% 30%,${s.color}40 0%,transparent 70%)` }} />
-            {/* Dots */}
-            <div className="absolute top-2 left-1/2 -translate-x-1/2 w-5 h-1 bg-white/10 rounded-full" />
-            {/* Icon */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div
-                className="w-8 h-8 rounded-[10px] flex items-center justify-center text-[18px]"
-                style={{ background: `${s.color}25` }}
-              >
-                {s.tab === 'home' ? '🏠' : s.tab === 'menu' ? '☕' : s.tab === 'card' ? '💳' : s.tab === 'book' ? '📅' : '🔔'}
-              </div>
-            </div>
-            {/* Bottom bar */}
-            <div className="absolute bottom-2 left-2 right-2 h-0.5 rounded-full" style={{ background: `${s.color}60` }} />
+            {/* Notch */}
+            <div className="absolute top-2 left-1/2 -translate-x-1/2 w-7 h-1 bg-black/20 rounded-full z-10" />
+            {/* Screen content */}
+            {s.preview}
+            {/* Bottom home indicator */}
+            <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-8 h-0.5 bg-black/20 rounded-full" />
           </div>
           <span className="text-[10px] font-semibold text-[#666]">{s.label}</span>
         </motion.button>
@@ -232,7 +342,7 @@ function AppScreensStrip({ onTabSelect }: { onTabSelect: (t: Tab) => void }) {
 
 /* ── Main App ─────────────────────────────────────────────────────── */
 export default function App() {
-  const [activeTab, setActiveTab] = useState<Tab>('card');
+  const [activeTab, setActiveTab] = useState<Tab>('home');
 
   useEffect(() => {
     document.documentElement.dir = 'rtl';
@@ -260,7 +370,25 @@ export default function App() {
       </div>
 
       {/* ── Hero ───────────────────────────────────────────── */}
-      <div className="max-w-5xl mx-auto px-6 pt-10 pb-6 text-center">
+      <div className="max-w-5xl mx-auto px-6 pt-10 pb-6 text-center relative">
+        {/* Floating particles */}
+        {[
+          { x: '8%',  y: '20%', size: 3,   delay: 0,    dur: 4.2 },
+          { x: '90%', y: '15%', size: 2,   delay: 0.8,  dur: 3.5 },
+          { x: '15%', y: '70%', size: 2.5, delay: 1.5,  dur: 5   },
+          { x: '82%', y: '65%', size: 2,   delay: 0.4,  dur: 4.8 },
+          { x: '50%', y: '5%',  size: 1.5, delay: 2,    dur: 3.8 },
+          { x: '35%', y: '85%', size: 2,   delay: 1.1,  dur: 4.5 },
+          { x: '70%', y: '80%', size: 1.5, delay: 2.5,  dur: 3.2 },
+        ].map((p, i) => (
+          <motion.div
+            key={i}
+            className="absolute rounded-full pointer-events-none"
+            style={{ left: p.x, top: p.y, width: p.size, height: p.size, background: 'rgba(123,22,24,0.35)' }}
+            animate={{ y: [-6, 6, -6], opacity: [0.3, 0.7, 0.3] }}
+            transition={{ duration: p.dur, delay: p.delay, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        ))}
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <span className="inline-flex items-center gap-2 bg-[#7B1618] text-[#C9956A] text-[11px] font-semibold px-4 py-1.5 rounded-full mb-4 tracking-widest shadow-[0_4px_20px_rgba(123,22,24,0.35)]">
             <span className="w-1.5 h-1.5 bg-[#C9956A] rounded-full animate-pulse" />
@@ -821,7 +949,7 @@ export default function App() {
           </div>
           <span className="text-[13px] font-bold text-[#111]">تلقا تك</span>
         </div>
-        <p className="text-[11px] text-[#CCC] font-light">تصميم وتطوير احترافي · جميع الحقوق محفوظة ٢٠٢٥</p>
+        <p className="text-[11px] text-[#CCC] font-light">تصميم وتطوير احترافي · جميع الحقوق محفوظة ٢٠٢٦</p>
       </div>
     </div>
   );

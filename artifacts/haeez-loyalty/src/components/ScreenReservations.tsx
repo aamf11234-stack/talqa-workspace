@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Clock, MessageSquare, Check, X } from 'lucide-react';
+import { Users, Check } from 'lucide-react';
+
+const logoImg = `${import.meta.env.BASE_URL}hyz-logo.jpeg`;
 
 const today = new Date();
 const dates = Array.from({ length: 7 }, (_, i) => {
@@ -33,13 +35,63 @@ export function ScreenReservations() {
   };
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto scrollbar-none pb-24">
-      {/* Header */}
-      <div className="px-5 pt-4 pb-3">
-        <h1 className="text-[22px] font-bold text-[#111]">احجز طاولتك</h1>
-        <p className="text-[12px] text-[#888] font-light mt-0.5">
-          شارع لبنان، أبها · من ٦ص حتى ٦:٣٠م
-        </p>
+    <div className="flex flex-col h-full overflow-y-auto scrollbar-none pb-24" style={{ background: '#FAF7F3' }}>
+
+      {/* ── Dark premium header ─────────────────────────────────── */}
+      <div className="relative overflow-hidden shrink-0"
+        style={{ background: 'linear-gradient(170deg,#080002 0%,#200407 40%,#3D0809 70%,#0D0205 100%)' }}>
+
+        {/* Ambient glow */}
+        <div className="absolute inset-0 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse at 50% 90%,rgba(201,149,106,0.15) 0%,transparent 65%)' }} />
+        <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
+          style={{ backgroundImage: 'radial-gradient(circle,#fff 1px,transparent 1px)', backgroundSize: '10px 10px' }} />
+        <div className="absolute top-0 left-0 right-0 h-px"
+          style={{ background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.4),transparent)' }} />
+
+        <div className="relative z-10 flex flex-col items-center pt-6 pb-5 px-5">
+          {/* Logo */}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
+            className="relative mb-3"
+          >
+            <div className="absolute inset-0 rounded-[18px] blur-xl"
+              style={{ background: 'rgba(201,149,106,0.3)', transform: 'scale(1.3)' }} />
+            <img src={logoImg} alt="حيز"
+              className="relative w-14 h-14 rounded-[18px] object-cover"
+              style={{ border: '2px solid rgba(201,149,106,0.45)', boxShadow: '0 0 0 1px rgba(201,149,106,0.12), 0 8px 28px rgba(0,0,0,0.5)' }}
+              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+            />
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-center">
+            <p className="text-[9px] font-black tracking-[0.32em] text-[#C9956A] mb-1"
+              style={{ fontFamily: 'ui-monospace,monospace' }}>HYZ CAFÉ · ABHA</p>
+            <h1 className="text-[24px] font-black text-white leading-none tracking-tight">احجز طاولتك</h1>
+            <p className="text-white/30 text-[10px] mt-1.5 font-light">شارع لبنان · من ٦ص حتى ٦:٣٠م</p>
+          </motion.div>
+
+          {/* Stats */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
+            className="flex items-center gap-5 mt-4 pt-4 w-full justify-center"
+            style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            {[
+              { v: '٧', l: 'أيام متاحة' },
+              { v: '١٠', l: 'أوقات يومياً' },
+              { v: 'فوري', l: 'تأكيد واتساب' },
+            ].map((s, i) => (
+              <div key={i} className="text-center">
+                <p className="text-white text-[13px] font-black font-inter leading-none">{s.v}</p>
+                <p className="text-white/30 text-[8px] mt-0.5">{s.l}</p>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        <div className="absolute bottom-0 left-0 right-0 h-4 pointer-events-none"
+          style={{ background: 'linear-gradient(to bottom,transparent,#FAF7F3)' }} />
       </div>
 
       {/* Success toast */}
