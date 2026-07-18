@@ -71,23 +71,17 @@ const allFeatures = [
 ];
 
 /* ── ROI Calculator ───────────────────────────────────────────────── */
-function RoiSection() {
+function RoiSection({ inline = false }: { inline?: boolean }) {
   const [customers, setCustomers] = React.useState(80);
   const [spend, setSpend] = React.useState(45);
   const retention = 0.15;
   const monthly = Math.round(customers * spend * 30 * retention);
   const weeks = Math.round((18000 / monthly) * 4.3);
 
-  return (
-    <div className="max-w-5xl mx-auto px-6 mb-10">
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="rounded-[28px] overflow-hidden"
-        style={{ background: 'linear-gradient(160deg,#FDFAF6 0%,#F5EDE0 100%)', border: '1.5px solid rgba(123,22,24,0.1)', boxShadow: '0 8px 40px rgba(123,22,24,0.08)' }}
-      >
-        {/* Header */}
+  const inner = (
+    <>
+      {/* Header — hidden in inline mode */}
+      {!inline && (
         <div className="px-7 pt-7 pb-5 border-b border-[rgba(123,22,24,0.08)]">
           <div className="inline-flex items-center gap-2 bg-[#7B1618]/8 border border-[rgba(123,22,24,0.15)] px-3.5 py-1.5 rounded-full mb-3">
             <span className="text-[10px] font-black tracking-[0.2em] text-[#7B1618]">حاسبة العائد على الاستثمار</span>
@@ -98,7 +92,6 @@ function RoiSection() {
           <p className="text-[13px] text-[#555] leading-relaxed mb-4">
             التطبيق يخلي زبائنك يرجعون بشكل أكثر — حتى لو بنسبة <strong>١٥٪ فقط</strong> زيادة في الزيارات، الأرقام تتكلم وحدها.
           </p>
-          {/* How it works explainer */}
           <div className="flex gap-2.5">
             {[
               { n: '١', text: 'غيّر أرقام الكافي' },
@@ -114,75 +107,74 @@ function RoiSection() {
             ))}
           </div>
         </div>
+      )}
 
-        {/* Sliders */}
-        <div className="px-7 py-6 grid md:grid-cols-2 gap-6">
-          {/* Customers slider */}
-          <div>
-            <div className="flex justify-between mb-3">
-              <span className="text-[13px] font-semibold text-[#333]">عدد الزوار اليومي</span>
-              <span className="text-[18px] font-black text-[#7B1618] font-inter">{customers}</span>
-            </div>
-            <input
-              type="range" min={20} max={300} step={10} value={customers}
-              onChange={e => setCustomers(Number(e.target.value))}
-              className="w-full accent-[#7B1618] h-1.5 rounded-full"
-              style={{ accentColor: '#7B1618' }}
-            />
-            <div className="flex justify-between mt-1">
-              <span className="text-[10px] text-[#BBB]">٢٠</span>
-              <span className="text-[10px] text-[#BBB]">٣٠٠</span>
-            </div>
+      {/* Inline mini header */}
+      {inline && (
+        <div className="px-5 pt-4 pb-2">
+          <p className="text-white/50 text-[10px] font-semibold tracking-widest mb-1">حاسبة العائد — غيّر أرقام الكافي</p>
+        </div>
+      )}
+
+      {/* Sliders */}
+      <div className={`${inline ? 'px-5 py-3' : 'px-7 py-6'} grid grid-cols-2 gap-4`}>
+        <div>
+          <div className="flex justify-between mb-2">
+            <span className={`${inline ? 'text-[11px] text-white/60' : 'text-[13px] text-[#333]'} font-semibold`}>زوار اليوم</span>
+            <span className={`${inline ? 'text-[16px] text-[#C9956A]' : 'text-[18px] text-[#7B1618]'} font-black font-inter`}>{customers}</span>
           </div>
+          <input type="range" min={20} max={300} step={10} value={customers}
+            onChange={e => setCustomers(Number(e.target.value))}
+            className="w-full h-1.5 rounded-full" style={{ accentColor: inline ? '#C9956A' : '#7B1618' }} />
+        </div>
+        <div>
+          <div className="flex justify-between mb-2">
+            <span className={`${inline ? 'text-[11px] text-white/60' : 'text-[13px] text-[#333]'} font-semibold`}>الفاتورة</span>
+            <span className={`${inline ? 'text-[16px] text-[#C9956A]' : 'text-[18px] text-[#7B1618]'} font-black font-inter`}>{spend}ر</span>
+          </div>
+          <input type="range" min={20} max={150} step={5} value={spend}
+            onChange={e => setSpend(Number(e.target.value))}
+            className="w-full h-1.5 rounded-full" style={{ accentColor: inline ? '#C9956A' : '#7B1618' }} />
+        </div>
+      </div>
 
-          {/* Spend slider */}
+      {/* Result */}
+      <div className={`${inline ? 'mx-5 mb-4' : 'mx-7 mb-7'} rounded-[16px] p-4 relative overflow-hidden`}
+        style={{ background: inline ? 'rgba(0,0,0,0.3)' : 'linear-gradient(145deg,#0D0205,#3D0809,#0D0205)', border: inline ? '1px solid rgba(255,255,255,0.08)' : 'none' }}>
+        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 80% 20%,rgba(201,149,106,0.14) 0%,transparent 55%)' }} />
+        <div className="relative z-10 grid grid-cols-3 gap-3 text-center">
           <div>
-            <div className="flex justify-between mb-3">
-              <span className="text-[13px] font-semibold text-[#333]">متوسط الفاتورة</span>
-              <span className="text-[18px] font-black text-[#7B1618] font-inter">{spend} ريال</span>
-            </div>
-            <input
-              type="range" min={20} max={150} step={5} value={spend}
-              onChange={e => setSpend(Number(e.target.value))}
-              className="w-full h-1.5 rounded-full"
-              style={{ accentColor: '#7B1618' }}
-            />
-            <div className="flex justify-between mt-1">
-              <span className="text-[10px] text-[#BBB]">٢٠</span>
-              <span className="text-[10px] text-[#BBB]">١٥٠</span>
-            </div>
+            <p className="text-white/30 text-[8px] font-semibold tracking-widest mb-1">إيراد إضافي/شهر</p>
+            <p className="text-[#C9956A] text-[18px] font-black font-inter leading-none">{monthly.toLocaleString('ar')}</p>
+            <p className="text-white/25 text-[8px] mt-0.5">ريال</p>
+          </div>
+          <div className="border-x border-white/[0.07]">
+            <p className="text-white/30 text-[8px] font-semibold tracking-widest mb-1">يرجع الاستثمار</p>
+            <p className="text-[#30D158] text-[18px] font-black font-inter leading-none">{weeks}</p>
+            <p className="text-white/25 text-[8px] mt-0.5">أسبوع فقط</p>
+          </div>
+          <div>
+            <p className="text-white/30 text-[8px] font-semibold tracking-widest mb-1">نمو العودة</p>
+            <p className="text-white text-[18px] font-black font-inter leading-none">١٥٪</p>
+            <p className="text-white/25 text-[8px] mt-0.5">الحد الأدنى</p>
           </div>
         </div>
+      </div>
+    </>
+  );
 
-        {/* Result */}
-        <div className="mx-7 mb-7 rounded-[20px] p-5 relative overflow-hidden"
-          style={{ background: 'linear-gradient(145deg,#0D0205,#3D0809,#0D0205)' }}>
-          <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 80% 20%,rgba(201,149,106,0.14) 0%,transparent 55%)' }} />
-          <div className="relative z-10 grid grid-cols-3 gap-4 text-center">
-            <div>
-              <p className="text-white/30 text-[9px] font-semibold tracking-widest mb-1">إيراد شهري إضافي</p>
-              <p className="text-[#C9956A] text-[22px] font-black font-inter leading-none">
-                {monthly.toLocaleString('ar')}
-              </p>
-              <p className="text-white/25 text-[9px] mt-1">ريال/شهر</p>
-            </div>
-            <div className="border-x border-white/[0.07]">
-              <p className="text-white/30 text-[9px] font-semibold tracking-widest mb-1">الاسترداد</p>
-              <p className="text-[#30D158] text-[22px] font-black font-inter leading-none">{weeks}</p>
-              <p className="text-white/25 text-[9px] mt-1">أسبوع فقط</p>
-            </div>
-            <div>
-              <p className="text-white/30 text-[9px] font-semibold tracking-widest mb-1">نمو الاحتفاظ</p>
-              <p className="text-white text-[22px] font-black font-inter leading-none">١٥٪</p>
-              <p className="text-white/25 text-[9px] mt-1">بالحد الأدنى</p>
-            </div>
-          </div>
-          <div className="relative z-10 mt-4 pt-4 border-t border-white/[0.07] text-center">
-            <p className="text-white/40 text-[11px] font-light">
-              بزيادة <span className="text-[#C9956A] font-semibold">١٥٪ فقط</span> في معدل عودة زوارك · التطبيق يدفع نفسه خلال <span className="text-[#30D158] font-semibold">{weeks} أسبوع</span>
-            </p>
-          </div>
-        </div>
+  if (inline) return <>{inner}</>;
+
+  return (
+    <div className="max-w-5xl mx-auto px-6 mb-10">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="rounded-[28px] overflow-hidden"
+        style={{ background: 'linear-gradient(160deg,#FDFAF6 0%,#F5EDE0 100%)', border: '1.5px solid rgba(123,22,24,0.1)', boxShadow: '0 8px 40px rgba(123,22,24,0.08)' }}
+      >
+        {inner}
       </motion.div>
     </div>
   );
@@ -770,9 +762,6 @@ export default function App() {
         </div>
       </div>
 
-      {/* ── ROI Calculator ───────────────────────────────── */}
-      <RoiSection />
-
       {/* ── CTA ──────────────────────────────────────────── */}
       <div className="max-w-lg mx-auto px-6 mb-10">
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
@@ -787,6 +776,11 @@ export default function App() {
             <div className="inline-flex items-center gap-2 border border-[rgba(201,149,106,0.3)] bg-[rgba(201,149,106,0.08)] px-4 py-1.5 rounded-full mb-4">
               <div className="w-1.5 h-1.5 bg-[#C9956A] rounded-full animate-pulse" />
               <span className="text-[#C9956A] text-[10px] font-black tracking-[0.2em]">هذا العرض مخصص لحيز فقط</span>
+            </div>
+
+            {/* ROI inline */}
+            <div className="mb-6 rounded-[20px] overflow-hidden text-right" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              <RoiSection inline />
             </div>
 
             <p className="text-[#C9956A] text-[11px] font-semibold tracking-widest uppercase mb-3">الاستثمار الكلي</p>
