@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/clinic-demo/"
+title = "ديمو عيادات — تلقا تك"
+version = "1.0.0"
+id = "artifacts/clinic-demo"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/clinic-demo/" ]
+localPort = 24126
+
+[services.development]
+run = "pnpm --filter @workspace/clinic-demo run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/clinic-demo", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/clinic-demo/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24126"
+BASE_PATH = "/clinic-demo/"
