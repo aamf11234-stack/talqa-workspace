@@ -101,7 +101,7 @@ function RoiSection() {
           {/* How it works explainer */}
           <div className="flex gap-2.5">
             {[
-              { n: '١', text: 'غيّر أرقام مقهاك' },
+              { n: '١', text: 'غيّر أرقام الكافي' },
               { n: '٢', text: 'شوف الإيراد الإضافي' },
               { n: '٣', text: 'احسب متى يرجع الاستثمار' },
             ].map(s => (
