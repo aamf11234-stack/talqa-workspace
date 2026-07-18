@@ -1,159 +1,182 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { QrCode, Wifi, Shield, Phone, ChevronLeft } from 'lucide-react';
+import { Shield, ChevronLeft } from 'lucide-react';
 
-function QRSmall() {
-  const cells: [number, number][] = [];
+function QRCode() {
   const pattern = [
-    [0,0],[1,0],[2,0],[3,0],[4,0],[5,0],[6,0],
-    [0,1],[6,1],[0,2],[2,2],[3,2],[4,2],[6,2],
-    [0,3],[2,3],[4,3],[6,3],[0,4],[2,4],[3,4],[4,4],[6,4],
-    [0,5],[6,5],[0,6],[1,6],[2,6],[3,6],[4,6],[5,6],[6,6],
+    [0,0],[1,0],[2,0],[3,0],[4,0],[5,0],[6,0],[0,1],[6,1],
+    [0,2],[2,2],[3,2],[4,2],[6,2],[0,3],[2,3],[4,3],[6,3],
+    [0,4],[2,4],[3,4],[4,4],[6,4],[0,5],[6,5],
+    [0,6],[1,6],[2,6],[3,6],[4,6],[5,6],[6,6],
     [8,0],[9,0],[10,0],[8,2],[10,2],[8,3],[9,3],[10,4],[8,6],
     [12,0],[14,0],[12,2],[13,2],[14,2],[12,4],[13,4],[14,4],[14,6],
     [8,8],[9,8],[10,8],[11,8],[12,8],[8,10],[10,10],[12,10],
     [9,12],[11,12],[12,12],[14,12],[8,14],[9,14],[11,14],[14,14],
   ];
   return (
-    <svg width="80" height="80" viewBox="0 0 17 17">
-      {pattern.map(([x,y],i) => <rect key={i} x={x} y={y} width="0.85" height="0.85" fill="white" rx="0.1"/>)}
+    <svg width="96" height="96" viewBox="0 0 17 17">
+      {pattern.map(([x,y],i) => <rect key={i} x={x} y={y} width="0.85" height="0.85" fill="white" rx="0.12"/>)}
     </svg>
   );
 }
+
+const infoRows = [
+  { icon: '👩‍⚕️', label: 'الطبيب المعالج',   value: 'د. سارة المطيري · طب عام' },
+  { icon: '💊',   label: 'الأدوية النشطة',   value: 'ميتفورمين · أوميبرازول · فيتامين د' },
+  { icon: '⚠️',   label: 'الحساسية',         value: 'بنسلين — لا حساسية أخرى معروفة' },
+  { icon: '📞',   label: 'جهة اتصال طوارئ',  value: 'محمد الشمري · 0500000000' },
+];
 
 export function ScreenCard() {
   const [showQR, setShowQR] = useState(false);
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto scrollbar-none" style={{ background: '#F0F8FF' }}>
+    <div className="flex flex-col h-full overflow-y-auto scrollbar-none" style={{ background: '#F2F6FB', fontFamily: 'Tajawal,sans-serif' }}>
 
-      {/* Dark header */}
-      <div className="shrink-0 px-5 pt-5 pb-4" style={{ background: 'linear-gradient(160deg,#050E1A,#0B3A5A)' }}>
-        <p className="text-white/40 text-[10px] mb-0.5">رقمية · آمنة · دائمة</p>
-        <p className="text-white text-[18px] font-bold">بطاقة المريض</p>
-      </div>
-
-      {/* Patient card */}
-      <div className="px-4 -mt-2 mb-4 relative z-10">
-        <div className="relative rounded-[24px] overflow-hidden p-5"
-          style={{
-            background: 'linear-gradient(145deg,#050E1A 0%,#0B3A5A 45%,#050E1A 80%)',
-            border: '1px solid rgba(0,180,216,0.2)',
-            boxShadow: '0 12px 40px rgba(11,74,111,0.3)',
-          }}>
-          {/* Shimmer */}
-          <div className="absolute top-0 bottom-0 w-[30%] animate-shimmer pointer-events-none"
-            style={{ background: 'linear-gradient(90deg,transparent,rgba(0,180,216,0.07),transparent)', transform: 'skewX(-20deg)' }} />
-          {/* Glow */}
-          <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 80% 10%,rgba(0,180,216,0.12) 0%,transparent 55%)' }} />
-          {/* Dots */}
-          <div className="absolute bottom-0 left-0 w-32 h-32 opacity-[0.04]"
-            style={{ backgroundImage: 'radial-gradient(circle,#00B4D8 1px,transparent 1px)', backgroundSize: '8px 8px' }} />
-
-          <div className="relative z-10">
-            {/* Top row */}
-            <div className="flex items-start justify-between mb-5">
-              <div>
-                <div className="flex items-center gap-1.5 mb-1">
-                  <div className="w-5 h-5 rounded-full flex items-center justify-center" style={{ background: 'rgba(0,180,216,0.2)' }}>
-                    <Shield size={10} className="text-[#00B4D8]" />
-                  </div>
-                  <p className="text-[#00B4D8] text-[10px] font-bold tracking-widest">عيادتك</p>
-                </div>
-                <p className="text-white/20 text-[8px] font-inter tracking-wider">DIGITAL PATIENT CARD</p>
-              </div>
-              <div className="flex items-center gap-1.5">
-                {/* NFC waves */}
-                <svg width="20" height="16" viewBox="0 0 20 16" fill="none">
-                  <path d="M6 8 Q8 4 8 8 Q8 12 6 8" stroke="rgba(0,180,216,0.4)" strokeWidth="1.2" fill="none" strokeLinecap="round"/>
-                  <path d="M10 8 Q13 2 13 8 Q13 14 10 8" stroke="rgba(0,180,216,0.6)" strokeWidth="1.2" fill="none" strokeLinecap="round"/>
-                  <path d="M14.5 8 Q18 0 18 8 Q18 16 14.5 8" stroke="rgba(0,180,216,0.8)" strokeWidth="1.2" fill="none" strokeLinecap="round"/>
-                </svg>
-              </div>
-            </div>
-
-            {/* Patient info */}
-            <div className="mb-4">
-              <p className="text-white/30 text-[8px] mb-0.5 font-inter">PATIENT NAME</p>
-              <p className="text-white text-[18px] font-bold leading-tight">أحمد ناصر الشمري</p>
-            </div>
-
-            {/* ID row */}
-            <div className="grid grid-cols-3 gap-2 mb-4">
-              <div>
-                <p className="text-white/25 text-[7px] font-inter mb-0.5">PATIENT ID</p>
-                <p className="text-[#00B4D8] text-[11px] font-bold font-inter">#PT-2024-0842</p>
-              </div>
-              <div>
-                <p className="text-white/25 text-[7px] font-inter mb-0.5">BLOOD TYPE</p>
-                <p className="text-white text-[13px] font-bold">O+</p>
-              </div>
-              <div>
-                <p className="text-white/25 text-[7px] font-inter mb-0.5">INSURANCE</p>
-                <p className="text-white text-[10px] font-medium">بوبا ٢٠٢٦</p>
-              </div>
-            </div>
-
-            {/* QR button */}
-            <button onClick={() => setShowQR(true)}
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[12px] text-white font-semibold text-[12px] transition-all active:scale-95"
-              style={{ background: 'rgba(0,180,216,0.15)', border: '1px solid rgba(0,180,216,0.25)' }}>
-              <QrCode size={14} />
-              عرض رمز QR
-            </button>
-          </div>
+      {/* Header */}
+      <div className="shrink-0 px-5 pt-5 pb-5 relative overflow-hidden"
+        style={{ background: 'linear-gradient(160deg,#06101E 0%,#0B3A5A 60%,#06101E 100%)' }}>
+        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 70% 30%,rgba(0,180,216,0.18) 0%,transparent 60%)' }} />
+        <div className="relative z-10">
+          <p className="text-white/40 text-[10px] mb-1">رقمية · آمنة · دائمة</p>
+          <p className="text-white text-[20px] font-bold">بطاقة المريض</p>
         </div>
       </div>
 
-      {/* Quick info cards */}
-      <div className="px-4 mb-4">
-        <p className="text-[12px] font-bold text-[#0B4A6F] mb-2">معلومات سريعة</p>
-        <div className="space-y-2.5">
-          {[
-            { label: 'الطبيب المعالج',    value: 'د. سارة المطيري · طب عام', icon: '👩‍⚕️' },
-            { label: 'الأدوية النشطة',    value: 'مترفورمين · أوميبرازول · فيتامين د', icon: '💊' },
-            { label: 'الحساسية',          value: 'بنسلين · لا معروف أخرى', icon: '⚠️' },
-            { label: 'جهة اتصال طوارئ',  value: 'محمد الشمري · +٩٦٦٥٠٠٠٠٠٠٠٠', icon: '📞' },
-          ].map((r, i) => (
-            <div key={i} className="bg-white rounded-[14px] px-4 py-3 flex items-start gap-3 border border-[rgba(11,74,111,0.07)] shadow-[0_2px_8px_rgba(0,0,0,0.03)]">
-              <span className="text-base shrink-0 mt-0.5">{r.icon}</span>
-              <div className="flex-1 min-w-0">
-                <p className="text-[10px] text-[#AAA]">{r.label}</p>
-                <p className="text-[12px] font-semibold text-[#333] leading-snug">{r.value}</p>
+      {/* Patient Card */}
+      <div className="px-4 -mt-3 mb-5 relative z-10">
+        <motion.div initial={{ opacity:0, y:16, scale:0.97 }} animate={{ opacity:1, y:0, scale:1 }}
+          transition={{ type:'spring', damping:22, delay:0.1 }}
+          className="rounded-[28px] overflow-hidden relative"
+          style={{ background:'linear-gradient(145deg,#06101E,#0B3A5A,#06101E)', border:'1px solid rgba(0,180,216,0.18)', boxShadow:'0 16px 48px rgba(11,74,111,0.32)' }}>
+
+          {/* Ambient glow */}
+          <div className="absolute inset-0 pointer-events-none"
+            style={{ background:'radial-gradient(ellipse at 80% 10%,rgba(0,180,216,0.14) 0%,transparent 55%)' }} />
+          {/* Dot grid */}
+          <div className="absolute bottom-0 left-0 w-36 h-36 opacity-[0.05]"
+            style={{ backgroundImage:'radial-gradient(circle,#00B4D8 1px,transparent 1px)', backgroundSize:'9px 9px' }} />
+          {/* Shimmer */}
+          <motion.div className="absolute inset-y-0 w-[40%] pointer-events-none"
+            style={{ background:'linear-gradient(90deg,transparent,rgba(0,180,216,0.06),transparent)', skewX:'-15deg' }}
+            animate={{ x:[-200, 400] }} transition={{ duration:3, repeat:Infinity, repeatDelay:4, ease:'linear' }} />
+
+          <div className="relative z-10 p-5">
+            {/* Top row */}
+            <div className="flex items-start justify-between mb-5">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-xl flex items-center justify-center" style={{ background:'rgba(0,180,216,0.18)' }}>
+                  <Shield size={13} style={{ color:'#00B4D8' }} />
+                </div>
+                <div>
+                  <p style={{ color:'#00B4D8' }} className="text-[12px] font-bold leading-none">عيادتك</p>
+                  <p className="text-white/20 text-[8px] tracking-widest mt-0.5">DIGITAL HEALTH CARD</p>
+                </div>
               </div>
-              <ChevronLeft size={13} className="text-[#DDD] shrink-0 mt-1" />
+              {/* NFC icon */}
+              <svg width="22" height="18" viewBox="0 0 22 18" fill="none">
+                <path d="M7 9 Q9 4 9 9 Q9 14 7 9" stroke="rgba(0,180,216,0.35)" strokeWidth="1.4" strokeLinecap="round"/>
+                <path d="M11.5 9 Q14.5 2 14.5 9 Q14.5 16 11.5 9" stroke="rgba(0,180,216,0.6)" strokeWidth="1.4" strokeLinecap="round"/>
+                <path d="M16.5 9 Q20.5 0 20.5 9 Q20.5 18 16.5 9" stroke="rgba(0,180,216,0.85)" strokeWidth="1.4" strokeLinecap="round"/>
+              </svg>
+            </div>
+
+            {/* Name */}
+            <div className="mb-5">
+              <p className="text-white/25 text-[8px] tracking-widest mb-1">PATIENT NAME</p>
+              <p className="text-white text-[22px] font-bold leading-tight">أحمد ناصر الشمري</p>
+            </div>
+
+            {/* Info grid */}
+            <div className="grid grid-cols-3 gap-3 mb-5">
+              {[['PATIENT ID','#PT-0842','#00B4D8'],['BLOOD TYPE','O+','#fff'],['INSURANCE','بوبا ٢٠٢٦','rgba(255,255,255,0.7)']].map(([l,v,c],i) => (
+                <div key={i} className="bg-white/5 rounded-[14px] px-3 py-2.5" style={{ border:'1px solid rgba(255,255,255,0.06)' }}>
+                  <p className="text-white/25 text-[7px] tracking-widest mb-1">{l}</p>
+                  <p className="text-[11px] font-bold" style={{ color: c as string }}>{v}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* QR button */}
+            <motion.button whileTap={{ scale:0.96 }} onClick={() => setShowQR(true)}
+              className="w-full flex items-center justify-center gap-2.5 py-3 rounded-[16px] text-white font-bold text-[13px]"
+              style={{ background:'rgba(0,180,216,0.14)', border:'1px solid rgba(0,180,216,0.28)' }}>
+              <span className="text-[16px]">⬛</span>
+              عرض رمز QR للاستقبال
+            </motion.button>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Info rows */}
+      <div className="px-4 mb-6">
+        <p className="text-[13px] font-bold text-[#111] mb-3">ملفي الطبي</p>
+        <div className="rounded-[22px] overflow-hidden" style={{ background:'#fff', boxShadow:'0 2px 12px rgba(0,0,0,0.06)' }}>
+          {infoRows.map((r, i) => (
+            <div key={i} className="flex items-center gap-3 px-4 py-3.5"
+              style={{ borderBottom: i < infoRows.length-1 ? '1px solid #F5F7FA' : 'none' }}>
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                style={{ background:'#F2F6FB' }}>
+                <span className="text-[16px]">{r.icon}</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] text-[#BBB] mb-0.5">{r.label}</p>
+                <p className="text-[12px] font-semibold text-[#222] leading-snug">{r.value}</p>
+              </div>
+              <ChevronLeft size={14} className="text-[#DDD] shrink-0" />
             </div>
           ))}
         </div>
       </div>
 
-      {/* QR modal */}
+      {/* Emergency strip */}
+      <div className="px-4 mb-28">
+        <div className="rounded-[18px] px-4 py-3.5 flex items-center gap-3"
+          style={{ background:'linear-gradient(135deg,#FEF2F2,#FFF5F5)', border:'1px solid rgba(239,68,68,0.15)' }}>
+          <span className="text-[22px]">🆘</span>
+          <div>
+            <p className="text-[12px] font-bold text-[#EF4444]">بيانات الطوارئ</p>
+            <p className="text-[10px] text-[#999] font-light">تظهر تلقائياً على شاشة القفل عند الطوارئ</p>
+          </div>
+        </div>
+      </div>
+
+      {/* QR Modal */}
       <AnimatePresence>
         {showQR && (
           <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
-            className="absolute inset-0 bg-black/60 z-50 flex items-center justify-center"
+            className="absolute inset-0 z-50 flex items-center justify-center"
+            style={{ background:'rgba(0,0,0,0.65)', backdropFilter:'blur(8px)' }}
             onClick={() => setShowQR(false)}>
-            <motion.div initial={{ scale:0.85,opacity:0 }} animate={{ scale:1,opacity:1 }} exit={{ scale:0.85,opacity:0 }}
-              className="bg-white rounded-[28px] p-6 mx-6 flex flex-col items-center"
+            <motion.div initial={{ scale:0.8, opacity:0, y:20 }} animate={{ scale:1, opacity:1, y:0 }}
+              exit={{ scale:0.85, opacity:0 }} transition={{ type:'spring', damping:22 }}
+              className="mx-5 rounded-[32px] overflow-hidden text-center"
+              style={{ background:'#fff', boxShadow:'0 24px 64px rgba(0,0,0,0.3)' }}
               onClick={e => e.stopPropagation()}>
-              <p className="text-[14px] font-bold text-[#111] mb-1">رمز QR الخاص بك</p>
-              <p className="text-[11px] text-[#AAA] mb-4">أرِ هذا الرمز للموظف عند الاستقبال</p>
-              <div className="p-4 rounded-[18px] mb-4" style={{ background: 'linear-gradient(145deg,#050E1A,#0B3A5A)' }}>
-                <QRSmall />
+              {/* Header */}
+              <div className="px-6 pt-6 pb-4"
+                style={{ background:'linear-gradient(135deg,#06101E,#0B3A5A)' }}>
+                <p className="text-white text-[16px] font-bold mb-0.5">رمز الاستقبال</p>
+                <p className="text-white/40 text-[10px]">أرِه لموظف الاستقبال مباشرة</p>
               </div>
-              <p className="text-[10px] text-[#CCC] font-inter mb-1">PT-2024-0842</p>
-              {/* Scan line animation */}
-              <div className="relative w-20 h-1 rounded-full overflow-hidden" style={{ background: 'rgba(0,180,216,0.1)' }}>
-                <motion.div className="absolute top-0 h-full w-8 rounded-full"
-                  style={{ background: 'linear-gradient(90deg,transparent,#00B4D8,transparent)' }}
-                  animate={{ x: [-32, 80] }}
-                  transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }} />
+              {/* QR */}
+              <div className="px-6 pt-5 pb-4 flex flex-col items-center">
+                <div className="p-4 rounded-[20px] mb-3" style={{ background:'linear-gradient(145deg,#06101E,#0B3A5A)' }}>
+                  <QRCode />
+                </div>
+                <p className="text-[11px] text-[#CCC] font-mono mb-3">PT-2024-0842</p>
+                {/* scan line */}
+                <div className="relative w-24 h-0.5 rounded-full overflow-hidden mb-5" style={{ background:'rgba(0,180,216,0.12)' }}>
+                  <motion.div className="absolute top-0 h-full w-10 rounded-full"
+                    style={{ background:'linear-gradient(90deg,transparent,#00B4D8,transparent)' }}
+                    animate={{ x:[-40, 96] }} transition={{ duration:1.6, repeat:Infinity, ease:'linear' }} />
+                </div>
+                <motion.button whileTap={{ scale:0.95 }} onClick={() => setShowQR(false)}
+                  className="w-full py-3.5 rounded-[16px] text-white font-bold text-[14px]"
+                  style={{ background:'linear-gradient(135deg,#0B4A6F,#00B4D8)' }}>
+                  إغلاق
+                </motion.button>
               </div>
-              <button onClick={() => setShowQR(false)}
-                className="mt-4 px-6 py-2 rounded-full text-white text-[12px] font-semibold"
-                style={{ background: 'linear-gradient(135deg,#0B4A6F,#00B4D8)' }}>
-                إغلاق
-              </button>
             </motion.div>
           </motion.div>
         )}

@@ -181,15 +181,67 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
 }
 
 /* ── Notifications Showcase ──────────────────────────────────────── */
-const hyzLogoIcon = `${import.meta.env.BASE_URL}hyz-logo-icon.jpeg`;
-
 const notifs = [
-  { id: 1, time: 'الآن',            badge: '🎂', title: 'عيد ميلادك اليوم! 🎉',             body: 'كوب مجاني في انتظارك — هدية حيز لك في يومك الخاص'          },
-  { id: 2, time: 'منذ دقيقة',      badge: '🌤️', title: 'الجو اليوم في أبها حلو 🏔️',        body: '١٨° مئوية ومشمس — جلستك المفضلة على السطح تنتظرك'          },
-  { id: 3, time: 'منذ ٣ دقائق',    badge: '⭐',  title: '+٢٥ نقطة أُضيفت لرصيدك',          body: 'زيارة الرابعة هذا الأسبوع — ٣ أكواب فقط للمستوى الفضي'       },
-  { id: 4, time: 'منذ ١٠ دقائق',   badge: '🏆',  title: 'وصلت المستوى الفضي! 🥈',           body: 'مبروك — خصم ١٠٪ دائم وأولوية الحجز من الآن'                 },
-  { id: 5, time: 'منذ ٢٠ دقيقة',   badge: '☕',  title: 'محصول اليوم: إثيوبيا يرقاشيفي',   body: 'حموضة ناعمة ورائحة زهرية — كميات محدودة اليوم فقط'         },
-  { id: 6, time: 'منذ ساعة',       badge: '📍',  title: 'اقتربت من حيز 📍',                 body: 'أنت على بُعد ٥ دقائق — طاولتك المفضلة متاحة الآن'          },
+  {
+    id: 1,
+    app: 'حيز',
+    icon: '🎂',
+    iconBg: 'linear-gradient(135deg,#7B1618,#C9956A)',
+    time: 'الآن',
+    title: 'عيد ميلادك اليوم! 🎉',
+    body: 'كوب مجاني في انتظارك — هدية حيز لك في يومك الخاص',
+    accent: '#C9956A',
+  },
+  {
+    id: 2,
+    app: 'حيز',
+    icon: '🌤️',
+    iconBg: 'linear-gradient(135deg,#1A5276,#2980B9)',
+    time: 'منذ دقيقة',
+    title: 'الجو اليوم في أبها حلو 🏔️',
+    body: '١٨° مئوية ومشمس — جلستك المفضلة على السطح تنتظرك',
+    accent: '#2980B9',
+  },
+  {
+    id: 3,
+    app: 'حيز',
+    icon: '⭐',
+    iconBg: 'linear-gradient(135deg,#C9956A,#E8C4A0)',
+    time: 'منذ ٣ دقائق',
+    title: '+٢٥ نقطة أُضيفت لرصيدك',
+    body: 'زيارة الرابعة هذا الأسبوع — ٣ أكواب فقط للمستوى الفضي',
+    accent: '#C9956A',
+  },
+  {
+    id: 4,
+    app: 'حيز',
+    icon: '🏆',
+    iconBg: 'linear-gradient(135deg,#117A65,#2D7D46)',
+    time: 'منذ ١٠ دقائق',
+    title: 'وصلت المستوى الفضي! 🥈',
+    body: 'مبروك — خصم ١٠٪ دائم وأولوية الحجز من الآن',
+    accent: '#2D7D46',
+  },
+  {
+    id: 5,
+    app: 'حيز',
+    icon: '☕',
+    iconBg: 'linear-gradient(135deg,#3D0809,#7B1618)',
+    time: 'منذ ٢٠ دقيقة',
+    title: 'محصول اليوم: إثيوبيا يرقاشيفي',
+    body: 'حموضة ناعمة ورائحة زهرية — كميات محدودة اليوم فقط',
+    accent: '#7B1618',
+  },
+  {
+    id: 6,
+    app: 'حيز',
+    icon: '📍',
+    iconBg: 'linear-gradient(135deg,#6C3483,#9B59B6)',
+    time: 'منذ ساعة',
+    title: 'اقتربت من حيز 📍',
+    body: 'أنت على بُعد ٥ دقائق — طاولتك المفضلة متاحة الآن',
+    accent: '#9B59B6',
+  },
 ];
 
 function NotificationsShowcase() {
@@ -209,7 +261,7 @@ function NotificationsShowcase() {
   React.useEffect(() => {
     if (!started) return;
     notifs.forEach((n, i) => {
-      setTimeout(() => setVisible(v => [...v, n.id]), i * 950);
+      setTimeout(() => setVisible(v => [...v, n.id]), i * 380);
     });
   }, [started]);
 
@@ -277,24 +329,16 @@ function NotificationsShowcase() {
                     boxShadow: `0 4px 20px rgba(0,0,0,0.3), 0 0 0 0.5px rgba(255,255,255,0.04)`,
                   }}
                 >
-                  {/* App icon — شعار حيز + badge */}
-                  <div className="relative shrink-0 mt-0.5">
-                    <img
-                      src={hyzLogoIcon}
-                      alt="حيز"
-                      className="w-10 h-10 rounded-[12px] object-cover"
-                      style={{ boxShadow: '0 2px 10px rgba(0,0,0,0.4)' }}
-                    />
-                    {/* Badge emoji */}
-                    <div className="absolute -bottom-1 -left-1 w-5 h-5 rounded-full bg-[#1C1C1E] flex items-center justify-center text-[11px] border border-white/10">
-                      {n.badge}
-                    </div>
+                  {/* App icon */}
+                  <div className="w-9 h-9 rounded-[10px] flex items-center justify-center text-[18px] shrink-0 mt-0.5"
+                    style={{ background: n.iconBg }}>
+                    {n.icon}
                   </div>
 
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-0.5">
-                      <span className="text-white/50 text-[10px] font-semibold tracking-wide">حيز كافيه</span>
+                      <span className="text-white/50 text-[10px] font-semibold tracking-wide">{n.app}</span>
                       <span className="text-white/30 text-[10px] font-inter">{n.time}</span>
                     </div>
                     <p className="text-white text-[13px] font-semibold leading-snug mb-0.5">{n.title}</p>
