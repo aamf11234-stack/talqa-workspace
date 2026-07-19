@@ -516,7 +516,6 @@ export default function OwnerDashboard() {
                   <div>
                     <div className="flex items-center gap-2 mb-2">
                       <ShieldCheck size={18} className="text-[#10B981]" />
-                      <span className="text-[#10B981] text-[14px] font-bold">درجة الأمان ممتازة</span>
                     </div>
                     <h2 className="text-white text-[22px] font-bold mb-2">منظومتك محمية بالكامل</h2>
                     <p className="text-white/50 text-[13px] font-light max-w-md">
