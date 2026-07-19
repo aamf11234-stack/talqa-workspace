@@ -1,636 +1,629 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
 
-/* ── animated counter ─────────────────────────────────────────── */
-function useCounter(target: number, duration = 1600) {
-  const [val, setVal] = useState(0);
+/* ─── helpers ────────────────────────────────────────────────── */
+function useCounter(target: number, dur = 1800) {
+  const [v, setV] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true });
   useEffect(() => {
     if (!inView) return;
-    let v = 0;
-    const step = Math.max(1, Math.ceil(target / (duration / 16)));
-    const t = setInterval(() => { v = Math.min(v + step, target); setVal(v); if (v >= target) clearInterval(t); }, 16);
+    let cur = 0;
+    const step = Math.max(1, Math.ceil(target / (dur / 16)));
+    const t = setInterval(() => { cur = Math.min(cur + step, target); setV(cur); if (cur >= target) clearInterval(t); }, 16);
     return () => clearInterval(t);
-  }, [inView, target, duration]);
-  return { val, ref };
+  }, [inView, target, dur]);
+  return { v, ref };
 }
 
-const W = 'max-w-6xl mx-auto px-6';
-
-/* ── section fade ────────────────────────────────────────────── */
-function Fade({ children, delay = 0, className = '' }: { children: React.ReactNode; delay?: number; className?: string }) {
+function Reveal({ children, delay = 0, y = 30, className = '' }: { children: React.ReactNode; delay?: number; y?: number; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: '-60px' });
+  const inView = useInView(ref, { once: true, margin: '-80px' });
   return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 22 }} animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.55, delay, ease: [0.4, 0, 0.2, 1] }} className={className}>
+    <motion.div ref={ref} initial={{ opacity: 0, y }} animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }} className={className}>
       {children}
     </motion.div>
   );
 }
 
-/* ── stat card ───────────────────────────────────────────────── */
-function Stat({ target, suffix, label, prefix = '' }: { target: number; suffix: string; label: string; prefix?: string }) {
-  const { val, ref } = useCounter(target);
+/* ─── Orb (background glow) ──────────────────────────────────── */
+function Orb({ x, y, color, size = 600 }: { x: string; y: string; color: string; size?: number }) {
+  return (
+    <div className="absolute pointer-events-none" style={{ left: x, top: y, width: size, height: size,
+      background: `radial-gradient(circle,${color} 0%,transparent 70%)`,
+      transform: 'translate(-50%,-50%)', filter: 'blur(1px)' }} />
+  );
+}
+
+/* ─── Glass card ─────────────────────────────────────────────── */
+function Glass({ children, className = '', style = {} }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) {
+  return (
+    <div className={`rounded-[28px] border ${className}`} style={{
+      background: 'rgba(255,255,255,0.04)',
+      backdropFilter: 'blur(24px)',
+      WebkitBackdropFilter: 'blur(24px)',
+      borderColor: 'rgba(255,255,255,0.09)',
+      boxShadow: '0 8px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)',
+      ...style,
+    }}>
+      {children}
+    </div>
+  );
+}
+
+/* ─── Marquee ticker ─────────────────────────────────────────── */
+const TICKER_ITEMS = ['موقع احترافي','تطبيق iOS & Android','أمان AES-256','HIPAA متوافق','ذكاء اصطناعي','نظام إدارة','Apple Health','Google Wallet','واتساب آلي','ISO 27001','سجل طبي رقمي','٦٠ يوم تسليم'];
+
+function Ticker() {
+  const doubled = [...TICKER_ITEMS, ...TICKER_ITEMS];
+  return (
+    <div className="overflow-hidden py-5 border-y" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
+      <motion.div className="flex gap-10 w-max" animate={{ x: ['0%', '-50%'] }} transition={{ duration: 28, ease: 'linear', repeat: Infinity }}>
+        {doubled.map((item, i) => (
+          <div key={i} className="flex items-center gap-10 shrink-0">
+            <span className="text-[15px] font-semibold whitespace-nowrap" style={{ color: 'rgba(255,255,255,0.35)' }}>{item}</span>
+            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: 'rgba(0,212,255,0.5)' }} />
+          </div>
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
+/* ─── Animated stat ──────────────────────────────────────────── */
+function Stat({ target, suffix, label, color = '#00D4FF', prefix = '' }: { target: number; suffix: string; label: string; color?: string; prefix?: string }) {
+  const { v, ref } = useCounter(target);
   return (
     <div ref={ref} className="text-center">
-      <p className="text-[36px] md:text-[44px] font-black text-[#0B2D4E] leading-none">
-        {prefix}{val.toLocaleString('ar')}{suffix}
+      <p className="font-black leading-none mb-2" style={{ fontSize: 'clamp(36px,5vw,64px)', color }}>
+        {prefix}{v.toLocaleString('ar-SA')}{suffix}
       </p>
-      <p className="text-[13px] text-[#888] font-light mt-1.5 leading-snug">{label}</p>
+      <p className="text-[13px] font-light" style={{ color: 'rgba(255,255,255,0.35)' }}>{label}</p>
     </div>
   );
 }
 
-/* ── feature card ────────────────────────────────────────────── */
-function FCard({ icon, title, desc }: { icon: string; title: string; desc: string }) {
-  return (
-    <div className="bg-white rounded-[22px] p-5 border border-[rgba(11,45,78,0.07)] shadow-[0_2px_16px_rgba(0,0,0,0.05)] hover:shadow-[0_6px_28px_rgba(0,0,0,0.09)] hover:-translate-y-0.5 transition-all duration-200">
-      <span className="text-2xl mb-3 block">{icon}</span>
-      <p className="text-[13px] font-bold text-[#111] mb-1 leading-snug">{title}</p>
-      <p className="text-[11px] text-[#999] font-light leading-relaxed">{desc}</p>
-    </div>
-  );
-}
-
+/* ────────────────────────────────────────────────────────────── */
 export default function App() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
+  const heroY  = useTransform(scrollYProgress, [0,1], [0, 180]);
+  const heroO  = useTransform(scrollYProgress, [0,0.6], [1, 0]);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   useEffect(() => {
     document.documentElement.dir  = 'rtl';
     document.documentElement.lang = 'ar';
-    document.body.style.fontFamily = "'Tajawal', sans-serif";
+    document.body.style.background = '#040C16';
+    document.body.style.fontFamily = "'Tajawal',sans-serif";
+    document.body.style.margin     = '0';
   }, []);
 
   return (
-    <div className="min-h-screen w-full" style={{ background: 'linear-gradient(180deg,#F0F6FF 0%,#E8F3FF 100%)', fontFamily: "'Tajawal',sans-serif" }} dir="rtl">
+    <div dir="rtl" style={{ background: '#040C16', color: '#fff', fontFamily: "'Tajawal',sans-serif", overflowX: 'hidden' }}>
 
-      {/* ══════════════════════════════════════════════════
-          NAVBAR
-      ══════════════════════════════════════════════════ */}
-      <div className="sticky top-0 z-50 bg-white/90 backdrop-blur-xl border-b border-[rgba(11,45,78,0.08)] shadow-[0_1px_12px_rgba(0,0,0,0.04)]">
-        <div className={`${W} py-3.5 flex items-center justify-between`}>
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-[10px] flex items-center justify-center shadow-[0_4px_14px_rgba(0,180,216,0.3)]"
-              style={{ background: 'linear-gradient(135deg,#0B2D4E,#00B4D8)' }}>
-              <span className="text-white text-[13px] font-black">ت</span>
+      {/* ══ NAVBAR ══════════════════════════════════════════════ */}
+      <div className="fixed top-0 left-0 right-0 z-50">
+        <div className="mx-4 mt-4">
+          <Glass className="px-5 py-3 flex items-center justify-between" style={{ borderRadius: 20 }}>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-[10px] flex items-center justify-center"
+                style={{ background: 'linear-gradient(135deg,#00D4FF,#7C3AED)', boxShadow: '0 0 20px rgba(0,212,255,0.4)' }}>
+                <span className="text-white text-[13px] font-black">ت</span>
+              </div>
+              <span className="text-[16px] font-black text-white">تلقا<span style={{ color: 'rgba(255,255,255,0.3)', fontWeight: 400 }}> للعيادات</span></span>
             </div>
-            <div>
-              <span className="text-[16px] font-black text-[#0B2D4E]">تلقا</span>
-              <span className="text-[13px] text-[#AAA] font-light"> للعيادات</span>
+            <div className="hidden md:flex items-center gap-6">
+              {[['خدماتنا','#products'],['الأمان','#security'],['الأسعار','#pricing'],['الديمو','/clinic-demo/']].map(([label, href]) => (
+                <a key={label} href={href} target={href.startsWith('/') ? '_blank' : undefined}
+                  className="text-[13px] font-medium transition-colors duration-150 hover:text-white"
+                  style={{ color: 'rgba(255,255,255,0.45)' }}>{label}</a>
+              ))}
             </div>
-          </div>
-          <div className="hidden md:flex items-center gap-6 text-[13px] font-medium text-[#666]">
-            <a href="#products" className="hover:text-[#0B2D4E] transition-colors">خدماتنا</a>
-            <a href="#security" className="hover:text-[#0B2D4E] transition-colors">الأمان</a>
-            <a href="#pricing"  className="hover:text-[#0B2D4E] transition-colors">الأسعار</a>
-            <a href="/clinic-demo/" className="hover:text-[#00B4D8] text-[#00B4D8] font-semibold transition-colors">شاهد الديمو</a>
-          </div>
-          <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
-            className="flex items-center gap-2 font-bold text-[13px] text-white px-4 py-2 rounded-[12px] shadow-[0_4px_18px_rgba(0,180,216,0.3)] transition-all duration-150 hover:scale-105 active:scale-95"
-            style={{ background: 'linear-gradient(135deg,#0B2D4E,#00B4D8)' }}>
-            تواصل معنا
-          </a>
+            <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
+              className="font-bold text-[13px] px-5 py-2.5 rounded-[12px] transition-all duration-150 hover:scale-105 active:scale-95"
+              style={{ background: 'linear-gradient(135deg,#00D4FF,#0096B4)', color: '#020C16', boxShadow: '0 4px 20px rgba(0,212,255,0.35)' }}>
+              تواصل معنا
+            </a>
+          </Glass>
         </div>
       </div>
 
-      {/* ══════════════════════════════════════════════════
-          HERO
-      ══════════════════════════════════════════════════ */}
-      <div className={`${W} pt-16 pb-12 text-center`}>
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+      {/* ══ HERO ════════════════════════════════════════════════ */}
+      <div ref={heroRef} className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
 
-          <span className="inline-flex items-center gap-2 text-white text-[11px] font-bold px-4 py-1.5 rounded-full mb-6 tracking-widest shadow-[0_4px_20px_rgba(0,180,216,0.3)]"
-            style={{ background: 'linear-gradient(135deg,#0B2D4E,#007FAF)' }}>
-            <span className="w-1.5 h-1.5 bg-[#22C55E] rounded-full animate-pulse shrink-0" />
-            +٥٠ عيادة ومركز طبي يثقون بتلقا تك
-          </span>
+        {/* Background orbs */}
+        <Orb x="20%" y="30%" color="rgba(124,58,237,0.18)" size={700} />
+        <Orb x="80%" y="20%" color="rgba(0,212,255,0.14)" size={600} />
+        <Orb x="50%" y="80%" color="rgba(16,185,129,0.10)" size={500} />
 
-          <h1 className="text-[38px] md:text-[56px] font-black text-[#0B2D4E] leading-[1.15] mb-5 tracking-tight">
-            موقعك وتطبيقك الطبي<br />
-            <span style={{ WebkitTextFillColor: 'transparent', WebkitBackgroundClip: 'text', backgroundImage: 'linear-gradient(135deg,#007FAF,#00B4D8)' }}>
-              يشتغلان في ٦٠ يوم
-            </span>
-          </h1>
+        {/* Grid */}
+        <div className="absolute inset-0 opacity-[0.035]"
+          style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.5) 1px,transparent 1px)', backgroundSize: '60px 60px' }} />
 
-          <p className="text-[18px] md:text-[22px] text-[#666] font-light mb-4 leading-relaxed max-w-2xl mx-auto">
-            منظومة رقمية كاملة — تطبيق للمرضى · موقع احترافي · نظام إدارة · أعلى أمان في القطاع الصحي
-          </p>
-          <p className="text-[13px] text-[#AAA] mb-8 max-w-lg mx-auto leading-relaxed">
-            مرضاك يحجزون · يستلمون نتائجهم · يذكّرون بأدويتهم — كل شيء رقمياً بهوية عيادتك
-          </p>
+        <motion.div style={{ y: heroY, opacity: heroO }} className="relative z-10 text-center px-6 max-w-5xl mx-auto pt-32 pb-16">
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-2 font-bold text-[15px] text-white px-8 py-4 rounded-[16px] shadow-[0_8px_32px_rgba(0,180,216,0.35)] transition-all duration-200 hover:scale-105 active:scale-95"
-              style={{ background: 'linear-gradient(135deg,#0B2D4E,#00B4D8)' }}>
-              ابدأ مشروع عيادتك الآن 🚀
-            </a>
-            <a href="/clinic-demo/" target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-2 font-semibold text-[14px] text-[#0B2D4E] px-6 py-3.5 rounded-[16px] bg-white border border-[rgba(11,45,78,0.15)] shadow-[0_2px_12px_rgba(0,0,0,0.06)] hover:bg-[#F0F6FF] transition-colors">
-              شاهد الديمو التفاعلي
-              <span className="text-[16px]">→</span>
-            </a>
+          <Reveal delay={0}>
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-8"
+              style={{ background: 'rgba(0,212,255,0.08)', border: '1px solid rgba(0,212,255,0.2)' }}>
+              <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#00D4FF' }} />
+              <span className="text-[12px] font-bold tracking-widest" style={{ color: '#00D4FF' }}>تلقا تك — منظومة العيادات الرقمية</span>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.08}>
+            <h1 className="font-black leading-[1.05] mb-6 tracking-tight" style={{ fontSize: 'clamp(42px,8vw,96px)' }}>
+              <span className="block" style={{ color: 'rgba(255,255,255,0.95)' }}>نصنع المستقبل</span>
+              <span className="block" style={{ WebkitTextFillColor: 'transparent', WebkitBackgroundClip: 'text', backgroundImage: 'linear-gradient(135deg,#00D4FF 0%,#7C3AED 50%,#10B981 100%)' }}>
+                الصحي لعيادتك
+              </span>
+            </h1>
+          </Reveal>
+
+          <Reveal delay={0.15}>
+            <p className="text-[18px] md:text-[22px] font-light mb-3 leading-relaxed max-w-2xl mx-auto"
+              style={{ color: 'rgba(255,255,255,0.45)' }}>
+              تطبيق · موقع · نظام إدارة · أمان عسكري · ذكاء اصطناعي
+            </p>
+            <p className="text-[15px] font-light max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.25)' }}>
+              كل شيء يشتغل في ٦٠ يوم — بهويتك، بأمانك، بمستواك
+            </p>
+          </Reveal>
+
+          <Reveal delay={0.22}>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
+              <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
+                className="flex items-center gap-2 font-black text-[15px] px-8 py-4 rounded-[18px] transition-all duration-200 hover:scale-105 active:scale-95"
+                style={{ background: 'linear-gradient(135deg,#00D4FF,#0096B4)', color: '#020C16', boxShadow: '0 0 40px rgba(0,212,255,0.4), 0 8px 32px rgba(0,0,0,0.3)' }}>
+                ابدأ مشروع عيادتك 🚀
+              </a>
+              <a href="/clinic-demo/" target="_blank" rel="noopener noreferrer">
+                <Glass className="flex items-center gap-2 font-semibold text-[14px] px-6 py-4 cursor-pointer hover:bg-white/[0.07] transition-colors">
+                  <span style={{ color: 'rgba(255,255,255,0.7)' }}>شاهد الديمو التفاعلي</span>
+                  <span className="text-[16px]" style={{ color: '#00D4FF' }}>→</span>
+                </Glass>
+              </a>
+            </div>
+          </Reveal>
+
+          {/* Floating glass stats */}
+          <Reveal delay={0.3}>
+            <div className="flex flex-wrap justify-center gap-3 mt-12">
+              {[
+                { v: '+٥٠', l: 'عيادة عميلة', c: '#00D4FF' },
+                { v: '٦٠',  l: 'يوم تسليم',   c: '#7C3AED' },
+                { v: '٩٩٪', l: 'رضا العملاء', c: '#10B981' },
+                { v: '٠',   l: 'اختراق مسجّل', c: '#F59E0B' },
+              ].map((s, i) => (
+                <Glass key={i} className="px-5 py-3 text-center" style={{ borderRadius: 16 }}>
+                  <p className="text-[20px] font-black" style={{ color: s.c }}>{s.v}</p>
+                  <p className="text-[10px] font-light" style={{ color: 'rgba(255,255,255,0.3)' }}>{s.l}</p>
+                </Glass>
+              ))}
+            </div>
+          </Reveal>
+        </motion.div>
+
+        {/* Scroll cue */}
+        <motion.div className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          animate={{ y: [0, 10, 0] }} transition={{ duration: 1.8, repeat: Infinity }}>
+          <div className="w-6 h-10 rounded-full border flex items-start justify-center pt-2"
+            style={{ borderColor: 'rgba(255,255,255,0.15)' }}>
+            <div className="w-1 h-2 rounded-full" style={{ background: '#00D4FF' }} />
           </div>
         </motion.div>
       </div>
 
-      {/* ── Trust numbers ───────────────────────────────────────── */}
-      <div className={`${W} mb-14`}>
-        <div className="bg-white rounded-[28px] py-8 px-6 shadow-[0_4px_32px_rgba(0,0,0,0.06)] border border-[rgba(11,45,78,0.06)]">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 divide-x divide-x-reverse divide-[rgba(11,45,78,0.06)]">
-            <Stat target={50}   suffix="+"  label="عيادة ومركز طبي عميل" />
-            <Stat target={60}   suffix=" يوم" label="متوسط وقت التسليم" />
-            <Stat target={100}  suffix="٪"  label="تشفير بيانات المرضى" />
-            <Stat target={4}    suffix=".٩" label="تقييم متوسط من المرضى" prefix="⭐" />
+      {/* ══ TICKER ══════════════════════════════════════════════ */}
+      <Ticker />
+
+      {/* ══ STATEMENT ═══════════════════════════════════════════ */}
+      <div className="relative py-28 px-6 overflow-hidden">
+        <Orb x="60%" y="50%" color="rgba(124,58,237,0.12)" size={800} />
+        <div className="max-w-5xl mx-auto relative z-10">
+          <Reveal>
+            <p className="text-[11px] font-bold tracking-[0.3em] uppercase mb-6" style={{ color: 'rgba(0,212,255,0.6)' }}>
+              لماذا تلقا تك؟
+            </p>
+          </Reveal>
+          <Reveal delay={0.06}>
+            <h2 className="font-black leading-[1.1] mb-10" style={{ fontSize: 'clamp(32px,6vw,72px)', color: 'rgba(255,255,255,0.92)' }}>
+              نقدر نسوي<br />
+              <span style={{ WebkitTextFillColor: 'transparent', WebkitBackgroundClip: 'text', backgroundImage: 'linear-gradient(135deg,#00D4FF,#7C3AED)' }}>
+                أي شي تتخيله
+              </span>
+            </h2>
+          </Reveal>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {[
+              { icon: '📱', title: 'تطبيق طبي بهويتك',   desc: 'تطبيقك اسمك وشعارك على AppStore وGoogle Play. مرضاك يحملونه وهم يفخرون بعيادتك.', color: '#00D4FF' },
+              { icon: '🌐', title: 'موقع يفوز على جوجل', desc: 'موقع مُحسَّن لكلمات البحث الطبية — مرضى جدد يجدونك قبل أي منافس.', color: '#7C3AED' },
+              { icon: '🛡️', title: 'أمان لا يُتجاوز',     desc: 'تشفير AES-256، HIPAA، ISO 27001 — نفس المعايير التي تستخدمها وزارات الدفاع.', color: '#10B981' },
+            ].map((c, i) => (
+              <Reveal key={i} delay={i * 0.08}>
+                <Glass className="p-7 h-full group hover:bg-white/[0.07] transition-all duration-300 cursor-default">
+                  <span className="text-4xl mb-5 block">{c.icon}</span>
+                  <p className="text-[17px] font-bold mb-3" style={{ color: 'rgba(255,255,255,0.9)' }}>{c.title}</p>
+                  <p className="text-[13px] font-light leading-relaxed" style={{ color: 'rgba(255,255,255,0.38)' }}>{c.desc}</p>
+                  <div className="mt-4 h-px w-0 group-hover:w-full transition-all duration-500" style={{ background: `linear-gradient(90deg,${c.color},transparent)` }} />
+                </Glass>
+              </Reveal>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* ══════════════════════════════════════════════════
-          PROBLEM → SOLUTION
-      ══════════════════════════════════════════════════ */}
-      <div className={`${W} mb-16`}>
-        <Fade className="text-center mb-8">
-          <p className="text-[11px] text-[#AAA] font-bold tracking-widest uppercase mb-2">لماذا تلقا؟</p>
-          <h2 className="text-[28px] md:text-[36px] font-black text-[#0B2D4E] leading-tight">ماذا تخسر عيادتك<br />بدون منظومة رقمية؟</h2>
-        </Fade>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* Problems */}
-          <Fade delay={0.05}>
-            <div className="rounded-[26px] p-7 h-full" style={{ background: 'linear-gradient(145deg,#1A0A0A,#2D1010)' }}>
-              <p className="text-[#FF6B6B] text-[11px] font-bold tracking-widest uppercase mb-4">بدون تلقا</p>
-              <div className="space-y-3.5">
-                {[
-                  'طوابير استقبال طويلة تُنفّر المرضى',
-                  'نتائج التحاليل تتأخر وتضيع بين الأوراق',
-                  'لا يوجد تذكير بالأدوية — المريض ينسى',
-                  'لا تاريخ طبي موحد — كل زيارة من الصفر',
-                  'مرضى يتركون العيادة لمنافس عنده تطبيق',
-                  'لا بيانات — لا تقارير — لا قرارات ذكية',
-                ].map((p, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <span className="text-[#FF6B6B] text-[18px] shrink-0 leading-none mt-0.5">✗</span>
-                    <p className="text-white/60 text-[13px] font-light leading-snug">{p}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Fade>
-          {/* Solutions */}
-          <Fade delay={0.12}>
-            <div className="rounded-[26px] p-7 h-full" style={{ background: 'linear-gradient(145deg,#021A10,#043020)' }}>
-              <p className="text-[#10B981] text-[11px] font-bold tracking-widest uppercase mb-4">مع تلقا</p>
-              <div className="space-y-3.5">
-                {[
-                  'حجز إلكتروني ٢٤/٧ — بدون انتظار وبدون مكالمات',
-                  'نتائج التحاليل تصل للمريض مباشرة على هاتفه',
-                  'إشعارات أدوية ذكية تحسّن الالتزام ٧٠٪',
-                  'سجل طبي رقمي موحد لكل مريض إلى الأبد',
-                  'تطبيقك بهويتك — مرضاك يفخرون بعيادتك',
-                  'تقارير يومية فورية — قرارات مبنية على بيانات',
-                ].map((s, i) => (
-                  <div key={i} className="flex items-start gap-3">
-                    <span className="text-[#10B981] text-[18px] shrink-0 leading-none mt-0.5">✓</span>
-                    <p className="text-white/60 text-[13px] font-light leading-snug">{s}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Fade>
-        </div>
-      </div>
+      {/* ══ PRODUCTS ════════════════════════════════════════════ */}
+      <div id="products" className="relative py-24 px-6 overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.025]"
+          style={{ backgroundImage: 'radial-gradient(circle,rgba(255,255,255,0.8) 1px,transparent 1px)', backgroundSize: '28px 28px' }} />
+        <div className="max-w-6xl mx-auto relative z-10">
+          <Reveal className="text-center mb-14">
+            <p className="text-[11px] font-bold tracking-[0.3em] uppercase mb-4" style={{ color: 'rgba(0,212,255,0.6)' }}>المنظومة الكاملة</p>
+            <h2 className="font-black" style={{ fontSize: 'clamp(28px,5vw,56px)', color: 'rgba(255,255,255,0.92)' }}>
+              ثلاثة منتجات — منظومة واحدة
+            </h2>
+          </Reveal>
 
-      {/* ══════════════════════════════════════════════════
-          PRODUCTS
-      ══════════════════════════════════════════════════ */}
-      <div id="products" className={`${W} mb-16`}>
-        <Fade className="text-center mb-8">
-          <p className="text-[11px] text-[#AAA] font-bold tracking-widest uppercase mb-2">ماذا تحصل</p>
-          <h2 className="text-[28px] md:text-[36px] font-black text-[#0B2D4E]">منظومة ثلاثية متكاملة</h2>
-          <p className="text-[14px] text-[#AAA] font-light mt-2 max-w-md mx-auto">كل المكونات تعمل معاً بتكامل كامل — ليس مجرد تطبيق منفصل</p>
-        </Fade>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {[
-            {
-              num: '٠١', icon: '📱',
-              title: 'تطبيق المريض',
-              sub: 'iOS + Android',
-              color: '#0B2D4E',
-              glow: 'rgba(11,45,78,0.2)',
-              features: ['بطاقة مريض رقمية بـ QR', 'حجز مواعيد لحظي', 'نتائج التحاليل مباشرة', 'تذكيرات الأدوية الذكية', 'مزامنة Apple Health', 'Apple & Google Wallet'],
-              desc: 'يُنزّله مريضك من المتجر ويحمل عيادتك في جيبه طوال اليوم.',
-              bg: 'linear-gradient(145deg,#050E1A,#0B3A5A,#050E1A)',
-            },
-            {
-              num: '٠٢', icon: '🌐',
-              title: 'موقع إلكتروني',
-              sub: 'متجاوب · سريع · SEO',
-              color: '#065f46',
-              glow: 'rgba(16,185,129,0.15)',
-              features: ['صفحة كل طبيب مع سيرته', 'حجز مواعيد عبر الموقع', 'معرض الخدمات والأسعار', 'مدونة طبية وأخبار', 'محسّن لجوجل ١٠٠٪', 'نموذج تواصل واتساب'],
-              desc: 'موقع احترافي يظهر في نتائج جوجل ويحوّل الزوار لمرضى.',
-              bg: 'linear-gradient(145deg,#040D08,#0D2814,#040D08)',
-            },
-            {
-              num: '٠٣', icon: '📊',
-              title: 'نظام إدارة',
-              sub: 'المالك · الموظفون · التقارير',
-              color: '#6d28d9',
-              glow: 'rgba(109,40,217,0.15)',
-              features: ['لوحة إيرادات يومية', 'إدارة طابور المرضى', 'جدول الأطباء والمواعيد', 'تقارير شهرية تفصيلية', 'إدارة الفريق الطبي', 'فواتير وتأمين صحي'],
-              desc: 'لوحة تحكم كاملة للمالك والموظفين — كل شيء في متناول يدك.',
-              bg: 'linear-gradient(145deg,#080012,#1A0030,#080012)',
-            },
-          ].map((p, i) => (
-            <Fade key={i} delay={i * 0.08}>
-              <div className="rounded-[28px] p-7 relative overflow-hidden h-full flex flex-col" style={{ background: p.bg }}>
-                <div className="absolute inset-0 pointer-events-none"
-                  style={{ background: `radial-gradient(ellipse at 80% 0%,${p.glow} 0%,transparent 60%)` }} />
-                <div className="absolute top-0 left-0 w-32 h-32 opacity-[0.03]"
-                  style={{ backgroundImage: 'radial-gradient(circle,white 1px,transparent 1px)', backgroundSize: '12px 12px' }} />
-                <div className="relative z-10 flex-1">
-                  <div className="flex items-start justify-between mb-5">
-                    <span className="text-3xl">{p.icon}</span>
-                    <span className="text-white/20 text-[28px] font-black leading-none">{p.num}</span>
-                  </div>
-                  <p className="text-white text-[20px] font-black mb-0.5">{p.title}</p>
-                  <p className="text-white/30 text-[11px] mb-4">{p.sub}</p>
-                  <p className="text-white/45 text-[12px] font-light leading-relaxed mb-5">{p.desc}</p>
-                  <div className="space-y-2">
-                    {p.features.map(f => (
-                      <div key={f} className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#22C55E] shrink-0" />
-                        <p className="text-white/55 text-[11px] font-light">{f}</p>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+            {[
+              {
+                num: '01', icon: '📱', title: 'تطبيق المريض', sub: 'iOS + Android',
+                grad: 'linear-gradient(160deg,rgba(0,212,255,0.15) 0%,transparent 60%)',
+                glow: 'rgba(0,212,255,0.3)',
+                accent: '#00D4FF',
+                features: ['بطاقة مريض رقمية QR','حجز مواعيد ٢٤/٧','نتائج التحاليل فورياً','تذكيرات الأدوية الذكية','مزامنة Apple Health','Apple & Google Wallet','إدارة التابعين'],
+              },
+              {
+                num: '02', icon: '🌐', title: 'الموقع الإلكتروني', sub: 'SEO · سريع · متجاوب',
+                grad: 'linear-gradient(160deg,rgba(124,58,237,0.15) 0%,transparent 60%)',
+                glow: 'rgba(124,58,237,0.3)',
+                accent: '#7C3AED',
+                features: ['صفحة كل طبيب','حجز عبر الموقع','خدمات وأسعار','مدونة طبية','تحسين جوجل ١٠٠٪','نموذج واتساب','شهادات المرضى'],
+              },
+              {
+                num: '03', icon: '📊', title: 'نظام الإدارة', sub: 'المالك · الفريق · التقارير',
+                grad: 'linear-gradient(160deg,rgba(16,185,129,0.15) 0%,transparent 60%)',
+                glow: 'rgba(16,185,129,0.3)',
+                accent: '#10B981',
+                features: ['لوحة إيرادات يومية','طابور المرضى لحظياً','جداول الأطباء','تقارير شهرية','إدارة الفريق','فواتير التأمين','مركز أمان كامل'],
+              },
+            ].map((p, i) => (
+              <Reveal key={i} delay={i * 0.1}>
+                <div className="rounded-[32px] relative overflow-hidden h-full group hover:-translate-y-1 transition-all duration-300"
+                  style={{ background: '#080F1A', border: `1px solid rgba(255,255,255,0.08)`, boxShadow: '0 20px 60px rgba(0,0,0,0.5)' }}>
+                  <div className="absolute inset-0 pointer-events-none" style={{ background: p.grad }} />
+                  <div className="absolute top-0 right-0 w-32 h-32 rounded-bl-full opacity-[0.08]" style={{ background: p.accent }} />
+                  <div className="relative z-10 p-8">
+                    <div className="flex items-start justify-between mb-6">
+                      <span className="text-4xl">{p.icon}</span>
+                      <span className="font-black text-[32px] leading-none" style={{ color: 'rgba(255,255,255,0.06)' }}>{p.num}</span>
+                    </div>
+                    <p className="text-[22px] font-black mb-1" style={{ color: 'rgba(255,255,255,0.92)' }}>{p.title}</p>
+                    <p className="text-[11px] font-semibold tracking-widest uppercase mb-6" style={{ color: p.accent }}>{p.sub}</p>
+                    <div className="space-y-2.5">
+                      {p.features.map(f => (
+                        <div key={f} className="flex items-center gap-3">
+                          <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: p.accent, boxShadow: `0 0 6px ${p.accent}` }} />
+                          <p className="text-[12px] font-light" style={{ color: 'rgba(255,255,255,0.45)' }}>{f}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-8 h-px w-full" style={{ background: `linear-gradient(90deg,${p.accent}30,transparent)` }} />
+                    <div className="mt-5">
+                      <div className="inline-flex items-center gap-2 text-[12px] font-bold" style={{ color: p.accent }}>
+                        <span>مشمول في الباقة</span>
+                        <span>✓</span>
                       </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </Fade>
-          ))}
-        </div>
-      </div>
-
-      {/* ══════════════════════════════════════════════════
-          FEATURES GRID
-      ══════════════════════════════════════════════════ */}
-      <div className={`${W} mb-16`}>
-        <Fade className="text-center mb-8">
-          <p className="text-[11px] text-[#AAA] font-bold tracking-widest uppercase mb-2">كل ما تحتاجه</p>
-          <h2 className="text-[28px] md:text-[34px] font-black text-[#0B2D4E]">١٥+ ميزة جاهزة من اليوم الأول</h2>
-        </Fade>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-          {[
-            { icon: '🪪', title: 'بطاقة مريض رقمية',     desc: 'QR فوري بدون ورق' },
-            { icon: '📅', title: 'حجز مواعيد لحظي',      desc: 'تأكيد فوري + تقويم' },
-            { icon: '🧪', title: 'نتائج التحاليل',        desc: 'مباشرة من المختبر' },
-            { icon: '💊', title: 'تذكيرات الأدوية',       desc: 'إشعارات ذكية يومياً' },
-            { icon: '❤️', title: 'Apple Health',          desc: 'مزامنة تلقائية' },
-            { icon: '⌚', title: 'Apple Watch',           desc: 'مؤشرات حيوية فورية' },
-            { icon: '👨‍👩‍👧', title: 'إدارة التابعين',      desc: 'صحة عائلتك معاً' },
-            { icon: '🎫', title: 'Apple & Google Wallet', desc: 'بطاقة موعدك رقمياً' },
-            { icon: '📋', title: 'السجل الطبي',           desc: 'تاريخ كامل موحد' },
-            { icon: '🩺', title: 'متابعة الأمراض المزمنة',desc: 'سكر · ضغط · قلب' },
-            { icon: '📊', title: 'لوحة إدارة المالك',     desc: 'تقارير وإيرادات' },
-            { icon: '🌐', title: 'موقع إلكتروني',         desc: 'محسّن لجوجل ١٠٠٪' },
-            { icon: '💬', title: 'واتساب آلي',            desc: 'تأكيد + تذكير + نتائج' },
-            { icon: '🔒', title: 'أمان HIPAA',            desc: 'تشفير كامل للبيانات' },
-            { icon: '🔗', title: 'تكامل HIS/LIS',         desc: 'ربط بالأنظمة الموجودة' },
-          ].map((f, i) => (
-            <Fade key={i} delay={i * 0.03}>
-              <FCard icon={f.icon} title={f.title} desc={f.desc} />
-            </Fade>
-          ))}
-        </div>
-      </div>
-
-      {/* ══════════════════════════════════════════════════
-          DEMO TEASER
-      ══════════════════════════════════════════════════ */}
-      <div className={`${W} mb-16`}>
-        <Fade>
-          <div className="rounded-[28px] overflow-hidden relative" style={{ background: 'linear-gradient(145deg,#050E1A,#0B3A5A,#050E1A)' }}>
-            <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 70% 50%,rgba(0,180,216,0.12) 0%,transparent 55%)' }} />
-            <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 p-7 md:p-10">
-              <div className="flex-1">
-                <p className="text-[#00B4D8] text-[11px] font-bold tracking-widest uppercase mb-3">نموذج تفاعلي حقيقي</p>
-                <h3 className="text-white text-[24px] md:text-[30px] font-black mb-3 leading-tight">
-                  شوف كيف يبدو<br />
-                  <span style={{ color: '#00B4D8' }}>تطبيق عيادتك فعلاً</span>
-                </h3>
-                <p className="text-white/40 text-[13px] font-light mb-6 max-w-sm leading-relaxed">
-                  ديمو تفاعلي كامل — تنقّل بين شاشات تطبيق المريض، حجز المواعيد، بطاقة المريض الرقمية، ونتائج التحاليل.
-                </p>
-                <a href="/clinic-demo/" target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 font-bold text-[14px] text-[#0B2D4E] bg-white px-6 py-3.5 rounded-[14px] shadow-[0_4px_20px_rgba(0,0,0,0.2)] hover:bg-[#F0F6FF] transition-colors">
-                  افتح الديمو التفاعلي
-                  <span className="text-[16px]">→</span>
-                </a>
-              </div>
-              <div className="shrink-0 hidden md:flex flex-col gap-2 w-52">
-                {[
-                  { label: 'تطبيق المريض',   icon: '📱', active: true  },
-                  { label: 'حجز المواعيد',   icon: '📅', active: false },
-                  { label: 'بطاقة رقمية',    icon: '🪪', active: false },
-                  { label: 'نتائج فورية',    icon: '🧪', active: false },
-                  { label: 'لوحة المالك',    icon: '📊', active: false },
-                ].map((s, i) => (
-                  <div key={i} className="flex items-center gap-3 px-3 py-2 rounded-[12px]"
-                    style={{ background: s.active ? 'rgba(0,180,216,0.15)' : 'rgba(255,255,255,0.05)', border: s.active ? '1px solid rgba(0,180,216,0.3)' : '1px solid transparent' }}>
-                    <span className="text-[16px] shrink-0">{s.icon}</span>
-                    <p className="text-[12px] font-semibold" style={{ color: s.active ? '#00B4D8' : 'rgba(255,255,255,0.4)' }}>{s.label}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </Fade>
-      </div>
-
-      {/* ══════════════════════════════════════════════════
-          SECURITY — HERO SECTION
-      ══════════════════════════════════════════════════ */}
-      <div id="security" className={`${W} mb-16`}>
-        <div className="rounded-[32px] overflow-hidden relative" style={{ background: 'linear-gradient(160deg,#020B14 0%,#061828 45%,#020B14 100%)' }}>
-
-          {/* glows */}
-          <div className="absolute inset-0 pointer-events-none"
-            style={{ background: 'radial-gradient(ellipse at 50% -10%,rgba(16,185,129,0.18) 0%,transparent 55%)' }} />
-          <div className="absolute bottom-0 right-0 w-72 h-72 opacity-[0.025]"
-            style={{ backgroundImage: 'radial-gradient(circle,#10B981 1px,transparent 1px)', backgroundSize: '18px 18px' }} />
-
-          <div className="relative z-10 px-7 md:px-14 py-12 md:py-16">
-
-            {/* Header */}
-            <Fade className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 bg-[#10B981]/10 border border-[#10B981]/25 text-[#10B981] text-[11px] font-bold px-4 py-1.5 rounded-full mb-5 tracking-wider">
-                <span className="w-1.5 h-1.5 bg-[#10B981] rounded-full animate-pulse" />
-                الأمان — الأولوية الأولى دائماً
-              </div>
-              <h2 className="text-white text-[30px] md:text-[42px] font-black leading-tight mb-4">
-                الأكثر أماناً في<br />
-                <span style={{ color: '#10B981' }}>قطاع الرعاية الصحية</span>
-              </h2>
-              <p className="text-white/40 text-[14px] font-light max-w-2xl mx-auto leading-relaxed">
-                بيانات مرضاك أثمن ما تملكه. نحن نحمي كل بيت من بياناتهم بتشفير لا يُكسر — مبني على نفس المعايير التي تستخدمها وزارات الدفاع والبنوك الكبرى.
-              </p>
-            </Fade>
-
-            {/* Compliance badges */}
-            <Fade delay={0.1}>
-              <div className="flex flex-wrap justify-center gap-3 mb-12">
-                {[
-                  { label: 'HIPAA Compliant',  sub: 'خصوصية البيانات الصحية' },
-                  { label: 'ISO 27001',         sub: 'أمن المعلومات الدولي' },
-                  { label: 'NDMO Saudi',        sub: 'هيئة الحكومة الرقمية' },
-                  { label: 'AES-256',           sub: 'تشفير عسكري المستوى' },
-                  { label: 'PDPL',              sub: 'حماية البيانات السعودية' },
-                ].map(b => (
-                  <div key={b.label} className="flex items-center gap-2.5 px-4 py-2.5 rounded-[14px]"
-                    style={{ background: 'rgba(16,185,129,0.07)', border: '1px solid rgba(16,185,129,0.2)' }}>
-                    <span className="text-[#10B981] text-[12px] font-black">✓</span>
-                    <div>
-                      <p className="text-[#10B981] text-[11px] font-bold leading-none">{b.label}</p>
-                      <p className="text-white/25 text-[9px] mt-0.5">{b.sub}</p>
                     </div>
                   </div>
-                ))}
-              </div>
-            </Fade>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </div>
 
-            {/* Security pillars */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
-              {[
-                { icon: '🔐', title: 'تشفير AES-256 من الطرف للطرف', accent: '#10B981',
-                  desc: 'كل بيانات مريض — من الاسم إلى التشخيص — مشفرة بنفس المعيار المستخدم في وزارات الدفاع والأسرار الحكومية. لا أحد يقرأها إلا المخوّلون.' },
-                { icon: '🧠', title: 'معمارية Zero-Knowledge', accent: '#00B4D8',
-                  desc: 'مفتاح التشفير ملكك وحدك. حتى فريق تلقا لا يستطيع الاطلاع على بيانات مرضاك — ليس سياسة فقط، بل بنية تقنية لا تُتجاوز.' },
-                { icon: '🛡️', title: 'مصادقة متعددة العوامل', accent: '#8B5CF6',
-                  desc: 'Face ID + بصمة الإصبع + رمز تحقق لكل دخول. لا يصل أحد لبياناتك حتى لو سرق كلمة المرور — حماية ثلاثية الطبقات.' },
-                { icon: '💾', title: 'نسخ احتياطي مشفر ٣ مرات يومياً', accent: '#F59E0B',
-                  desc: 'بياناتك محفوظة في مراكز بيانات موزعة جغرافياً — مشفرة كلها، محمية من الكوارث والاختراقات والحرائق وانقطاع الكهرباء.' },
-                { icon: '👁️', title: 'ذكاء اصطناعي يراقب ٢٤/٧', accent: '#EF4444',
-                  desc: 'نظام AI يرصد كل دخول وكل عملية وصول. يكتشف الأنماط الغريبة ويوقفها قبل أن تصبح تهديداً — ويبلّغك فوراً.' },
-                { icon: '📜', title: 'متوافق مع نظام PDPL السعودي', accent: '#10B981',
-                  desc: 'عيادتك محمية قانونياً — متوافقون بالكامل مع نظام حماية البيانات الشخصية السعودي ولوائح هيئة الحكومة الرقمية.' },
-              ].map((s, i) => (
-                <Fade key={i} delay={i * 0.06}>
-                  <div className="rounded-[22px] p-6 relative overflow-hidden h-full"
-                    style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                    <div className="absolute top-0 right-0 w-24 h-24 rounded-bl-[80px] opacity-[0.06]" style={{ background: s.accent }} />
-                    <span className="text-3xl mb-4 block">{s.icon}</span>
-                    <p className="text-white text-[14px] font-bold mb-2 leading-snug">{s.title}</p>
-                    <p className="text-white/35 text-[12px] font-light leading-relaxed">{s.desc}</p>
-                  </div>
-                </Fade>
+      {/* ══ STATS ════════════════════════════════════════════════ */}
+      <div className="relative py-24 px-6 overflow-hidden">
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg,#040C16 0%,#060F1C 50%,#040C16 100%)' }} />
+        <Orb x="30%" y="50%" color="rgba(0,212,255,0.08)" size={900} />
+        <Orb x="80%" y="50%" color="rgba(124,58,237,0.08)" size={700} />
+        <div className="max-w-5xl mx-auto relative z-10">
+          <Reveal className="text-center mb-16">
+            <h2 className="font-black" style={{ fontSize: 'clamp(26px,4vw,48px)', color: 'rgba(255,255,255,0.9)' }}>
+              أرقام تتكلم بدلنا
+            </h2>
+          </Reveal>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <Stat target={50}  suffix="+"   label="عيادة ومركز طبي عميل"  color="#00D4FF" />
+            <Stat target={60}  suffix=" يوم" label="متوسط وقت التسليم"     color="#7C3AED" />
+            <Stat target={100} suffix="٪"    label="تشفير بيانات المرضى"   color="#10B981" />
+            <Stat target={0}   suffix=""     label="اختراق أمني مسجّل"     color="#F59E0B" prefix="٠" />
+          </div>
+        </div>
+      </div>
+
+      {/* ══ SECURITY ════════════════════════════════════════════ */}
+      <div id="security" className="relative py-24 px-6 overflow-hidden">
+        {/* Matrix rain effect */}
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg,#040C16,#020A0F,#040C16)' }} />
+        <div className="absolute inset-0 opacity-[0.03]"
+          style={{ backgroundImage: 'repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(16,185,129,0.5) 28px,rgba(16,185,129,0.5) 29px),repeating-linear-gradient(90deg,transparent,transparent 28px,rgba(16,185,129,0.5) 28px,rgba(16,185,129,0.5) 29px)' }} />
+        <Orb x="50%" y="30%" color="rgba(16,185,129,0.12)" size={800} />
+
+        <div className="max-w-5xl mx-auto relative z-10">
+          <Reveal className="text-center mb-14">
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-6"
+              style={{ background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
+              <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: '#10B981' }} />
+              <span className="text-[12px] font-bold tracking-widest" style={{ color: '#10B981' }}>SECURITY FIRST — دائماً</span>
+            </div>
+            <h2 className="font-black mb-4" style={{ fontSize: 'clamp(28px,5vw,60px)', color: 'rgba(255,255,255,0.92)' }}>
+              الأكثر أماناً في<br />
+              <span style={{ WebkitTextFillColor: 'transparent', WebkitBackgroundClip: 'text', backgroundImage: 'linear-gradient(135deg,#10B981,#00D4FF)' }}>
+                القطاع الصحي
+              </span>
+            </h2>
+            <p className="text-[15px] font-light max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.35)' }}>
+              بيانات مرضاك أثمن ما تملك — نحن نبنيها على نفس معايير وزارات الدفاع
+            </p>
+          </Reveal>
+
+          {/* Compliance badges */}
+          <Reveal delay={0.06}>
+            <div className="flex flex-wrap justify-center gap-3 mb-12">
+              {['HIPAA','ISO 27001','AES-256','NDMO','SOC 2','PDPL'].map(b => (
+                <div key={b} className="flex items-center gap-2 px-4 py-2.5 rounded-[14px]"
+                  style={{ background: 'rgba(16,185,129,0.07)', border: '1px solid rgba(16,185,129,0.2)', backdropFilter: 'blur(12px)' }}>
+                  <span className="text-[#10B981] text-[12px] font-black">✓</span>
+                  <span className="text-[12px] font-bold" style={{ color: '#10B981' }}>{b}</span>
+                </div>
               ))}
             </div>
+          </Reveal>
 
-            {/* Bottom stats bar */}
-            <Fade delay={0.15}>
-              <div className="rounded-[22px] p-6 flex flex-col sm:flex-row items-center gap-5 sm:gap-8"
-                style={{ background: 'rgba(16,185,129,0.07)', border: '1px solid rgba(16,185,129,0.18)' }}>
-                <div className="text-[44px] shrink-0">🔒</div>
-                <div className="flex-1 text-center sm:text-right">
-                  <p className="text-[#10B981] text-[18px] font-black mb-1">بياناتك ملكك وحدك — نحن لا نراها.</p>
-                  <p className="text-white/35 text-[13px] font-light">لم يُسجَّل أي اختراق منذ تأسيس المنظومة. هذا ليس حظاً — هذا هندسة.</p>
+          {/* Security pillars */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+            {[
+              { icon: '🔐', title: 'تشفير AES-256 من الطرف للطرف', desc: 'نفس معيار التشفير المستخدم في وزارات الدفاع والأسرار الحكومية — لا أحد يقرأ بيانات مرضاك إلا المخوّلون.', glow: '#10B981' },
+              { icon: '🧠', title: 'Zero-Knowledge Architecture',   desc: 'مفتاح التشفير ملكك وحدك. حتى فريق تلقا غير قادر تقنياً على رؤية بيانات مرضاك — بنية، لا وعود.', glow: '#00D4FF' },
+              { icon: '🛡️', title: 'مصادقة ثلاثية الطبقات',         desc: 'Face ID + بصمة إصبع + رمز تحقق. لا وصول بدون إذنك — حتى لو سُرقت كلمة المرور.', glow: '#7C3AED' },
+              { icon: '💾', title: 'نسخ احتياطي مشفر كل ٦ ساعات',  desc: 'مراكز بيانات موزعة جغرافياً، مشفرة كلها، محمية من الكوارث والحرائق وانقطاع الطاقة.', glow: '#F59E0B' },
+              { icon: '👁️', title: 'AI يراقب ٢٤/٧',                  desc: 'نظام ذكاء اصطناعي يكتشف أي نشاط غير اعتيادي ويوقفه فورياً — قبل أن يصبح تهديداً.', glow: '#EF4444' },
+              { icon: '📜', title: 'متوافق مع PDPL السعودي',         desc: 'مطابق بالكامل لنظام حماية البيانات الشخصية ولوائح هيئة الحكومة الرقمية — حماية قانونية شاملة.', glow: '#10B981' },
+            ].map((s, i) => (
+              <Reveal key={i} delay={i * 0.06}>
+                <div className="rounded-[22px] p-6 relative overflow-hidden group hover:-translate-y-0.5 transition-all duration-300 h-full"
+                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', backdropFilter: 'blur(16px)' }}>
+                  <div className="absolute top-0 right-0 w-20 h-20 rounded-bl-full opacity-0 group-hover:opacity-10 transition-opacity duration-300" style={{ background: s.glow }} />
+                  <span className="text-3xl mb-4 block">{s.icon}</span>
+                  <p className="text-[14px] font-bold mb-2 leading-snug" style={{ color: 'rgba(255,255,255,0.88)' }}>{s.title}</p>
+                  <p className="text-[12px] font-light leading-relaxed" style={{ color: 'rgba(255,255,255,0.32)' }}>{s.desc}</p>
                 </div>
-                <div className="flex gap-8 shrink-0">
-                  {[['٠', 'اختراقات'], ['١٠٠٪', 'تشفير'], ['٢٤/٧', 'مراقبة']].map(([v, l]) => (
-                    <div key={l} className="text-center">
-                      <p className="text-[#10B981] text-[24px] font-black leading-none">{v}</p>
-                      <p className="text-white/30 text-[10px] mt-1">{l}</p>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* Security score bar */}
+          <Reveal delay={0.2}>
+            <Glass className="p-7 flex flex-col sm:flex-row items-center gap-6" style={{ borderColor: 'rgba(16,185,129,0.2)' }}>
+              <div className="text-5xl shrink-0">🔒</div>
+              <div className="flex-1 text-center sm:text-right">
+                <p className="text-[18px] font-black mb-1" style={{ color: '#10B981' }}>بياناتك ملكك وحدك — نحن لا نراها</p>
+                <p className="text-[13px] font-light" style={{ color: 'rgba(255,255,255,0.3)' }}>لم يُسجَّل أي اختراق منذ التأسيس. هذا ليس حظاً — هذا هندسة.</p>
+              </div>
+              <div className="flex gap-8 shrink-0">
+                {[['٠','اختراقات'],['١٠٠٪','تشفير'],['٢٤/٧','مراقبة']].map(([v,l]) => (
+                  <div key={l} className="text-center">
+                    <p className="text-[28px] font-black leading-none" style={{ color: '#10B981' }}>{v}</p>
+                    <p className="text-[10px] font-light mt-1" style={{ color: 'rgba(255,255,255,0.25)' }}>{l}</p>
+                  </div>
+                ))}
+              </div>
+            </Glass>
+          </Reveal>
+        </div>
+      </div>
+
+      {/* ══ FEATURES GRID ═══════════════════════════════════════ */}
+      <div className="py-24 px-6">
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="text-center mb-12">
+            <p className="text-[11px] font-bold tracking-[0.3em] uppercase mb-4" style={{ color: 'rgba(124,58,237,0.7)' }}>كل ما تحتاجه</p>
+            <h2 className="font-black" style={{ fontSize: 'clamp(26px,4vw,50px)', color: 'rgba(255,255,255,0.9)' }}>١٥+ ميزة جاهزة من اليوم الأول</h2>
+          </Reveal>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            {[
+              ['🪪','بطاقة مريض رقمية','QR فوري'],
+              ['📅','حجز مواعيد','فوري ٢٤/٧'],
+              ['🧪','نتائج التحاليل','مباشرة للهاتف'],
+              ['💊','تذكيرات الأدوية','إشعارات ذكية'],
+              ['❤️','Apple Health','مزامنة تلقائية'],
+              ['⌚','Apple Watch','مؤشرات حيوية'],
+              ['👨‍👩‍👧','التابعون','صحة العائلة'],
+              ['🎫','Wallet','تذكرة رقمية'],
+              ['📋','السجل الطبي','تاريخ موحد'],
+              ['🩺','الأمراض المزمنة','سكر · ضغط'],
+              ['📊','لوحة المالك','تقارير فورية'],
+              ['🌐','موقع إلكتروني','جوجل ١٠٠٪'],
+              ['💬','واتساب آلي','تأكيد + نتائج'],
+              ['🔒','أمان HIPAA','تشفير كامل'],
+              ['🔗','تكامل HIS/LIS','أنظمة موجودة'],
+            ].map(([icon, title, sub], i) => (
+              <Reveal key={i} delay={i * 0.025}>
+                <Glass className="p-4 text-center group hover:bg-white/[0.07] transition-all duration-200 cursor-default h-full"
+                  style={{ borderRadius: 20 }}>
+                  <span className="text-2xl mb-2 block">{icon}</span>
+                  <p className="text-[12px] font-bold mb-0.5" style={{ color: 'rgba(255,255,255,0.8)' }}>{title}</p>
+                  <p className="text-[10px] font-light" style={{ color: 'rgba(255,255,255,0.25)' }}>{sub}</p>
+                </Glass>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ══ TESTIMONIALS ════════════════════════════════════════ */}
+      <div className="py-24 px-6">
+        <div className="max-w-5xl mx-auto">
+          <Reveal className="text-center mb-12">
+            <p className="text-[11px] font-bold tracking-[0.3em] uppercase mb-4" style={{ color: 'rgba(0,212,255,0.6)' }}>قالوا عنّا</p>
+            <h2 className="font-black" style={{ fontSize: 'clamp(26px,4vw,50px)', color: 'rgba(255,255,255,0.9)' }}>عيادات تثق بتلقا</h2>
+          </Reveal>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            {[
+              { name: 'عيادة الشفاء',      city: 'الرياض', av: 'ع', c: '#00D4FF',
+                quote: 'الحجوزات الإلكترونية قلّصت الانتظار ٦٠٪ في أول أسبوع. الفريق أكثر تنظيماً والمرضى أكثر سعادة.' },
+              { name: 'مجمع النور الطبي',   city: 'جدة',    av: 'م', c: '#7C3AED',
+                quote: 'مرضاي يطلبون تطبيقنا قبل ما يسألون عن الأطباء. صار عندنا هوية رقمية تنافس المستشفيات الكبرى.' },
+              { name: 'مستشفى الرعاية',     city: 'أبها',   av: 'ر', c: '#10B981',
+                quote: 'الأمان كان أولويتنا كمستشفى. قرأنا المواصفات التقنية وكانت أفضل بكثير مما توقعنا.' },
+            ].map((t, i) => (
+              <Reveal key={i} delay={i * 0.08}>
+                <Glass className="p-6 h-full flex flex-col">
+                  <p className="text-[14px] mb-1" style={{ color: '#F59E0B' }}>⭐⭐⭐⭐⭐</p>
+                  <p className="text-[13px] font-light leading-relaxed flex-1 mb-5 italic" style={{ color: 'rgba(255,255,255,0.45)' }}>"{t.quote}"</p>
+                  <div className="flex items-center gap-3 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-[14px] font-black shrink-0"
+                      style={{ background: `linear-gradient(135deg,${t.c}40,${t.c}80)`, border: `1px solid ${t.c}40` }}>
+                      {t.av}
+                    </div>
+                    <div>
+                      <p className="text-[13px] font-bold" style={{ color: 'rgba(255,255,255,0.8)' }}>{t.name}</p>
+                      <p className="text-[10px]" style={{ color: 'rgba(255,255,255,0.25)' }}>{t.city}</p>
+                    </div>
+                  </div>
+                </Glass>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ══ PRICING ═════════════════════════════════════════════ */}
+      <div id="pricing" className="relative py-24 px-6 overflow-hidden">
+        <Orb x="50%" y="50%" color="rgba(0,212,255,0.1)" size={1000} />
+        <div className="max-w-2xl mx-auto relative z-10">
+          <Reveal>
+            <div className="rounded-[36px] relative overflow-hidden text-center"
+              style={{ background: 'linear-gradient(145deg,#080F1E,#0B1628)', border: '1px solid rgba(0,212,255,0.15)', boxShadow: '0 0 80px rgba(0,212,255,0.08), 0 40px 80px rgba(0,0,0,0.5)' }}>
+              <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 50% 0%,rgba(0,212,255,0.1) 0%,transparent 55%)' }} />
+              <div className="relative z-10 p-10 md:p-14">
+                <p className="text-[11px] font-bold tracking-[0.3em] uppercase mb-4" style={{ color: 'rgba(0,212,255,0.6)' }}>سعر إطلاق</p>
+                <p className="font-black leading-none mb-2" style={{ fontSize: 'clamp(52px,10vw,88px)', color: '#fff' }}>25,000</p>
+                <p className="text-[20px] font-light mb-1.5" style={{ color: '#00D4FF' }}>ريال سعودي</p>
+                <p className="text-[13px] font-light mb-10" style={{ color: 'rgba(255,255,255,0.2)' }}>تطبيق iOS + Android · موقع · نظام إدارة · أمان كامل</p>
+
+                <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto mb-10">
+                  {['تسليم ٦٠ يوم','نشر المتجرين','سنة دعم مجاني','تدريب الفريق','تكامل HIS','هوية عيادتك'].map(item => (
+                    <div key={item} className="flex items-center gap-2 text-[12px]" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                      <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: '#00D4FF', boxShadow: '0 0 6px #00D4FF' }} />
+                      {item}
                     </div>
                   ))}
                 </div>
+
+                <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 font-black text-[16px] px-10 py-5 rounded-[20px] transition-all duration-200 hover:scale-105 active:scale-95"
+                  style={{ background: 'linear-gradient(135deg,#00D4FF,#0096B4)', color: '#020C16', boxShadow: '0 0 50px rgba(0,212,255,0.4), 0 10px 40px rgba(0,0,0,0.3)' }}>
+                  ابدأ مشروعك مع تلقا 🚀
+                </a>
+                <p className="text-[11px] mt-4 font-light" style={{ color: 'rgba(255,255,255,0.15)' }}>استشارة مجانية عبر واتساب</p>
               </div>
-            </Fade>
-          </div>
+            </div>
+          </Reveal>
         </div>
       </div>
 
-      {/* ══════════════════════════════════════════════════
-          TESTIMONIALS
-      ══════════════════════════════════════════════════ */}
-      <div className={`${W} mb-16`}>
-        <Fade className="text-center mb-8">
-          <p className="text-[11px] text-[#AAA] font-bold tracking-widest uppercase mb-2">قالوا عنّا</p>
-          <h2 className="text-[28px] md:text-[34px] font-black text-[#0B2D4E]">عيادات تثق بتلقا تك</h2>
-        </Fade>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[
-            { name: 'عيادة الشفاء الطبية',   city: 'الرياض', initials: 'ع', color: '#0B2D4E',
-              quote: 'الحجوزات الإلكترونية قلّصت الانتظار ٦٠٪ في أول أسبوع من التشغيل. المرضى سعداء والفريق أكثر تنظيماً.' },
-            { name: 'مجمع النور الطبي',      city: 'جدة',    initials: 'م', color: '#065f46',
-              quote: 'مرضاي يطلبون تطبيقنا قبل ما يسألون عن الأطباء. صارت العيادة بمستوى المستشفيات الكبيرة بعيون الناس.' },
-            { name: 'مستشفى الرعاية الأهلي', city: 'أبها',   initials: 'ر', color: '#6d28d9',
-              quote: 'الأمان كان أولويتنا كمستشفى — قرأنا عن تشفير AES-256 ومعايير HIPAA وكانت النتيجة أفضل من توقعاتنا.' },
-          ].map((t, i) => (
-            <Fade key={i} delay={i * 0.08}>
-              <div className="bg-white rounded-[24px] p-6 border border-[rgba(11,45,78,0.07)] shadow-[0_4px_24px_rgba(0,0,0,0.06)] h-full flex flex-col">
-                <p className="text-[#F59E0B] text-[14px] mb-3">⭐⭐⭐⭐⭐</p>
-                <p className="text-[13px] text-[#555] font-light leading-relaxed flex-1 mb-4 italic">"{t.quote}"</p>
-                <div className="flex items-center gap-3 pt-4 border-t border-[#F5F7FA]">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-[14px] font-black shrink-0"
-                    style={{ background: `linear-gradient(135deg,${t.color},#00B4D8)` }}>{t.initials}</div>
-                  <div>
-                    <p className="text-[13px] font-bold text-[#111]">{t.name}</p>
-                    <p className="text-[11px] text-[#BBB]">{t.city}</p>
+      {/* ══ DEV SECTION ═════════════════════════════════════════ */}
+      <div className="py-16 px-6">
+        <div className="max-w-5xl mx-auto">
+          <Reveal>
+            <div className="rounded-[28px] overflow-hidden" style={{ background: '#050E1A', border: '1px solid rgba(0,212,255,0.1)' }}>
+              <div className="px-8 py-6 border-b flex items-center gap-3" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
+                <div className="flex gap-1.5">
+                  {['#FF5F57','#FEBC2E','#28C840'].map(c => <div key={c} className="w-3 h-3 rounded-full" style={{ background: c }} />)}
+                </div>
+                <span className="text-[11px] font-mono ml-auto" style={{ color: 'rgba(255,255,255,0.2)' }}>للمطورين والشركاء التقنيين — بنية من أعلى مستوى</span>
+              </div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                <div className="p-8 border-b lg:border-b-0 lg:border-l" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
+                  <p className="text-[11px] font-bold tracking-widest uppercase mb-4" style={{ color: 'rgba(0,212,255,0.5)' }}>REST API + Webhooks</p>
+                  <div className="space-y-2 font-mono text-[11px]">
+                    {[['GET','#10B981','/v1/patients/:id'],['POST','#00D4FF','/v1/appointments'],['PATCH','#F59E0B','/v1/prescriptions/:id'],['WSS','#7C3AED','/v1/realtime']].map(([m,c,p]) => (
+                      <div key={p} className="flex items-center gap-3 px-3 py-2 rounded-[10px]" style={{ background: 'rgba(255,255,255,0.03)' }}>
+                        <span className="font-bold w-10 shrink-0" style={{ color: c }}>{m}</span>
+                        <span style={{ color: 'rgba(255,255,255,0.35)' }}>{p}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {['FHIR R4','HL7','DICOM','SNOMED CT'].map(b => (
+                      <span key={b} className="text-[10px] font-bold px-2.5 py-1 rounded-full font-mono" style={{ background: 'rgba(0,212,255,0.07)', color: 'rgba(0,212,255,0.5)', border: '1px solid rgba(0,212,255,0.1)' }}>{b}</span>
+                    ))}
                   </div>
                 </div>
+                <div className="p-8 font-mono text-[11px] leading-relaxed" dir="ltr">
+                  <p><span style={{ color: '#7C3AED' }}>import</span> <span style={{ color: '#F59E0B' }}>{'{ TelqaClient }'}</span> <span style={{ color: '#7C3AED' }}>from</span> <span style={{ color: '#10B981' }}>'@telqa/sdk'</span>;</p>
+                  <p className="mt-3"><span style={{ color: '#7C3AED' }}>const</span> <span style={{ color: '#00D4FF' }}>client</span> = <span style={{ color: '#7C3AED' }}>new</span> <span style={{ color: '#F59E0B' }}>TelqaClient</span>({'{'}</p>
+                  <p className="ml-4"><span style={{ color: 'rgba(255,255,255,0.4)' }}>apiKey</span>: env.<span style={{ color: '#00D4FF' }}>TELQA_KEY</span>,</p>
+                  <p className="ml-4"><span style={{ color: 'rgba(255,255,255,0.4)' }}>encryption</span>: <span style={{ color: '#10B981' }}>'AES-256'</span>,</p>
+                  <p>{'}'});</p>
+                  <p className="mt-3" style={{ color: 'rgba(255,255,255,0.2)' }}>// حجز موعد — مشفر بالكامل</p>
+                  <p><span style={{ color: '#7C3AED' }}>const</span> appt = <span style={{ color: '#7C3AED' }}>await</span> client</p>
+                  <p className="ml-4">.<span style={{ color: '#00D4FF' }}>appointments</span>.<span style={{ color: '#00D4FF' }}>create</span>({'{'}</p>
+                  <p className="ml-8">patientId, doctorId, slot</p>
+                  <p className="ml-4">{'}'});</p>
+                  <p className="mt-3" style={{ color: '#10B981' }}>// → status: "confirmed" ✓</p>
+                </div>
               </div>
-            </Fade>
-          ))}
+            </div>
+          </Reveal>
         </div>
       </div>
 
-      {/* ══════════════════════════════════════════════════
-          PRICING CTA
-      ══════════════════════════════════════════════════ */}
-      <div id="pricing" className={`${W} mb-16`}>
-        <Fade>
-          <div className="rounded-[32px] p-8 md:p-12 text-center relative overflow-hidden"
-            style={{ background: 'linear-gradient(145deg,#050E1A 0%,#0B3A5A 45%,#050E1A 100%)' }}>
-            <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 50% 0%,rgba(0,180,216,0.16) 0%,transparent 60%)' }} />
-            <div className="absolute bottom-0 left-0 w-40 h-40 opacity-[0.03]"
-              style={{ backgroundImage: 'radial-gradient(circle,#00B4D8 1.5px,transparent 1.5px)', backgroundSize: '10px 10px' }} />
-            <div className="relative z-10">
-              <p className="text-[#00B4D8] text-[11px] font-bold tracking-widest uppercase mb-3">سعر إطلاق خاص</p>
-              <p className="text-white text-[56px] font-black leading-none mb-1">25,000</p>
-              <p className="text-[#00B4D8] text-[20px] font-light mb-1.5">ريال سعودي</p>
-              <p className="text-white/25 text-[12px] mb-8 font-light">تطبيق iOS + Android · موقع · نظام إدارة · نتائج رقمية · حجوزات · سجل طبي</p>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5 max-w-md mx-auto mb-8">
-                {['تسليم خلال ٦٠ يوم','نشر على المتجرين','سنة دعم مجاني','تدريب الفريق','تكامل مع HIS الحالي','تصميم بهوية عيادتك'].map(item => (
-                  <div key={item} className="flex items-center gap-2 text-white/45 text-[11px]">
-                    <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: '#00B4D8' }} />
-                    {item}
-                  </div>
-                ))}
-              </div>
-              <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
-                className="inline-block font-black text-[16px] text-[#0B2D4E] bg-white px-10 py-4 rounded-[18px] shadow-[0_8px_32px_rgba(0,0,0,0.25)] hover:bg-[#F0F8FF] active:scale-95 transition-all duration-150">
-                ابدأ مشروع عيادتك مع تلقا تك 🚀
-              </a>
-              <p className="text-white/20 text-[11px] mt-4 font-light">تواصل عبر واتساب للاستفسار المجاني</p>
-            </div>
-          </div>
-        </Fade>
+      {/* ══ FINAL CTA ═══════════════════════════════════════════ */}
+      <div className="relative py-32 px-6 overflow-hidden text-center">
+        <Orb x="50%" y="50%" color="rgba(124,58,237,0.2)" size={1000} />
+        <Orb x="20%" y="40%" color="rgba(0,212,255,0.12)" size={600} />
+        <div className="max-w-3xl mx-auto relative z-10">
+          <Reveal>
+            <h2 className="font-black leading-[1.05] mb-6" style={{ fontSize: 'clamp(36px,7vw,80px)', color: 'rgba(255,255,255,0.95)' }}>
+              جاهز تحوّل<br />
+              <span style={{ WebkitTextFillColor: 'transparent', WebkitBackgroundClip: 'text', backgroundImage: 'linear-gradient(135deg,#00D4FF,#7C3AED,#10B981)' }}>
+                عيادتك؟
+              </span>
+            </h2>
+            <p className="text-[17px] font-light mb-10" style={{ color: 'rgba(255,255,255,0.3)' }}>
+              استشارة مجانية — بدون التزام — خلال ٢٤ ساعة
+            </p>
+            <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 font-black text-[18px] px-12 py-5 rounded-[22px] transition-all duration-200 hover:scale-105 active:scale-95"
+              style={{ background: 'linear-gradient(135deg,#00D4FF,#7C3AED)', color: '#fff', boxShadow: '0 0 80px rgba(0,212,255,0.3), 0 0 80px rgba(124,58,237,0.2), 0 20px 60px rgba(0,0,0,0.4)' }}>
+              ابدأ الآن عبر واتساب 🚀
+            </a>
+          </Reveal>
+        </div>
       </div>
 
-      {/* ══════════════════════════════════════════════════
-          DEVELOPER SECTION — "القوة التقنية"
-      ══════════════════════════════════════════════════ */}
-      <div className={`${W} mb-14`}>
-        <Fade>
-          <div className="rounded-[28px] overflow-hidden border border-[rgba(0,180,216,0.15)]"
-            style={{ background: '#050E1A' }}>
-            <div className="px-7 md:px-10 py-8">
-              <div className="flex flex-col md:flex-row items-start gap-8">
-
-                {/* Left: technical cred */}
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-2 h-2 rounded-full bg-[#00B4D8]" />
-                    <p className="text-[#00B4D8] text-[10px] font-bold tracking-widest uppercase">للمطورين والشركاء التقنيين</p>
-                  </div>
-                  <h3 className="text-white text-[22px] font-black mb-2">بنية تقنية من أعلى مستوى</h3>
-                  <p className="text-white/35 text-[13px] font-light leading-relaxed mb-5 max-w-md">
-                    تلقا مبنية على أحدث تقنيات React Native · Node.js · PostgreSQL مع REST API كامل وWebhooks — جاهزة للتكامل مع أي نظام HIS أو LIS موجود.
-                  </p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {[
-                      ['REST API', 'FHIR · HL7 جاهز'],
-                      ['Webhooks', 'تحديثات فورية'],
-                      ['SDK', 'iOS · Android · Node.js'],
-                      ['Sandbox', 'بيئة اختبار كاملة'],
-                    ].map(([t, s]) => (
-                      <div key={t} className="flex items-center gap-2.5 px-3 py-2.5 rounded-[12px]"
-                        style={{ background: 'rgba(0,180,216,0.07)', border: '1px solid rgba(0,180,216,0.12)' }}>
-                        <div className="w-1.5 h-1.5 rounded-full bg-[#00B4D8] shrink-0" />
-                        <div>
-                          <p className="text-[#00B4D8] text-[11px] font-bold leading-none">{t}</p>
-                          <p className="text-white/25 text-[9px] mt-0.5">{s}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Right: code terminal */}
-                <div className="flex-1 w-full">
-                  <div className="rounded-[16px] overflow-hidden border border-white/8" style={{ background: '#0a0a0a' }}>
-                    <div className="flex items-center gap-2 px-4 py-2.5 border-b border-white/8">
-                      <div className="flex gap-1.5">
-                        <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#FF5F57' }} />
-                        <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#FEBC2E' }} />
-                        <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#28C840' }} />
-                      </div>
-                      <span className="text-white/20 text-[10px] font-mono mr-auto">telqa-api.ts</span>
-                    </div>
-                    <div className="p-4 font-mono text-[11px] leading-relaxed" dir="ltr">
-                      <p><span style={{ color: '#7C3AED' }}>import</span> <span style={{ color: '#F59E0B' }}>{'{ TelqaClient }'}</span> <span style={{ color: '#7C3AED' }}>from</span> <span style={{ color: '#10B981' }}>'@telqa/sdk'</span>;</p>
-                      <p className="mt-2"><span style={{ color: '#7C3AED' }}>const</span> <span style={{ color: '#00B4D8' }}>telqa</span> = <span style={{ color: '#7C3AED' }}>new</span> <span style={{ color: '#F59E0B' }}>TelqaClient</span>({'{'}</p>
-                      <p className="ml-4"><span style={{ color: '#AAA' }}>apiKey</span>: process.env.<span style={{ color: '#00B4D8' }}>TELQA_KEY</span>,</p>
-                      <p className="ml-4"><span style={{ color: '#AAA' }}>encryption</span>: <span style={{ color: '#10B981' }}>'AES-256'</span>,</p>
-                      <p>{'}'});</p>
-                      <p className="mt-2 text-white/25">// حجز موعد مشفر بالكامل</p>
-                      <p><span style={{ color: '#7C3AED' }}>const</span> <span style={{ color: '#AAA' }}>appt</span> = <span style={{ color: '#7C3AED' }}>await</span> telqa.<span style={{ color: '#00B4D8' }}>appointments</span>.</p>
-                      <p className="ml-4"><span style={{ color: '#00B4D8' }}>create</span>({'{'} patientId, doctorId, slot {'}'});</p>
-                      <p className="mt-2 text-white/25">// → <span style={{ color: '#10B981' }}>"status": "confirmed"</span></p>
-                    </div>
-                  </div>
-
-                  {/* API endpoints */}
-                  <div className="mt-3 space-y-1.5">
-                    {[
-                      { method: 'GET',   color: '#10B981', path: '/v1/patients/:id' },
-                      { method: 'POST',  color: '#00B4D8', path: '/v1/appointments' },
-                      { method: 'PATCH', color: '#F59E0B', path: '/v1/prescriptions/:id' },
-                      { method: 'WSS',   color: '#8B5CF6', path: '/v1/realtime' },
-                    ].map(e => (
-                      <div key={e.path} className="flex items-center gap-3 px-3 py-2 rounded-[10px] font-mono text-[10px]"
-                        style={{ background: 'rgba(255,255,255,0.04)' }}>
-                        <span className="font-bold w-10 shrink-0" style={{ color: e.color }}>{e.method}</span>
-                        <span className="text-white/40">{e.path}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Bottom strip */}
-            <div className="px-7 md:px-10 py-4 border-t border-white/8 flex flex-col sm:flex-row items-center justify-between gap-3"
-              style={{ background: 'rgba(0,180,216,0.05)' }}>
-              <p className="text-white/30 text-[12px]">
-                مبنية على معايير <span className="text-[#00B4D8]">FHIR R4 · HL7 · DICOM</span> — متوافقة مع أي نظام طبي موجود
-              </p>
-              <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
-                className="text-[#00B4D8] text-[12px] font-bold hover:text-white transition-colors whitespace-nowrap">
-                اسأل عن التكامل ←
-              </a>
-            </div>
-          </div>
-        </Fade>
-      </div>
-
-      {/* ══════════════════════════════════════════════════
-          FOOTER
-      ══════════════════════════════════════════════════ */}
-      <div className="border-t border-[rgba(11,45,78,0.08)] bg-white/60 py-10 px-6">
-        <div className={`${W} flex flex-col md:flex-row items-center justify-between gap-4`}>
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-[8px] flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#0B2D4E,#00B4D8)' }}>
+      {/* ══ FOOTER ══════════════════════════════════════════════ */}
+      <div className="py-8 px-6 text-center" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 max-w-5xl mx-auto">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-[8px] flex items-center justify-center"
+              style={{ background: 'linear-gradient(135deg,#00D4FF,#7C3AED)' }}>
               <span className="text-white text-[11px] font-black">ت</span>
             </div>
-            <span className="text-[14px] font-black text-[#0B2D4E]">تلقا تك</span>
+            <span className="font-black text-[14px]" style={{ color: 'rgba(255,255,255,0.7)' }}>تلقا تك</span>
           </div>
-          <p className="text-[11px] text-[#CCC] font-light text-center">
-            وكالة تصميم تطبيقات ومواقع احترافية للقطاع الطبي · جميع الحقوق محفوظة ٢٠٢٥
+          <p className="text-[11px] font-light" style={{ color: 'rgba(255,255,255,0.2)' }}>
+            وكالة تصميم منظومات رقمية للقطاع الطبي · جميع الحقوق محفوظة ٢٠٢٥
           </p>
           <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
-            className="text-[12px] font-bold text-[#0B2D4E] border border-[rgba(11,45,78,0.2)] px-4 py-2 rounded-full hover:bg-[#0B2D4E]/5 transition-colors">
+            className="text-[12px] font-semibold px-4 py-2 rounded-full transition-colors hover:bg-white/5"
+            style={{ color: '#00D4FF', border: '1px solid rgba(0,212,255,0.2)' }}>
             واتساب ←
           </a>
         </div>
