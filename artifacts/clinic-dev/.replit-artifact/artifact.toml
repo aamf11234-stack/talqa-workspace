@@ -1,5 +1,5 @@
 kind = "web"
-previewPath = "/clinic-dev/"
+previewPath = "/"
 title = "تلقا للعيادات — Developer"
 version = "1.0.0"
 id = "artifacts/clinic-dev"
@@ -7,7 +7,7 @@ router = "path"
 
 [[services]]
 name = "web"
-paths = [ "/clinic-dev/" ]
+paths = [ "/" ]
 localPort = 18498
 
 [services.development]
@@ -24,4 +24,4 @@ to = "/index.html"
 
 [services.env]
 PORT = "18498"
-BASE_PATH = "/clinic-dev/"
+BASE_PATH = "/"
