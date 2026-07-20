@@ -1,13 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Home, CalendarDays, CreditCard, Brain, Bell } from 'lucide-react';
+import { Home, CalendarDays, CreditCard, Brain, Bell, Layers } from 'lucide-react';
 
-export type ClinicTab = 'home' | 'appointments' | 'card' | 'ai' | 'notifications';
+export type ClinicTab = 'home' | 'appointments' | 'card' | 'ai' | 'packages' | 'notifications';
 
 const tabs: { id: ClinicTab; icon: React.ElementType; label: string }[] = [
   { id: 'home',          icon: Home,        label: 'الرئيسية' },
   { id: 'appointments',  icon: CalendarDays, label: 'مواعيد'   },
   { id: 'card',          icon: CreditCard,  label: 'بطاقتي'   },
+  { id: 'packages',      icon: Layers,      label: 'باقاتي'   },
   { id: 'ai',            icon: Brain,       label: 'AI'        },
   { id: 'notifications', icon: Bell,        label: 'تنبيهات'  },
 ];
@@ -59,7 +60,7 @@ export function BottomNav({ activeTab, onChangeTab, notifCount = 2, theme = 'dar
             key={tab.id}
             onClick={() => onChangeTab(tab.id)}
             className="relative flex flex-col items-center justify-center gap-0.5 transition-all duration-200 active:scale-90"
-            style={{ width: '18%', height: 44 }}
+            style={{ width: '15%', height: 44 }}
           >
             {isActive && (
               <motion.div

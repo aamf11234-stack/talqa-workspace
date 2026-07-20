@@ -8,6 +8,7 @@ import { ScreenHome }             from '../components/ScreenHome';
 import { ScreenAppointments }     from '../components/ScreenAppointments';
 import { ScreenCard }             from '../components/ScreenCard';
 import { ScreenNotifications }    from '../components/ScreenNotifications';
+import { ScreenPackages }         from '../components/ScreenPackages';
 import { ScreenAI }               from '../components/ScreenAI';
 
 /* ── Face ID Lock Screen ──────────────────────────────────────── */
@@ -345,6 +346,7 @@ export default function Home() {
                   {activeTab === 'home'          && <ScreenHome          theme={phoneTheme} />}
                   {activeTab === 'appointments'  && <ScreenAppointments  theme={phoneTheme} />}
                   {activeTab === 'card'          && <ScreenCard          theme={phoneTheme} />}
+                  {activeTab === 'packages'      && <ScreenPackages      theme={phoneTheme} />}
                   {activeTab === 'ai'            && <ScreenAI            theme={phoneTheme} />}
                   {activeTab === 'notifications' && <ScreenNotifications theme={phoneTheme} />}
                 </motion.div>
