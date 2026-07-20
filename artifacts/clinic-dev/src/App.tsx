@@ -964,105 +964,127 @@ export default function App() {
         </section>
 
         {/* ════ SECURITY ═══════════════════════════════════ */}
-        <section id="الأمان" className="py-28 px-6 lg:px-12">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
-              <Reveal>
-                <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>{t.securityBadge}</p>
-                <h2 className="font-black leading-tight mb-5" style={{ fontSize:'clamp(30px,5vw,60px)', letterSpacing:'-0.02em', color:TEXT }}>
-                  {t.securityHeading1}<br />{t.securityHeading2}
-                </h2>
-                <p className="text-[16px] leading-relaxed mb-8" style={{ color:MUTED }}>
-                  {lang==='ar'
-                    ? 'بيانات مرضاك تُخزَّن بشكل مشفر على خوادم مخصصة. لا يصل إليها أحد إلا بصلاحية صريحة منك.'
-                    : 'Patient data is stored encrypted on dedicated servers. Nobody accesses it without your explicit permission.'}
-                </p>
-                <div className="flex flex-wrap gap-3">
-                  {(lang==='ar'
-                    ? ['تشفير كامل','نسخ احتياطي يومي','صلاحيات محددة','دعم فني ٢٤/٧']
-                    : ['Full encryption','Daily backups','Role-based access','24/7 support']
-                  ).map(b => (
-                    <div key={b} className="flex items-center gap-2 px-4 py-2 rounded-full text-[12px] font-bold cursor-default"
-                      style={{ background:GLASS, border:`1px solid ${GLASSBORDER}`, color:MUTED, backdropFilter:'blur(10px)' }}>
-                      <span style={{ color:BLUE }}>✓</span> {b}
-                    </div>
-                  ))}
-                </div>
-              </Reveal>
-              <Reveal delay={0.1}>
-                <div className="p-6 rounded-3xl" style={{ background:'rgba(15,23,42,0.8)', border:`1px solid ${GLASSBORDER}`, backdropFilter:'blur(20px)', boxShadow:'0 32px 80px rgba(0,0,0,0.5)' }}>
-                  <div className="flex items-center gap-2 mb-5">
-                    <div className="flex gap-1.5">{['#FF5F57','#FEBC2E','#28C840'].map(c => <div key={c} className="w-3 h-3 rounded-full" style={{ background:c }} />)}</div>
-                    <span className="text-[10px] font-mono mr-auto" style={{ color:DIM }}>system.log</span>
-                  </div>
-                  <div className="space-y-2 font-mono text-[11px]">
-                    {[
-                      ['[INFO]','#38BDF8','Encryption: ACTIVE'],
-                      ['[OK]','#34D399','Backup completed: today 03:00'],
-                      ['[OK]','#34D399','Access log: 3 authorized users'],
-                      ['[OK]','#34D399','Uptime: 99.9% last 90 days'],
-                      ['[OK]','#34D399','SSL certificate: valid'],
-                      ['[SCAN]','#A78BFA','Monitoring: RUNNING'],
-                      ['[OK]','#34D399','Last restore test: passed'],
-                      ['[INFO]','#38BDF8','Support ticket: resolved in 1h'],
-                    ].map(([tag,c,msg],i) => (
-                      <motion.div key={i} initial={{ opacity:0, x:-10 }} animate={{ opacity:1, x:0 }}
-                        transition={{ delay:0.8+i*0.1 }} className="flex items-center gap-3" dir="ltr">
-                        <span className="shrink-0 font-bold" style={{ color:c }}>{tag}</span>
-                        <span className="text-[10px]" style={{ color:'rgba(255,255,255,0.4)' }}>{msg}</span>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </Reveal>
-            </div>
+        <section id="الأمان" className="py-28 px-6 lg:px-12 relative overflow-hidden">
+          {/* bg glow */}
+          <div className="absolute inset-0 pointer-events-none" style={{ background:'radial-gradient(ellipse 80% 60% at 50% 50%,rgba(14,165,233,0.06) 0%,transparent 70%)' }} />
+          <div className="max-w-7xl mx-auto relative z-10">
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[
-                { icon:'🔐', title: lang==='ar'?'تشفير البيانات':'Data Encryption', desc: lang==='ar'?'كل بيانات المرضى مشفرة أثناء التخزين والنقل. لا يقرأها أحد بدون صلاحية.':'All patient data is encrypted at rest and in transit. No access without authorization.', accent:BLUE },
-                { icon:'🛡️', title: lang==='ar'?'صلاحيات محددة':'Role-Based Access', desc: lang==='ar'?'كل موظف يشوف فقط اللي يخصه. السكرتيرة تشوف المواعيد، الدكتور يشوف الملفات.':'Each staff member sees only what they need. Reception sees appointments, doctors see records.', accent:'#10B981' },
-                { icon:'💾', title: lang==='ar'?'نسخ احتياطي يومي':'Daily Backups', desc: lang==='ar'?'نسخة يومية تلقائية لبياناتك. لو صار أي شيء، نرجعلك كل شيء.':'Automatic daily backup of your data. If anything happens, we restore everything.', accent:'#F59E0B' },
-                { icon:'🔔', title: lang==='ar'?'تنبيهات فورية':'Instant Alerts', desc: lang==='ar'?'أي دخول غير عادي على النظام تجي له تنبيه فوري.':'Any unusual login attempt triggers an immediate alert.', accent:'#EF4444' },
-                { icon:'⏱️', title: lang==='ar'?'دعم فني سريع':'Fast Technical Support', desc: lang==='ar'?'فريق الدعم يرد خلال ساعة في أوقات الدوام. لأن مشاكل التقنية لا تنتظر.':'Support team responds within an hour during business hours. Because tech issues do not wait.', accent:'#8B5CF6' },
-                { icon:'📊', title: lang==='ar'?'سجل كامل للعمليات':'Full Audit Log', desc: lang==='ar'?'كل عملية في النظام مسجلة — من دخل، وش سوّى، وامتى.':'Every action in the system is logged — who accessed, what they did, and when.', accent:BLUE },
-              ].map((s,i) => (
-                <Reveal key={i} delay={i*0.05}>
-                  <Glass accent={s.accent} className="h-full cursor-default">
-                    <div className="p-6">
-                      <span className="text-[28px] mb-4 block">{s.icon}</span>
-                      <p className="text-[15px] font-black mb-2" style={{ color:TEXT }}>{s.title}</p>
-                      <p className="text-[12px] leading-relaxed" style={{ color:MUTED }}>{s.desc}</p>
+            {/* ── Hero headline ── */}
+            <Reveal className="text-center mb-20">
+              <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>
+                {lang==='ar' ? 'الأمان' : 'Security'}
+              </p>
+              <h2 className="font-black leading-tight mb-6" style={{ fontSize:'clamp(32px,5.5vw,68px)', letterSpacing:'-0.03em', color:TEXT }}>
+                {lang==='ar'
+                  ? <>بياناتك أمانة.<br /><span style={{ color:BLUE }}>ونحمل هذه الأمانة بجدية.</span></>
+                  : <>Your data is a trust.<br /><span style={{ color:BLUE }}>We take it seriously.</span></>}
+              </h2>
+              <p className="text-[17px] max-w-2xl mx-auto leading-relaxed" style={{ color:MUTED }}>
+                {lang==='ar'
+                  ? 'ملفات مرضاك، مواعيدك، وسجلاتك — محمية من الضياع والوصول غير المصرّح به. هذا ليس وعداً تسويقياً، هذا كيف بنينا النظام من اليوم الأول.'
+                  : 'Your patient files, appointments, and records — protected from loss and unauthorized access. This is not a marketing promise, this is how we built the system from day one.'}
+              </p>
+            </Reveal>
+
+            {/* ── Fear → Reassurance strips ── */}
+            <div className="space-y-4 mb-16">
+              {(lang==='ar' ? [
+                {
+                  fear: 'لو انقطع الإنترنت أو تعطّل السيرفر فجأة — تضيع المواعيد والملفات؟',
+                  answer: 'لا. نسخة احتياطية تلقائية كل يوم على خوادم مستقلة. في أسوأ الأحوال نرجعلك كل شيء خلال ساعات.',
+                  icon: '💾', color: '#10B981',
+                },
+                {
+                  fear: 'لو موظف بالغلط حذف ملفات مرضى — أو أخذ البيانات معه لما ترك العيادة؟',
+                  answer: 'كل موظف يشوف فقط اللي يخصه. السكرتيرة تشوف المواعيد فقط. والدكتور يشوف ملفاته فقط. وكل حركة مسجلة باسم من سوّاها.',
+                  icon: '🛡️', color: BLUE,
+                },
+                {
+                  fear: 'لو صار أي عطل تقني وما لقيت أحد يرد — والعيادة واقفة؟',
+                  answer: 'فريق الدعم يرد خلال ساعة في أوقات الدوام. ولك رقم واتساب مباشر للطوارئ. لأن توقف العيادة يعني خسارة حقيقية.',
+                  icon: '🆘', color: '#8B5CF6',
+                },
+              ] : [
+                {
+                  fear: 'What if the server goes down or internet cuts — do we lose all appointments and files?',
+                  answer: 'No. Automatic daily backup to independent servers. In the worst case, we restore everything within hours.',
+                  icon: '💾', color: '#10B981',
+                },
+                {
+                  fear: 'What if a staff member accidentally deletes patient files — or takes data when they leave?',
+                  answer: 'Every staff member only sees what they need. Reception sees appointments only. Doctors see their files only. Every action is logged with who did it.',
+                  icon: '🛡️', color: BLUE,
+                },
+                {
+                  fear: 'What if there is a technical issue and no one responds — and the clinic is stuck?',
+                  answer: 'Support team responds within one hour during business hours. You also get a direct WhatsApp number for emergencies. Because clinic downtime is real loss.',
+                  icon: '🆘', color: '#8B5CF6',
+                },
+              ]).map((row, i) => (
+                <Reveal key={i} delay={i * 0.08}>
+                  <div className="rounded-3xl overflow-hidden" style={{ border:`1px solid ${GLASSBORDER}`, background:'rgba(255,255,255,0.02)' }}>
+                    <div className="grid grid-cols-1 lg:grid-cols-2">
+                      {/* Fear side */}
+                      <div className="p-7 flex gap-5 items-start" style={{ background:'rgba(239,68,68,0.04)', borderBottom:`1px solid ${GLASSBORDER}`, borderInlineEnd:`1px solid ${GLASSBORDER}` }}>
+                        <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5" style={{ background:'rgba(239,68,68,0.12)' }}>
+                          <span className="text-[16px]">😰</span>
+                        </div>
+                        <p className="text-[14px] leading-relaxed" style={{ color:'rgba(255,255,255,0.5)', fontStyle:'italic' }}>
+                          {row.fear}
+                        </p>
+                      </div>
+                      {/* Answer side */}
+                      <div className="p-7 flex gap-5 items-start" style={{ background:`${row.color}08` }}>
+                        <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5" style={{ background:`${row.color}20` }}>
+                          <span className="text-[18px]">{row.icon}</span>
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <span className="text-[10px] font-black tracking-widest uppercase" style={{ color:row.color }}>
+                              {lang==='ar' ? 'الجواب' : 'Answer'}
+                            </span>
+                          </div>
+                          <p className="text-[14px] leading-relaxed font-semibold" style={{ color:TEXT }}>
+                            {row.answer}
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                  </Glass>
+                  </div>
                 </Reveal>
               ))}
             </div>
 
-            <Reveal delay={0.1} className="mt-5">
-              <Glass accent={BLUE}>
-                <div className="p-7 flex flex-col sm:flex-row items-center gap-6">
-                  <div className="text-5xl">🔒</div>
-                  <div className="flex-1 text-center sm:text-right">
-                    <p className="font-black text-[20px] mb-1" style={{ color:TEXT }}>
-                      {lang==='ar' ? 'بيانات مرضاك في مكان آمن.' : 'Your patient data is in a safe place.'}
-                    </p>
-                    <p className="text-[14px]" style={{ color:MUTED }}>
-                      {lang==='ar' ? 'نسخ يومي، تشفير كامل، ودعم فني متواصل.' : 'Daily backups, full encryption, and continuous support.'}
-                    </p>
-                  </div>
-                  <div className="flex gap-8 shrink-0">
+            {/* ── Promise banner ── */}
+            <Reveal delay={0.1}>
+              <div className="rounded-3xl p-8 sm:p-10 text-center relative overflow-hidden"
+                style={{ background:'linear-gradient(135deg,rgba(11,74,111,0.5),rgba(14,165,233,0.15))', border:`1px solid rgba(14,165,233,0.25)` }}>
+                <motion.div className="absolute inset-0 pointer-events-none"
+                  style={{ background:'radial-gradient(ellipse 60% 80% at 50% 0%,rgba(14,165,233,0.12),transparent)' }}
+                  animate={{ opacity:[0.6,1,0.6] }} transition={{ duration:4, repeat:Infinity }} />
+                <div className="relative z-10">
+                  <div className="text-[48px] mb-4">🤝</div>
+                  <h3 className="font-black text-[22px] sm:text-[28px] mb-3" style={{ color:TEXT }}>
+                    {lang==='ar' ? 'وعدنا لك كمالك عيادة' : 'Our promise to you as a clinic owner'}
+                  </h3>
+                  <p className="text-[15px] max-w-xl mx-auto mb-8 leading-relaxed" style={{ color:MUTED }}>
+                    {lang==='ar'
+                      ? 'لو صار أي مشكلة تقنية تأثر على عيادتك — نحن المسؤولون، وننحل قبل ما تحتاج تتابع.'
+                      : 'If any technical issue affects your clinic — we are responsible, and we fix it before you need to follow up.'}
+                  </p>
+                  <div className="flex flex-wrap justify-center gap-6">
                     {(lang==='ar'
-                      ? [['٩٩.٩٪','وقت التشغيل'],['يومي','نسخ احتياطي'],['٢٤/٧','دعم فني']]
-                      : [['99.9%','uptime'],['daily','backups'],['24/7','support']]
-                    ).map(([v,l]) => (
-                      <div key={l} className="text-center">
-                        <p className="font-black leading-none" style={{ fontSize:'clamp(20px,2.5vw,32px)', color:BLUE }}>{v}</p>
-                        <p className="text-[10px] mt-1" style={{ color:MUTED }}>{l}</p>
+                      ? [['💾','نسخ يومي تلقائي'],['🔐','بيانات مشفرة'],['🛡️','صلاحيات محددة'],['🆘','دعم مباشر']]
+                      : [['💾','Daily auto-backup'],['🔐','Encrypted data'],['🛡️','Role-based access'],['🆘','Direct support']]
+                    ).map(([ic, lb]) => (
+                      <div key={lb} className="flex items-center gap-2">
+                        <span>{ic}</span>
+                        <span className="text-[13px] font-bold" style={{ color:MUTED }}>{lb}</span>
                       </div>
                     ))}
                   </div>
                 </div>
-              </Glass>
+              </div>
             </Reveal>
           </div>
         </section>
