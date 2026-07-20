@@ -12,6 +12,78 @@ const MUTED = 'rgba(255,255,255,0.45)';
 const DIM   = 'rgba(255,255,255,0.18)';
 
 /* ═══ HELPERS ════════════════════════════════════════════════ */
+
+function useOfferCountdown() {
+  const END = new Date('2026-07-31T23:59:59').getTime();
+  const calc = () => {
+    const diff = Math.max(0, END - Date.now());
+    return { days: Math.floor(diff/86400000), hours: Math.floor((diff%86400000)/3600000), mins: Math.floor((diff%3600000)/60000), secs: Math.floor((diff%60000)/1000), active: diff > 0 };
+  };
+  const [t, setT] = useState(calc);
+  useEffect(() => { const id = setInterval(() => setT(calc()), 1000); return () => clearInterval(id); }, []);
+  return t;
+}
+
+function OfferBar({ lang }: { lang: 'ar'|'en' }) {
+  const { days, hours, mins, secs, active } = useOfferCountdown();
+  const [visible, setVisible] = useState(true);
+  if (!active || !visible) return null;
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return (
+    <div className="relative z-50 overflow-hidden" style={{ background: '#0B3A5A' }}>
+      <motion.div className="absolute inset-0 pointer-events-none"
+        style={{ background: 'linear-gradient(90deg,transparent 0%,rgba(14,165,233,0.18) 50%,transparent 100%)' }}
+        animate={{ x: ['-100%', '100%'] }}
+        transition={{ duration: 3.5, repeat: Infinity, ease: 'linear' }} />
+      <div className="relative z-10 flex items-center justify-center gap-3 px-4 py-2 text-white flex-wrap">
+        <motion.span className="w-1.5 h-1.5 rounded-full bg-yellow-300 shrink-0"
+          animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }} />
+
+        <span className="text-[11px] font-black tracking-wide whitespace-nowrap">
+          {lang === 'ar' ? '🎯 عرض خاص — متوفر لفترة محدودة' : '🎯 Special offer — limited time'}
+        </span>
+
+        <div className="flex items-center gap-1 shrink-0" dir="ltr">
+          {[
+            { v: days,  l: lang === 'ar' ? 'يوم' : 'd' },
+            { v: hours, l: lang === 'ar' ? 'س'   : 'h' },
+            { v: mins,  l: lang === 'ar' ? 'د'   : 'm' },
+            { v: secs,  l: lang === 'ar' ? 'ث'   : 's' },
+          ].map(({ v, l }, i) => (
+            <React.Fragment key={l}>
+              {i > 0 && <span className="text-white/30 font-black mx-0.5">:</span>}
+              <div className="flex flex-col items-center min-w-[28px]"
+                style={{ background:'rgba(255,255,255,0.1)', borderRadius:6, padding:'2px 5px' }}>
+                <AnimatePresence mode="popLayout">
+                  <motion.span key={v}
+                    initial={{ y: -10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 10, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-[12px] font-black tabular-nums leading-none block">
+                    {pad(v)}
+                  </motion.span>
+                </AnimatePresence>
+                <span className="text-[7px] text-white/40 leading-none mt-0.5">{l}</span>
+              </div>
+            </React.Fragment>
+          ))}
+        </div>
+
+        <a href="#تواصل"
+          className="shrink-0 text-[10px] font-black px-3 py-1.5 rounded-full transition-all active:scale-95 whitespace-nowrap"
+          style={{ background: BLUE, color: '#fff', boxShadow:`0 2px 10px ${BLUE}60` }}>
+          {lang === 'ar' ? 'احجز مكانك ←' : 'Book now →'}
+        </a>
+
+        <button onClick={() => setVisible(false)}
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity"
+          style={{ background: 'rgba(255,255,255,0.12)' }}>
+          <svg width="8" height="8" viewBox="0 0 8 8"><path d="M1 1l6 6M7 1L1 7" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function useCounter(target: number, dur = 1800) {
   const [v, setV] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
@@ -251,43 +323,45 @@ function Nav({ lang, onLang }: { lang: 'ar'|'en'; onLang: () => void }) {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => { const h = () => setScrolled(window.scrollY > 60); window.addEventListener('scroll', h); return () => window.removeEventListener('scroll', h); }, []);
   return (
-    <motion.nav initial={{ y:-20, opacity:0 }} animate={{ y:0, opacity:1 }} transition={{ duration:0.6, ease:[0.22,1,0.36,1] }}
-      className="fixed top-0 left-0 right-0 z-50 px-6 lg:px-12 py-4 flex items-center justify-between transition-all duration-500"
-      style={{ background: scrolled ? 'rgba(5,13,26,0.85)' : 'rgba(5,13,26,0.5)', backdropFilter:'blur(24px)', WebkitBackdropFilter:'blur(24px)', borderBottom:`1px solid ${scrolled ? 'rgba(255,255,255,0.08)' : 'transparent'}` }}>
-      <div className="flex items-center gap-3">
-        <div className="w-9 h-9 rounded-2xl flex items-center justify-center text-white text-[16px]" style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 4px 16px ${BLUE}40` }}>🏥</div>
-        <div>
-          <p className="text-[16px] font-black leading-tight text-white">تلقا<span style={{ color:BLUE }}> للعيادات</span></p>
-          <p className="text-[9px] font-medium leading-none" style={{ color:DIM }}>متخصصون في القطاع الطبي</p>
+    <motion.div initial={{ y:-20, opacity:0 }} animate={{ y:0, opacity:1 }} transition={{ duration:0.6, ease:[0.22,1,0.36,1] }}
+      className="fixed top-0 left-0 right-0 z-50">
+      <OfferBar lang={lang} />
+      <nav className="px-6 lg:px-12 py-4 flex items-center justify-between transition-all duration-500"
+        style={{ background: scrolled ? 'rgba(5,13,26,0.92)' : 'rgba(5,13,26,0.6)', backdropFilter:'blur(24px)', WebkitBackdropFilter:'blur(24px)', borderBottom:`1px solid ${scrolled ? 'rgba(255,255,255,0.08)' : 'transparent'}` }}>
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-2xl flex items-center justify-center text-white text-[16px]" style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 4px 16px ${BLUE}40` }}>🏥</div>
+          <div>
+            <p className="text-[16px] font-black leading-tight text-white">تلقا<span style={{ color:BLUE }}> للعيادات</span></p>
+            <p className="text-[9px] font-medium leading-none" style={{ color:DIM }}>متخصصون في القطاع الطبي</p>
+          </div>
         </div>
-      </div>
-      <div className="hidden lg:flex items-center gap-8">
-        {[['المنظومة','#المنظومة'],['كيف نعمل','#process'],['الأمان','#الأمان'],['الأسعار','#الأسعار']].map(([l,h]) => (
-          <a key={l} href={h} className="text-[13px] font-semibold transition-colors" style={{ color:MUTED }}
-            onMouseEnter={e => (e.currentTarget.style.color=TEXT)} onMouseLeave={e => (e.currentTarget.style.color=MUTED)}>{l}</a>
-        ))}
-      </div>
-      <div className="flex items-center gap-3">
-        {/* Language toggle */}
-        <button onClick={onLang}
-          className="hidden sm:flex items-center gap-1.5 text-[11px] font-black px-3 py-2 rounded-xl transition-all"
-          style={{ background:GLASS, border:`1px solid ${GLASSBORDER}`, color:MUTED, backdropFilter:'blur(10px)' }}>
-          <span style={{ color: lang === 'ar' ? BLUE : MUTED }}>عر</span>
-          <span style={{ color:DIM }}>|</span>
-          <span style={{ color: lang === 'en' ? BLUE : MUTED }}>EN</span>
-        </button>
-        <a href="/clinic-demo/" target="_blank" rel="noopener noreferrer"
-          className="hidden sm:flex items-center gap-2 text-[13px] font-bold px-5 py-2.5 rounded-xl transition-all"
-          style={{ background:BLUEDIM, border:`1px solid rgba(14,165,233,0.3)`, color:BLUE }}>
-          <span>📱</span> {lang === 'ar' ? 'شاهد الديمو' : 'Live Demo'}
-        </a>
-        <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
-          className="text-[13px] font-black px-5 py-2.5 rounded-xl text-white transition-all"
-          style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 4px 16px ${BLUE}40` }}>
-          {lang === 'ar' ? 'تواصل' : 'Contact'}
-        </a>
-      </div>
-    </motion.nav>
+        <div className="hidden lg:flex items-center gap-8">
+          {[['المنظومة','#المنظومة'],['كيف نعمل','#process'],['الأمان','#الأمان'],['الأسعار','#الأسعار']].map(([l,h]) => (
+            <a key={l} href={h} className="text-[13px] font-semibold transition-colors" style={{ color:MUTED }}
+              onMouseEnter={e => (e.currentTarget.style.color=TEXT)} onMouseLeave={e => (e.currentTarget.style.color=MUTED)}>{l}</a>
+          ))}
+        </div>
+        <div className="flex items-center gap-3">
+          <button onClick={onLang}
+            className="hidden sm:flex items-center gap-1.5 text-[11px] font-black px-3 py-2 rounded-xl transition-all"
+            style={{ background:GLASS, border:`1px solid ${GLASSBORDER}`, color:MUTED, backdropFilter:'blur(10px)' }}>
+            <span style={{ color: lang === 'ar' ? BLUE : MUTED }}>عر</span>
+            <span style={{ color:DIM }}>|</span>
+            <span style={{ color: lang === 'en' ? BLUE : MUTED }}>EN</span>
+          </button>
+          <a href="/clinic-demo/" target="_blank" rel="noopener noreferrer"
+            className="hidden sm:flex items-center gap-2 text-[13px] font-bold px-5 py-2.5 rounded-xl transition-all"
+            style={{ background:BLUEDIM, border:`1px solid rgba(14,165,233,0.3)`, color:BLUE }}>
+            <span>📱</span> {lang === 'ar' ? 'شاهد الديمو' : 'Live Demo'}
+          </a>
+          <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
+            className="text-[13px] font-black px-5 py-2.5 rounded-xl text-white transition-all"
+            style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 4px 16px ${BLUE}40` }}>
+            {lang === 'ar' ? 'تواصل' : 'Contact'}
+          </a>
+        </div>
+      </nav>
+    </motion.div>
   );
 }
 
