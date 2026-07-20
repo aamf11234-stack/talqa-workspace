@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'wouter';
-import { TrustSection }           from '../components/TrustSection';
 import { PhoneFrame }             from '../components/PhoneFrame';
 import { BottomNav }              from '../components/BottomNav';
 import type { ClinicTab }         from '../components/BottomNav';
@@ -490,9 +489,6 @@ export default function Home() {
           ))}
         </div>
       </div>
-
-      {/* ── Trust / Security ────────────────────────────────────── */}
-      <TrustSection />
 
       {/* ── CTA ─────────────────────────────────────────────────── */}
       <div className="max-w-lg mx-auto px-6 mb-12">
