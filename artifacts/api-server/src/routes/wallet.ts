@@ -104,7 +104,7 @@ router.post("/pass", async (req, res) => {
 
   const passJson = {
     formatVersion:       1,
-    passTypeIdentifier:  "pass.com.talqatech.clinic",
+    passTypeIdentifier:  "pass.clinic.tlgaads.com",
     serialNumber:        `${String(patientId)}-${Date.now()}`,
     teamIdentifier:      "V96R57F6T3",
     organizationName:    String(clinicName),
@@ -227,7 +227,7 @@ router.get("/status", (_req, res) => {
   const ready = getCerts() !== null;
   res.json({
     ready,
-    passTypeId: "pass.com.talqatech.clinic",
+    passTypeId: "pass.clinic.tlgaads.com",
     teamId:     "V96R57F6T3",
     domain:     "clinic.tlgaads.com",
     secrets_needed: ready ? [] : ["APPLE_CERT_PEM", "APPLE_KEY_PEM", "APPLE_WWDR_PEM", "APPLE_KEY_PASSPHRASE"],
