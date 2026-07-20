@@ -278,6 +278,60 @@ export default function Home() {
         </motion.div>
       </div>
 
+      {/* ── Patient Card showcase ───────────────────────────────── */}
+      <div className="max-w-5xl mx-auto px-6 mb-12">
+        <div className="rounded-[28px] p-7 md:p-9 relative overflow-hidden"
+          style={{ background: 'linear-gradient(145deg,#050E1A 0%,#0B3A5A 45%,#050E1A 80%)' }}>
+          <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 85% 20%,rgba(0,180,216,0.12) 0%,transparent 55%)' }} />
+          <div className="absolute bottom-0 left-0 w-40 h-40 opacity-[0.05]"
+            style={{ backgroundImage: 'radial-gradient(circle,#00B4D8 1.5px,transparent 1.5px)', backgroundSize: '10px 10px' }} />
+
+          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-7">
+            <div className="flex-1">
+              <p className="text-[#00B4D8] text-[10px] font-semibold tracking-widest uppercase mb-2">بطاقة المريض الرقمية</p>
+              <h3 className="text-white text-[24px] font-bold mb-2.5 leading-tight">
+                هوية المريض في جيبه<br />
+                <span style={{ color: '#00B4D8' }}>بدون ورق · بدون انتظار</span>
+              </h3>
+              <p className="text-white/45 text-[13px] font-light leading-relaxed mb-5 max-w-xs">
+                كل مريض يحمل بطاقة رقمية بمعلوماته الطبية الكاملة — QR للاستقبال، إسعاف للطوارئ، ملف صحي للتاريخ المرضي.
+              </p>
+              <div className="space-y-2">
+                {['معلومات طبية كاملة وآمنة','QR فوري في الاستقبال دون إجراءات','ربط مباشر مع التأمين الصحي'].map(item => (
+                  <div key={item} className="flex items-center gap-2 text-white/55 text-[12px]">
+                    <div className="w-1.5 h-1.5 bg-[#22C55E] rounded-full shrink-0" />
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="w-full md:w-[260px] rounded-[22px] p-5 relative overflow-hidden shrink-0"
+              style={{ background: 'linear-gradient(145deg,#030810,#0B3A5A,#030810)', border: '1px solid rgba(0,180,216,0.18)' }}>
+              <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 70% 0%,rgba(0,180,216,0.12) 0%,transparent 55%)' }} />
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <p style={{ color: '#00B4D8' }} className="font-bold text-[15px]">عيادتك</p>
+                    <p className="text-white/20 text-[8px] tracking-wider">DIGITAL HEALTH CARD</p>
+                  </div>
+                  <span className="text-[14px]">🏥</span>
+                </div>
+                <p className="text-white/25 text-[8px] mb-0.5">PATIENT NAME</p>
+                <p className="text-white text-[13px] font-semibold mb-4">اسم المريض</p>
+                <div className="grid grid-cols-3 gap-1">
+                  {[['ID','#PT-001','#00B4D8'],['BLOOD','O+','#fff'],['INS.','بوبا','rgba(255,255,255,0.6)']].map(([l,v,c]) => (
+                    <div key={l}>
+                      <p className="text-white/25 text-[7px] mb-0.5">{l}</p>
+                      <p className="text-[10px] font-bold" style={{ color: c }}>{v}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* ── Owner Dashboard CTA ────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <motion.div
