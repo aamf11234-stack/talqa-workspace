@@ -491,8 +491,92 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── Trust / Security ────────────────────────────────────── */}
-      <TrustSection />
+      {/* ── Security Section ────────────────────────────────────── */}
+      <div className="max-w-5xl mx-auto px-6 mb-12">
+        <div className="rounded-[32px] overflow-hidden relative"
+          style={{ background: 'linear-gradient(145deg,#020C18 0%,#031A2E 50%,#020C18 100%)' }}>
+          <div className="absolute inset-0 pointer-events-none"
+            style={{ background: 'radial-gradient(ellipse at 50% 0%,rgba(16,185,129,0.10) 0%,transparent 60%)' }} />
+          <div className="absolute top-0 right-0 w-36 h-36 opacity-[0.04]"
+            style={{ backgroundImage: 'radial-gradient(circle,#10B981 1.5px,transparent 1.5px)', backgroundSize: '10px 10px' }} />
+
+          <div className="relative z-10 p-8 md:p-10">
+            {/* Header */}
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center gap-2 text-[#10B981] text-[11px] font-bold bg-[#10B981]/10 border border-[#10B981]/20 px-4 py-1.5 rounded-full mb-4 tracking-wider">
+                <span className="w-1.5 h-1.5 bg-[#10B981] rounded-full animate-pulse" />
+                الأمان في مقدمة أولوياتنا — دائماً
+              </div>
+              <h2 className="text-white text-[28px] md:text-[38px] font-bold leading-tight mb-3">
+                الأكثر أماناً في قطاع<br />
+                <span style={{ color: '#10B981' }}>الرعاية الصحية</span>
+              </h2>
+              <p className="text-white/40 text-[14px] font-light max-w-xl mx-auto leading-relaxed">
+                بيانات مرضاك هي أثمن شيء تملكه عيادتك. نحن نعاملها هكذا — بتشفير لا يُكسر، وأمان لا يُساوَم عليه.
+              </p>
+            </div>
+
+            {/* Compliance badges */}
+            <div className="flex flex-wrap justify-center gap-3 mb-8">
+              {[
+                { label: 'HIPAA Compliant', sub: 'معايير الخصوصية الصحية الأمريكية' },
+                { label: 'ISO 27001',       sub: 'أمن المعلومات الدولي' },
+                { label: 'NDMO',            sub: 'هيئة الحكومة الرقمية السعودية' },
+                { label: 'SOC 2 Type II',   sub: 'أمن الأنظمة والخدمات' },
+                { label: 'AES-256',         sub: 'تشفير عسكري المستوى' },
+              ].map(b => (
+                <div key={b.label} className="flex items-center gap-2.5 px-4 py-2.5 rounded-[14px]"
+                  style={{ background: 'rgba(16,185,129,0.07)', border: '1px solid rgba(16,185,129,0.15)' }}>
+                  <div className="w-5 h-5 rounded-full bg-[#10B981]/20 flex items-center justify-center shrink-0">
+                    <span className="text-[#10B981] text-[10px] font-bold">✓</span>
+                  </div>
+                  <div>
+                    <p className="text-[#10B981] text-[11px] font-bold leading-none">{b.label}</p>
+                    <p className="text-white/25 text-[9px] mt-0.5">{b.sub}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* 6 pillars */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+              {[
+                { icon:'🔐', title:'تشفير AES-256 من الطرف للطرف', desc:'كل بيانات مريض — من الاسم إلى التشخيص — مشفرة بنفس المعيار المستخدم في حماية الأسرار الحكومية.', accent:'#10B981' },
+                { icon:'🧠', title:'معمارية Zero-Knowledge', desc:'مفتاح التشفير ملكك وحدك. حتى فريق تلقا تك لا يستطيع الاطلاع على بيانات مرضاك — هذا بنية تقنية.', accent:'#00B4D8' },
+                { icon:'🛡️', title:'مصادقة متعددة العوامل', desc:'Face ID + بصمة الإصبع + رمز تحقق لكل دخول. لا يصل لبياناتك أحد بدون إذنك الصريح.', accent:'#8B5CF6' },
+                { icon:'💾', title:'نسخ احتياطي مشفر كل ٦ ساعات', desc:'بياناتك محفوظة في مراكز بيانات موزعة جغرافياً — مشفرة بالكامل، محمية من الكوارث والاختراقات.', accent:'#F59E0B' },
+                { icon:'👁️', title:'مراقبة بالذكاء الاصطناعي ٢٤/٧', desc:'نظام AI يرصد كل وصول ويكتشف أي نشاط غير اعتيادي ويوقفه قبل أن يصبح تهديداً.', accent:'#EF4444' },
+                { icon:'📜', title:'متوافق مع PDPL السعودي', desc:'منظومتك متوافقة مع نظام حماية البيانات الشخصية ولوائح هيئة الحكومة الرقمية السعودية.', accent:'#10B981' },
+              ].map((p, i) => (
+                <motion.div key={i} initial={{ opacity:0, y:12 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.07*i }}
+                  className="rounded-[22px] p-5 relative overflow-hidden"
+                  style={{ background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.06)' }}>
+                  <div className="absolute top-0 right-0 w-20 h-20 opacity-[0.06] rounded-bl-[80px]" style={{ background:p.accent }} />
+                  <span className="text-3xl mb-3 block">{p.icon}</span>
+                  <p className="text-white text-[14px] font-bold mb-2 leading-snug">{p.title}</p>
+                  <p className="text-white/35 text-[12px] font-light leading-relaxed">{p.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Bottom bar */}
+            <div className="rounded-[20px] p-5 flex flex-col sm:flex-row items-center gap-4 sm:gap-6"
+              style={{ background:'rgba(16,185,129,0.08)', border:'1px solid rgba(16,185,129,0.15)' }}>
+              <div className="text-[38px] shrink-0">🔒</div>
+              <div className="flex-1 text-center sm:text-right">
+                <p className="text-[#10B981] text-[16px] font-bold mb-1">بياناتك ملكك وحدك. نحن لا نراها.</p>
+                <p className="text-white/35 text-[13px] font-light">لم يُسجَّل أي اختراق لبيانات منذ تأسيس المنظومة. هذا ليس حظاً — هذا هندسة.</p>
+              </div>
+              {[['٠','اختراقات مسجلة'],['١٠٠٪','تشفير البيانات'],['٢٤/٧','مراقبة أمنية']].map(([v,l]) => (
+                <div key={l} className="shrink-0 text-center">
+                  <p className="text-[#10B981] text-[32px] font-bold leading-none">{v}</p>
+                  <p className="text-white/30 text-[11px]">{l}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* ── CTA ─────────────────────────────────────────────────── */}
       <div className="max-w-lg mx-auto px-6 mb-12">
