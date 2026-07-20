@@ -68,9 +68,7 @@ const STRIP_CARD_2X = readFileSync(join(ASSETS, "strip_card@2x.png"));
 const STRIP_APPT    = readFileSync(join(ASSETS, "strip_appt.png"));
 const STRIP_APPT_2X = readFileSync(join(ASSETS, "strip_appt@2x.png"));
 
-/* ── Logo & icons ───────────────────────────────────────── */
-const LOGO    = solidPng(160, 50,  0, 180, 216);
-const LOGO_2X = solidPng(320, 100, 0, 180, 216);
+/* ── Icons ──────────────────────────────────────────────── */
 
 /* Solid icons */
 const ICON    = solidPng(29, 29, 0, 122, 255);
@@ -108,8 +106,6 @@ async function buildPass(
       "icon.png":    ICON,
       "icon@2x.png": ICON_2X,
       "icon@3x.png": ICON_3X,
-      "logo.png":    LOGO,
-      "logo@2x.png": LOGO_2X,
       ...images,
     },
     signerOptions,
