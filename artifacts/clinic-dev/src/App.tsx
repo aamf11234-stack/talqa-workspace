@@ -292,15 +292,54 @@ function Nav({ lang, onLang }: { lang: 'ar'|'en'; onLang: () => void }) {
 }
 
 /* ═══ APP ════════════════════════════════════════════════════ */
+/* ── Activity feed data ─────────────────────────────────────── */
+const ACTIVITIES = [
+  { icon:'✓', name:'عيادة الشفاء', city:'الرياض',  action:'وقّعت عقد المشروع',      ago:'منذ ٢ ساعة' },
+  { icon:'👀', name:'د. محمد الأحمدي', city:'جدة', action:'شاهد الديمو الآن',       ago:'الآن' },
+  { icon:'✓', name:'مجمع النور الطبي', city:'مكة',  action:'طلب عرض سعر',           ago:'منذ ٤ ساعات' },
+  { icon:'✓', name:'عيادة الرعاية',   city:'أبها',  action:'في مرحلة التصميم',       ago:'منذ ٣ أيام' },
+  { icon:'👀', name:'مستشفى السلام',  city:'الدمام','action':'يتصفح الموقع الآن',   ago:'الآن' },
+  { icon:'✓', name:'عيادات دار الشفاء', city:'الرياض', action:'جاري بناء التطبيق', ago:'منذ يومين' },
+];
+
 export default function App() {
   const [faqOpen, setFaqOpen] = useState<number|null>(null);
   const [lang, setLang] = useState<'ar'|'en'>('ar');
+  const [roiPatients, setRoiPatients] = useState(80);
+  const [roiPrice, setRoiPrice]       = useState(200);
+  const [formName,  setFormName]       = useState('');
+  const [formClinic,setFormClinic]     = useState('');
+  const [formPhone, setFormPhone]      = useState('');
+  const [activityIdx, setActivityIdx]  = useState(0);
+  const [showActivity, setShowActivity] = useState(false);
+
   useEffect(() => {
     const dir = lang === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.dir  = dir;
     document.documentElement.lang = lang;
     document.body.style.background = BG; document.body.style.fontFamily = "'Tajawal',sans-serif"; document.body.style.margin = '0'; document.body.style.overflowX = 'hidden';
   }, [lang]);
+
+  /* activity feed cycle */
+  useEffect(() => {
+    const t1 = setTimeout(() => setShowActivity(true), 4000);
+    const id  = setInterval(() => {
+      setShowActivity(false);
+      setTimeout(() => { setActivityIdx(i => (i+1) % ACTIVITIES.length); setShowActivity(true); }, 600);
+    }, 7000);
+    return () => { clearTimeout(t1); clearInterval(id); };
+  }, []);
+
+  /* ROI calc */
+  const roiMonthly   = roiPatients * roiPrice;
+  const roiExtra     = Math.round(roiMonthly * 12 * 0.18);   // 18% retention improvement
+  const roiLost      = Math.round(roiPatients * 0.22);        // ~22% missed without system
+
+  const handleFormSubmit = () => {
+    if (!formName || !formPhone) return;
+    const msg = `مرحباً تلقا تك 👋\n\nأنا ${formName}${formClinic ? ` من ${formClinic}` : ''}.\nأرغب في معرفة تفاصيل منظومة تلقا للعيادات وعرض السعر المخصص لعيادتي.\n\nرقمي: ${formPhone}`;
+    window.open(`https://wa.me/966500000000?text=${encodeURIComponent(msg)}`, '_blank');
+  };
 
   const t = {
     productsBadge:      lang==='ar' ? 'المنظومة'                             : 'The System',
@@ -323,10 +362,10 @@ export default function App() {
     securityBadge:      lang==='ar' ? 'الأمان'                              : 'Security',
     securityHeading1:   lang==='ar' ? 'بيانات مرضاك'                        : 'Your patient data',
     securityHeading2:   lang==='ar' ? 'محمية بالكامل.'                      : 'fully protected.',
-    priceBadge:         lang==='ar' ? 'السعر'                               : 'Pricing',
-    priceHeading1:      lang==='ar' ? 'سعر ثابت.'                           : 'Fixed price.',
-    priceHeading2:      lang==='ar' ? 'كل شيء مشمول.'                       : 'Everything included.',
-    ctaMain:            lang==='ar' ? 'ابدأ مشروعك الآن'                    : 'Start your project',
+    priceBadge:         lang==='ar' ? 'احجز استشارتك'                        : 'Book a consultation',
+    priceHeading1:      lang==='ar' ? 'السعر يتحدد'                          : 'Pricing is',
+    priceHeading2:      lang==='ar' ? 'حسب عيادتك.'                         : 'tailored to you.',
+    ctaMain:            lang==='ar' ? 'احصل على عرضك المخصص'                : 'Get your custom offer',
     ctaDemo:            lang==='ar' ? 'شاهد الديمو'                         : 'See Demo',
     finalHeading:       lang==='ar' ? 'جاهز تبدأ؟'                          : 'Ready to start?',
     finalSub:           lang==='ar' ? 'استشارة مجانية · بدون التزام · رد خلال ٢٤ ساعة' : 'Free consultation · No commitment · Reply within 24 hours',
@@ -976,47 +1015,320 @@ export default function App() {
           </div>
         </section>
 
-        {/* ════ PRICING ════════════════════════════════════ */}
-        <section id="الأسعار" className="py-28 px-6 lg:px-12">
-          <div className="max-w-3xl mx-auto text-center">
-            <Reveal>
-              <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>{t.priceBadge}</p>
-              <h2 className="font-black mb-14 leading-tight" style={{ fontSize:'clamp(28px,5vw,56px)', letterSpacing:'-0.02em', color:TEXT }}>
-                {t.priceHeading1}<br /><span style={{ color:DIM }}>{t.priceHeading2}</span>
+        {/* ════ APPLE WALLET ═══════════════════════════════ */}
+        <section className="py-28 px-6 lg:px-12 overflow-hidden">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              {/* Text side */}
+              <Reveal>
+                <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>
+                  {lang==='ar'?'Apple Wallet':'Apple Wallet'}
+                </p>
+                <h2 className="font-black leading-tight mb-6" style={{ fontSize:'clamp(32px,5vw,60px)', letterSpacing:'-0.02em', color:TEXT }}>
+                  {lang==='ar'?<>مريضك يحمل<br /><span style={{ color:BLUE }}>عيادتك في جيبه.</span></>:<>Your patient carries<br /><span style={{ color:BLUE }}>your clinic in their pocket.</span></>}
+                </h2>
+                <p className="text-[16px] leading-relaxed mb-8" style={{ color:MUTED }}>
+                  {lang==='ar'
+                    ?'بطاقة المريض الرقمية تُضاف مباشرة لـ Apple Wallet — مع عداد تنازلي يذكّره بموعده القادم ويحفّزه على الرجوع قبل انتهاء الصلاحية.'
+                    :'The digital patient card goes straight to Apple Wallet — with a countdown timer that reminds patients of their next visit and motivates them to return before expiry.'}
+                </p>
+                <div className="space-y-3 mb-10">
+                  {(lang==='ar'
+                    ?[['📲','بضغطة واحدة — ينزل مباشرة في المحفظة'],['⏱️','عداد تنازلي يحفّز المريض على العودة'],['🔔','إشعار تلقائي قبل انتهاء الصلاحية'],['🔒','بيانات المريض مشفّرة ومحمية']]
+                    :[['📲','One tap — downloads directly to Wallet'],['⏱️','Countdown timer motivates return visits'],['🔔','Auto-notification before expiry'],['🔒','Patient data encrypted and protected']]
+                  ).map(([ic,txt])=>(
+                    <div key={txt as string} className="flex items-center gap-3">
+                      <span className="text-[20px]">{ic}</span>
+                      <span className="text-[14px] font-semibold" style={{ color:TEXT }}>{txt}</span>
+                    </div>
+                  ))}
+                </div>
+                <a href="/clinic-demo/" target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 font-bold text-[14px] px-6 py-3.5 rounded-2xl transition-all"
+                  style={{ background:BLUEDIM, border:`1.5px solid ${BLUE}40`, color:BLUE }}>
+                  <span>📱</span> {lang==='ar'?'جرّب في الديمو ←':'Try it in Demo ←'}
+                </a>
+              </Reveal>
+
+              {/* Wallet card visual */}
+              <Reveal delay={0.15}>
+                <div className="relative flex flex-col items-center">
+                  {/* Phone frame */}
+                  <div className="relative w-[280px] mx-auto">
+                    {/* Ambient glow */}
+                    <div className="absolute -inset-8 rounded-[60px] blur-[40px] pointer-events-none"
+                      style={{ background:`radial-gradient(circle,${BLUE}18 0%,transparent 70%)` }} />
+
+                    {/* iOS sheet mock */}
+                    <div className="relative rounded-[32px] overflow-hidden" style={{ background:'#1C1C1E', boxShadow:'0 32px 80px rgba(0,0,0,0.6)', border:'8px solid #2C2C2E' }}>
+                      {/* Status bar */}
+                      <div className="flex items-center justify-between px-4 pt-2 pb-1" style={{ background:'#1C1C1E' }}>
+                        <span className="text-white text-[10px] font-semibold">9:41</span>
+                        <div className="w-16 h-4 rounded-full" style={{ background:'#000', border:'2px solid #2C2C2E' }} />
+                        <div className="flex items-center gap-1">
+                          <div className="w-3 h-2 rounded-sm bg-white/60" />
+                          <div className="w-1 h-1.5 rounded-sm bg-white/40" />
+                        </div>
+                      </div>
+
+                      {/* Wallet header */}
+                      <div className="px-4 py-3 flex items-center justify-between" style={{ background:'#1C1C1E' }}>
+                        <span className="text-white/50 text-[13px]">إلغاء</span>
+                        <span className="text-white font-semibold text-[15px]">إضافة إلى Wallet</span>
+                        <div style={{ width:32 }} />
+                      </div>
+
+                      {/* Pass card */}
+                      <div className="mx-3 mb-3 rounded-[18px] overflow-hidden" style={{ boxShadow:'0 8px 24px rgba(0,0,0,0.4)' }}>
+                        {/* Card header */}
+                        <div className="px-4 pt-4 pb-3 relative" style={{ background:'linear-gradient(135deg,#06101E,#0B3A5A)' }}>
+                          <div className="absolute inset-0" style={{ background:'radial-gradient(ellipse at 80% 20%,rgba(0,180,216,0.25) 0%,transparent 60%)' }}/>
+                          <div className="relative z-10 flex items-start justify-between">
+                            <div>
+                              <p className="text-white/50 text-[8px] font-bold tracking-wider mb-1">عيادة الشفاء الطبية</p>
+                              <p className="text-white text-[18px] font-black leading-none">بطاقة مريض</p>
+                              <p className="text-white/30 text-[7px] mt-0.5">DIGITAL HEALTH CARD</p>
+                            </div>
+                            <motion.div
+                              animate={{ opacity:[1,0.4,1] }}
+                              transition={{ duration:1, repeat:Infinity }}
+                              className="px-2.5 py-1 rounded-full"
+                              style={{ background:'rgba(239,68,68,0.2)', border:'1px solid rgba(239,68,68,0.4)' }}>
+                              <p className="text-[9px] font-black text-red-300">٣ أيام متبقية</p>
+                            </motion.div>
+                          </div>
+                        </div>
+                        {/* Card body */}
+                        <div className="bg-white px-4 py-3">
+                          <p className="text-[8px] text-[#8E8E93] tracking-wider mb-0.5 uppercase">Patient</p>
+                          <p className="text-[16px] font-black text-[#1C1C1E] mb-2">أحمد ناصر الشمري</p>
+                          <div className="grid grid-cols-3 gap-1.5 mb-3">
+                            {[['#PT-0842','Patient ID'],['O+','Blood'],['٣ أيام','Expires']].map(([v,l])=>(
+                              <div key={l} className="bg-[#F2F2F7] rounded-[8px] px-2 py-1.5">
+                                <p className="text-[6px] text-[#8E8E93] tracking-wider uppercase mb-0.5">{l}</p>
+                                <p className="text-[10px] font-bold text-[#1C1C1E]">{v}</p>
+                              </div>
+                            ))}
+                          </div>
+                          {/* Expiry bar */}
+                          <div className="h-1 rounded-full bg-[#F2F2F7] overflow-hidden mb-2">
+                            <motion.div className="h-full rounded-full bg-red-400"
+                              initial={{ width:'100%' }} animate={{ width:'43%' }} transition={{ duration:1.5, delay:0.5, ease:'easeOut' }} />
+                          </div>
+                          <p className="text-[8px] text-[#8E8E93]">ينتهي خلال ٣ أيام — جدد موعدك الآن</p>
+                        </div>
+                        {/* Card footer */}
+                        <div className="px-4 py-2 flex items-center gap-1.5" style={{ background:'#F9F9F9', borderTop:'1px solid #E5E5EA' }}>
+                          <div className="w-2 h-2 rounded-full bg-red-400" />
+                          <p className="text-[8px] text-[#8E8E93]">تنتهي الصلاحية قريباً</p>
+                        </div>
+                      </div>
+
+                      {/* Add button */}
+                      <div className="px-3 pb-5">
+                        <div className="w-full flex items-center justify-center gap-2 py-3 rounded-[14px]" style={{ background:'#000' }}>
+                          <svg width="13" height="15" viewBox="0 0 17 20" fill="white">
+                            <path d="M14.1 10.64c-.02-2.04 1.67-3.02 1.74-3.06-0.95-1.39-2.43-1.58-2.95-1.60-1.26-.13-2.46.74-3.10.74-.64 0-1.63-.72-2.68-.70C5.55 6.04 4.05 6.97 3.22 8.36 1.54 11.17 2.80 15.35 4.42 17.65c.80 1.15 1.77 2.45 3.04 2.40 1.22-.05 1.68-.78 3.16-.78 1.47 0 1.89.78 3.18.76 1.31-.02 2.15-1.18 2.94-2.34.93-1.34 1.32-2.64 1.34-2.71-.03-.01-2.57-.99-2.98-3.34zM11.96 3.83c.67-.81 1.12-1.93 1.00-3.06-.96.04-2.13.64-2.82 1.45-.62.71-1.16 1.86-1.01 2.96 1.07.08 2.16-.54 2.83-1.35z"/>
+                          </svg>
+                          <span className="text-white font-semibold text-[12px]">أضف إلى Apple Wallet</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ════ CUSTOMIZATION PITCH ════════════════════════ */}
+        <section className="py-20 px-6 lg:px-12" style={{ borderTop:`1px solid ${GLASSBORDER}` }}>
+          <div className="max-w-7xl mx-auto">
+            <Reveal className="text-center mb-14">
+              <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>
+                {lang==='ar'?'تخصيص كامل':'Full Customization'}
+              </p>
+              <h2 className="font-black leading-tight" style={{ fontSize:'clamp(30px,5vw,60px)', letterSpacing:'-0.02em', color:TEXT }}>
+                {lang==='ar'
+                  ?<>مو قالب.<br /><span style={{ color:BLUE }}>مشروعك يُبنى من الصفر.</span></>
+                  :<>Not a template.<br /><span style={{ color:BLUE }}>Built from scratch for you.</span></>}
+              </h2>
+              <p className="text-[16px] mt-5 max-w-2xl mx-auto" style={{ color:MUTED }}>
+                {lang==='ar'
+                  ?'كل شيء تطلبه يصير. الألوان، الشاشات، المميزات، الاسم، الشعار — اطلب اللي يطري في بالك وحنا نبنيه.'
+                  :'Everything you ask for gets built. Colors, screens, features, name, logo — you imagine it, we build it.'}
+              </p>
+            </Reveal>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {(lang==='ar'
+                ?[
+                  { icon:'🎨', t:'اللون والهوية',  d:'الألوان والخطوط وكل تفصيل بصري على هوية عيادتك' },
+                  { icon:'📱', t:'الشاشات والتدفق', d:'أضف شاشات، احذف أخرى، رتّب كل شيء على راحتك' },
+                  { icon:'⚡', t:'أي ميزة تخطر',   d:'AI، تيلميديسن، باقات، ولاء — كل شيء ممكن' },
+                  { icon:'🏷️', t:'اسمك وشعارك',   d:'التطبيق ينزل في المتجر باسم عيادتك بالكامل' },
+                ]
+                :[
+                  { icon:'🎨', t:'Colors & Identity', d:'Every color, font, and visual detail matches your clinic brand' },
+                  { icon:'📱', t:'Screens & Flow',   d:'Add screens, remove others, arrange everything your way' },
+                  { icon:'⚡', t:'Any Feature',      d:'AI, telemedicine, packages, loyalty — all possible' },
+                  { icon:'🏷️', t:'Your Name & Logo', d:'The app launches on the Store under your clinic name' },
+                ]
+              ).map((c,i)=>(
+                <Reveal key={i} delay={i*0.07}>
+                  <Glass accent={BLUE} className="h-full">
+                    <div className="p-6 h-full text-center flex flex-col items-center gap-3">
+                      <span className="text-[36px]">{c.icon}</span>
+                      <p className="font-black text-[15px]" style={{ color:TEXT }}>{c.t}</p>
+                      <p className="text-[12px] leading-relaxed" style={{ color:MUTED }}>{c.d}</p>
+                    </div>
+                  </Glass>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ════ ROI CALCULATOR ═════════════════════════════ */}
+        <section className="py-24 px-6 lg:px-12">
+          <div className="max-w-3xl mx-auto">
+            <Reveal className="text-center mb-10">
+              <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>
+                {lang==='ar'?'احسب عائدك':'ROI Calculator'}
+              </p>
+              <h2 className="font-black leading-tight" style={{ fontSize:'clamp(28px,4.5vw,52px)', letterSpacing:'-0.02em', color:TEXT }}>
+                {lang==='ar'?<>كم تخسر الآن<br /><span style={{ color:DIM }}>بدون نظام رقمي؟</span></> : <>How much are you losing<br /><span style={{ color:DIM }}>without a digital system?</span></>}
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
-              <Glass accent={BLUE} style={{ borderRadius:32 }}>
-                <div className="p-10 relative overflow-hidden">
-                  <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage:`radial-gradient(circle,${BLUE}08 1px,transparent 1px)`, backgroundSize:'20px 20px' }} />
-                  <div className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl" style={{ background:`linear-gradient(90deg,${BLUE},#8B5CF6,${BLUE})` }} />
+              <Glass accent={BLUE} style={{ borderRadius:28 }}>
+                <div className="p-8 relative overflow-hidden">
+                  <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage:`radial-gradient(circle,${BLUE}06 1px,transparent 1px)`, backgroundSize:'18px 18px' }} />
                   <div className="relative z-10">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[12px] font-black mb-6" style={{ background:BLUEDIM, border:`1px solid ${BLUE}30`, color:BLUE }}>🏷️ {lang==='ar'?'سعر الإطلاق — محدود':'Launch price — limited'}</div>
-                    <p className="font-black leading-none mb-2" style={{ fontSize:'clamp(60px,12vw,100px)', letterSpacing:'-0.03em', color:TEXT }}>25,000</p>
-                    <p className="text-[18px] font-medium mb-1" style={{ color:MUTED }}>{lang==='ar'?'ريال سعودي':'SAR'}</p>
-                    <p className="text-[12px] mb-10" style={{ color:DIM }}>{lang==='ar'?'دفعة واحدة · لا رسوم شهرية خفية':'One-time payment · No hidden monthly fees'}</p>
-                    <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto mb-10">
-                      {(lang==='ar'
-                        ?[['📱','تطبيق iOS + Android'],['🌐','موقع احترافي'],['📊','نظام إدارة كامل'],['⏰','تسليم ٦٠ يوم'],['🏪','نشر في المتجرين'],['🛡️','سنة دعم مجاني'],['👩‍💻','تدريب الفريق'],['🎨','هوية عيادتك']]
-                        :[['📱','iOS + Android app'],['🌐','Professional website'],['📊','Full management system'],['⏰','60-day delivery'],['🏪','App Store publishing'],['🛡️','1-year free support'],['👩‍💻','Team training'],['🎨','Your clinic branding']]
-                      ).map(([ic,item]) => (
-                        <div key={item} className="flex items-center gap-2 text-[13px] text-right" style={{ color:MUTED }}><span>{ic}</span>{item}</div>
+                    {/* Inputs */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                      <div>
+                        <label className="block text-[12px] font-black mb-3" style={{ color:MUTED }}>
+                          {lang==='ar'?`عدد المرضى الشهريين: ${roiPatients}`:`Monthly patients: ${roiPatients}`}
+                        </label>
+                        <input type="range" min="20" max="500" step="10" value={roiPatients}
+                          onChange={e => setRoiPatients(+e.target.value)}
+                          className="w-full h-2 rounded-full appearance-none cursor-pointer"
+                          style={{ accentColor:BLUE, background:`linear-gradient(90deg,${BLUE} ${((roiPatients-20)/480)*100}%,rgba(255,255,255,0.1) 0%)` }} />
+                        <div className="flex justify-between text-[10px] mt-1" style={{ color:DIM }}>
+                          <span>20</span><span>500</span>
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-[12px] font-black mb-3" style={{ color:MUTED }}>
+                          {lang==='ar'?`متوسط سعر الكشف: ${roiPrice} ريال`:`Avg. consultation fee: ${roiPrice} SAR`}
+                        </label>
+                        <input type="range" min="50" max="800" step="25" value={roiPrice}
+                          onChange={e => setRoiPrice(+e.target.value)}
+                          className="w-full h-2 rounded-full appearance-none cursor-pointer"
+                          style={{ accentColor:BLUE, background:`linear-gradient(90deg,${BLUE} ${((roiPrice-50)/750)*100}%,rgba(255,255,255,0.1) 0%)` }} />
+                        <div className="flex justify-between text-[10px] mt-1" style={{ color:DIM }}>
+                          <span>50</span><span>800</span>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Results */}
+                    <div className="grid grid-cols-3 gap-4 mb-8">
+                      {[
+                        { label:lang==='ar'?'مرضى تضيعهم شهرياً':'Lost patients/month', value:roiLost, suffix:'', color:'#EF4444', icon:'📉' },
+                        { label:lang==='ar'?'دخل إضافي سنوي متوقع':'Expected extra annual revenue', value:roiExtra.toLocaleString(), suffix:lang==='ar'?' ر':'SAR', color:'#10B981', icon:'📈' },
+                        { label:lang==='ar'?'مدة الاسترداد':'Payback period', value:lang==='ar'?'< ٣':'< 3', suffix:lang==='ar'?' أشهر':' mo', color:BLUE, icon:'⚡' },
+                      ].map(s=>(
+                        <div key={s.label} className="rounded-[18px] p-4 text-center"
+                          style={{ background:GLASS, border:`1px solid ${s.color}25` }}>
+                          <div className="text-[22px] mb-1">{s.icon}</div>
+                          <p className="text-[20px] font-black" style={{ color:s.color }}>{s.value}<span className="text-[12px]">{s.suffix}</span></p>
+                          <p className="text-[9px] leading-tight mt-1" style={{ color:MUTED }}>{s.label}</p>
+                        </div>
                       ))}
                     </div>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                      <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
-                        className="font-black text-[15px] px-10 py-4 rounded-2xl text-white transition-all active:scale-95"
-                        style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 8px 28px ${BLUE}40` }}>
-                        {t.ctaMain}
-                      </a>
-                      <a href="/clinic-demo/" target="_blank" rel="noopener noreferrer"
-                        className="font-bold text-[15px] px-8 py-4 rounded-2xl flex items-center gap-2 transition-all"
-                        style={{ background:BLUEDIM, border:`2px solid ${BLUE}35`, color:BLUE }}>
-                        <span>📱</span> {t.ctaDemo}
-                      </a>
-                    </div>
-                    <p className="text-[11px] mt-4" style={{ color:DIM }}>{lang==='ar'?'استشارة مجانية · لا يلزمك أي شيء':'Free consultation · No commitment'}</p>
+                    <p className="text-[11px] text-center mb-4" style={{ color:DIM }}>
+                      {lang==='ar'?'* بناءً على متوسط تحسّن الاحتجاز ١٨٪ لدى عملائنا':'* Based on 18% avg. retention improvement across our clients'}
+                    </p>
+                    <motion.a whileHover={{ scale:1.02 }} whileTap={{ scale:0.98 }} href="#تواصل"
+                      className="block w-full text-center font-black text-[16px] py-4 rounded-2xl text-white transition-all"
+                      style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 8px 28px ${BLUE}40` }}>
+                      {lang==='ar'?'احجز استشارتك المجانية ←':'Book free consultation ←'}
+                    </motion.a>
                   </div>
+                </div>
+              </Glass>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ════ CONTACT FORM ═══════════════════════════════ */}
+        <section id="تواصل" className="py-24 px-6 lg:px-12" style={{ borderTop:`1px solid ${GLASSBORDER}` }}>
+          <div className="max-w-2xl mx-auto">
+            <Reveal className="text-center mb-10">
+              {/* Scarcity badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-[12px] font-black"
+                style={{ background:'rgba(239,68,68,0.1)', border:'1.5px solid rgba(239,68,68,0.3)', color:'#FCA5A5' }}>
+                <motion.span className="w-2 h-2 rounded-full bg-red-400" animate={{ scale:[1,1.5,1] }} transition={{ duration:1.2, repeat:Infinity }} />
+                {lang==='ar'?'نقبل ٣ عيادات هذا الشهر · تبقّى مكان واحد فقط':'Accepting 3 clinics this month · 1 spot remaining'}
+              </div>
+              <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-4" style={{ color:BLUE }}>
+                {t.priceBadge}
+              </p>
+              <h2 className="font-black leading-tight mb-4" style={{ fontSize:'clamp(28px,5vw,54px)', letterSpacing:'-0.02em', color:TEXT }}>
+                {lang==='ar'?<>نصل إليك<br /><span style={{ color:BLUE }}>بعرض مخصص لعيادتك.</span></> : <>We'll reach you<br /><span style={{ color:BLUE }}>with a tailored offer.</span></>}
+              </h2>
+              <p className="text-[15px]" style={{ color:MUTED }}>
+                {lang==='ar'
+                  ?'السعر يتحدد حسب احتياجك — مو رقم ثابت لأن كل مشروع فريد.'
+                  :'Pricing is based on your needs — no fixed number because every project is unique.'}
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.1}>
+              <Glass accent={BLUE} style={{ borderRadius:28 }}>
+                <div className="p-8">
+                  <div className="space-y-4 mb-6">
+                    {[
+                      { placeholder:lang==='ar'?'اسمك الكريم':'Your name', value:formName, set:setFormName, icon:'👤' },
+                      { placeholder:lang==='ar'?'اسم العيادة أو المركز الطبي':'Clinic / medical center name', value:formClinic, set:setFormClinic, icon:'🏥' },
+                      { placeholder:lang==='ar'?'رقم الجوال (واتساب)':'Mobile number (WhatsApp)', value:formPhone, set:setFormPhone, icon:'📱' },
+                    ].map(f=>(
+                      <div key={f.placeholder} className="relative">
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[18px] pointer-events-none">{f.icon}</span>
+                        <input
+                          type="text"
+                          placeholder={f.placeholder}
+                          value={f.value}
+                          onChange={e => f.set(e.target.value)}
+                          dir={lang==='ar'?'rtl':'ltr'}
+                          className="w-full py-4 pr-12 pl-4 rounded-[16px] text-[15px] font-semibold outline-none transition-all"
+                          style={{ background:GLASS, border:`1.5px solid ${GLASSBORDER}`, color:TEXT, fontFamily:"'Tajawal',sans-serif" }}
+                          onFocus={e => e.currentTarget.style.borderColor = BLUE}
+                          onBlur={e => e.currentTarget.style.borderColor = GLASSBORDER}
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  <motion.button
+                    whileHover={{ scale: formName && formPhone ? 1.02 : 1 }}
+                    whileTap={{ scale: formName && formPhone ? 0.97 : 1 }}
+                    onClick={handleFormSubmit}
+                    className="w-full py-5 rounded-[18px] text-white font-black text-[16px] transition-all"
+                    style={{
+                      background: formName && formPhone
+                        ? `linear-gradient(135deg,${BLUE},#0284C7)`
+                        : 'rgba(255,255,255,0.06)',
+                      boxShadow: formName && formPhone ? `0 8px 32px ${BLUE}40` : 'none',
+                      color: formName && formPhone ? '#fff' : MUTED,
+                      cursor: formName && formPhone ? 'pointer' : 'default',
+                    }}>
+                    {lang==='ar'?'📩 أرسل طلبك — وسنتواصل خلال ٢٤ ساعة':'📩 Send request — we reply within 24 hours'}
+                  </motion.button>
+
+                  <p className="text-[11px] text-center mt-4" style={{ color:DIM }}>
+                    {lang==='ar'?'✓ استشارة مجانية · ✓ بدون أي التزام · ✓ نرد خلال ٢٤ ساعة':'✓ Free consultation · ✓ No commitment · ✓ Reply in 24 hours'}
+                  </p>
                 </div>
               </Glass>
             </Reveal>
