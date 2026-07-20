@@ -133,7 +133,7 @@ router.post("/pass", async (req, res) => {
   const {
     patientName = "مريض",
     patientId   = "PT-0001",
-    clinicName  = "عيادة الشفاء الطبية",
+    clinicName  = "تلقا العيادات",
     bloodType   = "O+",
     insurance   = "بوبا",
     daysValid   = 30,
@@ -209,7 +209,7 @@ router.post("/appointment", async (req, res) => {
     patientId    = "PT-0001",
     doctorName   = "د. سارة المطيري",
     specialty    = "طب عام",
-    clinicName   = "عيادة الشفاء الطبية",
+    clinicName   = "تلقا العيادات",
     apptDate     = "الجمعة، ٢٠ يوليو",
     apptTime     = "١٠:٣٠ ص",
     roomNumber   = "غرفة ٣",

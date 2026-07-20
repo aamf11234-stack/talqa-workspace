@@ -41,7 +41,7 @@ function WalletSheet({ onClose, days, hours, mins, secs: s, expiry }: any) {
         body: JSON.stringify({
           patientName: 'أحمد ناصر الشمري',
           patientId:   'PT-0842',
-          clinicName:  'عيادة الشفاء',
+          clinicName:  'تلقا العيادات',
           bloodType:   'O+',
           insurance:   'بوبا ٢٠٢٦',
           daysValid:   7,

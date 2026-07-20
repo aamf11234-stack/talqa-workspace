@@ -18,7 +18,7 @@ function WalletBtn({ appointment: a, dark }: { appointment: any; dark: boolean }
           patientId:   'PT-0842',
           doctorName:  a.dr,
           specialty:   a.spec,
-          clinicName:  'عيادة الشفاء',
+          clinicName:  'تلقا العيادات',
           apptDate:    `${a.day}، ${a.date}`,
           apptTime:    a.time,
           roomNumber:  'غرفة ٣',
