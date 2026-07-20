@@ -34,8 +34,29 @@ function WalletSheet({ onClose, days, hours, mins, secs: s, expiry }: any) {
 
   const handleAdd = async () => {
     setLoading(true);
-    // Simulate pass generation (1.8s) then show success
-    await new Promise(r => setTimeout(r, 1800));
+    try {
+      const res = await fetch('/api/wallet/pass', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          patientName: 'أحمد ناصر الشمري',
+          patientId:   'PT-0842',
+          clinicName:  'عيادة الشفاء',
+          bloodType:   'O+',
+          insurance:   'بوبا ٢٠٢٦',
+          daysValid:   7,
+        }),
+      });
+      if (res.ok) {
+        const blob = await res.blob();
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = 'talqa-patient-card.pkpass';
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+    } catch (_) {}
     setLoading(false);
     setAdded(true);
     setTimeout(onClose, 2200);

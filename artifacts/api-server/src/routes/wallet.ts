@@ -148,6 +148,13 @@ router.post("/pass", async (req, res) => {
   };
 
   try {
+    const signerOptions: Record<string, string> = {
+      wwdr:       certs.wwdr,
+      signerCert: certs.cert,
+      signerKey:  certs.key,
+    };
+    if (certs.passphrase) signerOptions["signerKeyPassphrase"] = certs.passphrase;
+
     const pass = new PKPass(
       {
         "pass.json":   Buffer.from(JSON.stringify(passJson)),
@@ -155,12 +162,7 @@ router.post("/pass", async (req, res) => {
         "icon@2x.png": ICON_2X,
         "icon@3x.png": ICON_3X,
       },
-      {
-        wwdr:                certs.wwdr,
-        signerCert:          certs.cert,
-        signerKey:           certs.key,
-        signerKeyPassphrase: certs.passphrase,
-      },
+      signerOptions,
     );
 
     const buf = pass.getAsBuffer();
