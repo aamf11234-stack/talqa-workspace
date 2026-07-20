@@ -209,8 +209,9 @@ const included = ['تسليم خلال ٦٠ يوم','نشر على المتجر�
 
 /* ── component ─────────────────────────────────────────────────── */
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<ClinicTab>('home');
-  const [showFaceID, setShowFaceID] = useState(true);
+  const [activeTab,   setActiveTab]   = useState<ClinicTab>('home');
+  const [showFaceID,  setShowFaceID]  = useState(true);
+  const [phoneTheme,  setPhoneTheme]  = useState<'dark'|'light'>('dark');
   const [, navigate] = useLocation();
 
   useEffect(() => {
@@ -283,6 +284,40 @@ export default function Home() {
           <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1">نموذج توضيحي حقيقي</p>
           <h2 className="text-[22px] font-bold text-[#111]">شوف كيف يبدو تطبيق عيادتك</h2>
           <p className="text-[12px] text-[#AAA] mt-1 font-light">جرّب جميع الشاشات — بما فيها Face ID وAI Doctor 👆</p>
+
+          {/* Theme Toggle */}
+          <div className="flex items-center justify-center mt-4">
+            <div className="flex items-center p-1 rounded-full gap-1"
+              style={{ background: '#E8EFF8', border: '1px solid rgba(11,74,111,0.12)' }}>
+              <motion.button
+                onClick={() => setPhoneTheme('light')}
+                whileTap={{ scale: 0.93 }}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full text-[12px] font-bold transition-all duration-250 relative"
+                style={{ color: phoneTheme === 'light' ? '#fff' : '#888' }}>
+                {phoneTheme === 'light' && (
+                  <motion.div layoutId="theme-pill" className="absolute inset-0 rounded-full"
+                    style={{ background: 'linear-gradient(135deg,#F59E0B,#FBBF24)' }}
+                    transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }} />
+                )}
+                <span className="relative z-10">☀️</span>
+                <span className="relative z-10">صباحي</span>
+              </motion.button>
+
+              <motion.button
+                onClick={() => setPhoneTheme('dark')}
+                whileTap={{ scale: 0.93 }}
+                className="flex items-center gap-1.5 px-4 py-2 rounded-full text-[12px] font-bold transition-all duration-250 relative"
+                style={{ color: phoneTheme === 'dark' ? '#fff' : '#888' }}>
+                {phoneTheme === 'dark' && (
+                  <motion.div layoutId="theme-pill" className="absolute inset-0 rounded-full"
+                    style={{ background: 'linear-gradient(135deg,#0B4A6F,#1A2A4A)' }}
+                    transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }} />
+                )}
+                <span className="relative z-10">🌙</span>
+                <span className="relative z-10">ليلي</span>
+              </motion.button>
+            </div>
+          </div>
         </div>
 
         <motion.div initial={{ opacity: 0, y: 28, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -307,15 +342,15 @@ export default function Home() {
                   initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
                   className="absolute inset-0 overflow-y-auto scrollbar-none">
-                  {activeTab === 'home'          && <ScreenHome />}
-                  {activeTab === 'appointments'  && <ScreenAppointments />}
-                  {activeTab === 'card'          && <ScreenCard />}
-                  {activeTab === 'ai'            && <ScreenAI />}
-                  {activeTab === 'notifications' && <ScreenNotifications />}
+                  {activeTab === 'home'          && <ScreenHome          theme={phoneTheme} />}
+                  {activeTab === 'appointments'  && <ScreenAppointments  theme={phoneTheme} />}
+                  {activeTab === 'card'          && <ScreenCard          theme={phoneTheme} />}
+                  {activeTab === 'ai'            && <ScreenAI            theme={phoneTheme} />}
+                  {activeTab === 'notifications' && <ScreenNotifications theme={phoneTheme} />}
                 </motion.div>
               </AnimatePresence>
             </div>
-            <BottomNav activeTab={activeTab} onChangeTab={setActiveTab} notifCount={2} />
+            <BottomNav activeTab={activeTab} onChangeTab={setActiveTab} notifCount={2} theme={phoneTheme} />
           </PhoneFrame>
         </motion.div>
       </div>
