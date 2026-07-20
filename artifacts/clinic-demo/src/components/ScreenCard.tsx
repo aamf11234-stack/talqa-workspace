@@ -74,13 +74,37 @@ function useDaysLeft() {
 /* ── Apple Wallet Pass ─────────────────────────────────────── */
 function WalletPass({ onClose }: { onClose: () => void }) {
   const { days, hours, minutes, secs } = useDaysLeft();
-  const [added, setAdded] = useState(false);
+  const [added,   setAdded]   = useState(false);
+  const [loading, setLoading] = useState(false);
   const expiryDate = getExpiryDate();
   const expiryStr = expiryDate.toLocaleDateString('ar-SA', { day:'numeric', month:'long', year:'numeric' });
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/wallet/pass', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          patientName: 'أحمد ناصر الشمري',
+          patientId:   'PT-0842',
+          clinicName:  'عيادة الشفاء الطبية',
+          bloodType:   'O+',
+          insurance:   'بوبا ٢٠٢٦',
+          daysValid:   7,
+        }),
+      });
+      if (res.ok) {
+        /* Real .pkpass — iOS Safari intercepts this and shows "Add to Wallet" */
+        const blob = await res.blob();
+        const url  = URL.createObjectURL(blob);
+        window.location.href = url;
+      }
+    } catch { /* network / CORS → fall through to demo mode */ }
+    /* Show success animation regardless (real or demo) */
+    setLoading(false);
     setAdded(true);
-    setTimeout(onClose, 2000);
+    setTimeout(onClose, 2200);
   };
 
   return (
@@ -220,16 +244,25 @@ function WalletPass({ onClose }: { onClose: () => void }) {
           {!added ? (
             <motion.div key="btn" className="px-4 pb-6" exit={{ opacity: 0, scale: 0.9 }}>
               <motion.button
-                whileTap={{ scale: 0.96 }}
-                onClick={handleAdd}
-                className="w-full flex items-center justify-center gap-2.5 py-4 rounded-[16px]"
-                style={{ background: '#000', boxShadow: '0 4px 20px rgba(0,0,0,0.25)' }}
+                whileTap={{ scale: loading ? 1 : 0.96 }}
+                onClick={loading ? undefined : handleAdd}
+                className="w-full flex items-center justify-center gap-2.5 py-4 rounded-[16px] transition-opacity"
+                style={{ background: '#000', boxShadow: '0 4px 20px rgba(0,0,0,0.25)', opacity: loading ? 0.7 : 1 }}
               >
-                {/* Apple logo SVG */}
-                <svg width="17" height="20" viewBox="0 0 17 20" fill="white">
-                  <path d="M14.1 10.64c-.02-2.04 1.67-3.02 1.74-3.06-0.95-1.39-2.43-1.58-2.95-1.60-1.26-.13-2.46.74-3.10.74-.64 0-1.63-.72-2.68-.70C5.55 6.04 4.05 6.97 3.22 8.36 1.54 11.17 2.80 15.35 4.42 17.65c.80 1.15 1.77 2.45 3.04 2.40 1.22-.05 1.68-.78 3.16-.78 1.47 0 1.89.78 3.18.76 1.31-.02 2.15-1.18 2.94-2.34.93-1.34 1.32-2.64 1.34-2.71-.03-.01-2.57-.99-2.98-3.34zM11.96 3.83c.67-.81 1.12-1.93 1.00-3.06-.96.04-2.13.64-2.82 1.45-.62.71-1.16 1.86-1.01 2.96 1.07.08 2.16-.54 2.83-1.35z"/>
-                </svg>
-                <span className="text-white font-semibold text-[16px]">أضف إلى Apple Wallet</span>
+                {loading ? (
+                  <>
+                    <motion.div className="w-5 h-5 rounded-full border-2 border-white/30 border-t-white"
+                      animate={{ rotate: 360 }} transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }} />
+                    <span className="text-white font-semibold text-[16px]">جارٍ التحميل…</span>
+                  </>
+                ) : (
+                  <>
+                    <svg width="17" height="20" viewBox="0 0 17 20" fill="white">
+                      <path d="M14.1 10.64c-.02-2.04 1.67-3.02 1.74-3.06-0.95-1.39-2.43-1.58-2.95-1.60-1.26-.13-2.46.74-3.10.74-.64 0-1.63-.72-2.68-.70C5.55 6.04 4.05 6.97 3.22 8.36 1.54 11.17 2.80 15.35 4.42 17.65c.80 1.15 1.77 2.45 3.04 2.40 1.22-.05 1.68-.78 3.16-.78 1.47 0 1.89.78 3.18.76 1.31-.02 2.15-1.18 2.94-2.34.93-1.34 1.32-2.64 1.34-2.71-.03-.01-2.57-.99-2.98-3.34zM11.96 3.83c.67-.81 1.12-1.93 1.00-3.06-.96.04-2.13.64-2.82 1.45-.62.71-1.16 1.86-1.01 2.96 1.07.08 2.16-.54 2.83-1.35z"/>
+                    </svg>
+                    <span className="text-white font-semibold text-[16px]">أضف إلى Apple Wallet</span>
+                  </>
+                )}
               </motion.button>
             </motion.div>
           ) : (
