@@ -9,7 +9,6 @@ import { ScreenAppointments }     from '../components/ScreenAppointments';
 import { ScreenCard }             from '../components/ScreenCard';
 import { ScreenNotifications }    from '../components/ScreenNotifications';
 import { ScreenAI }               from '../components/ScreenAI';
-import { ScreenTelemedicine }     from '../components/ScreenTelemedicine';
 
 /* ── Face ID Lock Screen ──────────────────────────────────────── */
 function FaceIDScreen({ onUnlock }: { onUnlock: () => void }) {
@@ -17,111 +16,155 @@ function FaceIDScreen({ onUnlock }: { onUnlock: () => void }) {
 
   const scan = () => {
     setPhase('scanning');
-    setTimeout(() => { setPhase('done'); setTimeout(onUnlock, 800); }, 2000);
+    setTimeout(() => { setPhase('done'); setTimeout(onUnlock, 900); }, 2200);
   };
+
+  const ringColor = phase === 'done' ? '#34C759' : phase === 'scanning' ? '#00B4D8' : 'rgba(255,255,255,0.22)';
 
   return (
     <motion.div
-      className="absolute inset-0 z-50 flex flex-col items-center justify-between py-10"
-      style={{ background: 'linear-gradient(175deg,#050E1A 0%,#0B1A30 50%,#050E1A 100%)', fontFamily: 'Tajawal,sans-serif' }}
-      exit={{ opacity: 0, scale: 1.05 }} transition={{ duration: 0.5 }}>
+      className="absolute inset-0 z-50 flex flex-col"
+      style={{ background: '#000', fontFamily: 'Tajawal,sans-serif' }}
+      exit={{ opacity: 0 }} transition={{ duration: 0.4 }}>
 
-      {/* top */}
-      <div className="text-center mt-6">
-        <div className="flex items-center justify-center gap-2 mb-1">
-          <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#0B4A6F,#00B4D8)' }}>
-            <span className="text-white text-[8px] font-bold">ت</span>
-          </div>
-          <span className="text-white/70 text-[12px] font-bold">عيادة الشفاء</span>
-        </div>
-        <p className="text-white/30 text-[10px]">الاثنين، ٢٠ يوليو</p>
+      {/* Subtle bg glow */}
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at 50% 60%, rgba(0,100,160,0.18) 0%, transparent 65%)' }} />
+
+      {/* ── Time & Date ── */}
+      <div className="flex flex-col items-center pt-16 pb-4">
+        <p className="text-white font-thin leading-none mb-1" style={{ fontSize: 72, letterSpacing: -2 }}>٩:٤١</p>
+        <p className="text-white/50 text-[15px] font-light">الاثنين، ٢٠ يوليو</p>
       </div>
 
-      {/* face id area */}
-      <div className="flex flex-col items-center">
-        {/* face scan ring */}
-        <div className="relative mb-8">
-          {/* outer rings */}
+      {/* ── Notification preview ── */}
+      <div className="px-5 mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="rounded-[18px] px-4 py-3 flex items-center gap-3"
+          style={{ background: 'rgba(255,255,255,0.10)', backdropFilter: 'blur(20px)', border: '1px solid rgba(255,255,255,0.08)' }}>
+          <div className="w-9 h-9 rounded-[10px] flex items-center justify-center shrink-0"
+            style={{ background: 'linear-gradient(135deg,#0B4A6F,#00B4D8)' }}>
+            <span className="text-white text-[11px] font-black">ع</span>
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-white text-[12px] font-semibold leading-none mb-0.5">عيادة الشفاء</p>
+            <p className="text-white/50 text-[11px] truncate">تذكير: موعدك غداً مع د. سارة ١٠:٣٠ ص</p>
+          </div>
+          <p className="text-white/30 text-[10px] shrink-0">الآن</p>
+        </motion.div>
+      </div>
+
+      {/* ── Face ID Area ── */}
+      <div className="flex-1 flex flex-col items-center justify-center">
+        <div className="relative flex items-center justify-center mb-7">
+
+          {/* Pulse rings when scanning */}
           {phase === 'scanning' && [1,2,3].map(n => (
-            <motion.div key={n} className="absolute inset-0 rounded-full border"
-              style={{ margin: -n * 14, borderColor: `rgba(0,180,216,${0.3 / n})` }}
-              animate={{ scale: [1, 1.08, 1], opacity: [0.5, 0.1, 0.5] }}
-              transition={{ duration: 1.5, repeat: Infinity, delay: n * 0.2 }} />
+            <motion.div key={n}
+              className="absolute rounded-full border"
+              style={{ width: 112 + n*28, height: 112 + n*28, borderColor: `rgba(0,180,216,${0.22 / n})` }}
+              animate={{ scale: [1, 1.06, 1], opacity: [0.6, 0.1, 0.6] }}
+              transition={{ duration: 1.8, repeat: Infinity, delay: n * 0.25, ease: 'easeInOut' }} />
           ))}
 
+          {/* Done glow */}
+          {phase === 'done' && (
+            <motion.div
+              className="absolute rounded-full"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              style={{ width: 140, height: 140, background: 'radial-gradient(circle, rgba(52,199,89,0.25), transparent 70%)' }} />
+          )}
+
+          {/* Face oval */}
           <motion.div
-            className="w-28 h-28 rounded-full flex items-center justify-center relative overflow-hidden"
-            style={{ border: `2px solid ${phase === 'done' ? '#10B981' : phase === 'scanning' ? '#00B4D8' : 'rgba(255,255,255,0.15)'}`,
-              background: 'rgba(255,255,255,0.04)', transition: 'border-color 0.4s' }}>
+            className="relative flex items-center justify-center"
+            style={{ width: 112, height: 112 }}
+            animate={phase === 'scanning' ? { scale: [1, 1.02, 1] } : {}}
+            transition={{ duration: 1.2, repeat: Infinity, ease: 'easeInOut' }}>
 
-            {/* scan beam */}
-            {phase === 'scanning' && (
-              <motion.div className="absolute left-0 right-0 h-0.5 pointer-events-none"
-                style={{ background: 'linear-gradient(90deg,transparent,#00B4D8,transparent)', top: 0 }}
-                animate={{ top: ['0%', '100%', '0%'] }}
-                transition={{ duration: 1.4, repeat: Infinity, ease: 'linear' }} />
-            )}
+            {/* Oval border */}
+            <svg width="112" height="112" viewBox="0 0 112 112" className="absolute inset-0">
+              <motion.ellipse cx="56" cy="56" rx="50" ry="50"
+                fill="none" strokeWidth="2" stroke={ringColor}
+                strokeDasharray="314"
+                animate={phase === 'scanning' ? { strokeDashoffset: [0, -314] } : { strokeDashoffset: 0 }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
+                style={{ transition: 'stroke 0.4s' }} />
+            </svg>
 
-            <span className="text-[52px] relative z-10">
-              {phase === 'done' ? '✅' : '🫥'}
-            </span>
+            {/* Face illustration */}
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+              {/* Head */}
+              <ellipse cx="32" cy="30" rx="20" ry="22"
+                fill="none" stroke={phase === 'done' ? '#34C759' : 'rgba(255,255,255,0.35)'} strokeWidth="1.5" />
+              {/* Eyes */}
+              <motion.ellipse cx="24" cy="27" rx="2.5" ry="2.5"
+                fill={phase === 'scanning' ? '#00B4D8' : phase === 'done' ? '#34C759' : 'rgba(255,255,255,0.4)'}
+                animate={phase === 'scanning' ? { opacity: [1, 0.3, 1] } : { opacity: 1 }}
+                transition={{ duration: 0.8, repeat: Infinity }} />
+              <motion.ellipse cx="40" cy="27" rx="2.5" ry="2.5"
+                fill={phase === 'scanning' ? '#00B4D8' : phase === 'done' ? '#34C759' : 'rgba(255,255,255,0.4)'}
+                animate={phase === 'scanning' ? { opacity: [1, 0.3, 1] } : { opacity: 1 }}
+                transition={{ duration: 0.8, repeat: Infinity, delay: 0.1 }} />
+              {/* Nose */}
+              <path d="M30 32 Q32 35 34 32" stroke="rgba(255,255,255,0.25)" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+              {/* Mouth */}
+              <motion.path
+                d={phase === 'done' ? "M26 38 Q32 43 38 38" : "M26 38 Q32 40 38 38"}
+                stroke={phase === 'done' ? '#34C759' : 'rgba(255,255,255,0.3)'}
+                strokeWidth="1.5" strokeLinecap="round" fill="none"
+                animate={phase === 'scanning' ? { opacity: [0.3, 1, 0.3] } : { opacity: 1 }}
+                transition={{ duration: 1, repeat: Infinity }} />
+              {/* Scan line */}
+              {phase === 'scanning' && (
+                <motion.line x1="12" y1="0" x2="52" y2="0" stroke="rgba(0,180,216,0.7)" strokeWidth="1.5"
+                  animate={{ y1: [8, 54, 8], y2: [8, 54, 8] }}
+                  transition={{ duration: 1.4, repeat: Infinity, ease: 'linear' }} />
+              )}
+            </svg>
           </motion.div>
         </div>
 
-        {/* face outline dots */}
-        {phase === 'scanning' && (
-          <motion.div className="absolute" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            {[
-              { top: '28%', left: '38%' }, { top: '28%', left: '58%' },
-              { top: '36%', left: '30%' }, { top: '36%', left: '66%' },
-              { top: '44%', left: '34%' }, { top: '44%', left: '62%' },
-              { top: '50%', left: '48%' },
-              { top: '56%', left: '40%' }, { top: '56%', left: '56%' },
-            ].map((s, i) => (
-              <motion.div key={i} className="absolute w-1 h-1 rounded-full bg-[#00B4D8]"
-                style={s} animate={{ opacity: [0, 1, 0] }}
-                transition={{ duration: 0.8, repeat: Infinity, delay: i * 0.1 }} />
-            ))}
-          </motion.div>
-        )}
-
+        {/* Status text */}
         <AnimatePresence mode="wait">
           {phase === 'idle' && (
-            <motion.div key="idle" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-              className="text-center">
-              <p className="text-white text-[16px] font-black mb-1">مرحباً، أحمد 👋</p>
-              <p className="text-white/40 text-[11px] mb-6">افتح التطبيق بـ Face ID</p>
-              <motion.button onClick={scan} whileTap={{ scale: 0.94 }}
-                className="flex items-center gap-2.5 px-7 py-3.5 rounded-2xl text-white text-[13px] font-black"
-                style={{ background: 'linear-gradient(135deg,#0B4A6F,#00B4D8)', boxShadow: '0 8px 28px rgba(0,180,216,0.35)' }}>
-                <span className="text-[18px]">🔒</span> فتح بـ Face ID
+            <motion.div key="idle" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }}
+              className="flex flex-col items-center gap-5">
+              <div className="text-center">
+                <p className="text-white text-[17px] font-semibold mb-1">مرحباً، أحمد</p>
+                <p className="text-white/40 text-[13px] font-light">انظر للشاشة لفتح التطبيق</p>
+              </div>
+              <motion.button onClick={scan} whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-2.5 px-8 py-3.5 rounded-full text-white text-[13px] font-semibold"
+                style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(10px)' }}>
+                <svg width="14" height="16" viewBox="0 0 14 18" fill="white" opacity="0.8">
+                  <path d="M7 0C4.8 0 3 1.8 3 4v1H1C.4 5 0 5.4 0 6v11c0 .6.4 1 1 1h12c.6 0 1-.4 1-1V6c0-.6-.4-1-1-1h-2V4C11 1.8 9.2 0 7 0zm0 2c1.1 0 2 .9 2 2v1H5V4c0-1.1.9-2 2-2zm0 7c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/>
+                </svg>
+                فتح بـ Face ID
               </motion.button>
             </motion.div>
           )}
           {phase === 'scanning' && (
             <motion.div key="scanning" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-center">
-              <p className="text-[#00B4D8] text-[14px] font-black mb-1">جاري مسح الوجه…</p>
-              <p className="text-white/30 text-[10px]">ابقَ نظراً للشاشة</p>
+              <p className="text-[#00B4D8] text-[15px] font-semibold mb-1">جارٍ التعرّف…</p>
+              <p className="text-white/30 text-[12px] font-light">ابقَ ناظراً للشاشة</p>
             </motion.div>
           )}
           {phase === 'done' && (
-            <motion.div key="done" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="text-center">
-              <p className="text-[#10B981] text-[15px] font-black mb-1">تم التعرف ✓</p>
-              <p className="text-white/30 text-[10px]">يفتح التطبيق…</p>
+            <motion.div key="done" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center">
+              <p className="text-[#34C759] text-[15px] font-semibold mb-1">تم التعرف ✓</p>
+              <p className="text-white/30 text-[12px] font-light">يفتح التطبيق…</p>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      {/* bottom */}
-      <div className="flex flex-col items-center gap-3">
-        <div className="flex gap-2 flex-wrap justify-center">
-          {['Face ID','Touch ID','AES-256'].map(b => (
-            <span key={b} className="text-[8px] font-bold px-2.5 py-1 rounded-full"
-              style={{ background: 'rgba(0,180,216,0.1)', color: 'rgba(0,180,216,0.7)', border: '1px solid rgba(0,180,216,0.15)' }}>{b}</span>
-          ))}
-        </div>
-        <button onClick={onUnlock} className="text-white/20 text-[10px]">دخول بكلمة المرور</button>
+      {/* ── Bottom ── */}
+      <div className="flex flex-col items-center pb-10 gap-4">
+        <div className="w-32 h-[1px]" style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent)' }} />
+        <button onClick={onUnlock} className="text-white/25 text-[12px] font-light">دخول بكلمة المرور</button>
       </div>
     </motion.div>
   );
@@ -268,7 +311,6 @@ export default function Home() {
                   {activeTab === 'appointments'  && <ScreenAppointments />}
                   {activeTab === 'card'          && <ScreenCard />}
                   {activeTab === 'ai'            && <ScreenAI />}
-                  {activeTab === 'telemedicine'  && <ScreenTelemedicine />}
                   {activeTab === 'notifications' && <ScreenNotifications />}
                 </motion.div>
               </AnimatePresence>
