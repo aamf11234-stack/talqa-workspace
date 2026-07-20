@@ -282,15 +282,15 @@ function PhoneMockup({ className = '' }: { className?: string }) {
       <motion.div animate={{ y:[0,8,0] }} transition={{ duration:4, repeat:Infinity, ease:'easeInOut', delay:1.5 }}
         className="absolute -left-12 bottom-28 z-20 rounded-2xl px-4 py-3"
         style={{ background:'rgba(255,255,255,0.08)', border:'1px solid rgba(16,185,129,0.3)', backdropFilter:'blur(20px)', boxShadow:'0 8px 32px rgba(0,0,0,0.3)' }}>
-        <p className="text-[10px] font-black text-emerald-400 flex items-center gap-1.5"><span>🔒</span> HIPAA</p>
-        <p className="text-[9px]" style={{ color:MUTED }}>تشفير ١٠٠٪</p>
+        <p className="text-[10px] font-black text-emerald-400 flex items-center gap-1.5"><span>🔒</span> مؤمّن</p>
+        <p className="text-[9px]" style={{ color:MUTED }}>بياناتك خاصة</p>
       </motion.div>
     </div>
   );
 }
 
 /* ═══ TICKER ═════════════════════════════════════════════════ */
-const TICKS = ['تطبيق iOS','تطبيق Android','موقع احترافي','نظام إدارة','HIPAA','Apple Health','Apple Wallet','Google Wallet','سجل طبي','واتساب آلي','AES-256','ISO 27001','HL7 FHIR','Apple Watch','NDMO','SOC 2','PDPL'];
+const TICKS = ['تطبيق iOS','تطبيق Android','موقع احترافي','نظام إدارة','Apple Health','Apple Wallet','Google Wallet','سجل طبي','واتساب آلي','حجز مواعيد','Apple Watch','تذكير أدوية','داشبورد إدارة','نتائج مختبر','ملف مريض رقمي'];
 function Ticker() {
   const all = [...TICKS,...TICKS];
   return (
@@ -335,7 +335,7 @@ function Nav({ lang, onLang }: { lang: 'ar'|'en'; onLang: () => void }) {
           </div>
         </div>
         <div className="hidden lg:flex items-center gap-8">
-          {[['المنظومة','#المنظومة'],['كيف نعمل','#process'],['الأمان','#الأمان'],['الأسعار','#الأسعار']].map(([l,h]) => (
+          {[['المنظومة','#المنظومة'],['كيف نعمل','#process'],['المميزات','#المميزات'],['تواصل','#تواصل']].map(([l,h]) => (
             <a key={l} href={h} className="text-[13px] font-semibold transition-colors" style={{ color:MUTED }}
               onMouseEnter={e => (e.currentTarget.style.color=TEXT)} onMouseLeave={e => (e.currentTarget.style.color=MUTED)}>{l}</a>
           ))}
@@ -476,8 +476,8 @@ export default function App() {
               <motion.p initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.32 }}
                 className="text-[18px] font-light leading-relaxed mb-10 max-w-md" style={{ color:MUTED }}>
                 {lang==='ar'
-                  ? <>تطبيق بهويتك + موقع يفوز على جوجل + نظام إدارة + أمان HIPAA — في{' '}<span className="font-black" style={{ color:TEXT }}>٦٠ يوم.</span></>
-                  : <>Your-branded app + SEO-winning website + management system + HIPAA security — in{' '}<span className="font-black" style={{ color:TEXT }}>60 days.</span></>
+                  ? <>تطبيق بهويتك + موقع يفوز على جوجل + نظام إدارة — في{' '}<span className="font-black" style={{ color:TEXT }}>٦٠ يوم.</span></>
+                  : <>Your-branded app + SEO-winning website + management system — in{' '}<span className="font-black" style={{ color:TEXT }}>60 days.</span></>
                 }
               </motion.p>
 
@@ -516,7 +516,7 @@ export default function App() {
                 </div>
                 <div className="h-8 w-px hidden sm:block" style={{ background:GLASSBORDER }} />
                 <div className="flex gap-4 flex-wrap">
-                  {['✓ HIPAA','✓ ISO 27001','✓ PDPL'].map(b => <span key={b} className="text-[11px] font-bold" style={{ color:DIM }}>{b}</span>)}
+                  {['✓ iOS + Android','✓ Apple Wallet','✓ Apple Health'].map(b => <span key={b} className="text-[11px] font-bold" style={{ color:DIM }}>{b}</span>)}
                 </div>
               </motion.div>
             </div>
@@ -814,8 +814,8 @@ export default function App() {
           <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12">
             <Stat target={50}  suffix="+"    label={lang==='ar' ? 'عيادة عميلة' : 'Clinics served'} />
             <Stat target={60}  suffix={lang==='ar' ? ' يوم' : ' days'} label={lang==='ar' ? 'متوسط التسليم' : 'avg. delivery'} />
-            <Stat target={100} suffix="٪"    label={lang==='ar' ? 'تشفير البيانات' : 'data encrypted'} />
-            <Stat target={0}   suffix=""     label={lang==='ar' ? 'اختراق مسجّل' : 'breaches recorded'} prefix="٠" />
+            <Stat target={98}  suffix="٪"    label={lang==='ar' ? 'رضا العملاء' : 'client satisfaction'} />
+            <Stat target={24}  suffix="/٧"   label={lang==='ar' ? 'دعم فني متواصل' : 'support available'} />
           </div>
         </section>
 
@@ -827,65 +827,33 @@ export default function App() {
                 {lang==='ar' ? 'البنية التقنية' : 'Technology'}
               </p>
               <h2 className="font-black leading-tight" style={{ fontSize:'clamp(28px,5vw,58px)', letterSpacing:'-0.02em', color:TEXT }}>
-                {lang==='ar' ? <>معايير عالمية.<br /><span style={{ color:DIM }}>بنية لا تُكسر.</span></> : <>Global standards.<br /><span style={{ color:DIM }}>Unbreakable architecture.</span></>}
+                {lang==='ar' ? <>تقنية حديثة.<br /><span style={{ color:DIM }}>بنية موثوقة.</span></> : <>Modern technology.<br /><span style={{ color:DIM }}>Reliable architecture.</span></>}
               </h2>
             </Reveal>
 
             {/* Tech grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
               {[
-                { label:'HL7 FHIR R4', sub:lang==='ar'?'معيار سجلات صحية':'Health record standard', icon:'🏥', color:BLUE },
-                { label:'ICD-10 / ICD-11', sub:lang==='ar'?'تصنيف أمراض دولي':'International disease classification', icon:'🔬', color:'#8B5CF6' },
-                { label:'SNOMED CT', sub:lang==='ar'?'مصطلحات طبية':'Medical terminology', icon:'🧬', color:'#10B981' },
-                { label:'OpenEHR', sub:lang==='ar'?'سجل صحي مفتوح':'Open health record', icon:'📋', color:'#F59E0B' },
-                { label:'REST + GraphQL', sub:lang==='ar'?'APIs قياسية':'Standard APIs', icon:'🔌', color:BLUE },
-                { label:'WebSockets', sub:lang==='ar'?'تحديثات فورية':'Real-time updates', icon:'⚡', color:'#EF4444' },
                 { label:'React Native', sub:lang==='ar'?'iOS + Android':'iOS + Android', icon:'📱', color:BLUE },
-                { label:'AES-256 + TLS', sub:lang==='ar'?'تشفير مزدوج':'Double encryption', icon:'🔐', color:'#10B981' },
+                { label:'WebSockets', sub:lang==='ar'?'تحديثات فورية':'Real-time updates', icon:'⚡', color:'#EF4444' },
+                { label:'REST APIs', sub:lang==='ar'?'تكامل سلس':'Seamless integration', icon:'🔌', color:'#8B5CF6' },
+                { label:'Push Notifications', sub:lang==='ar'?'إشعارات فورية':'Instant alerts', icon:'🔔', color:'#F59E0B' },
+                { label:'Apple Health', sub:lang==='ar'?'مزامنة صحية':'Health sync', icon:'❤️', color:'#10B981' },
+                { label:'Apple Wallet', sub:lang==='ar'?'بطاقة رقمية':'Digital card', icon:'🎫', color:BLUE },
+                { label:'WhatsApp API', sub:lang==='ar'?'تواصل مباشر':'Direct messaging', icon:'💬', color:'#10B981' },
+                { label:'Cloud Hosting', sub:lang==='ar'?'استضافة موثوقة':'Reliable hosting', icon:'☁️', color:'#A78BFA' },
               ].map((t,i) => (
                 <Reveal key={i} delay={i*0.04}>
                   <Glass accent={t.color} className="cursor-default">
                     <div className="p-5 text-center">
                       <span className="text-[24px] mb-3 block">{t.icon}</span>
-                      <p className="text-[13px] font-black mb-1 font-mono" style={{ color:t.color }}>{t.label}</p>
+                      <p className="text-[13px] font-black mb-1" style={{ color:t.color }}>{t.label}</p>
                       <p className="text-[10px]" style={{ color:MUTED }}>{t.sub}</p>
                     </div>
                   </Glass>
                 </Reveal>
               ))}
             </div>
-
-            {/* Compliance mega-row */}
-            <Reveal delay={0.1}>
-              <Glass accent={BLUE}>
-                <div className="p-7">
-                  <p className="font-black text-[16px] mb-6 text-center" style={{ color:TEXT }}>
-                    {lang==='ar' ? 'اعتمادات الامتثال العالمي' : 'Global Compliance Certifications'}
-                  </p>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                    {[
-                      { badge:'HIPAA', sub:lang==='ar'?'حماية صحية أمريكية':'US Health Privacy', color:'#38BDF8' },
-                      { badge:'GDPR', sub:lang==='ar'?'خصوصية أوروبية':'EU Data Privacy', color:'#A78BFA' },
-                      { badge:'ISO 27001', sub:lang==='ar'?'أمن معلومات':'Information Security', color:'#34D399' },
-                      { badge:'SOC 2 Type II', sub:lang==='ar'?'أمن خدمات':'Service Security', color:'#FBBF24' },
-                      { badge:'NDMO', sub:lang==='ar'?'حكومة رقمية سعودية':'Saudi Digital Gov', color:'#38BDF8' },
-                      { badge:'PDPL', sub:lang==='ar'?'بيانات شخصية سعودية':'Saudi Data Protection', color:'#34D399' },
-                    ].map((c,i) => (
-                      <motion.div key={i} initial={{ opacity:0, scale:0.9 }} animate={{ opacity:1, scale:1 }} transition={{ delay:0.05*i }}
-                        className="flex flex-col items-center gap-2 p-4 rounded-2xl cursor-default"
-                        style={{ background:`${c.color}10`, border:`1px solid ${c.color}25` }}>
-                        <div className="w-8 h-8 rounded-full flex items-center justify-center"
-                          style={{ background:`${c.color}20` }}>
-                          <span className="text-[13px] font-black" style={{ color:c.color }}>✓</span>
-                        </div>
-                        <p className="text-[11px] font-black text-center leading-tight" style={{ color:c.color }}>{c.badge}</p>
-                        <p className="text-[9px] text-center leading-snug" style={{ color:MUTED }}>{c.sub}</p>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </Glass>
-            </Reveal>
           </div>
         </section>
 
@@ -947,7 +915,7 @@ export default function App() {
                 ['📊','لوحة المالك','تقارير','#10B981'],
                 ['🌐','موقع طبي','SEO','#8B5CF6'],
                 ['💬','واتساب آلي','تذكير','#10B981'],
-                ['🔒','أمان HIPAA','عسكري','#F59E0B'],
+                ['🔒','خصوصية تامة','بياناتك ملكك','#F59E0B'],
                 ['🔗','تكامل HIS','أنظمة','#374151'],
               ].map(([icon,title,sub,accent],i) => (
                 <Reveal key={i} delay={i*0.02}>
@@ -964,93 +932,34 @@ export default function App() {
           </div>
         </section>
 
-        {/* ════ SECURITY ═══════════════════════════════════ */}
-        <section id="الأمان" className="py-28 px-6 lg:px-12">
+        {/* ════ WHY DIGITAL ════════════════════════════════ */}
+        <section className="py-28 px-6 lg:px-12">
           <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
-              <Reveal>
-                <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>{t.securityBadge}</p>
-                <h2 className="font-black leading-tight mb-5" style={{ fontSize:'clamp(30px,5vw,60px)', letterSpacing:'-0.02em', color:TEXT }}>
-                  {t.securityHeading1}<br />{t.securityHeading2}
-                </h2>
-                <p className="text-[16px] leading-relaxed mb-8" style={{ color:MUTED }}>{lang==='ar' ? 'أمان عسكري المستوى مصمّم للقطاع الصحي. بنية تقنية — ليست وعوداً.' : 'Military-grade security engineered for healthcare. Real architecture — not promises.'}</p>
-                <div className="flex flex-wrap gap-3">
-                  {['HIPAA','ISO 27001','AES-256','NDMO','SOC 2','PDPL'].map(b => (
-                    <div key={b} className="flex items-center gap-2 px-4 py-2 rounded-full text-[12px] font-bold cursor-default"
-                      style={{ background:GLASS, border:`1px solid ${GLASSBORDER}`, color:MUTED, backdropFilter:'blur(10px)' }}>
-                      <span style={{ color:BLUE }}>✓</span> {b}
-                    </div>
-                  ))}
-                </div>
-              </Reveal>
-              <Reveal delay={0.1}>
-                <div className="p-6 rounded-3xl" style={{ background:'rgba(15,23,42,0.8)', border:`1px solid ${GLASSBORDER}`, backdropFilter:'blur(20px)', boxShadow:'0 32px 80px rgba(0,0,0,0.5)' }}>
-                  <div className="flex items-center gap-2 mb-5">
-                    <div className="flex gap-1.5">{['#FF5F57','#FEBC2E','#28C840'].map(c => <div key={c} className="w-3 h-3 rounded-full" style={{ background:c }} />)}</div>
-                    <span className="text-[10px] font-mono mr-auto" style={{ color:DIM }}>security-audit.log</span>
-                  </div>
-                  <div className="space-y-2 font-mono text-[11px]">
-                    {[
-                      ['[INFO]','#38BDF8','AES-256 encryption: ACTIVE'],
-                      ['[OK]','#34D399','Zero-knowledge architecture: VERIFIED'],
-                      ['[OK]','#34D399','HIPAA compliance: PASSED'],
-                      ['[OK]','#34D399','ISO 27001 audit: PASSED'],
-                      ['[OK]','#34D399','PDPL compliance: VERIFIED'],
-                      ['[SCAN]','#A78BFA','AI threat detection: RUNNING'],
-                      ['[OK]','#34D399','Last backup: 3h ago'],
-                      ['[ALERT]','#FBBF24','Zero breaches recorded: ✓'],
-                    ].map(([tag,c,msg],i) => (
-                      <motion.div key={i} initial={{ opacity:0, x:-10 }} animate={{ opacity:1, x:0 }}
-                        transition={{ delay:0.8+i*0.1 }} className="flex items-center gap-3" dir="ltr">
-                        <span className="shrink-0 font-bold" style={{ color:c }}>{tag}</span>
-                        <span className="text-[10px]" style={{ color:'rgba(255,255,255,0.4)' }}>{msg}</span>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </Reveal>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Reveal className="mb-14">
+              <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>
+                {lang==='ar' ? 'لماذا رقمي؟' : 'Why digital?'}
+              </p>
+              <h2 className="font-black leading-tight" style={{ fontSize:'clamp(30px,5vw,60px)', letterSpacing:'-0.02em', color:TEXT }}>
+                {lang==='ar' ? <>عيادتك تخسر مرضى<br /><span style={{ color:DIM }}>كل يوم بدون نظام.</span></> : <>You're losing patients<br /><span style={{ color:DIM }}>every day without a system.</span></>}
+              </h2>
+            </Reveal>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
-                { icon:'🔐', title: lang==='ar'?'تشفير AES-256 كامل':'Full AES-256 Encryption', desc: lang==='ar'?'نفس معيار وزارات الدفاع. لا أحد يقرأ بيانات مرضاك إلا المخوّلون.':'Same standard as defense ministries. Only authorized personnel access patient data.', accent:BLUE },
-                { icon:'🧠', title:'Zero-Knowledge', desc: lang==='ar'?'مفتاح التشفير ملكك — حتى فريق تلقا لا يستطيع رؤية بياناتك.':'Your encryption key is yours — even the Talqa team cannot read your data.', accent:'#8B5CF6' },
-                { icon:'🛡️', title: lang==='ar'?'مصادقة ثلاثية':'3-Factor Auth', desc: lang==='ar'?'Face ID + بصمة + رمز تحقق. لا وصول بدون إذنك.':'Face ID + fingerprint + OTP. No access without your permission.', accent:'#10B981' },
-                { icon:'💾', title: lang==='ar'?'نسخ كل ٦ ساعات':'Backup every 6 hours', desc: lang==='ar'?'مراكز بيانات موزعة مشفرة محمية من الكوارث.':'Distributed encrypted data centers protected against disasters.', accent:'#F59E0B' },
-                { icon:'👁️', title: lang==='ar'?'مراقبة بالذكاء الاصطناعي':'AI Threat Monitoring', desc: lang==='ar'?'يرصد أي نشاط غريب ويوقفه فوراً.':'Detects and blocks any unusual activity in real time.', accent:'#EF4444' },
-                { icon:'📜', title: lang==='ar'?'PDPL سعودي':'Saudi PDPL', desc: lang==='ar'?'مطابق لنظام حماية البيانات ولوائح الحكومة الرقمية.':'Fully compliant with Saudi data protection regulations and Digital Government Authority.', accent:BLUE },
+                { icon:'📵', title: lang==='ar'?'لا ردّ = مريض راح':'No reply = lost patient', desc: lang==='ar'?'المريض يتصل ولا يحد يرد — يروح للمنافس. نظام الحجز الإلكتروني يستقبل ٢٤/٧ بدون موظف.':'Patient calls, no answer — goes to the competition. Online booking captures them 24/7.', accent:'#EF4444' },
+                { icon:'📋', title: lang==='ar'?'ملف ورقي = وقت ضائع':'Paper files = wasted time', desc: lang==='ar'?'الدكتور يقضي ١٠ دقائق يدور على ملف المريض. رقمياً — يفتحه في ثانية.':'The doctor spends 10 minutes searching for a file. Digitally — it opens in a second.', accent:'#F59E0B' },
+                { icon:'💸', title: lang==='ar'?'بلا متابعة = بلا عودة':'No follow-up = no return', desc: lang==='ar'?'٧٠٪ من المرضى لا يعودون لأنهم ينسون. تذكير واتساب تلقائي يجيبهم بدون جهد.':'70% of patients do not return because they forget. Auto WhatsApp reminders bring them back effortlessly.', accent:BLUE },
               ].map((s,i) => (
-                <Reveal key={i} delay={i*0.05}>
+                <Reveal key={i} delay={i*0.07}>
                   <Glass accent={s.accent} className="h-full cursor-default">
                     <div className="p-6">
-                      <span className="text-[28px] mb-4 block">{s.icon}</span>
+                      <span className="text-[32px] mb-4 block">{s.icon}</span>
                       <p className="text-[15px] font-black mb-2" style={{ color:TEXT }}>{s.title}</p>
-                      <p className="text-[12px] leading-relaxed" style={{ color:MUTED }}>{s.desc}</p>
+                      <p className="text-[13px] leading-relaxed" style={{ color:MUTED }}>{s.desc}</p>
                     </div>
                   </Glass>
                 </Reveal>
               ))}
             </div>
-
-            <Reveal delay={0.1} className="mt-5">
-              <Glass accent={BLUE}>
-                <div className="p-7 flex flex-col sm:flex-row items-center gap-6">
-                  <div className="text-5xl">🔒</div>
-                  <div className="flex-1 text-center sm:text-right">
-                    <p className="font-black text-[20px] mb-1" style={{ color:TEXT }}>{lang==='ar'?'بياناتك ملكك — نحن لا نراها.':'Your data is yours — we cannot see it.'}</p>
-                    <p className="text-[14px]" style={{ color:MUTED }}>{lang==='ar'?'لم يُسجَّل أي اختراق منذ التأسيس. هندسة تقنية متكاملة.':'Zero breaches recorded since founding. Integrated technical architecture.'}</p>
-                  </div>
-                  <div className="flex gap-8 shrink-0">
-                    {(lang==='ar'?[['٠','اختراقات'],['١٠٠٪','تشفير'],['٢٤/٧','مراقبة']]:[['0','breaches'],['100%','encrypted'],['24/7','monitored']]).map(([v,l]) => (
-                      <div key={l} className="text-center">
-                        <p className="font-black leading-none" style={{ fontSize:'clamp(24px,3vw,36px)', color:BLUE }}>{v}</p>
-                        <p className="text-[10px] mt-1" style={{ color:MUTED }}>{l}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </Glass>
-            </Reveal>
           </div>
         </section>
 
