@@ -1055,6 +1055,36 @@ export default function App() {
               ))}
             </div>
 
+            {/* ── Compliance badges ── */}
+            <Reveal delay={0.05} className="mb-5">
+              <Glass accent={BLUE}>
+                <div className="p-7">
+                  <p className="font-black text-[13px] mb-6 text-center" style={{ color:MUTED }}>
+                    {lang==='ar' ? 'مبني وفق أعلى معايير حماية البيانات الصحية' : 'Built to the highest healthcare data protection standards'}
+                  </p>
+                  <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
+                    {[
+                      { badge:'HIPAA',        sub:lang==='ar'?'خصوصية صحية':'Health Privacy',      color:'#38BDF8', icon:'🏥' },
+                      { badge:'ISO 27001',    sub:lang==='ar'?'أمن المعلومات':'Info Security',      color:'#34D399', icon:'🔒' },
+                      { badge:'SOC 2',        sub:lang==='ar'?'أمن الخدمات':'Service Security',    color:'#FBBF24', icon:'🛡️' },
+                      { badge:'GDPR',         sub:lang==='ar'?'خصوصية البيانات':'Data Privacy',    color:'#A78BFA', icon:'🇪🇺' },
+                      { badge:'NDMO',         sub:lang==='ar'?'الحكومة الرقمية':'Digital Gov',     color:'#38BDF8', icon:'🇸🇦' },
+                      { badge:'PDPL',         sub:lang==='ar'?'حماية البيانات':'Data Protection',  color:'#34D399', icon:'📋' },
+                    ].map((c,i) => (
+                      <motion.div key={i} initial={{ opacity:0, y:12 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.06*i, ease:[0.22,1,0.36,1] }}
+                        className="flex flex-col items-center gap-2 p-3.5 rounded-2xl cursor-default group transition-all"
+                        style={{ background:`${c.color}0D`, border:`1px solid ${c.color}22` }}
+                        whileHover={{ scale:1.04, background:`${c.color}18` }}>
+                        <span className="text-[20px]">{c.icon}</span>
+                        <p className="text-[11px] font-black text-center leading-tight" style={{ color:c.color }}>{c.badge}</p>
+                        <p className="text-[9px] text-center leading-snug" style={{ color:MUTED }}>{c.sub}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </Glass>
+            </Reveal>
+
             {/* ── Promise banner ── */}
             <Reveal delay={0.1}>
               <div className="rounded-3xl p-8 sm:p-10 text-center relative overflow-hidden"
