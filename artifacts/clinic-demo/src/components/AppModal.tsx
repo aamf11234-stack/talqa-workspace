@@ -7,9 +7,9 @@ import type { ClinicTab } from './BottomNav';
 import { ScreenHome } from './ScreenHome';
 import { ScreenAppointments } from './ScreenAppointments';
 import { ScreenCard } from './ScreenCard';
-import { ScreenDoctors } from './ScreenDoctors';
 import { ScreenNotifications } from './ScreenNotifications';
-import { ScreenResults } from './ScreenResults';
+import { ScreenAI } from './ScreenAI';
+import { ScreenTelemedicine } from './ScreenTelemedicine';
 
 interface AppModalProps {
   open: boolean;
@@ -67,7 +67,8 @@ export const AppModal = ({ open, onClose }: AppModalProps) => {
                     {activeTab === 'home'          && <ScreenHome />}
                     {activeTab === 'appointments'  && <ScreenAppointments />}
                     {activeTab === 'card'          && <ScreenCard />}
-                    {activeTab === 'doctors'       && <ScreenDoctors />}
+                    {activeTab === 'ai'            && <ScreenAI />}
+                    {activeTab === 'telemedicine'  && <ScreenTelemedicine />}
                     {activeTab === 'notifications' && <ScreenNotifications />}
                   </motion.div>
                 </AnimatePresence>

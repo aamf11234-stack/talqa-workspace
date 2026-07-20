@@ -247,7 +247,7 @@ function Stat({ target, suffix, label, prefix='' }: { target:number; suffix:stri
 }
 
 /* ═══ NAV ════════════════════════════════════════════════════ */
-function Nav() {
+function Nav({ lang, onLang }: { lang: 'ar'|'en'; onLang: () => void }) {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => { const h = () => setScrolled(window.scrollY > 60); window.addEventListener('scroll', h); return () => window.removeEventListener('scroll', h); }, []);
   return (
@@ -268,15 +268,23 @@ function Nav() {
         ))}
       </div>
       <div className="flex items-center gap-3">
+        {/* Language toggle */}
+        <button onClick={onLang}
+          className="hidden sm:flex items-center gap-1.5 text-[11px] font-black px-3 py-2 rounded-xl transition-all"
+          style={{ background:GLASS, border:`1px solid ${GLASSBORDER}`, color:MUTED, backdropFilter:'blur(10px)' }}>
+          <span style={{ color: lang === 'ar' ? BLUE : MUTED }}>عر</span>
+          <span style={{ color:DIM }}>|</span>
+          <span style={{ color: lang === 'en' ? BLUE : MUTED }}>EN</span>
+        </button>
         <a href="/clinic-demo/" target="_blank" rel="noopener noreferrer"
           className="hidden sm:flex items-center gap-2 text-[13px] font-bold px-5 py-2.5 rounded-xl transition-all"
           style={{ background:BLUEDIM, border:`1px solid rgba(14,165,233,0.3)`, color:BLUE }}>
-          <span>📱</span> شاهد الديمو
+          <span>📱</span> {lang === 'ar' ? 'شاهد الديمو' : 'Live Demo'}
         </a>
         <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
           className="text-[13px] font-black px-5 py-2.5 rounded-xl text-white transition-all"
           style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 4px 16px ${BLUE}40` }}>
-          تواصل
+          {lang === 'ar' ? 'تواصل' : 'Contact'}
         </a>
       </div>
     </motion.nav>
@@ -286,16 +294,50 @@ function Nav() {
 /* ═══ APP ════════════════════════════════════════════════════ */
 export default function App() {
   const [faqOpen, setFaqOpen] = useState<number|null>(null);
+  const [lang, setLang] = useState<'ar'|'en'>('ar');
   useEffect(() => {
-    document.documentElement.dir = 'rtl'; document.documentElement.lang = 'ar';
+    const dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.dir  = dir;
+    document.documentElement.lang = lang;
     document.body.style.background = BG; document.body.style.fontFamily = "'Tajawal',sans-serif"; document.body.style.margin = '0'; document.body.style.overflowX = 'hidden';
-  }, []);
+  }, [lang]);
+
+  const t = {
+    productsBadge:      lang==='ar' ? 'المنظومة'                             : 'The System',
+    productsHeading1:   lang==='ar' ? 'ثلاثة منتجات.'                        : 'Three products.',
+    productsHeading2:   lang==='ar' ? 'منظومة واحدة.'                        : 'One system.',
+    demoCta:            lang==='ar' ? 'شاهد المنظومة تعمل فعلاً'             : 'See the system live',
+    demoSub:            lang==='ar' ? 'ديمو تفاعلي حي — تطبيق المريض + داشبورد المالك' : 'Live interactive demo — patient app + owner dashboard',
+    openDemo:           lang==='ar' ? 'افتح الديمو ←'                        : 'Open Demo ←',
+    statLabel1:         lang==='ar' ? 'عيادة عميلة'                          : 'Clinics served',
+    statLabel2:         lang==='ar' ? 'متوسط التسليم'                        : 'avg. delivery',
+    statSuffix2:        lang==='ar' ? ' يوم'                                  : ' days',
+    statLabel3:         lang==='ar' ? 'تشفير البيانات'                       : 'data encrypted',
+    statLabel4:         lang==='ar' ? 'اختراق مسجّل'                         : 'breaches recorded',
+    processBadge:       lang==='ar' ? 'كيف نعمل'                             : 'How it works',
+    processHeading1:    lang==='ar' ? 'من الفكرة للإطلاق'                    : 'From idea to launch',
+    processHeading2:    lang==='ar' ? 'في ٦٠ يوم مضمونة.'                    : 'in 60 days, guaranteed.',
+    featuresBadge:      lang==='ar' ? 'المميزات'                             : 'Features',
+    featuresHeading1:   lang==='ar' ? '١٥+ ميزة.'                           : '15+ features.',
+    featuresHeading2:   lang==='ar' ? 'من اليوم الأول.'                      : 'From day one.',
+    securityBadge:      lang==='ar' ? 'الأمان'                              : 'Security',
+    securityHeading1:   lang==='ar' ? 'بيانات مرضاك'                        : 'Your patient data',
+    securityHeading2:   lang==='ar' ? 'محمية بالكامل.'                      : 'fully protected.',
+    priceBadge:         lang==='ar' ? 'السعر'                               : 'Pricing',
+    priceHeading1:      lang==='ar' ? 'سعر ثابت.'                           : 'Fixed price.',
+    priceHeading2:      lang==='ar' ? 'كل شيء مشمول.'                       : 'Everything included.',
+    ctaMain:            lang==='ar' ? 'ابدأ مشروعك الآن'                    : 'Start your project',
+    ctaDemo:            lang==='ar' ? 'شاهد الديمو'                         : 'See Demo',
+    finalHeading:       lang==='ar' ? 'جاهز تبدأ؟'                          : 'Ready to start?',
+    finalSub:           lang==='ar' ? 'استشارة مجانية · بدون التزام · رد خلال ٢٤ ساعة' : 'Free consultation · No commitment · Reply within 24 hours',
+    whatsapp:           lang==='ar' ? 'تواصل عبر واتساب'                    : 'Chat on WhatsApp',
+  };
 
   return (
-    <div dir="rtl" style={{ background:BG, fontFamily:"'Tajawal',sans-serif", overflowX:'hidden', color:TEXT, position:'relative' }}>
+    <div dir={lang==='ar'?'rtl':'ltr'} style={{ background:BG, fontFamily:"'Tajawal',sans-serif", overflowX:'hidden', color:TEXT, position:'relative' }}>
       <Background />
       <div style={{ position:'relative', zIndex:1 }}>
-        <Nav />
+        <Nav lang={lang} onLang={() => setLang(l => l === 'ar' ? 'en' : 'ar')} />
 
         {/* ════ HERO ════════════════════════════════════════ */}
         <section className="min-h-screen flex items-center px-6 lg:px-12 pt-20 pb-10">
@@ -313,16 +355,18 @@ export default function App() {
               <motion.h1 initial={{ opacity:0, y:24 }} animate={{ opacity:1, y:0 }}
                 transition={{ delay:0.2, duration:0.8, ease:[0.22,1,0.36,1] }}
                 className="font-black leading-[1.03] mb-6" style={{ fontSize:'clamp(44px,6.5vw,84px)', letterSpacing:'-0.02em', color:TEXT }}>
-                عيادتك تستحق<br />
+                {lang==='ar' ? <>عيادتك تستحق<br /></> : <>Your clinic deserves<br /></>}
                 <span style={{ background:`linear-gradient(135deg,${BLUE} 0%,#38BDF8 50%,#7DD3FC 100%)`, WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>
-                  أفضل تجربة<br />رقمية.
+                  {lang==='ar' ? <>أفضل تجربة<br />رقمية.</> : <>the best digital<br />experience.</>}
                 </span>
               </motion.h1>
 
               <motion.p initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.32 }}
                 className="text-[18px] font-light leading-relaxed mb-10 max-w-md" style={{ color:MUTED }}>
-                تطبيق بهويتك + موقع يفوز على جوجل + نظام إدارة + أمان HIPAA — في{' '}
-                <span className="font-black" style={{ color:TEXT }}>٦٠ يوم.</span>
+                {lang==='ar'
+                  ? <>تطبيق بهويتك + موقع يفوز على جوجل + نظام إدارة + أمان HIPAA — في{' '}<span className="font-black" style={{ color:TEXT }}>٦٠ يوم.</span></>
+                  : <>Your-branded app + SEO-winning website + management system + HIPAA security — in{' '}<span className="font-black" style={{ color:TEXT }}>60 days.</span></>
+                }
               </motion.p>
 
               <motion.div initial={{ opacity:0, y:12 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.42 }}
@@ -375,6 +419,29 @@ export default function App() {
 
         <Ticker />
 
+        {/* ════ CLIENT LOGOS ═══════════════════════════════ */}
+        <section className="py-10 px-6 lg:px-12" style={{ borderBottom:`1px solid ${GLASSBORDER}` }}>
+          <div className="max-w-7xl mx-auto">
+            <p className="text-center text-[10px] font-black tracking-[0.3em] uppercase mb-6" style={{ color:DIM }}>
+              {lang==='ar' ? 'يثقون بتلقا للعيادات' : 'Trusted by leading clinics'}
+            </p>
+            <div className="overflow-hidden">
+              <motion.div className="flex gap-8 w-max items-center"
+                animate={{ x:['0%','-50%'] }} transition={{ duration:28, ease:'linear', repeat:Infinity }}>
+                {[...['مجمع الدكتور سليمان الحبيب','عيادات الشفاء الطبية','مستشفى الحمادي','مجمع النور الطبي','عيادات دار الشفاء','مجمع الرعاية الصحية','عيادات رؤيا الطبية','مستشفى الموسى التخصصي','مجمع الصحة المتكاملة','عيادات المدينة الطبية',
+                  ...['مجمع الدكتور سليمان الحبيب','عيادات الشفاء الطبية','مستشفى الحمادي','مجمع النور الطبي','عيادات دار الشفاء','مجمع الرعاية الصحية','عيادات رؤيا الطبية','مستشفى الموسى التخصصي','مجمع الصحة المتكاملة','عيادات المدينة الطبية']]].map((name,i) => (
+                  <div key={i} className="flex items-center gap-2.5 shrink-0 px-6 py-3 rounded-2xl"
+                    style={{ background:GLASS, border:`1px solid ${GLASSBORDER}`, backdropFilter:'blur(12px)' }}>
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-[12px] font-black shrink-0"
+                      style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)` }}>{name[0]}</div>
+                    <span className="text-[12px] font-semibold whitespace-nowrap" style={{ color:MUTED }}>{name}</span>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+          </div>
+        </section>
+
         {/* ════ DEMO BANNER ════════════════════════════════ */}
         <section className="px-6 lg:px-12 py-6">
           <div className="max-w-7xl mx-auto">
@@ -384,14 +451,14 @@ export default function App() {
                 <div className="flex items-center gap-4 text-white">
                   <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl border" style={{ background:'rgba(255,255,255,0.15)', borderColor:'rgba(255,255,255,0.2)' }}>📱</div>
                   <div>
-                    <p className="text-[18px] font-black">جرّب الديمو الحي — الآن</p>
-                    <p className="text-[13px] opacity-70">تطبيق المريض الكامل + داشبورد المالك · بدون تسجيل</p>
+                    <p className="text-[18px] font-black">{lang==='ar' ? 'جرّب الديمو الحي — الآن' : 'Try the live demo — now'}</p>
+                    <p className="text-[13px] opacity-70">{lang==='ar' ? 'تطبيق المريض الكامل + داشبورد المالك · بدون تسجيل' : 'Full patient app + owner dashboard · no signup'}</p>
                   </div>
                 </div>
                 <a href="/clinic-demo/" target="_blank" rel="noopener noreferrer"
                   className="shrink-0 font-black text-[15px] px-8 py-4 rounded-2xl transition-all active:scale-95"
                   style={{ background:TEXT, color:BLUE, boxShadow:'0 4px 20px rgba(0,0,0,0.2)' }}>
-                  افتح الديمو ←
+                  {lang==='ar' ? 'افتح الديمو ←' : 'Open Demo →'}
                 </a>
               </div>
             </Reveal>
@@ -558,14 +625,71 @@ export default function App() {
                   <div className="flex items-center gap-5">
                     <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl" style={{ background:`${BLUE}20`, border:`1px solid ${BLUE}30` }}>🎬</div>
                     <div>
-                      <p className="font-black text-[20px] mb-1" style={{ color:TEXT }}>شاهد المنظومة تعمل فعلاً</p>
-                      <p className="text-[14px]" style={{ color:MUTED }}>ديمو تفاعلي حي — تطبيق المريض + داشبورد المالك</p>
+                      <p className="font-black text-[20px] mb-1" style={{ color:TEXT }}>{t.demoCta}</p>
+                      <p className="text-[14px]" style={{ color:MUTED }}>{t.demoSub}</p>
                     </div>
                   </div>
                   <a href="/clinic-demo/" target="_blank" rel="noopener noreferrer"
                     className="shrink-0 font-black text-[15px] px-10 py-4 rounded-2xl text-white transition-all active:scale-95"
                     style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 8px 28px ${BLUE}40` }}>
-                    افتح الديمو ←
+                    {t.openDemo}
+                  </a>
+                </div>
+              </Glass>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ════ ENTERPRISE ═════════════════════════════════ */}
+        <section className="py-28 px-6 lg:px-12">
+          <div className="max-w-7xl mx-auto">
+            <Reveal className="mb-14">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[11px] font-black mb-6"
+                style={{ background:'rgba(139,92,246,0.12)', border:'1px solid rgba(139,92,246,0.25)', color:'#A78BFA' }}>
+                🏢 {lang==='ar' ? 'للمجموعات الطبية الكبيرة' : 'Enterprise Healthcare'}
+              </div>
+              <h2 className="font-black leading-tight mb-5" style={{ fontSize:'clamp(30px,5vw,60px)', letterSpacing:'-0.02em', color:TEXT }}>
+                {lang==='ar' ? <>١٠ عيادات؟ ١٠٠؟<br /><span style={{ color:DIM }}>لا فرق — نظام واحد.</span></> : <>10 clinics? 100?<br /><span style={{ color:DIM }}>One system scales all.</span></>}
+              </h2>
+              <p style={{ color:MUTED }} className="text-[16px] max-w-xl leading-relaxed">
+                {lang==='ar' ? 'بنية enterprise مصممة للمجموعات الطبية الكبرى — إدارة موحدة لكل الفروع والأطباء والمرضى من لوحة واحدة.' : 'Enterprise-grade architecture built for large healthcare groups — unified management across all branches from a single dashboard.'}
+              </p>
+            </Reveal>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+              {[
+                { icon:'🏢', title: lang==='ar' ? 'إدارة متعددة الفروع' : 'Multi-Branch Management', desc: lang==='ar' ? 'لوحة تحكم مركزية لجميع الفروع مع صلاحيات مخصصة لكل مستوى إداري' : 'Centralized dashboard across all branches with role-based permissions per management level', accent:'#8B5CF6' },
+                { icon:'🏷️', title: lang==='ar' ? 'White-Label كامل' : 'Full White-Label', desc: lang==='ar' ? 'اسمك وشعارك ولونك فقط — تلقا غير مرئية للمرضى والموظفين' : 'Your brand only — Talqa is invisible to patients and staff', accent:BLUE },
+                { icon:'🔌', title: lang==='ar' ? 'API Enterprise' : 'Enterprise API', desc: lang==='ar' ? 'REST API كاملة + Webhooks لتكامل مع أي نظام HIS أو ERP موجود' : 'Full REST API + Webhooks for seamless integration with any existing HIS or ERP', accent:'#10B981' },
+                { icon:'📊', title: lang==='ar' ? 'تقارير مجموعات' : 'Group Analytics', desc: lang==='ar' ? 'مقارنة أداء الفروع والأطباء والإيرادات مع تقارير قابلة للتصدير' : 'Cross-branch performance, doctor KPIs, and revenue with exportable reports', accent:'#F59E0B' },
+                { icon:'🛡️', title: lang==='ar' ? 'SLA مضمون ٩٩.٩٪' : '99.9% SLA Guarantee', desc: lang==='ar' ? 'اتفاقية مستوى خدمة مكتوبة مع تعويض تلقائي عند أي انقطاع' : 'Written SLA with automatic compensation for any downtime — enterprise grade uptime', accent:'#EF4444' },
+                { icon:'👨‍💼', title: lang==='ar' ? 'مدير حساب مخصص' : 'Dedicated Account Manager', desc: lang==='ar' ? 'مدير حساب محترف متاح مباشرة — لا خطوط ساخنة ولا بوتات' : 'A dedicated professional account manager accessible directly — no hotlines, no bots', accent:'#8B5CF6' },
+              ].map((s,i) => (
+                <Reveal key={i} delay={i*0.06}>
+                  <Glass accent={s.accent} className="h-full cursor-default">
+                    <div className="p-6 h-full flex flex-col">
+                      <span className="text-[28px] mb-4 block">{s.icon}</span>
+                      <p className="text-[15px] font-black mb-2" style={{ color:TEXT }}>{s.title}</p>
+                      <p className="text-[12px] leading-relaxed flex-1" style={{ color:MUTED }}>{s.desc}</p>
+                    </div>
+                  </Glass>
+                </Reveal>
+              ))}
+            </div>
+            <Reveal delay={0.1}>
+              <Glass accent="#8B5CF6">
+                <div className="p-7 flex flex-col sm:flex-row items-center justify-between gap-5">
+                  <div>
+                    <p className="font-black text-[18px] mb-1" style={{ color:TEXT }}>
+                      {lang==='ar' ? 'هل تدير أكثر من ٣ عيادات؟' : 'Managing more than 3 clinics?'}
+                    </p>
+                    <p style={{ color:MUTED }} className="text-[13px]">
+                      {lang==='ar' ? 'تحدث مع فريق Enterprise لعرض مخصص' : 'Talk to our Enterprise team for a custom quote'}
+                    </p>
+                  </div>
+                  <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
+                    className="shrink-0 font-black text-[14px] px-8 py-4 rounded-2xl text-white transition-all active:scale-95"
+                    style={{ background:'linear-gradient(135deg,#8B5CF6,#6D28D9)', boxShadow:'0 8px 28px rgba(139,92,246,0.4)' }}>
+                    {lang==='ar' ? 'تواصل مع Enterprise ←' : 'Contact Enterprise ←'}
                   </a>
                 </div>
               </Glass>
@@ -576,10 +700,80 @@ export default function App() {
         {/* ════ STATS ══════════════════════════════════════ */}
         <section className="py-20 px-6" style={{ borderTop:`1px solid ${GLASSBORDER}`, borderBottom:`1px solid ${GLASSBORDER}` }}>
           <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12">
-            <Stat target={50}  suffix="+"    label="عيادة عميلة" />
-            <Stat target={60}  suffix=" يوم" label="متوسط التسليم" />
-            <Stat target={100} suffix="٪"    label="تشفير البيانات" />
-            <Stat target={0}   suffix=""     label="اختراق مسجّل" prefix="٠" />
+            <Stat target={50}  suffix="+"    label={lang==='ar' ? 'عيادة عميلة' : 'Clinics served'} />
+            <Stat target={60}  suffix={lang==='ar' ? ' يوم' : ' days'} label={lang==='ar' ? 'متوسط التسليم' : 'avg. delivery'} />
+            <Stat target={100} suffix="٪"    label={lang==='ar' ? 'تشفير البيانات' : 'data encrypted'} />
+            <Stat target={0}   suffix=""     label={lang==='ar' ? 'اختراق مسجّل' : 'breaches recorded'} prefix="٠" />
+          </div>
+        </section>
+
+        {/* ════ TECH STACK ═════════════════════════════════ */}
+        <section className="py-28 px-6 lg:px-12">
+          <div className="max-w-7xl mx-auto">
+            <Reveal className="mb-14">
+              <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>
+                {lang==='ar' ? 'البنية التقنية' : 'Technology'}
+              </p>
+              <h2 className="font-black leading-tight" style={{ fontSize:'clamp(28px,5vw,58px)', letterSpacing:'-0.02em', color:TEXT }}>
+                {lang==='ar' ? <>معايير عالمية.<br /><span style={{ color:DIM }}>بنية لا تُكسر.</span></> : <>Global standards.<br /><span style={{ color:DIM }}>Unbreakable architecture.</span></>}
+              </h2>
+            </Reveal>
+
+            {/* Tech grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
+              {[
+                { label:'HL7 FHIR R4', sub:lang==='ar'?'معيار سجلات صحية':'Health record standard', icon:'🏥', color:BLUE },
+                { label:'ICD-10 / ICD-11', sub:lang==='ar'?'تصنيف أمراض دولي':'International disease classification', icon:'🔬', color:'#8B5CF6' },
+                { label:'SNOMED CT', sub:lang==='ar'?'مصطلحات طبية':'Medical terminology', icon:'🧬', color:'#10B981' },
+                { label:'OpenEHR', sub:lang==='ar'?'سجل صحي مفتوح':'Open health record', icon:'📋', color:'#F59E0B' },
+                { label:'REST + GraphQL', sub:lang==='ar'?'APIs قياسية':'Standard APIs', icon:'🔌', color:BLUE },
+                { label:'WebSockets', sub:lang==='ar'?'تحديثات فورية':'Real-time updates', icon:'⚡', color:'#EF4444' },
+                { label:'React Native', sub:lang==='ar'?'iOS + Android':'iOS + Android', icon:'📱', color:BLUE },
+                { label:'AES-256 + TLS', sub:lang==='ar'?'تشفير مزدوج':'Double encryption', icon:'🔐', color:'#10B981' },
+              ].map((t,i) => (
+                <Reveal key={i} delay={i*0.04}>
+                  <Glass accent={t.color} className="cursor-default">
+                    <div className="p-5 text-center">
+                      <span className="text-[24px] mb-3 block">{t.icon}</span>
+                      <p className="text-[13px] font-black mb-1 font-mono" style={{ color:t.color }}>{t.label}</p>
+                      <p className="text-[10px]" style={{ color:MUTED }}>{t.sub}</p>
+                    </div>
+                  </Glass>
+                </Reveal>
+              ))}
+            </div>
+
+            {/* Compliance mega-row */}
+            <Reveal delay={0.1}>
+              <Glass accent={BLUE}>
+                <div className="p-7">
+                  <p className="font-black text-[16px] mb-6 text-center" style={{ color:TEXT }}>
+                    {lang==='ar' ? 'اعتمادات الامتثال العالمي' : 'Global Compliance Certifications'}
+                  </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                    {[
+                      { badge:'HIPAA', sub:lang==='ar'?'حماية صحية أمريكية':'US Health Privacy', color:'#38BDF8' },
+                      { badge:'GDPR', sub:lang==='ar'?'خصوصية أوروبية':'EU Data Privacy', color:'#A78BFA' },
+                      { badge:'ISO 27001', sub:lang==='ar'?'أمن معلومات':'Information Security', color:'#34D399' },
+                      { badge:'SOC 2 Type II', sub:lang==='ar'?'أمن خدمات':'Service Security', color:'#FBBF24' },
+                      { badge:'NDMO', sub:lang==='ar'?'حكومة رقمية سعودية':'Saudi Digital Gov', color:'#38BDF8' },
+                      { badge:'PDPL', sub:lang==='ar'?'بيانات شخصية سعودية':'Saudi Data Protection', color:'#34D399' },
+                    ].map((c,i) => (
+                      <motion.div key={i} initial={{ opacity:0, scale:0.9 }} animate={{ opacity:1, scale:1 }} transition={{ delay:0.05*i }}
+                        className="flex flex-col items-center gap-2 p-4 rounded-2xl cursor-default"
+                        style={{ background:`${c.color}10`, border:`1px solid ${c.color}25` }}>
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center"
+                          style={{ background:`${c.color}20` }}>
+                          <span className="text-[13px] font-black" style={{ color:c.color }}>✓</span>
+                        </div>
+                        <p className="text-[11px] font-black text-center leading-tight" style={{ color:c.color }}>{c.badge}</p>
+                        <p className="text-[9px] text-center leading-snug" style={{ color:MUTED }}>{c.sub}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </Glass>
+            </Reveal>
           </div>
         </section>
 
@@ -587,17 +781,17 @@ export default function App() {
         <section id="process" className="py-28 px-6 lg:px-12">
           <div className="max-w-7xl mx-auto">
             <Reveal className="mb-16">
-              <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>كيف نعمل</p>
+              <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>{t.processBadge}</p>
               <h2 className="font-black leading-tight" style={{ fontSize:'clamp(30px,5vw,60px)', letterSpacing:'-0.02em', color:TEXT }}>
-                من الفكرة للإطلاق<br /><span style={{ color:DIM }}>في ٦٠ يوم مضمونة.</span>
+                {t.processHeading1}<br /><span style={{ color:DIM }}>{t.processHeading2}</span>
               </h2>
             </Reveal>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
               {[
-                { num:'١', icon:'💬', label:'الاستشارة', days:'يوم ١–٣', desc:'نفهم عيادتك وأهدافك ونضع خطة تفصيلية مخصصة.', accent:BLUE },
-                { num:'٢', icon:'🎨', label:'التصميم', days:'يوم ٤–١٤', desc:'نصمم الهوية والشاشات وتوافق قبل البرمجة.', accent:'#8B5CF6' },
-                { num:'٣', icon:'⚡', label:'البرمجة', days:'يوم ١٥–٥٠', desc:'نبني التطبيق والموقع والنظام بأعلى معايير.', accent:'#F59E0B' },
-                { num:'٤', icon:'🚀', label:'الإطلاق', days:'يوم ٥١–٦٠', desc:'نشر في المتجرين + تدريب الفريق + دعم كامل.', accent:'#10B981' },
+                { num:'١', icon:'💬', label: lang==='ar'?'الاستشارة':'Discovery', days: lang==='ar'?'يوم ١–٣':'Day 1–3', desc: lang==='ar'?'نفهم عيادتك وأهدافك ونضع خطة تفصيلية مخصصة.':'We understand your clinic and goals, then build a tailored plan.', accent:BLUE },
+                { num:'٢', icon:'🎨', label: lang==='ar'?'التصميم':'Design', days: lang==='ar'?'يوم ٤–١٤':'Day 4–14', desc: lang==='ar'?'نصمم الهوية والشاشات وتوافق قبل البرمجة.':'We design identity, screens, and get your sign-off before coding.', accent:'#8B5CF6' },
+                { num:'٣', icon:'⚡', label: lang==='ar'?'البرمجة':'Build', days: lang==='ar'?'يوم ١٥–٥٠':'Day 15–50', desc: lang==='ar'?'نبني التطبيق والموقع والنظام بأعلى معايير.':'We build the app, website and system to the highest standards.', accent:'#F59E0B' },
+                { num:'٤', icon:'🚀', label: lang==='ar'?'الإطلاق':'Launch', days: lang==='ar'?'يوم ٥١–٦٠':'Day 51–60', desc: lang==='ar'?'نشر في المتجرين + تدريب الفريق + دعم كامل.':'Store publishing + team training + full support included.', accent:'#10B981' },
               ].map((s,i) => (
                 <Reveal key={i} delay={i*0.09}>
                   <Glass accent={s.accent} className="h-full">
@@ -621,9 +815,9 @@ export default function App() {
         <section id="المميزات" className="py-24 px-6 lg:px-12">
           <div className="max-w-7xl mx-auto">
             <Reveal className="mb-14">
-              <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>المميزات</p>
+              <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>{t.featuresBadge}</p>
               <h2 className="font-black leading-tight" style={{ fontSize:'clamp(28px,5vw,58px)', letterSpacing:'-0.02em', color:TEXT }}>
-                ١٥+ ميزة.<br /><span style={{ color:DIM }}>من اليوم الأول.</span>
+                {t.featuresHeading1}<br /><span style={{ color:DIM }}>{t.featuresHeading2}</span>
               </h2>
             </Reveal>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
@@ -663,11 +857,11 @@ export default function App() {
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
               <Reveal>
-                <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>الأمان</p>
+                <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>{t.securityBadge}</p>
                 <h2 className="font-black leading-tight mb-5" style={{ fontSize:'clamp(30px,5vw,60px)', letterSpacing:'-0.02em', color:TEXT }}>
-                  بيانات مرضاك<br />محمية بالكامل.
+                  {t.securityHeading1}<br />{t.securityHeading2}
                 </h2>
-                <p className="text-[16px] leading-relaxed mb-8" style={{ color:MUTED }}>أمان عسكري المستوى مصمّم للقطاع الصحي. بنية تقنية — ليست وعوداً.</p>
+                <p className="text-[16px] leading-relaxed mb-8" style={{ color:MUTED }}>{lang==='ar' ? 'أمان عسكري المستوى مصمّم للقطاع الصحي. بنية تقنية — ليست وعوداً.' : 'Military-grade security engineered for healthcare. Real architecture — not promises.'}</p>
                 <div className="flex flex-wrap gap-3">
                   {['HIPAA','ISO 27001','AES-256','NDMO','SOC 2','PDPL'].map(b => (
                     <div key={b} className="flex items-center gap-2 px-4 py-2 rounded-full text-[12px] font-bold cursor-default"
@@ -707,12 +901,12 @@ export default function App() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
-                { icon:'🔐', title:'تشفير AES-256 كامل', desc:'نفس معيار وزارات الدفاع. لا أحد يقرأ بيانات مرضاك إلا المخوّلون.', accent:BLUE },
-                { icon:'🧠', title:'Zero-Knowledge', desc:'مفتاح التشفير ملكك — حتى فريق تلقا لا يستطيع رؤية بياناتك.', accent:'#8B5CF6' },
-                { icon:'🛡️', title:'مصادقة ثلاثية', desc:'Face ID + بصمة + رمز تحقق. لا وصول بدون إذنك.', accent:'#10B981' },
-                { icon:'💾', title:'نسخ كل ٦ ساعات', desc:'مراكز بيانات موزعة مشفرة محمية من الكوارث.', accent:'#F59E0B' },
-                { icon:'👁️', title:'مراقبة بالذكاء الاصطناعي', desc:'يرصد أي نشاط غريب ويوقفه فوراً.', accent:'#EF4444' },
-                { icon:'📜', title:'PDPL سعودي', desc:'مطابق لنظام حماية البيانات ولوائح الحكومة الرقمية.', accent:BLUE },
+                { icon:'🔐', title: lang==='ar'?'تشفير AES-256 كامل':'Full AES-256 Encryption', desc: lang==='ar'?'نفس معيار وزارات الدفاع. لا أحد يقرأ بيانات مرضاك إلا المخوّلون.':'Same standard as defense ministries. Only authorized personnel access patient data.', accent:BLUE },
+                { icon:'🧠', title:'Zero-Knowledge', desc: lang==='ar'?'مفتاح التشفير ملكك — حتى فريق تلقا لا يستطيع رؤية بياناتك.':'Your encryption key is yours — even the Talqa team cannot read your data.', accent:'#8B5CF6' },
+                { icon:'🛡️', title: lang==='ar'?'مصادقة ثلاثية':'3-Factor Auth', desc: lang==='ar'?'Face ID + بصمة + رمز تحقق. لا وصول بدون إذنك.':'Face ID + fingerprint + OTP. No access without your permission.', accent:'#10B981' },
+                { icon:'💾', title: lang==='ar'?'نسخ كل ٦ ساعات':'Backup every 6 hours', desc: lang==='ar'?'مراكز بيانات موزعة مشفرة محمية من الكوارث.':'Distributed encrypted data centers protected against disasters.', accent:'#F59E0B' },
+                { icon:'👁️', title: lang==='ar'?'مراقبة بالذكاء الاصطناعي':'AI Threat Monitoring', desc: lang==='ar'?'يرصد أي نشاط غريب ويوقفه فوراً.':'Detects and blocks any unusual activity in real time.', accent:'#EF4444' },
+                { icon:'📜', title: lang==='ar'?'PDPL سعودي':'Saudi PDPL', desc: lang==='ar'?'مطابق لنظام حماية البيانات ولوائح الحكومة الرقمية.':'Fully compliant with Saudi data protection regulations and Digital Government Authority.', accent:BLUE },
               ].map((s,i) => (
                 <Reveal key={i} delay={i*0.05}>
                   <Glass accent={s.accent} className="h-full cursor-default">
@@ -731,11 +925,11 @@ export default function App() {
                 <div className="p-7 flex flex-col sm:flex-row items-center gap-6">
                   <div className="text-5xl">🔒</div>
                   <div className="flex-1 text-center sm:text-right">
-                    <p className="font-black text-[20px] mb-1" style={{ color:TEXT }}>بياناتك ملكك — نحن لا نراها.</p>
-                    <p className="text-[14px]" style={{ color:MUTED }}>لم يُسجَّل أي اختراق منذ التأسيس. هندسة تقنية متكاملة.</p>
+                    <p className="font-black text-[20px] mb-1" style={{ color:TEXT }}>{lang==='ar'?'بياناتك ملكك — نحن لا نراها.':'Your data is yours — we cannot see it.'}</p>
+                    <p className="text-[14px]" style={{ color:MUTED }}>{lang==='ar'?'لم يُسجَّل أي اختراق منذ التأسيس. هندسة تقنية متكاملة.':'Zero breaches recorded since founding. Integrated technical architecture.'}</p>
                   </div>
                   <div className="flex gap-8 shrink-0">
-                    {[['٠','اختراقات'],['١٠٠٪','تشفير'],['٢٤/٧','مراقبة']].map(([v,l]) => (
+                    {(lang==='ar'?[['٠','اختراقات'],['١٠٠٪','تشفير'],['٢٤/٧','مراقبة']]:[['0','breaches'],['100%','encrypted'],['24/7','monitored']]).map(([v,l]) => (
                       <div key={l} className="text-center">
                         <p className="font-black leading-none" style={{ fontSize:'clamp(24px,3vw,36px)', color:BLUE }}>{v}</p>
                         <p className="text-[10px] mt-1" style={{ color:MUTED }}>{l}</p>
@@ -786,9 +980,9 @@ export default function App() {
         <section id="الأسعار" className="py-28 px-6 lg:px-12">
           <div className="max-w-3xl mx-auto text-center">
             <Reveal>
-              <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>السعر</p>
+              <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>{t.priceBadge}</p>
               <h2 className="font-black mb-14 leading-tight" style={{ fontSize:'clamp(28px,5vw,56px)', letterSpacing:'-0.02em', color:TEXT }}>
-                سعر ثابت.<br /><span style={{ color:DIM }}>كل شيء مشمول.</span>
+                {t.priceHeading1}<br /><span style={{ color:DIM }}>{t.priceHeading2}</span>
               </h2>
             </Reveal>
             <Reveal delay={0.1}>
@@ -797,12 +991,15 @@ export default function App() {
                   <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage:`radial-gradient(circle,${BLUE}08 1px,transparent 1px)`, backgroundSize:'20px 20px' }} />
                   <div className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl" style={{ background:`linear-gradient(90deg,${BLUE},#8B5CF6,${BLUE})` }} />
                   <div className="relative z-10">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[12px] font-black mb-6" style={{ background:BLUEDIM, border:`1px solid ${BLUE}30`, color:BLUE }}>🏷️ سعر الإطلاق — محدود</div>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[12px] font-black mb-6" style={{ background:BLUEDIM, border:`1px solid ${BLUE}30`, color:BLUE }}>🏷️ {lang==='ar'?'سعر الإطلاق — محدود':'Launch price — limited'}</div>
                     <p className="font-black leading-none mb-2" style={{ fontSize:'clamp(60px,12vw,100px)', letterSpacing:'-0.03em', color:TEXT }}>25,000</p>
-                    <p className="text-[18px] font-medium mb-1" style={{ color:MUTED }}>ريال سعودي</p>
-                    <p className="text-[12px] mb-10" style={{ color:DIM }}>دفعة واحدة · لا رسوم شهرية خفية</p>
+                    <p className="text-[18px] font-medium mb-1" style={{ color:MUTED }}>{lang==='ar'?'ريال سعودي':'SAR'}</p>
+                    <p className="text-[12px] mb-10" style={{ color:DIM }}>{lang==='ar'?'دفعة واحدة · لا رسوم شهرية خفية':'One-time payment · No hidden monthly fees'}</p>
                     <div className="grid grid-cols-2 gap-3 max-w-sm mx-auto mb-10">
-                      {[['📱','تطبيق iOS + Android'],['🌐','موقع احترافي'],['📊','نظام إدارة كامل'],['⏰','تسليم ٦٠ يوم'],['🏪','نشر في المتجرين'],['🛡️','سنة دعم مجاني'],['👩‍💻','تدريب الفريق'],['🎨','هوية عيادتك']].map(([ic,item]) => (
+                      {(lang==='ar'
+                        ?[['📱','تطبيق iOS + Android'],['🌐','موقع احترافي'],['📊','نظام إدارة كامل'],['⏰','تسليم ٦٠ يوم'],['🏪','نشر في المتجرين'],['🛡️','سنة دعم مجاني'],['👩‍💻','تدريب الفريق'],['🎨','هوية عيادتك']]
+                        :[['📱','iOS + Android app'],['🌐','Professional website'],['📊','Full management system'],['⏰','60-day delivery'],['🏪','App Store publishing'],['🛡️','1-year free support'],['👩‍💻','Team training'],['🎨','Your clinic branding']]
+                      ).map(([ic,item]) => (
                         <div key={item} className="flex items-center gap-2 text-[13px] text-right" style={{ color:MUTED }}><span>{ic}</span>{item}</div>
                       ))}
                     </div>
@@ -810,15 +1007,15 @@ export default function App() {
                       <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
                         className="font-black text-[15px] px-10 py-4 rounded-2xl text-white transition-all active:scale-95"
                         style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 8px 28px ${BLUE}40` }}>
-                        ابدأ مشروعك الآن
+                        {t.ctaMain}
                       </a>
                       <a href="/clinic-demo/" target="_blank" rel="noopener noreferrer"
                         className="font-bold text-[15px] px-8 py-4 rounded-2xl flex items-center gap-2 transition-all"
                         style={{ background:BLUEDIM, border:`2px solid ${BLUE}35`, color:BLUE }}>
-                        <span>📱</span> شاهد الديمو
+                        <span>📱</span> {t.ctaDemo}
                       </a>
                     </div>
-                    <p className="text-[11px] mt-4" style={{ color:DIM }}>استشارة مجانية · لا يلزمك أي شيء</p>
+                    <p className="text-[11px] mt-4" style={{ color:DIM }}>{lang==='ar'?'استشارة مجانية · لا يلزمك أي شيء':'Free consultation · No commitment'}</p>
                   </div>
                 </div>
               </Glass>
@@ -876,18 +1073,18 @@ export default function App() {
             <Reveal>
               <motion.div className="text-6xl mb-8 inline-block"
                 animate={{ rotate:[0,-5,5,0] }} transition={{ duration:3, repeat:Infinity, ease:'easeInOut' }}>🏥</motion.div>
-              <h2 className="font-black mb-5 leading-tight" style={{ fontSize:'clamp(40px,8vw,90px)', letterSpacing:'-0.03em', color:TEXT }}>جاهز تبدأ؟</h2>
-              <p className="text-[18px] mb-12" style={{ color:MUTED }}>استشارة مجانية · بدون التزام · رد خلال ٢٤ ساعة</p>
+              <h2 className="font-black mb-5 leading-tight" style={{ fontSize:'clamp(40px,8vw,90px)', letterSpacing:'-0.03em', color:TEXT }}>{t.finalHeading}</h2>
+              <p className="text-[18px] mb-12" style={{ color:MUTED }}>{t.finalSub}</p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
                   className="font-black text-[16px] px-14 py-5 rounded-2xl text-white transition-all active:scale-95"
                   style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 16px 48px ${BLUE}40` }}>
-                  تواصل عبر واتساب
+                  {t.whatsapp}
                 </a>
                 <a href="/clinic-demo/" target="_blank" rel="noopener noreferrer"
                   className="font-bold text-[15px] px-10 py-5 rounded-2xl flex items-center gap-2 transition-all"
                   style={{ background:GLASS, border:`2px solid ${BLUE}35`, color:BLUE, backdropFilter:'blur(20px)' }}>
-                  <span>📱</span> شاهد الديمو
+                  <span>📱</span> {t.ctaDemo}
                 </a>
               </div>
             </Reveal>
