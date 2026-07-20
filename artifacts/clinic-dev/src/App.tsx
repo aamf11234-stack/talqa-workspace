@@ -325,7 +325,6 @@ function Nav({ lang, onLang }: { lang: 'ar'|'en'; onLang: () => void }) {
   return (
     <motion.div initial={{ y:-20, opacity:0 }} animate={{ y:0, opacity:1 }} transition={{ duration:0.6, ease:[0.22,1,0.36,1] }}
       className="fixed top-0 left-0 right-0 z-50">
-      <OfferBar lang={lang} />
       <nav className="px-6 lg:px-12 py-4 flex items-center justify-between transition-all duration-500"
         style={{ background: scrolled ? 'rgba(5,13,26,0.92)' : 'rgba(5,13,26,0.6)', backdropFilter:'blur(24px)', WebkitBackdropFilter:'blur(24px)', borderBottom:`1px solid ${scrolled ? 'rgba(255,255,255,0.08)' : 'transparent'}` }}>
         <div className="flex items-center gap-3">
