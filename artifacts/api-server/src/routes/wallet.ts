@@ -74,68 +74,86 @@ function getCerts() {
   return { cert, key, wwdr, passphrase };
 }
 
-/* ── POST /api/wallet/pass ──────────────────────────────── */
+/* ── shared pass builder ────────────────────────────────── */
+async function buildPass(passJson: object, filename: string, certs: NonNullable<ReturnType<typeof getCerts>>, res: import("express").Response) {
+  const signerOptions: Record<string, string> = {
+    wwdr:       certs.wwdr,
+    signerCert: certs.cert,
+    signerKey:  certs.key,
+  };
+  if (certs.passphrase) signerOptions["signerKeyPassphrase"] = certs.passphrase;
+
+  const pass = new PKPass(
+    {
+      "pass.json":   Buffer.from(JSON.stringify(passJson)),
+      "icon.png":    ICON,
+      "icon@2x.png": ICON_2X,
+      "icon@3x.png": ICON_3X,
+    },
+    signerOptions,
+  );
+
+  const buf = pass.getAsBuffer();
+  res.set({
+    "Content-Type":        "application/vnd.apple.pkpass",
+    "Content-Disposition": `attachment; filename="${filename}"`,
+    "Content-Length":      String(buf.length),
+    "Cache-Control":       "no-cache, no-store",
+  });
+  res.send(buf);
+}
+
+/* ── POST /api/wallet/pass  — بطاقة المريض ─────────────── */
 router.post("/pass", async (req, res) => {
   const certs = getCerts();
-  if (!certs) {
-    res.status(503).json({
-      error:   "certificates_missing",
-      message: "Apple Wallet certificates are not configured yet.",
-    });
-    return;
-  }
+  if (!certs) { res.status(503).json({ error: "certificates_missing" }); return; }
 
   const {
-    patientName  = "مريض",
-    patientId    = "PT-0001",
-    clinicName   = "عيادة الشفاء الطبية",
-    bloodType    = "O+",
-    insurance    = "بوبا",
-    daysValid    = 7,
+    patientName = "مريض",
+    patientId   = "PT-0001",
+    clinicName  = "عيادة الشفاء الطبية",
+    bloodType   = "O+",
+    insurance   = "بوبا",
+    daysValid   = 30,
   } = (req.body ?? {}) as Record<string, string | number>;
 
-  /* Expiry */
   const expiry = new Date();
   expiry.setDate(expiry.getDate() + Number(daysValid));
-  const expiryISO   = expiry.toISOString();
-  const expiryLabel = expiry.toLocaleDateString("ar-SA", {
-    day: "numeric", month: "long", year: "numeric",
-  });
+  const expiryLabel = expiry.toLocaleDateString("ar-SA", { day: "numeric", month: "long", year: "numeric" });
 
   const passJson = {
-    formatVersion:       1,
-    passTypeIdentifier:  "pass.clinic.tlgaads.com",
-    serialNumber:        `${String(patientId)}-${Date.now()}`,
-    teamIdentifier:      "V96R57F6T3",
-    organizationName:    String(clinicName),
-    description:         "بطاقة مريض رقمية — تلقا للعيادات",
-    logoText:            String(clinicName),
+    formatVersion:      1,
+    passTypeIdentifier: "pass.clinic.tlgaads.com",
+    serialNumber:       `card-${String(patientId)}-${Date.now()}`,
+    teamIdentifier:     "V96R57F6T3",
+    organizationName:   String(clinicName),
+    description:        "بطاقة مريض رقمية",
+    logoText:           String(clinicName),
 
-    backgroundColor: "rgb(6,16,30)",
-    foregroundColor: "rgb(255,255,255)",
-    labelColor:      "rgb(0,180,216)",
+    /* ── تصميم محسّن: خلفية داكنة راقية مع تمييز أزرق ── */
+    backgroundColor: "rgb(5, 14, 26)",
+    foregroundColor: "rgb(255, 255, 255)",
+    labelColor:      "rgb(0, 180, 216)",
 
-    expirationDate: expiryISO,
+    expirationDate: expiry.toISOString(),
 
     generic: {
       primaryFields: [
-        { key: "name",  label: "المريض",    value: String(patientName) },
+        { key: "name", label: "اسم المريض", value: String(patientName) },
       ],
       secondaryFields: [
-        { key: "id",    label: "رقم المريض", value: String(patientId) },
-        { key: "blood", label: "فصيلة الدم", value: String(bloodType) },
+        { key: "blood", label: "فصيلة الدم", value: String(bloodType),  textAlignment: "PKTextAlignmentLeft" },
+        { key: "id",    label: "رقم الملف",   value: String(patientId),  textAlignment: "PKTextAlignmentRight" },
       ],
       auxiliaryFields: [
-        { key: "clinic",    label: "العيادة",  value: String(clinicName) },
-        { key: "insurance", label: "التأمين",  value: String(insurance)  },
+        { key: "clinic",    label: "العيادة",        value: String(clinicName), textAlignment: "PKTextAlignmentLeft" },
+        { key: "insurance", label: "التأمين الصحي",  value: String(insurance),  textAlignment: "PKTextAlignmentRight" },
       ],
       backFields: [
-        { key: "expiry",   label: "تنتهي الصلاحية", value: expiryLabel },
-        {
-          key: "warning", label: "تنبيه مهم",
-          value: `بطاقتك صالحة لـ ${daysValid} أيام فقط.\nجدّد موعدك قبل ${expiryLabel} حتى لا تنتهي.`,
-        },
-        { key: "app", label: "تطبيق العيادة", value: "clinic.tlgaads.com/clinic-demo/" },
+        { key: "expiry",  label: "صلاحية البطاقة",   value: expiryLabel },
+        { key: "note",    label: "تنبيه",             value: `جدّد موعدك قبل ${expiryLabel} للحفاظ على بطاقتك.` },
+        { key: "hipaa",   label: "الخصوصية",          value: "بياناتك محمية وفق معايير HIPAA · ISO 27001 · NDMO" },
+        { key: "app",     label: "تطبيق العيادة",     value: "clinic.tlgaads.com/clinic-demo/" },
       ],
     },
 
@@ -143,41 +161,96 @@ router.post("/pass", async (req, res) => {
       message:         String(patientId),
       format:          "PKBarcodeFormatQR",
       messageEncoding: "iso-8859-1",
-      altText:         String(patientId),
+      altText:         `ملف المريض: ${String(patientId)}`,
     }],
   };
 
   try {
-    const signerOptions: Record<string, string> = {
-      wwdr:       certs.wwdr,
-      signerCert: certs.cert,
-      signerKey:  certs.key,
-    };
-    if (certs.passphrase) signerOptions["signerKeyPassphrase"] = certs.passphrase;
-
-    const pass = new PKPass(
-      {
-        "pass.json":   Buffer.from(JSON.stringify(passJson)),
-        "icon.png":    ICON,
-        "icon@2x.png": ICON_2X,
-        "icon@3x.png": ICON_3X,
-      },
-      signerOptions,
-    );
-
-    const buf = pass.getAsBuffer();
-
-    res.set({
-      "Content-Type":        "application/vnd.apple.pkpass",
-      "Content-Disposition": `attachment; filename="talqa-patient-card.pkpass"`,
-      "Content-Length":      String(buf.length),
-      "Cache-Control":       "no-cache, no-store",
-    });
-    res.send(buf);
-
-    logger.info({ patientId, patientName }, "wallet pass generated ok");
+    await buildPass(passJson, "talqa-patient-card.pkpass", certs, res);
+    logger.info({ patientId, patientName }, "patient card generated ok");
   } catch (err) {
-    logger.error({ err }, "wallet pass generation failed");
+    logger.error({ err }, "patient card generation failed");
+    res.status(500).json({ error: "generation_failed", message: String(err) });
+  }
+});
+
+/* ── POST /api/wallet/appointment  — بطاقة موعد Boarding Pass ── */
+router.post("/appointment", async (req, res) => {
+  const certs = getCerts();
+  if (!certs) { res.status(503).json({ error: "certificates_missing" }); return; }
+
+  const {
+    patientName  = "مريض",
+    patientId    = "PT-0001",
+    doctorName   = "د. سارة المطيري",
+    specialty    = "طب عام",
+    clinicName   = "عيادة الشفاء الطبية",
+    apptDate     = "الجمعة، ٢٠ يوليو",
+    apptTime     = "١٠:٣٠ ص",
+    roomNumber   = "غرفة ٣",
+    apptId       = "APT-0001",
+  } = (req.body ?? {}) as Record<string, string>;
+
+  /* expiry = يوم الموعد + ١ يوم */
+  const expiry = new Date();
+  expiry.setDate(expiry.getDate() + 2);
+
+  const passJson = {
+    formatVersion:      1,
+    passTypeIdentifier: "pass.clinic.tlgaads.com",
+    serialNumber:       `appt-${apptId}-${Date.now()}`,
+    teamIdentifier:     "V96R57F6T3",
+    organizationName:   String(clinicName),
+    description:        `موعد طبي — ${String(doctorName)}`,
+    logoText:           String(clinicName),
+
+    /* ── Boarding Pass: أخضر طبي راقي ── */
+    backgroundColor: "rgb(3, 32, 24)",
+    foregroundColor: "rgb(255, 255, 255)",
+    labelColor:      "rgb(52, 199, 89)",
+
+    expirationDate: expiry.toISOString(),
+
+    boardingPass: {
+      transitType: "PKTransitTypeGeneric",
+
+      /* المريض على اليسار، الطبيب على اليمين — مثل بطاقة الصعود */
+      headerFields: [
+        { key: "time", label: "وقت الموعد", value: String(apptTime), textAlignment: "PKTextAlignmentRight" },
+      ],
+      primaryFields: [
+        { key: "patient", label: "المريض",     value: String(patientName), textAlignment: "PKTextAlignmentLeft" },
+        { key: "doctor",  label: "الطبيب",      value: String(doctorName),  textAlignment: "PKTextAlignmentRight" },
+      ],
+      secondaryFields: [
+        { key: "date",     label: "التاريخ",      value: String(apptDate),   textAlignment: "PKTextAlignmentLeft" },
+        { key: "room",     label: "الغرفة",        value: String(roomNumber), textAlignment: "PKTextAlignmentRight" },
+      ],
+      auxiliaryFields: [
+        { key: "specialty", label: "التخصص",       value: String(specialty),  textAlignment: "PKTextAlignmentLeft" },
+        { key: "id",        label: "رقم الموعد",   value: String(apptId),     textAlignment: "PKTextAlignmentRight" },
+      ],
+      backFields: [
+        { key: "clinic",  label: "العيادة",          value: String(clinicName) },
+        { key: "note",    label: "تعليمات",           value: "يرجى الحضور قبل ١٥ دقيقة من موعدك. أحضر هويتك وبطاقة التأمين." },
+        { key: "cancel",  label: "إلغاء أو تغيير",   value: "تواصل مع الاستقبال قبل ٢٤ ساعة على الأقل." },
+        { key: "app",     label: "تطبيق العيادة",    value: "clinic.tlgaads.com/clinic-demo/" },
+      ],
+    },
+
+    barcodes: [{
+      message:         `${String(apptId)}|${String(patientId)}|${String(apptTime)}`,
+      format:          "PKBarcodeFormatQR",
+      messageEncoding: "iso-8859-1",
+      altText:         `موعد رقم: ${String(apptId)}`,
+    }],
+  };
+
+  try {
+    await buildPass(passJson, `talqa-appointment-${apptId}.pkpass`, certs, res);
+    logger.info({ apptId, patientName, doctorName }, "appointment pass generated ok");
+  } catch (err) {
+    logger.error({ err }, "appointment pass generation failed");
     res.status(500).json({ error: "generation_failed", message: String(err) });
   }
 });

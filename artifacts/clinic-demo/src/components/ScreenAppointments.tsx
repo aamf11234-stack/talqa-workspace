@@ -2,6 +2,61 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Clock, CheckCircle, X, ChevronLeft } from 'lucide-react';
 
+/* ── Apple Wallet button for appointments ── */
+function WalletBtn({ appointment: a, dark }: { appointment: any; dark: boolean }) {
+  const [state, setState] = useState<'idle'|'loading'|'done'>('idle');
+
+  const handleAdd = async () => {
+    if (state !== 'idle') return;
+    setState('loading');
+    try {
+      const res = await fetch('/api/wallet/appointment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          patientName: 'أحمد ناصر الشمري',
+          patientId:   'PT-0842',
+          doctorName:  a.dr,
+          specialty:   a.spec,
+          clinicName:  'عيادة الشفاء',
+          apptDate:    `${a.day}، ${a.date}`,
+          apptTime:    a.time,
+          roomNumber:  'غرفة ٣',
+          apptId:      `APT-${String(Math.floor(Math.random() * 9000) + 1000)}`,
+        }),
+      });
+      if (res.ok) {
+        const blob = await res.blob();
+        const url  = URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = url; anchor.download = 'talqa-appointment.pkpass'; anchor.click();
+        URL.revokeObjectURL(url);
+      }
+    } catch (_) {}
+    setState('done');
+    setTimeout(() => setState('idle'), 3000);
+  };
+
+  return (
+    <motion.button whileTap={{ scale: 0.95 }} onClick={handleAdd}
+      className="inline-flex items-center gap-1.5 rounded-[8px] px-2.5 py-1.5 transition-all"
+      style={{ background: state === 'done' ? 'rgba(52,199,89,0.15)' : dark ? '#000' : '#1C1C1E',
+               border: `1px solid ${state === 'done' ? 'rgba(52,199,89,0.3)' : dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.15)'}` }}>
+      {state === 'loading' ? (
+        <motion.div className="w-3 h-3 rounded-full border border-white/30 border-t-white"
+          animate={{ rotate: 360 }} transition={{ duration: 0.7, repeat: Infinity, ease: 'linear' }}/>
+      ) : state === 'done' ? (
+        <span className="text-[#34C759] text-[10px]">✓</span>
+      ) : (
+        <span className="text-[10px]">🎫</span>
+      )}
+      <span className={`text-[9px] font-semibold ${state === 'done' ? 'text-[#34C759]' : 'text-white'}`}>
+        {state === 'done' ? 'أُضيف إلى Wallet' : state === 'loading' ? 'جارٍ...' : 'Apple Wallet'}
+      </span>
+    </motion.button>
+  );
+}
+
 interface Props { theme?: 'dark' | 'light' }
 
 const upcoming = [
@@ -133,11 +188,7 @@ export function ScreenAppointments({ theme = 'dark' }: Props) {
                       </div>
                       {a.status === 'confirmed' && (
                         <div className="mt-2.5">
-                          <div className="inline-flex items-center gap-1.5 rounded-[8px] px-2.5 py-1.5"
-                            style={{ background: dark ? '#000' : '#1C1C1E', border: `1px solid ${dark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.15)'}` }}>
-                            <span className="text-[10px]">🎫</span>
-                            <span className="text-white text-[9px] font-semibold">Apple Wallet</span>
-                          </div>
+                          <WalletBtn appointment={a} dark={dark} />
                         </div>
                       )}
                     </div>
