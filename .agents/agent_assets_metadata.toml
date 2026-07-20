@@ -1,0 +1,26 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "gNzxA2QmTW33Nx1UAwGNv"
+uri = "file://tmp/strip_card.png"
+type = "image"
+title = "بطاقة المريض — Strip"
+
+[[outputs]]
+id = "H12x7bPRdmdPahk14f_-V"
+uri = "file://tmp/strip_appt.png"
+type = "image"
+title = "بطاقة الموعد — Strip"
+
+[[outputs]]
+id = "d6wf1IJklWbuKBBg2RVR6"
+uri = "file://strip_card.png"
+type = "image"
+title = "بطاقة المريض — ليلي أزرق + ضوء سيان"
+
+[[outputs]]
+id = "PesaFTIB560rl-VBiBrpv"
+uri = "file://strip_appt.png"
+type = "image"
+title = "بطاقة الموعد — بنفسجي ذهبي"

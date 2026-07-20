@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { PKPass } from "passkit-generator";
 import { deflateSync } from "zlib";
+import { readFileSync } from "fs";
+import { join } from "path";
 import { logger } from "../lib/logger";
 
 const router = Router();
@@ -59,77 +61,16 @@ function solidPng(w: number, h: number, r: number, g: number, b: number): Buffer
   return Buffer.concat([sig, ihdr, idat, iend]);
 }
 
-/* ── Gradient PNG generator ─────────────────────────────── */
-function gradientPng(
-  w: number, h: number,
-  stops: Array<{ pos: number; r: number; g: number; b: number }>,
-  dir: "h" | "v" = "h",
-): Buffer {
-  const sig  = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
-  const ihdr = chunk("IHDR", Buffer.from([
-    (w >> 24) & 0xff, (w >> 16) & 0xff, (w >> 8) & 0xff, w & 0xff,
-    (h >> 24) & 0xff, (h >> 16) & 0xff, (h >> 8) & 0xff, h & 0xff,
-    8, 2, 0, 0, 0,
-  ]));
+/* ── AI-generated strip images (loaded from assets) ─────── */
+const ASSETS = join(__dirname, "../assets");
+const STRIP_CARD    = readFileSync(join(ASSETS, "strip_card.png"));
+const STRIP_CARD_2X = readFileSync(join(ASSETS, "strip_card@2x.png"));
+const STRIP_APPT    = readFileSync(join(ASSETS, "strip_appt.png"));
+const STRIP_APPT_2X = readFileSync(join(ASSETS, "strip_appt@2x.png"));
 
-  function lerp(a: number, b: number, t: number) { return Math.round(a + (b - a) * t); }
-  function colorAt(t: number) {
-    t = Math.max(0, Math.min(1, t));
-    for (let i = 1; i < stops.length; i++) {
-      if (t <= stops[i]!.pos) {
-        const s0 = stops[i - 1]!; const s1 = stops[i]!;
-        const lt = (t - s0.pos) / (s1.pos - s0.pos);
-        return { r: lerp(s0.r, s1.r, lt), g: lerp(s0.g, s1.g, lt), b: lerp(s0.b, s1.b, lt) };
-      }
-    }
-    return stops[stops.length - 1]!;
-  }
-
-  const rows: Buffer[] = [];
-  for (let y = 0; y < h; y++) {
-    const row = Buffer.alloc(1 + w * 3);
-    row[0] = 0;
-    for (let x = 0; x < w; x++) {
-      const t = dir === "h" ? x / (w - 1) : y / (h - 1);
-      const c = colorAt(t);
-      row[1 + x * 3]     = c.r;
-      row[1 + x * 3 + 1] = c.g;
-      row[1 + x * 3 + 2] = c.b;
-    }
-    rows.push(row);
-  }
-  const idat = chunk("IDAT", deflateSync(Buffer.concat(rows)));
-  const iend = chunk("IEND", Buffer.alloc(0));
-  return Buffer.concat([sig, ihdr, idat, iend]);
-}
-
-/* ── Patient card strip: navy → deep blue → cyan ───────── */
-const STRIP_CARD    = gradientPng(375, 123, [
-  { pos: 0,   r: 5,   g: 14,  b: 26  },
-  { pos: 0.5, r: 11,  g: 58,  b: 111 },
-  { pos: 1,   r: 0,   g: 140, b: 200 },
-], "h");
-const STRIP_CARD_2X = gradientPng(750, 246, [
-  { pos: 0,   r: 5,   g: 14,  b: 26  },
-  { pos: 0.5, r: 11,  g: 58,  b: 111 },
-  { pos: 1,   r: 0,   g: 140, b: 200 },
-], "h");
-
-/* ── Appointment strip: dark green → teal ──────────────── */
-const STRIP_APPT    = gradientPng(375, 123, [
-  { pos: 0,   r: 3,   g: 32,  b: 24  },
-  { pos: 0.5, r: 5,   g: 80,  b: 55  },
-  { pos: 1,   r: 0,   g: 180, b: 120 },
-], "h");
-const STRIP_APPT_2X = gradientPng(750, 246, [
-  { pos: 0,   r: 3,   g: 32,  b: 24  },
-  { pos: 0.5, r: 5,   g: 80,  b: 55  },
-  { pos: 1,   r: 0,   g: 180, b: 120 },
-], "h");
-
-/* ── Logo: white dot on brand color ─────────────────────── */
-const LOGO    = solidPng(160, 50, 0, 122, 255);
-const LOGO_2X = solidPng(320, 100, 0, 122, 255);
+/* ── Logo & icons ───────────────────────────────────────── */
+const LOGO    = solidPng(160, 50,  0, 180, 216);
+const LOGO_2X = solidPng(320, 100, 0, 180, 216);
 
 /* Solid icons */
 const ICON    = solidPng(29, 29, 0, 122, 255);
