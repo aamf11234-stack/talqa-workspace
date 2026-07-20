@@ -282,8 +282,8 @@ function PhoneMockup({ className = '' }: { className?: string }) {
       <motion.div animate={{ y:[0,8,0] }} transition={{ duration:4, repeat:Infinity, ease:'easeInOut', delay:1.5 }}
         className="absolute -left-12 bottom-28 z-20 rounded-2xl px-4 py-3"
         style={{ background:'rgba(255,255,255,0.08)', border:'1px solid rgba(16,185,129,0.3)', backdropFilter:'blur(20px)', boxShadow:'0 8px 32px rgba(0,0,0,0.3)' }}>
-        <p className="text-[10px] font-black text-emerald-400 flex items-center gap-1.5"><span>🔒</span> مؤمّن</p>
-        <p className="text-[9px]" style={{ color:MUTED }}>بياناتك خاصة</p>
+        <p className="text-[10px] font-black text-emerald-400 flex items-center gap-1.5"><span>🔒</span> HIPAA</p>
+        <p className="text-[9px]" style={{ color:MUTED }}>تشفير ١٠٠٪</p>
       </motion.div>
     </div>
   );
