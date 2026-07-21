@@ -101,26 +101,6 @@ export const AppShowcase = () => {
               onClick={() => setModalOpen(true)}
               className="absolute right-40 top-0 w-[260px] h-[540px] bg-[#000] rounded-[2.5rem] border-[6px] border-[#222] shadow-[0_0_50px_rgba(14,165,233,0.15)] z-20 cursor-pointer transition-transform hover:scale-105 duration-500 group"
             >
-              {/* Persistent tap indicator */}
-              <motion.div
-                className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 z-40 pointer-events-none"
-                animate={{ y: [0, -4, 0] }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-              >
-                <div className="flex items-center gap-2 px-4 py-2 rounded-full"
-                  style={{ background: 'rgba(0,180,216,0.15)', border: '1px solid rgba(0,180,216,0.35)', backdropFilter: 'blur(8px)' }}>
-                  <motion.span
-                    className="text-base"
-                    animate={{ scale: [1, 1.3, 1] }}
-                    transition={{ duration: 1.2, repeat: Infinity }}
-                  >👆</motion.span>
-                  <span className="text-[12px] font-bold" style={{ color: '#00B4D8' }}>اضغط — التطبيق تفاعلي</span>
-                </div>
-                <motion.div
-                  className="w-px h-5"
-                  style={{ background: 'linear-gradient(to bottom, rgba(0,180,216,0.4), transparent)' }}
-                />
-              </motion.div>
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-5 bg-[#222] rounded-b-xl z-30" />
               <div className="w-full h-full bg-[#050D1A] rounded-[2rem] p-5 pt-10 overflow-hidden relative">
                 <div className="flex justify-between items-center mb-6">
@@ -182,6 +162,29 @@ export const AppShowcase = () => {
           </motion.div>
 
         </div>
+
+        {/* مؤشر التفاعل — تحت الجوالات مباشرة */}
+        <motion.div
+          className="flex flex-col items-center gap-2 mt-10"
+          animate={{ y: [0, -5, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <div
+            className="flex items-center gap-2.5 px-5 py-2.5 rounded-full cursor-pointer"
+            style={{ background: 'rgba(0,180,216,0.12)', border: '1px solid rgba(0,180,216,0.3)', backdropFilter: 'blur(8px)' }}
+            onClick={() => setModalOpen(true)}
+          >
+            <motion.span
+              animate={{ scale: [1, 1.35, 1] }}
+              transition={{ duration: 1.3, repeat: Infinity }}
+              className="text-lg"
+            >👆</motion.span>
+            <span className="text-sm font-bold" style={{ color: '#00B4D8' }}>
+              الجوال تفاعلي — اضغط عليه وجرّب
+            </span>
+          </div>
+        </motion.div>
+
       </div>
 
       <AppModal open={modalOpen} onClose={() => setModalOpen(false)} />
