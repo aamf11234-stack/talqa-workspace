@@ -441,6 +441,49 @@ export default function Home() {
             <BottomNav activeTab={activeTab} onChangeTab={setActiveTab} notifCount={2} theme={phoneTheme} />
           </PhoneFrame>
         </motion.div>
+
+        {/* ── Custom Design Note ─────────────────────────────────── */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="mt-6 max-w-sm w-full mx-auto rounded-[22px] p-5 relative overflow-hidden"
+          style={{ background: 'linear-gradient(145deg,#050E1A,#0B3A5A)', border: '1px solid rgba(0,180,216,0.2)' }}>
+          <div className="absolute inset-0 pointer-events-none"
+            style={{ background: 'radial-gradient(ellipse at 80% 0%,rgba(0,180,216,0.12) 0%,transparent 60%)' }}/>
+          <div className="relative z-10">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-6 h-6 rounded-full flex items-center justify-center shrink-0"
+                style={{ background: 'rgba(0,180,216,0.15)', border: '1px solid rgba(0,180,216,0.3)' }}>
+                <span className="text-[#00B4D8] text-[12px]">✦</span>
+              </div>
+              <p className="text-[#00B4D8] text-[11px] font-bold tracking-wider uppercase">هذا مو قالب جاهز</p>
+            </div>
+            <p className="text-white text-[15px] font-bold mb-2 leading-snug">
+              تطبيقك بتصميم مخصص لك وحدك
+            </p>
+            <p className="text-white/45 text-[12px] font-light leading-relaxed mb-4">
+              كل شاشة، كل لون، كل خاصية — تبنى من الصفر بهوية عيادتك. اسم عيادتك، شعارك، ألوانك. ما في حدود.
+            </p>
+            <div className="space-y-2 mb-4">
+              {[
+                'شعارك وألوانك في كل مكان',
+                'شاشات مخصصة حسب تخصصك الطبي',
+                'أي خاصية تتخيلها — ننفذها',
+                'تصميم لا يشبه أحد غيرك',
+              ].map(item => (
+                <div key={item} className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: '#00B4D8' }}/>
+                  <p className="text-white/60 text-[12px] font-light">{item}</p>
+                </div>
+              ))}
+            </div>
+            <a href="https://wa.me/966" target="_blank" rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 w-full py-3 rounded-[14px] font-bold text-[13px] transition-all active:scale-95"
+              style={{ background: 'linear-gradient(135deg,#0B4A6F,#00B4D8)', color: '#fff' }}>
+              <span>أرني تصميم عيادتي</span>
+              <span>←</span>
+            </a>
+          </div>
+        </motion.div>
       </div>
 
       {/* ── Patient Card showcase ───────────────────────────────── */}
