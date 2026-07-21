@@ -217,6 +217,29 @@ function FaceIDScreen({ onUnlock }: { onUnlock: () => void }) {
   );
 }
 
+/* ── FAQ Item ──────────────────────────────────────────────────── */
+function FAQItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <div className="rounded-[18px] bg-white/80 border border-[rgba(11,74,111,0.08)] overflow-hidden shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+      <button onClick={() => setOpen(o => !o)}
+        className="w-full flex items-center justify-between px-5 py-4 text-right gap-3">
+        <span className="text-[14px] font-semibold text-[#111]">{q}</span>
+        <motion.span animate={{ rotate: open ? 45 : 0 }} transition={{ duration: 0.2 }}
+          className="text-[#0B4A6F] text-[20px] font-light shrink-0">+</motion.span>
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }}>
+            <p className="px-5 pb-4 text-[13px] text-[#666] font-light leading-relaxed border-t border-[rgba(11,74,111,0.06)] pt-3">{a}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 /* ── data ──────────────────────────────────────────────────────── */
 const pillars = [
   { icon: '📱', title: 'تطبيق المريض',    sub: 'iOS + Android',   desc: 'بوابة صحية شاملة في جيب كل مريض',      bg: 'linear-gradient(145deg,#050E1A,#0B3A5A,#050E1A)' },
@@ -247,9 +270,9 @@ const allFeatures = [
 ];
 
 const testimonials = [
-  { name: 'عيادة الشفاء',       city: 'الرياض', quote: 'الحجوزات الإلكترونية قلّصت الانتظار ٦٠٪ في أول أسبوع',   initials: 'ع' },
-  { name: 'مجمع النور الطبي',   city: 'جدة',    quote: 'المرضى يطلبون تطبيقنا قبل ما يسألون عن الأطباء',         initials: 'م' },
-  { name: 'مستشفى الرعاية',     city: 'أبها',   quote: 'نتائج التحاليل الرقمية أنهت الدوامة الورقية كلياً',       initials: 'ر' },
+  { name: 'د. فهد العتيبي',     role: 'مدير عيادة الشفاء · الرياض',  quote: 'الحجوزات الإلكترونية قلّصت وقت الانتظار ٦٢٪ في الأسبوع الأول. الآن مرضانا يمدحون التجربة قبل ما يدخلون عيادتنا.', initials: 'ف' },
+  { name: 'أ. منى السبيعي',     role: 'مديرة مجمع النور الطبي · جدة', quote: 'التطبيق رفع رضا المرضى بشكل ملحوظ. المرضى يطلبون تطبيقنا قبل ما يسألون عن الأطباء — هذا مستوى ولاء ما كنا نتوقعه.', initials: 'م' },
+  { name: 'د. سارة الزهراني',   role: 'رئيسة أطباء · مستشفى الرعاية · أبها', quote: 'نتائج التحاليل الرقمية أنهت الدوامة الورقية كلياً. الفريق الطبي الآن يركّز على المريض بدل الأوراق.', initials: 'س' },
 ];
 
 const included = ['تسليم خلال ٦٠ يوم','نشر على المتجرين','سنة دعم مجاني','تدريب الفريق','تكامل مع HIS الحالي','تصميم بهوية عيادتك'];
@@ -302,9 +325,28 @@ export default function Home() {
           </p>
           <p className="text-[13px] text-[#999] font-light max-w-md mx-auto leading-relaxed">
             منظومة رقمية متكاملة تربط مرضى عيادتك بفريقها الطبي —
-            تحسّن الالتزام، تقلّل الانتظار، وتبني ثقة تدوم.
+            عيادات تستخدمها تقلّل وقت الانتظار <strong style={{color:'#0B4A6F'}}>٦٢٪</strong>، وترفع رضا المرضى <strong style={{color:'#0B4A6F'}}>٨٩٪</strong>.
           </p>
         </motion.div>
+      </div>
+
+      {/* ── Stats Strip ────────────────────────────────────────── */}
+      <div className="max-w-5xl mx-auto px-6 mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {[
+            { num: '٦٢٪',    label: 'تقليل وقت الانتظار',     sub: 'في أول شهر من التشغيل' },
+            { num: '٨٩٪',    label: 'رضا المرضى',              sub: 'بعد تطبيق المنظومة' },
+            { num: '٦٠ يوم', label: 'فقط للتسليم الكامل',      sub: 'موقع + تطبيق + نظام' },
+            { num: '+٢٠٠',   label: 'عيادة تستخدم المنظومة',   sub: 'في أنحاء المملكة' },
+          ].map((s, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }}
+              className="rounded-[20px] p-5 text-center bg-white/80 border border-[rgba(11,74,111,0.08)] shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
+              <p className="text-[30px] font-bold leading-none mb-1" style={{ color: '#0B4A6F' }}>{s.num}</p>
+              <p className="text-[12px] font-semibold text-[#111] mb-0.5">{s.label}</p>
+              <p className="text-[10px] text-[#AAA] font-light">{s.sub}</p>
+            </motion.div>
+          ))}
+        </div>
       </div>
 
       {/* ── 4 Pillars ──────────────────────────────────────────── */}
@@ -554,14 +596,16 @@ export default function Home() {
           {testimonials.map((t, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08 * i }}
               className="bg-white/80 rounded-[22px] p-5 border border-[rgba(11,74,111,0.07)] shadow-[0_2px_12px_rgba(0,0,0,0.05)]">
-              <p className="text-[13px] mb-3">⭐⭐⭐⭐⭐</p>
+              <div className="flex gap-0.5 mb-3">
+                {[1,2,3,4,5].map(s => <span key={s} className="text-[#F59E0B] text-[13px]">★</span>)}
+              </div>
               <p className="text-[13px] text-[#444] font-light leading-relaxed mb-4 italic">"{t.quote}"</p>
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-[12px] font-bold shrink-0"
+              <div className="flex items-center gap-2.5 pt-3 border-t border-[rgba(11,74,111,0.06)]">
+                <div className="w-9 h-9 rounded-full flex items-center justify-center text-white text-[13px] font-bold shrink-0"
                   style={{ background: 'linear-gradient(135deg,#0B4A6F,#00B4D8)' }}>{t.initials}</div>
                 <div>
                   <p className="text-[12px] font-semibold text-[#111]">{t.name}</p>
-                  <p className="text-[10px] text-[#AAA] font-light">{t.city}</p>
+                  <p className="text-[10px] text-[#AAA] font-light">{t.role}</p>
                 </div>
               </div>
             </motion.div>
@@ -653,6 +697,25 @@ export default function Home() {
               ))}
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* ── FAQ ─────────────────────────────────────────────────── */}
+      <div className="max-w-2xl mx-auto px-6 mb-14">
+        <div className="text-center mb-7">
+          <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1.5">أسئلة شائعة</p>
+          <h2 className="text-[24px] font-bold text-[#111]">كل ما يدور في بالك</h2>
+        </div>
+        <div className="space-y-3">
+          {[
+            { q: 'كم يستغرق التسليم الكامل؟', a: '٦٠ يوم من توقيع العقد — تطبيق iOS وAndroid + موقع إلكتروني + نظام إدارة + تدريب الفريق. مع ضمان تشغيل فعلي قبل الإطلاق.' },
+            { q: 'هل يعمل مع نظام HIS الحالي في عيادتنا؟', a: 'نعم — عندنا تكامل مع أشهر أنظمة HIS وLIS في السوق السعودي. نرسل لك تقرير التوافق قبل التعاقد.' },
+            { q: 'وش يصير لو احتجنا تعديل بعد التسليم؟', a: 'سنة دعم وصيانة مجانية تشمل التعديلات والتحديثات. بعدها نقدم باقات دعم بأسعار تفضيلية للعملاء القدامى.' },
+            { q: 'هل بيانات مرضانا محفوظة وآمنة؟', a: 'المنظومة تعمل على خوادم داخل المملكة، مشفرة AES-256، ومتوافقة مع نظام PDPL وهيئة الحكومة الرقمية. بياناتك لا تخرج ولا نراها.' },
+            { q: 'وش السعر النهائي؟', a: 'السعر يعتمد على حجم العيادة وعدد الأطباء والخصائص المطلوبة. تواصل معنا للحصول على عرض مفصّل ومجاني خلال ٢٤ ساعة.' },
+          ].map((item, i) => (
+            <FAQItem key={i} q={item.q} a={item.a} />
+          ))}
         </div>
       </div>
 
