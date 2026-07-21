@@ -1387,9 +1387,9 @@ export default function App() {
           </div>
         </section>
 
-        {/* ════ CONTACT FORM ═══════════════════════════════ */}
+        {/* ════ PRICING + CONTACT FORM ═════════════════════ */}
         <section id="تواصل" className="py-24 px-6 lg:px-12" style={{ borderTop:`1px solid ${GLASSBORDER}` }}>
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-3xl mx-auto">
             <Reveal className="text-center mb-10">
               {/* Scarcity badge */}
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-[12px] font-black"
@@ -1398,19 +1398,139 @@ export default function App() {
                 {lang==='ar'?'نقبل ٣ عيادات هذا الشهر · تبقّى مكان واحد فقط':'Accepting 3 clinics this month · 1 spot remaining'}
               </div>
               <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-4" style={{ color:BLUE }}>
-                {t.priceBadge}
+                {lang==='ar'?'التسعير':'Pricing'}
               </p>
               <h2 className="font-black leading-tight mb-4" style={{ fontSize:'clamp(28px,5vw,54px)', letterSpacing:'-0.02em', color:TEXT }}>
-                {lang==='ar'?<>نصل إليك<br /><span style={{ color:BLUE }}>بعرض مخصص لعيادتك.</span></> : <>We'll reach you<br /><span style={{ color:BLUE }}>with a tailored offer.</span></>}
+                {lang==='ar'?<>عرض إطلاق<br /><span style={{ color:BLUE }}>محدود المدة.</span></> : <>Launch offer<br /><span style={{ color:BLUE }}>limited time.</span></>}
               </h2>
-              <p className="text-[15px]" style={{ color:MUTED }}>
-                {lang==='ar'
-                  ?'السعر يتحدد حسب احتياجك — مو رقم ثابت لأن كل مشروع فريد.'
-                  :'Pricing is based on your needs — no fixed number because every project is unique.'}
-              </p>
             </Reveal>
 
-            <Reveal delay={0.1}>
+            {/* ─ Pricing card ─ */}
+            <Reveal delay={0.08} className="mb-8">
+              <Glass accent={BLUE} style={{ borderRadius:28 }}>
+                <div className="p-8">
+
+                  {/* Price row */}
+                  <div className="flex flex-col sm:flex-row sm:items-end gap-3 mb-8">
+                    <div>
+                      <p className="text-[13px] font-semibold mb-1" style={{ color:MUTED }}>
+                        {lang==='ar'?'السعر الكامل للمنظومة':'Full system price'}
+                      </p>
+                      <div className="flex items-baseline gap-3">
+                        <span className="font-black" style={{ fontSize:'clamp(36px,7vw,64px)', color:TEXT, letterSpacing:'-0.03em' }}>
+                          ٩٬٢٠٠
+                        </span>
+                        <span className="text-[20px] font-black" style={{ color:BLUE }}>ريال</span>
+                        <span className="text-[18px] font-semibold line-through" style={{ color:MUTED }}>٢٥٬٠٠٠</span>
+                        <span className="text-[11px] font-black px-2 py-1 rounded-full" style={{ background:'rgba(34,197,94,0.15)', color:'#22C55E', border:'1px solid rgba(34,197,94,0.3)' }}>
+                          {lang==='ar'?'وفّر ٦٣٪':'Save 63%'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Payment options */}
+                  <p className="text-[12px] font-black tracking-widest uppercase mb-4" style={{ color:MUTED }}>
+                    {lang==='ar'?'خيارات الدفع':'Payment options'}
+                  </p>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
+                    {[
+                      {
+                        icon:'💰',
+                        title: lang==='ar'?'كامل مقدماً':'Full upfront',
+                        desc:  lang==='ar'?'٩٬٢٠٠ ريال قبل بدء المشروع':'SAR 9,200 before start',
+                        badge: lang==='ar'?'أسرع تسليم':'Fastest delivery',
+                        badgeColor:'#22C55E',
+                      },
+                      {
+                        icon:'✂️',
+                        title: lang==='ar'?'نصفين':'50 / 50',
+                        desc:  lang==='ar'?'٤٬٦٠٠ الآن · ٤٬٦٠٠ عند التسليم':'SAR 4,600 now · 4,600 on delivery',
+                        badge: lang==='ar'?'الأكثر شيوعاً':'Most popular',
+                        badgeColor: BLUE,
+                      },
+                      {
+                        icon:'📅',
+                        title: lang==='ar'?'تقسيط':'Installments',
+                        desc:  lang==='ar'?'٤٬٦٠٠ الآن · الباقي ٦ أشهر':'SAR 4,600 now · rest in 6 mo',
+                        badge: lang==='ar'?'تابي · تمارا':'Tabby · Tamara',
+                        badgeColor:'#A78BFA',
+                      },
+                    ].map((opt,i) => (
+                      <div key={i} className="rounded-[18px] p-4" style={{ background:'rgba(255,255,255,0.04)', border:`1.5px solid ${GLASSBORDER}` }}>
+                        <div className="text-[24px] mb-2">{opt.icon}</div>
+                        <p className="font-black text-[14px] mb-1" style={{ color:TEXT }}>{opt.title}</p>
+                        <p className="text-[12px] leading-relaxed mb-3" style={{ color:MUTED }}>{opt.desc}</p>
+                        <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background:`${opt.badgeColor}22`, color:opt.badgeColor, border:`1px solid ${opt.badgeColor}44` }}>
+                          {opt.badge}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Inclusions */}
+                  <p className="text-[12px] font-black tracking-widest uppercase mb-4" style={{ color:MUTED }}>
+                    {lang==='ar'?'ما يشمله العرض':"What's included"}
+                  </p>
+                  <div className="space-y-3">
+                    {[
+                      {
+                        icon:'🌐',
+                        label: lang==='ar'?'الموقع الطبي':'Medical website',
+                        details: lang==='ar'
+                          ?['استضافة مجانية','دومين مدفوع ٤ سنوات مجاناً']
+                          :['Free hosting','Domain paid 4 years — free'],
+                        free: true,
+                      },
+                      {
+                        icon:'🖥️',
+                        label: lang==='ar'?'لوحة تحكم الملاك والإدارة':'Owner & admin dashboard',
+                        details: lang==='ar'
+                          ?['استضافة مجانية','دومين مجاني']
+                          :['Free hosting','Free domain'],
+                        free: true,
+                      },
+                      {
+                        icon:'📱',
+                        label: lang==='ar'?'تطبيق المريض (iOS + Android)':'Patient app (iOS + Android)',
+                        details: lang==='ar'
+                          ?['استضافة · دعم · حماية','٧٩٩ ريال / شهر — يبدأ بعد ٦ أشهر','أول ٦ أشهر مجانية تماماً']
+                          :['Hosting · support · security','SAR 799/mo — starts after 6 months','First 6 months completely free'],
+                        free: false,
+                        note: lang==='ar'?'أول ٦ أشهر مجاني':'First 6 mo free',
+                      },
+                    ].map((item,i) => (
+                      <div key={i} className="flex gap-4 p-4 rounded-[16px]" style={{ background:'rgba(255,255,255,0.03)', border:`1px solid ${GLASSBORDER}` }}>
+                        <span className="text-[22px] mt-0.5 shrink-0">{item.icon}</span>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <p className="font-black text-[14px]" style={{ color:TEXT }}>{item.label}</p>
+                            {item.free
+                              ? <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background:'rgba(34,197,94,0.15)', color:'#22C55E', border:'1px solid rgba(34,197,94,0.3)' }}>مجاني</span>
+                              : item.note && <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background:'rgba(167,139,250,0.15)', color:'#A78BFA', border:'1px solid rgba(167,139,250,0.3)' }}>{item.note}</span>
+                            }
+                          </div>
+                          <div className="flex flex-wrap gap-x-4 gap-y-0.5">
+                            {item.details.map((d,j) => (
+                              <span key={j} className="text-[12px]" style={{ color: j===2&&!item.free?'#22C55E':MUTED }}>
+                                {j===0&&!item.free?'':'✓ '}{d}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                </div>
+              </Glass>
+            </Reveal>
+
+            {/* ─ Contact form ─ */}
+            <Reveal delay={0.15}>
+              <p className="text-center text-[14px] font-semibold mb-6" style={{ color:MUTED }}>
+                {lang==='ar'?'تواصل معنا واحجز عيادتك في العرض الآن':'Contact us and reserve your spot now'}
+              </p>
               <Glass accent={BLUE} style={{ borderRadius:28 }}>
                 <div className="p-8">
                   <div className="space-y-4 mb-6">
