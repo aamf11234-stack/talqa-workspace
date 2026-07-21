@@ -487,33 +487,40 @@ export default function Home() {
           style={{ background: 'linear-gradient(145deg,#050E1A 0%,#0B3A5A 45%,#050E1A 100%)' }}>
           <div className="absolute inset-0 pointer-events-none"
             style={{ background: 'radial-gradient(ellipse at 20% 50%,rgba(0,180,216,0.15) 0%,transparent 55%)' }} />
-          <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 p-7 md:p-9">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="inline-flex items-center gap-1.5 text-[#10B981] text-[10px] font-bold bg-[#10B981]/10 border border-[#10B981]/20 px-3 py-1 rounded-full">
+          <div className="relative z-10 p-7 md:p-9">
+            {/* Header row */}
+            <div className="flex flex-col md:flex-row md:items-center gap-4 mb-7">
+              <div className="flex-1">
+                <span className="inline-flex items-center gap-1.5 text-[#10B981] text-[10px] font-bold bg-[#10B981]/10 border border-[#10B981]/20 px-3 py-1 rounded-full mb-3">
                   <span className="w-1.5 h-1.5 bg-[#10B981] rounded-full animate-pulse" />
                   جديد · لوحة الإدارة الذكية
                 </span>
+                <h3 className="text-white text-[22px] md:text-[26px] font-bold mb-2 leading-tight">
+                  لوحة تحكم المالك<br />
+                  <span style={{ color: '#00B4D8' }}>والموظفين</span>
+                </h3>
+                <p className="text-white/45 text-[13px] font-light leading-relaxed max-w-sm">
+                  إيرادات اليوم · طابور المرضى · أداء الفريق الطبي · التقارير الشهرية — كل شيء في مكان واحد.
+                </p>
               </div>
-              <h3 className="text-white text-[22px] md:text-[26px] font-bold mb-2 leading-tight">
-                لوحة تحكم المالك<br />
-                <span style={{ color: '#00B4D8' }}>والموظفين</span>
-              </h3>
-              <p className="text-white/45 text-[13px] font-light leading-relaxed mb-4 max-w-sm">
-                إيرادات اليوم · طابور المرضى · أداء الفريق الطبي · التقارير الشهرية — كل شيء في مكان واحد.
-              </p>
             </div>
-            <div className="flex flex-col gap-2.5 shrink-0 w-full md:w-auto">
+            {/* Three role buttons */}
+            <div className="grid grid-cols-3 gap-3">
               {([
-                ['owner',     '👑', 'شاهد لوحة المالك'],
-                ['reception', '🖥️', 'شاهد لوحة الاستقبال'],
-                ['doctor',    '🩺', 'شاهد لوحة الدكتور'],
-              ] as [string,string,string][]).map(([role,emoji,label]) => (
+                ['owner',     '👑', 'المالك',     'شاهد اللوحة'],
+                ['reception', '🖥️', 'الاستقبال', 'شاهد اللوحة'],
+                ['doctor',    '🩺', 'الدكتور',   'شاهد اللوحة'],
+              ] as [string,string,string,string][]).map(([role,emoji,title,cta]) => (
                 <button key={role}
                   onClick={() => setStaffModal(role as 'owner'|'reception'|'doctor')}
-                  className="flex items-center gap-2.5 font-bold text-[14px] px-6 py-3.5 rounded-[16px] transition-all duration-200 hover:scale-105 active:scale-95 shadow-[0_8px_28px_rgba(0,180,216,0.3)] whitespace-nowrap"
-                  style={{ background: 'linear-gradient(135deg,#0B4A6F,#00B4D8)', color: '#fff' }}>
-                  <span>{emoji}</span>{label} →
+                  className="flex flex-col items-center gap-2 py-4 px-3 rounded-[18px] transition-all duration-200 hover:scale-105 active:scale-95 group"
+                  style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(0,180,216,0.2)' }}>
+                  <span className="text-2xl">{emoji}</span>
+                  <p className="text-white font-bold text-[13px]">{title}</p>
+                  <span className="text-[11px] font-semibold px-3 py-1 rounded-full transition-all"
+                    style={{ background: 'linear-gradient(135deg,#0B4A6F,#00B4D8)', color: '#fff' }}>
+                    {cta} →
+                  </span>
                 </button>
               ))}
             </div>
