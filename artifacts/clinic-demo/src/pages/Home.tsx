@@ -503,16 +503,16 @@ export default function Home() {
                 إيرادات اليوم · طابور المرضى · أداء الفريق الطبي · التقارير الشهرية — كل شيء في مكان واحد.
               </p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-2.5 shrink-0">
+            <div className="flex flex-col gap-2.5 shrink-0 w-full md:w-auto">
               {([
-                ['owner',     '👑', 'لوحة المالك',     'linear-gradient(135deg,#0B4A6F,#00B4D8)', '0 6px 20px rgba(0,180,216,0.3)'],
-                ['reception', '🖥️', 'لوحة الاستقبال', 'linear-gradient(135deg,#1a3a1a,#166534)', '0 6px 20px rgba(22,101,52,0.3)'],
-                ['doctor',    '🩺', 'لوحة الدكتور',   'linear-gradient(135deg,#2d1060,#6d28d9)', '0 6px 20px rgba(109,40,217,0.3)'],
-              ] as [string,string,string,string,string][]).map(([role,emoji,label,bg,shadow]) => (
+                ['owner',     '👑', 'شاهد لوحة المالك'],
+                ['reception', '🖥️', 'شاهد لوحة الاستقبال'],
+                ['doctor',    '🩺', 'شاهد لوحة الدكتور'],
+              ] as [string,string,string][]).map(([role,emoji,label]) => (
                 <button key={role}
                   onClick={() => setStaffModal(role as 'owner'|'reception'|'doctor')}
-                  className="flex items-center gap-2 font-bold text-[13px] px-4 py-3 rounded-[14px] transition-all duration-200 hover:scale-105 active:scale-95 whitespace-nowrap"
-                  style={{ background: bg, color: '#fff', boxShadow: shadow }}>
+                  className="flex items-center gap-2.5 font-bold text-[14px] px-6 py-3.5 rounded-[16px] transition-all duration-200 hover:scale-105 active:scale-95 shadow-[0_8px_28px_rgba(0,180,216,0.3)] whitespace-nowrap"
+                  style={{ background: 'linear-gradient(135deg,#0B4A6F,#00B4D8)', color: '#fff' }}>
                   <span>{emoji}</span>{label} →
                 </button>
               ))}
