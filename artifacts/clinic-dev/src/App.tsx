@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { TalqaShield, TalqaShieldSmall } from './components/TalqaShield';
 
 /* ═══ TOKENS ═════════════════════════════════════════════════ */
 const BG   = '#050D1A';
@@ -328,7 +329,7 @@ function Nav({ lang, onLang }: { lang: 'ar'|'en'; onLang: () => void }) {
       <nav className="px-6 lg:px-12 py-4 flex items-center justify-between transition-all duration-500"
         style={{ background: scrolled ? 'rgba(5,13,26,0.92)' : 'rgba(5,13,26,0.6)', backdropFilter:'blur(24px)', WebkitBackdropFilter:'blur(24px)', borderBottom:`1px solid ${scrolled ? 'rgba(255,255,255,0.08)' : 'transparent'}` }}>
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-2xl flex items-center justify-center text-white text-[16px]" style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 4px 16px ${BLUE}40` }}>🏥</div>
+          <TalqaShield size={36} />
           <div>
             <p className="text-[16px] font-black leading-tight text-white">تلقا<span style={{ color:BLUE }}> للعيادات</span></p>
             <p className="text-[9px] font-medium leading-none" style={{ color:DIM }}>متخصصون في القطاع الطبي</p>
@@ -1485,8 +1486,9 @@ export default function App() {
             style={{ width:600, height:600, background:`radial-gradient(circle,${BLUE} 0%,transparent 70%)`, top:'50%', left:'50%', transform:'translate(-50%,-50%)' }} />
           <div className="relative z-10 max-w-2xl mx-auto">
             <Reveal>
-              <motion.div className="text-6xl mb-8 inline-block"
-                animate={{ rotate:[0,-5,5,0] }} transition={{ duration:3, repeat:Infinity, ease:'easeInOut' }}>🏥</motion.div>
+              <div className="mb-8 inline-block">
+                <TalqaShield size={72} />
+              </div>
               <h2 className="font-black mb-5 leading-tight" style={{ fontSize:'clamp(40px,8vw,90px)', letterSpacing:'-0.03em', color:TEXT }}>{t.finalHeading}</h2>
               <p className="text-[18px] mb-12" style={{ color:MUTED }}>{t.finalSub}</p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -1510,7 +1512,7 @@ export default function App() {
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl flex items-center justify-center text-white text-[18px]" style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 4px 16px ${BLUE}40` }}>🏥</div>
+                <TalqaShield size={40} />
                 <div>
                   <p className="font-black text-[16px]" style={{ color:TEXT }}>تلقا<span style={{ color:BLUE }}> للعيادات</span></p>
                   <p className="text-[9px] font-medium" style={{ color:DIM }}>متخصصون في القطاع الطبي</p>
@@ -1529,7 +1531,10 @@ export default function App() {
               </a>
             </div>
             <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3" style={{ borderTop:`1px solid ${GLASSBORDER}` }}>
-              <p className="text-[11px]" style={{ color:DIM }}>متخصصون في المنظومات الرقمية للقطاع الطبي · ٢٠٢٥</p>
+              <div className="flex flex-col gap-1 text-center sm:text-right">
+                <p className="text-[11px]" style={{ color:DIM }}>متخصصون في المنظومات الرقمية للقطاع الطبي · ٢٠٢٦</p>
+                <p className="text-[10px]" style={{ color:DIM }}>مؤسسة تلقا · السجل التجاري: ٧٠٥٤٨٣٥٣٢٢ · تاريخ الإصدار: ١٤٤٧/٠١/٢٤هـ</p>
+              </div>
               <div className="flex gap-4">
                 {['✓ HIPAA','✓ ISO 27001','✓ PDPL'].map(b => <span key={b} className="text-[11px] font-bold" style={{ color:`${BLUE}80` }}>{b}</span>)}
               </div>
