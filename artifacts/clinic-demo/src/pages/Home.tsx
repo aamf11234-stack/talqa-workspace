@@ -507,19 +507,19 @@ export default function Home() {
             {/* Three role buttons */}
             <div className="grid grid-cols-3 gap-3">
               {([
-                ['owner',     '👑', 'المالك',     'شاهد اللوحة'],
-                ['reception', '🖥️', 'الاستقبال', 'شاهد اللوحة'],
-                ['doctor',    '🩺', 'الدكتور',   'شاهد اللوحة'],
-              ] as [string,string,string,string][]).map(([role,emoji,title,cta]) => (
+                ['owner',     '👑', 'المالك',     true],
+                ['reception', '🖥️', 'الاستقبال', false],
+                ['doctor',    '🩺', 'الدكتور',   false],
+              ] as [string,string,string,boolean][]).map(([role,emoji,title,isNav]) => (
                 <button key={role}
-                  onClick={() => setStaffModal(role as 'owner'|'reception'|'doctor')}
-                  className="flex flex-col items-center gap-2 py-4 px-3 rounded-[18px] transition-all duration-200 hover:scale-105 active:scale-95 group"
+                  onClick={() => isNav ? navigate('/owner') : setStaffModal(role as 'reception'|'doctor')}
+                  className="flex flex-col items-center gap-2 py-4 px-3 rounded-[18px] transition-all duration-200 hover:scale-105 active:scale-95"
                   style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(0,180,216,0.2)' }}>
                   <span className="text-2xl">{emoji}</span>
                   <p className="text-white font-bold text-[13px]">{title}</p>
-                  <span className="text-[11px] font-semibold px-3 py-1 rounded-full transition-all"
+                  <span className="text-[11px] font-semibold px-3 py-1 rounded-full"
                     style={{ background: 'linear-gradient(135deg,#0B4A6F,#00B4D8)', color: '#fff' }}>
-                    {cta} →
+                    شاهد اللوحة →
                   </span>
                 </button>
               ))}
