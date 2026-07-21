@@ -48,6 +48,10 @@ export const AppShowcase = () => {
               ))}
             </ul>
 
+            <p className="text-sm text-white/40 mb-5 leading-relaxed" style={{ borderRight:'2px solid rgba(0,180,216,0.35)', paddingRight:'12px' }}>
+              هذا مجرد نموذج — كل ما يطرأ في بالك نبنيه بتصميم مخصص يعكس هوية علامتك التجارية بالكامل.
+            </p>
+
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
