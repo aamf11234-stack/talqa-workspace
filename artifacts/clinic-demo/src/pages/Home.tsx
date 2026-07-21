@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'wouter';
+import { TalqaShield } from '../components/TalqaShield';
 import { TrustSection }           from '../components/TrustSection';
 import { PhoneFrame }             from '../components/PhoneFrame';
 import { BottomNav }              from '../components/BottomNav';
@@ -273,10 +274,7 @@ export default function Home() {
       <div className="sticky top-0 z-50 border-b border-[rgba(11,74,111,0.1)] bg-white/88 backdrop-blur-xl">
         <div className="max-w-5xl mx-auto px-6 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center shadow-[0_2px_8px_rgba(11,74,111,0.25)]"
-              style={{ background: 'linear-gradient(135deg,#0B4A6F,#00B4D8)' }}>
-              <span className="text-white text-[10px] font-bold">ت</span>
-            </div>
+            <TalqaShield size={28} />
             <span className="text-[14px] font-bold text-[#111]">تلقا تك</span>
           </div>
           <span className="text-[11px] text-[#AAA] font-light hidden sm:block">وكالة تصميم تطبيقات ومواقع احترافية</span>
@@ -692,9 +690,7 @@ export default function Home() {
       {/* ── Footer ─────────────────────────────────────────────── */}
       <div className="text-center pb-10 px-6">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#0B4A6F,#00B4D8)' }}>
-            <span className="text-white text-[9px] font-bold">ت</span>
-          </div>
+          <TalqaShield size={24} />
           <span className="text-[13px] font-bold text-[#111]">تلقا تك</span>
         </div>
         <p className="text-[11px] text-[#CCC] font-light">وكالة تصميم تطبيقات ومواقع احترافية · جميع الحقوق محفوظة ٢٠٢٦</p>

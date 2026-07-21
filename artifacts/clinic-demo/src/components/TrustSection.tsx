@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Shield, Server, Lock, CheckCircle2 } from 'lucide-react';
+import { Server, Lock, CheckCircle2 } from 'lucide-react';
+import { TalqaShield } from './TalqaShield';
 
 export const TrustSection = () => {
   return (
@@ -8,9 +9,10 @@ export const TrustSection = () => {
       <div className="container mx-auto px-6">
         
         <div className="max-w-4xl mx-auto text-center mb-16">
-          <div className="inline-flex items-center justify-center mb-6">
+          <div className="inline-flex items-center justify-center gap-3 mb-6">
+            <TalqaShield size={40} />
             <span className="text-2xl font-black text-white tracking-widest uppercase">
-              TALQA <span className="text-primary">TECH</span>
+              TALQA <span style={{ color: '#00B4D8' }}>TECH</span>
             </span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">

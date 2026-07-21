@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, ChevronLeft, X } from 'lucide-react';
+import { ChevronLeft, X } from 'lucide-react';
+import { TalqaShieldSmall } from './TalqaShield';
 
 interface Props { theme?: 'dark' | 'light' }
 
@@ -84,7 +85,7 @@ function WalletSheet({ onClose, days, hours, mins, secs: s, expiry }: any) {
             <div className="absolute inset-0 pointer-events-none" style={{ background:'radial-gradient(ellipse at 80% 20%,rgba(0,180,216,0.22) 0%,transparent 60%)' }}/>
             <div className="relative z-10 flex items-start justify-between">
               <div>
-                <div className="flex items-center gap-1.5 mb-2"><Shield size={10} style={{ color:'#00B4D8' }}/><p className="text-white/50 text-[10px] font-semibold tracking-wider">عيادة الشفاء</p></div>
+                <div className="flex items-center gap-1.5 mb-2"><TalqaShieldSmall size={12}/><p className="text-white/50 text-[10px] font-semibold tracking-wider">عيادة الشفاء</p></div>
                 <p className="text-white text-[20px] font-bold leading-none">بطاقة مريض</p>
                 <p className="text-white/25 text-[9px] mt-0.5 tracking-widest">DIGITAL HEALTH CARD</p>
               </div>
