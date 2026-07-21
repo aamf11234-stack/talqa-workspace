@@ -5,6 +5,8 @@ import NotFound from '@/pages/not-found';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 import Home from './pages/Home';
 import OwnerDashboard from './pages/OwnerDashboard';
+import ReceptionDashboard from './pages/ReceptionDashboard';
+import DoctorDashboard from './pages/DoctorDashboard';
 
 const queryClient = new QueryClient();
 
@@ -13,6 +15,8 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/owner" component={OwnerDashboard} />
+      <Route path="/reception" component={ReceptionDashboard} />
+      <Route path="/doctor" component={DoctorDashboard} />
       <Route component={NotFound} />
     </Switch>
   );

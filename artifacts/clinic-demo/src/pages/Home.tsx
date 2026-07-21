@@ -512,7 +512,7 @@ export default function Home() {
                 ['doctor',    '🩺', 'الدكتور',   false],
               ] as [string,string,string,boolean][]).map(([role,emoji,title,isNav]) => (
                 <button key={role}
-                  onClick={() => isNav ? navigate('/owner') : setStaffModal(role as 'reception'|'doctor')}
+                  onClick={() => navigate(role === 'owner' ? '/owner' : role === 'reception' ? '/reception' : '/doctor')}
                   className="flex flex-col items-center gap-2 py-4 px-3 rounded-[18px] transition-all duration-200 hover:scale-105 active:scale-95"
                   style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(0,180,216,0.2)' }}>
                   <span className="text-2xl">{emoji}</span>
