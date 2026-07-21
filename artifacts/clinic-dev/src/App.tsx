@@ -1457,7 +1457,7 @@ export default function App() {
                   </div>
                   <span className="text-[11px] font-black px-3 py-1 rounded-full"
                     style={{ background:'rgba(239,68,68,0.2)', color:'#FCA5A5', border:'1px solid rgba(239,68,68,0.35)' }}>
-                    {lang==='ar'?'⏳ مكانان متبقيان فقط':'⏳ Only 2 spots left'}
+                    {lang==='ar'?'مكانان متبقيان فقط':'Only 2 spots left'}
                   </span>
                 </div>
 
@@ -1476,7 +1476,7 @@ export default function App() {
                         <span className="text-[16px] font-semibold line-through" style={{ color:'rgba(255,255,255,0.25)' }}>٢٥٬٠٠٠ ريال</span>
                         <span className="text-[12px] font-black px-2.5 py-1 rounded-full"
                           style={{ background:'rgba(34,197,94,0.2)', color:'#4ADE80', border:'1px solid rgba(34,197,94,0.4)' }}>
-                          {lang==='ar'?'توفّر ١٥٬٨٠٠ ريال 🎉':'Save SAR 15,800 🎉'}
+                          {lang==='ar'?'توفّر ١٥٬٨٠٠ ريال':'Save SAR 15,800'}
                         </span>
                       </div>
                     </div>
@@ -1497,23 +1497,23 @@ export default function App() {
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
                     {[
                       {
-                        icon:'⚡',
+                        icon:null,
                         title:  lang==='ar'?'كامل مقدماً':'Full upfront',
                         amount: lang==='ar'?'٩٬٢٠٠ ريال':'SAR 9,200',
                         sub:    lang==='ar'?'قبل بدء المشروع':'before project starts',
-                        badge:  lang==='ar'?'أسرع تسليم ✓':'Fastest delivery ✓',
+                        badge:  lang==='ar'?'أسرع تسليم':'Fastest delivery',
                         bc:'#22C55E', highlight: false,
                       },
                       {
-                        icon:'✂️',
+                        icon:null,
                         title:  lang==='ar'?'نصف ونصف':'50 / 50',
                         amount: lang==='ar'?'٤٬٦٠٠ + ٤٬٦٠٠':'4,600 + 4,600',
                         sub:    lang==='ar'?'الآن · عند التسليم':'now · on delivery',
-                        badge:  lang==='ar'?'الأكثر طلباً ★':'Most popular ★',
+                        badge:  lang==='ar'?'الأكثر طلباً':'Most popular',
                         bc: BLUE, highlight: true,
                       },
                       {
-                        icon:'📅',
+                        icon:null,
                         title:  lang==='ar'?'تقسيط':'Installments',
                         amount: lang==='ar'?'٤٬٦٠٠ ثم ٧٦٧ × ٦':'4,600 then 767×6',
                         sub:    lang==='ar'?'الآن · ٦ أشهر بتابي أو تمارا':'now · 6 mo via Tabby/Tamara',
@@ -1527,7 +1527,6 @@ export default function App() {
                           border: opt.highlight ? `2px solid ${BLUE}` : `1.5px solid rgba(255,255,255,0.08)`,
                           boxShadow: opt.highlight ? `0 0 24px rgba(14,165,233,0.2)` : 'none',
                         }}>
-                        <div className="text-[22px] mb-2">{opt.icon}</div>
                         <p className="font-black text-[15px] mb-1" style={{ color:TEXT }}>{opt.title}</p>
                         <p className="font-black text-[13px]" style={{ color: opt.highlight?BLUE:'#BAE6FD' }}>{opt.amount}</p>
                         <p className="text-[11px] mb-3" style={{ color:MUTED }}>{opt.sub}</p>
@@ -1546,30 +1545,27 @@ export default function App() {
                   <div className="space-y-2.5">
                     {[
                       {
-                        icon:'🌐', color:'#38BDF8',
+                        color:'#38BDF8',
                         label:   lang==='ar'?'الموقع الطبي':'Medical website',
-                        tags:    lang==='ar'?['استضافة مجانية ✓','دومين مجاني ٤ سنوات ✓']:['Free hosting ✓','Free domain 4 yrs ✓'],
+                        tags:    lang==='ar'?['استضافة مجانية','دومين مجاني ٤ سنوات']:['Free hosting','Free domain 4 yrs'],
                         tagColor:'#22C55E',
                       },
                       {
-                        icon:'🖥️', color:'#818CF8',
+                        color:'#818CF8',
                         label:   lang==='ar'?'لوحة تحكم الملاك والاستقبال':'Owner & reception dashboard',
-                        tags:    lang==='ar'?['استضافة مجانية ✓','دومين مجاني ✓']:['Free hosting ✓','Free domain ✓'],
+                        tags:    lang==='ar'?['استضافة مجانية','دومين مجاني']:['Free hosting','Free domain'],
                         tagColor:'#22C55E',
                       },
                       {
-                        icon:'📱', color:'#34D399',
+                        color:'#34D399',
                         label:   lang==='ar'?'تطبيق المريض — iOS + Android':'Patient app — iOS + Android',
-                        tags:    lang==='ar'?['أول ٦ أشهر مجانية تماماً 🎁','ثم ٧٩٩ ريال/شهر فقط']:['First 6 months completely free 🎁','Then SAR 799/mo only'],
+                        tags:    lang==='ar'?['أول ٦ أشهر مجانية','٧٩٩ ريال / شهر بعدها']:['First 6 months free','SAR 799/mo after'],
                         tagColor:'#A78BFA',
                       },
                     ].map((it,i) => (
                       <div key={i} className="flex items-center gap-4 p-4 rounded-[16px]"
                         style={{ background:'rgba(255,255,255,0.03)', border:`1px solid rgba(255,255,255,0.07)` }}>
-                        <div className="w-10 h-10 rounded-[12px] flex items-center justify-center text-[20px] shrink-0"
-                          style={{ background:`${it.color}18`, border:`1px solid ${it.color}33` }}>
-                          {it.icon}
-                        </div>
+                        <div className="w-2 h-10 rounded-full shrink-0" style={{ background:it.color, opacity:0.7 }} />
                         <div className="flex-1 min-w-0">
                           <p className="font-black text-[14px] mb-1.5" style={{ color:TEXT }}>{it.label}</p>
                           <div className="flex flex-wrap gap-2">
@@ -1590,8 +1586,8 @@ export default function App() {
                     style={{ background:'rgba(34,197,94,0.07)', border:'1.5px solid rgba(34,197,94,0.2)' }}>
                     <p className="text-[13px] font-black" style={{ color:'#4ADE80' }}>
                       {lang==='ar'
-                        ?'💡 قيمة المنظومة الكاملة تتجاوز ٦٠٬٠٠٠ ريال — أنت تدفع ٩٬٢٠٠ فقط.'
-                        :'💡 Full system value exceeds SAR 60,000 — you pay only SAR 9,200.'}
+                        ?'قيمة المنظومة الكاملة تتجاوز ٦٠٬٠٠٠ ريال — أنت تدفع ٩٬٢٠٠ فقط.'
+                        :'Full system value exceeds SAR 60,000 — you pay only SAR 9,200.'}
                     </p>
                   </div>
 
@@ -1603,7 +1599,7 @@ export default function App() {
             <Reveal delay={0.18}>
               <div className="text-center mb-5">
                 <p className="text-[16px] font-black mb-1" style={{ color:TEXT }}>
-                  {lang==='ar'?'احجز مكانك الآن قبل انتهاء العرض 👇':'Reserve your spot before the offer ends 👇'}
+                  {lang==='ar'?'احجز مكانك الآن قبل انتهاء العرض':'Reserve your spot before the offer ends'}
                 </p>
                 <p className="text-[13px]" style={{ color:MUTED }}>
                   {lang==='ar'?'أرسل بياناتك ونتواصل معك خلال ٢٤ ساعة بعقد رسمي.':'Send your details and we\'ll reach out within 24h with a formal contract.'}
@@ -1613,19 +1609,18 @@ export default function App() {
                 <div className="p-8">
                   <div className="space-y-4 mb-6">
                     {[
-                      { placeholder:lang==='ar'?'اسمك الكريم':'Your name', value:formName, set:setFormName, icon:'👤' },
-                      { placeholder:lang==='ar'?'اسم العيادة أو المركز الطبي':'Clinic / medical center name', value:formClinic, set:setFormClinic, icon:'🏥' },
-                      { placeholder:lang==='ar'?'رقم الجوال (واتساب)':'Mobile number (WhatsApp)', value:formPhone, set:setFormPhone, icon:'📱' },
+                      { placeholder:lang==='ar'?'اسمك الكريم':'Your name', value:formName, set:setFormName },
+                      { placeholder:lang==='ar'?'اسم العيادة أو المركز الطبي':'Clinic / medical center name', value:formClinic, set:setFormClinic },
+                      { placeholder:lang==='ar'?'رقم الجوال (واتساب)':'Mobile number (WhatsApp)', value:formPhone, set:setFormPhone },
                     ].map(f=>(
                       <div key={f.placeholder} className="relative">
-                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[18px] pointer-events-none">{f.icon}</span>
                         <input
                           type="text"
                           placeholder={f.placeholder}
                           value={f.value}
                           onChange={e => f.set(e.target.value)}
                           dir={lang==='ar'?'rtl':'ltr'}
-                          className="w-full py-4 pr-12 pl-4 rounded-[16px] text-[15px] font-semibold outline-none transition-all"
+                          className="w-full py-4 px-5 rounded-[16px] text-[15px] font-semibold outline-none transition-all"
                           style={{ background:GLASS, border:`1.5px solid ${GLASSBORDER}`, color:TEXT, fontFamily:"'Tajawal',sans-serif" }}
                           onFocus={e => e.currentTarget.style.borderColor = BLUE}
                           onBlur={e => e.currentTarget.style.borderColor = GLASSBORDER}
@@ -1647,7 +1642,7 @@ export default function App() {
                       color: formName && formPhone ? '#fff' : MUTED,
                       cursor: formName && formPhone ? 'pointer' : 'default',
                     }}>
-                    {lang==='ar'?'📩 أرسل طلبك — وسنتواصل خلال ٢٤ ساعة':'📩 Send request — we reply within 24 hours'}
+                    {lang==='ar'?'أرسل طلبك — وسنتواصل خلال ٢٤ ساعة':'Send request — we reply within 24 hours'}
                   </motion.button>
 
                   <p className="text-[11px] text-center mt-4" style={{ color:DIM }}>
