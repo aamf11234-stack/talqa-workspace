@@ -191,9 +191,45 @@ function QRModal({ onClose, dark }: { onClose:()=>void; dark:boolean }) {
 
 export function ScreenCard({ theme = 'dark' }: Props) {
   const dark = theme === 'dark';
-  const [showQR,     setShowQR]     = useState(false);
-  const [showWallet, setShowWallet] = useState(false);
+  const [showQR,          setShowQR]          = useState(false);
+  const [showWallet,      setShowWallet]      = useState(false);
+  const [apptWalletLoad,  setApptWalletLoad]  = useState(false);
+  const [apptWalletDone,  setApptWalletDone]  = useState(false);
   const { days, hours, mins, secs, expiry } = useDaysLeft();
+
+  const showApptWallet = async () => {
+    if (apptWalletLoad || apptWalletDone) return;
+    setApptWalletLoad(true);
+    try {
+      const res = await fetch('/api/wallet/appointment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          patientName: 'أحمد ناصر الشمري',
+          patientId:   'PT-0842',
+          doctorName:  'د. سارة المطيري',
+          specialty:   'طب عام',
+          clinicName:  'تلقا العيادات',
+          apptDate:    'الأربعاء، ٢٣ يوليو',
+          apptTime:    '١٠:٣٠ ص',
+          roomNumber:  'غرفة ٣',
+          apptId:      'APT-1234',
+        }),
+      });
+      if (res.ok) {
+        const blob = await res.blob();
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = 'talqa-appointment.pkpass';
+        a.click();
+        URL.revokeObjectURL(url);
+        setApptWalletDone(true);
+        setTimeout(() => setApptWalletDone(false), 3000);
+      }
+    } catch (_) {}
+    setApptWalletLoad(false);
+  };
 
   /* theme tokens */
   const bg         = dark ? '#0E1621' : '#F0F5FB';
@@ -279,14 +315,34 @@ export function ScreenCard({ theme = 'dark' }: Props) {
         </motion.div>
       </div>
 
-      {/* Apple Wallet */}
-      <div className="px-4 mb-4">
+      {/* Apple Wallet — زران */}
+      <div className="px-4 mb-4 flex flex-col gap-2.5">
+        {/* بطاقة المريض */}
         <motion.button whileTap={{ scale:0.97 }} onClick={() => setShowWallet(true)}
-          className="w-full flex items-center justify-center gap-2.5 py-3.5 rounded-[18px]"
+          className="w-full flex items-center justify-center gap-2 py-3 rounded-[16px]"
           style={{ background:'#000', border:`1px solid ${walletBdr}`, boxShadow:'0 4px 20px rgba(0,0,0,0.25)' }}>
-          <svg width="14" height="17" viewBox="0 0 17 20" fill="white"><path d="M14.1 10.64c-.02-2.04 1.67-3.02 1.74-3.06-0.95-1.39-2.43-1.58-2.95-1.60-1.26-.13-2.46.74-3.10.74-.64 0-1.63-.72-2.68-.70C5.55 6.04 4.05 6.97 3.22 8.36 1.54 11.17 2.80 15.35 4.42 17.65c.80 1.15 1.77 2.45 3.04 2.40 1.22-.05 1.68-.78 3.16-.78 1.47 0 1.89.78 3.18.76 1.31-.02 2.15-1.18 2.94-2.34.93-1.34 1.32-2.64 1.34-2.71-.03-.01-2.57-.99-2.98-3.34zM11.96 3.83c.67-.81 1.12-1.93 1.00-3.06-.96.04-2.13.64-2.82 1.45-.62.71-1.16 1.86-1.01 2.96 1.07.08 2.16-.54 2.83-1.35z"/></svg>
-          <span className="text-white font-semibold text-[13px]">أضف إلى Apple Wallet</span>
-          <span className="text-white/30 text-[10px]">· {days} أيام</span>
+          <svg width="12" height="15" viewBox="0 0 17 20" fill="white"><path d="M14.1 10.64c-.02-2.04 1.67-3.02 1.74-3.06-0.95-1.39-2.43-1.58-2.95-1.60-1.26-.13-2.46.74-3.10.74-.64 0-1.63-.72-2.68-.70C5.55 6.04 4.05 6.97 3.22 8.36 1.54 11.17 2.80 15.35 4.42 17.65c.80 1.15 1.77 2.45 3.04 2.40 1.22-.05 1.68-.78 3.16-.78 1.47 0 1.89.78 3.18.76 1.31-.02 2.15-1.18 2.94-2.34.93-1.34 1.32-2.64 1.34-2.71-.03-.01-2.57-.99-2.98-3.34zM11.96 3.83c.67-.81 1.12-1.93 1.00-3.06-.96.04-2.13.64-2.82 1.45-.62.71-1.16 1.86-1.01 2.96 1.07.08 2.16-.54 2.83-1.35z"/></svg>
+          <div className="text-right">
+            <p className="text-white font-semibold text-[12px] leading-none">هويتي الطبية في Wallet</p>
+            <p className="text-white/35 text-[9px] mt-0.5">{days} أيام متبقية</p>
+          </div>
+        </motion.button>
+
+        {/* بطاقة الحجز */}
+        <motion.button whileTap={{ scale:0.97 }} onClick={showApptWallet}
+          className="w-full flex items-center justify-center gap-2 py-3 rounded-[16px]"
+          style={{ background: apptWalletDone ? 'rgba(52,199,89,0.15)' : 'linear-gradient(135deg,#1a0533,#2d1060)', border: apptWalletDone ? '1px solid rgba(52,199,89,0.35)' : '1px solid rgba(147,51,234,0.35)', boxShadow:'0 4px 20px rgba(88,28,135,0.3)', opacity: apptWalletLoad ? 0.7 : 1 }}>
+          {apptWalletLoad ? (
+            <><motion.div className="w-3.5 h-3.5 rounded-full border-2 border-white/30 border-t-white" animate={{ rotate:360 }} transition={{ duration:0.8, repeat:Infinity, ease:'linear' }}/><span className="text-white font-semibold text-[12px]">جارٍ التحميل…</span></>
+          ) : apptWalletDone ? (
+            <><span className="text-[#34C759] text-[15px]">✓</span><span className="text-[#34C759] font-semibold text-[12px]">تمت الإضافة إلى Wallet</span></>
+          ) : (
+            <><svg width="12" height="15" viewBox="0 0 17 20" fill="white"><path d="M14.1 10.64c-.02-2.04 1.67-3.02 1.74-3.06-0.95-1.39-2.43-1.58-2.95-1.60-1.26-.13-2.46.74-3.10.74-.64 0-1.63-.72-2.68-.70C5.55 6.04 4.05 6.97 3.22 8.36 1.54 11.17 2.80 15.35 4.42 17.65c.80 1.15 1.77 2.45 3.04 2.40 1.22-.05 1.68-.78 3.16-.78 1.47 0 1.89.78 3.18.76 1.31-.02 2.15-1.18 2.94-2.34.93-1.34 1.32-2.64 1.34-2.71-.03-.01-2.57-.99-2.98-3.34zM11.96 3.83c.67-.81 1.12-1.93 1.00-3.06-.96.04-2.13.64-2.82 1.45-.62.71-1.16 1.86-1.01 2.96 1.07.08 2.16-.54 2.83-1.35z"/></svg>
+            <div className="text-right">
+              <p className="text-white font-semibold text-[12px] leading-none">موعدي القادم في Wallet</p>
+              <p className="text-white/35 text-[9px] mt-0.5">د. سارة المطيري · الأربعاء</p>
+            </div></>
+          )}
         </motion.button>
       </div>
 
