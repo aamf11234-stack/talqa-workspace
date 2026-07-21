@@ -11,6 +11,7 @@ import { ScreenCard }             from '../components/ScreenCard';
 import { ScreenNotifications }    from '../components/ScreenNotifications';
 import { ScreenPackages }         from '../components/ScreenPackages';
 import { ScreenAI }               from '../components/ScreenAI';
+import { AppModal }              from '../components/AppModal';
 
 /* ── Apple Wallet Button (landing page) ───────────────────────── */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -258,6 +259,7 @@ export default function Home() {
   const [showFaceID,  setShowFaceID]  = useState(true);
   const [phoneTheme,  setPhoneTheme]  = useState<'dark'|'light'>('dark');
   const [, navigate] = useLocation();
+  const [staffModal,    setStaffModal]    = useState<null|'owner'|'reception'|'doctor'>(null);
 
   useEffect(() => {
     document.documentElement.dir  = 'rtl';
@@ -501,13 +503,19 @@ export default function Home() {
                 إيرادات اليوم · طابور المرضى · أداء الفريق الطبي · التقارير الشهرية — كل شيء في مكان واحد.
               </p>
             </div>
-            <div className="md:self-end shrink-0">
-              <button
-                onClick={() => navigate('/owner')}
-                className="flex items-center gap-2.5 font-bold text-[14px] px-6 py-3.5 rounded-[16px] transition-all duration-200 hover:scale-105 active:scale-95 shadow-[0_8px_28px_rgba(0,180,216,0.3)] whitespace-nowrap"
-                style={{ background: 'linear-gradient(135deg,#0B4A6F,#00B4D8)', color: '#fff' }}>
-                شاهد لوحة المالك →
-              </button>
+            <div className="flex flex-col sm:flex-row gap-2.5 shrink-0">
+              {([
+                ['owner',     '👑', 'لوحة المالك',     'linear-gradient(135deg,#0B4A6F,#00B4D8)', '0 6px 20px rgba(0,180,216,0.3)'],
+                ['reception', '🖥️', 'لوحة الاستقبال', 'linear-gradient(135deg,#1a3a1a,#166534)', '0 6px 20px rgba(22,101,52,0.3)'],
+                ['doctor',    '🩺', 'لوحة الدكتور',   'linear-gradient(135deg,#2d1060,#6d28d9)', '0 6px 20px rgba(109,40,217,0.3)'],
+              ] as [string,string,string,string,string][]).map(([role,emoji,label,bg,shadow]) => (
+                <button key={role}
+                  onClick={() => setStaffModal(role as 'owner'|'reception'|'doctor')}
+                  className="flex items-center gap-2 font-bold text-[13px] px-4 py-3 rounded-[14px] transition-all duration-200 hover:scale-105 active:scale-95 whitespace-nowrap"
+                  style={{ background: bg, color: '#fff', boxShadow: shadow }}>
+                  <span>{emoji}</span>{label} →
+                </button>
+              ))}
             </div>
           </div>
         </motion.div>
@@ -684,6 +692,15 @@ export default function Home() {
         </div>
         <p className="text-[11px] text-[#CCC] font-light">وكالة تصميم تطبيقات ومواقع احترافية · جميع الحقوق محفوظة ٢٠٢٥</p>
       </div>
+
+      {/* Staff dashboards modal */}
+      {staffModal && (
+        <AppModal
+          open={!!staffModal}
+          onClose={() => setStaffModal(null)}
+          initialRole={staffModal}
+        />
+      )}
     </div>
   );
 }

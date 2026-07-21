@@ -19,6 +19,7 @@ type Mode = 'patient' | 'owner' | 'reception' | 'doctor';
 interface AppModalProps {
   open: boolean;
   onClose: () => void;
+  initialRole?: Mode;
 }
 
 const staffTabs: { id: Mode; label: string; emoji: string }[] = [
@@ -27,10 +28,19 @@ const staffTabs: { id: Mode; label: string; emoji: string }[] = [
   { id: 'doctor',    label: 'الطبيب',    emoji: '🩺' },
 ];
 
-export const AppModal = ({ open, onClose }: AppModalProps) => {
+export const AppModal = ({ open, onClose, initialRole }: AppModalProps) => {
+  const initMode = initialRole ?? 'patient';
   const [activeTab,  setActiveTab]  = useState<ClinicTab>('home');
-  const [mode,       setMode]       = useState<Mode>('patient');
-  const [modeGroup,  setModeGroup]  = useState<'patient' | 'staff'>('patient');
+  const [mode,       setMode]       = useState<Mode>(initMode);
+  const [modeGroup,  setModeGroup]  = useState<'patient' | 'staff'>(initMode === 'patient' ? 'patient' : 'staff');
+
+  // sync when modal re-opens with a different role
+  React.useEffect(() => {
+    if (open && initialRole) {
+      setMode(initialRole);
+      setModeGroup(initialRole === 'patient' ? 'patient' : 'staff');
+    }
+  }, [open, initialRole]);
 
   const switchGroup = (g: 'patient' | 'staff') => {
     setModeGroup(g);
