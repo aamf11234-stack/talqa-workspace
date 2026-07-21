@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Server, Lock, CheckCircle2 } from 'lucide-react';
+import { Server, Lock, CheckCircle2, Shield } from 'lucide-react';
 import { TalqaShield } from './TalqaShield';
 
 export const TrustSection = () => {

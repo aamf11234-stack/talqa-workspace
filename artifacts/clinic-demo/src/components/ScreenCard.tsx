@@ -280,7 +280,7 @@ export function ScreenCard({ theme = 'dark' }: Props) {
             <div className="flex items-start justify-between mb-5">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background:'rgba(0,180,216,0.15)', border:'1px solid rgba(0,180,216,0.2)' }}>
-                  <Shield size={14} style={{ color:'#00B4D8' }}/>
+                  <TalqaShieldSmall size={14} />
                 </div>
                 <div>
                   <p style={{ color:'#00B4D8' }} className="text-[12px] font-bold leading-none">عيادتك</p>

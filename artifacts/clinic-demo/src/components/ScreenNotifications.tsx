@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, FlaskConical, Pill, Shield, Star, Bell, X } from 'lucide-react';
+import { Calendar, FlaskConical, Pill, Star, Bell, X, Shield } from 'lucide-react';
 
 interface Props { theme?: 'dark' | 'light' }
 
