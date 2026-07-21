@@ -386,6 +386,7 @@ export default function App() {
   const [formPhone, setFormPhone]      = useState('');
   const [activityIdx, setActivityIdx]  = useState(0);
   const [showActivity, setShowActivity] = useState(false);
+  const offerCd = useOfferCountdown();
 
   useEffect(() => {
     const dir = lang === 'ar' ? 'rtl' : 'ltr';
@@ -1390,78 +1391,148 @@ export default function App() {
         {/* ════ PRICING + CONTACT FORM ═════════════════════ */}
         <section id="تواصل" className="py-24 px-6 lg:px-12" style={{ borderTop:`1px solid ${GLASSBORDER}` }}>
           <div className="max-w-3xl mx-auto">
+
+            {/* ── Header ── */}
             <Reveal className="text-center mb-10">
-              {/* Scarcity badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-[12px] font-black"
-                style={{ background:'rgba(239,68,68,0.1)', border:'1.5px solid rgba(239,68,68,0.3)', color:'#FCA5A5' }}>
-                <motion.span className="w-2 h-2 rounded-full bg-red-400" animate={{ scale:[1,1.5,1] }} transition={{ duration:1.2, repeat:Infinity }} />
-                {lang==='ar'?'نقبل ٣ عيادات هذا الشهر · تبقّى مكان واحد فقط':'Accepting 3 clinics this month · 1 spot remaining'}
-              </div>
-              <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-4" style={{ color:BLUE }}>
-                {lang==='ar'?'التسعير':'Pricing'}
+              <p className="text-[11px] font-black tracking-[0.35em] uppercase mb-5" style={{ color:BLUE }}>
+                {lang==='ar'?'عرض محدود · ينتهي قريباً':'Limited offer · ending soon'}
               </p>
-              <h2 className="font-black leading-tight mb-4" style={{ fontSize:'clamp(28px,5vw,54px)', letterSpacing:'-0.02em', color:TEXT }}>
-                {lang==='ar'?<>عرض إطلاق<br /><span style={{ color:BLUE }}>محدود المدة.</span></> : <>Launch offer<br /><span style={{ color:BLUE }}>limited time.</span></>}
+              <h2 className="font-black leading-tight mb-3" style={{ fontSize:'clamp(32px,6vw,60px)', letterSpacing:'-0.03em', color:TEXT }}>
+                {lang==='ar'
+                  ?<>ابدأ مشروعك الآن<br /><span style={{ background:'linear-gradient(90deg,#0EA5E9,#38BDF8)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>بأقل من نصف السعر.</span></>
+                  :<>Start now<br /><span style={{ background:'linear-gradient(90deg,#0EA5E9,#38BDF8)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>at less than half price.</span></>}
               </h2>
+              <p className="text-[15px]" style={{ color:MUTED }}>
+                {lang==='ar'?'عرض إطلاق حصري — بعد انتهائه يعود السعر الأصلي ٢٥٬٠٠٠ ريال.':'Exclusive launch price — returns to SAR 25,000 after offer ends.'}
+              </p>
             </Reveal>
 
-            {/* ─ Pricing card ─ */}
-            <Reveal delay={0.08} className="mb-8">
-              <Glass accent={BLUE} style={{ borderRadius:28 }}>
-                <div className="p-8">
+            {/* ── Countdown ── */}
+            <Reveal delay={0.05} className="mb-8">
+              {(() => {
+                const pad = (n:number) => String(n).padStart(2,'0');
+                return (
+                  <div className="flex items-center justify-center gap-2 flex-wrap">
+                    <div className="flex items-center gap-2 px-4 py-2 rounded-[14px]"
+                      style={{ background:'rgba(239,68,68,0.1)', border:'1.5px solid rgba(239,68,68,0.35)' }}>
+                      <motion.span className="w-2 h-2 rounded-full bg-red-400 shrink-0"
+                        animate={{ opacity:[1,0,1] }} transition={{ duration:1, repeat:Infinity }} />
+                      <span className="text-[12px] font-black" style={{ color:'#FCA5A5' }}>
+                        {lang==='ar'?'العرض ينتهي خلال':'Offer ends in'}
+                      </span>
+                    </div>
+                    {[
+                      { v: offerCd.days,  l: lang==='ar'?'يوم':'d'  },
+                      { v: offerCd.hours, l: lang==='ar'?'ساعة':'h' },
+                      { v: offerCd.mins,  l: lang==='ar'?'دقيقة':'m'},
+                      { v: offerCd.secs,  l: lang==='ar'?'ثانية':'s'},
+                    ].map((u,i) => (
+                      <div key={i} className="flex flex-col items-center px-3 py-2 rounded-[12px] min-w-[52px]"
+                        style={{ background:'rgba(255,255,255,0.06)', border:`1px solid ${GLASSBORDER}` }}>
+                        <span className="font-black text-[22px] leading-none tabular-nums" style={{ color:TEXT }}>{pad(u.v)}</span>
+                        <span className="text-[10px] font-semibold mt-0.5" style={{ color:MUTED }}>{u.l}</span>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
+            </Reveal>
 
-                  {/* Price row */}
-                  <div className="flex flex-col sm:flex-row sm:items-end gap-3 mb-8">
+            {/* ── Main pricing card ── */}
+            <Reveal delay={0.1} className="mb-5">
+              <div className="rounded-[28px] overflow-hidden" style={{
+                background:'linear-gradient(135deg,rgba(14,165,233,0.12),rgba(2,132,199,0.06))',
+                border:'2px solid rgba(14,165,233,0.35)',
+                boxShadow:'0 0 60px rgba(14,165,233,0.15)',
+              }}>
+                {/* Top ribbon */}
+                <div className="flex items-center justify-between px-8 py-4"
+                  style={{ background:'linear-gradient(90deg,rgba(14,165,233,0.25),rgba(2,132,199,0.12))', borderBottom:'1px solid rgba(14,165,233,0.2)' }}>
+                  <div className="flex items-center gap-2">
+                    <motion.span className="w-2 h-2 rounded-full bg-[#22C55E]"
+                      animate={{ scale:[1,1.4,1] }} transition={{ duration:1.5, repeat:Infinity }} />
+                    <span className="text-[12px] font-black" style={{ color:'#86EFAC' }}>
+                      {lang==='ar'?'عرض إطلاق تلقا للعيادات':'Talqa Clinics Launch Offer'}
+                    </span>
+                  </div>
+                  <span className="text-[11px] font-black px-3 py-1 rounded-full"
+                    style={{ background:'rgba(239,68,68,0.2)', color:'#FCA5A5', border:'1px solid rgba(239,68,68,0.35)' }}>
+                    {lang==='ar'?'⏳ مكانان متبقيان فقط':'⏳ Only 2 spots left'}
+                  </span>
+                </div>
+
+                <div className="p-8">
+                  {/* Price */}
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 mb-8 pb-8"
+                    style={{ borderBottom:`1px solid rgba(255,255,255,0.08)` }}>
                     <div>
-                      <p className="text-[13px] font-semibold mb-1" style={{ color:MUTED }}>
-                        {lang==='ar'?'السعر الكامل للمنظومة':'Full system price'}
-                      </p>
-                      <div className="flex items-baseline gap-3">
-                        <span className="font-black" style={{ fontSize:'clamp(36px,7vw,64px)', color:TEXT, letterSpacing:'-0.03em' }}>
+                      <div className="flex items-baseline gap-3 mb-2">
+                        <span className="font-black" style={{ fontSize:'clamp(48px,9vw,80px)', color:'#F0F9FF', letterSpacing:'-0.04em', lineHeight:1 }}>
                           ٩٬٢٠٠
                         </span>
-                        <span className="text-[20px] font-black" style={{ color:BLUE }}>ريال</span>
-                        <span className="text-[18px] font-semibold line-through" style={{ color:MUTED }}>٢٥٬٠٠٠</span>
-                        <span className="text-[11px] font-black px-2 py-1 rounded-full" style={{ background:'rgba(34,197,94,0.15)', color:'#22C55E', border:'1px solid rgba(34,197,94,0.3)' }}>
-                          {lang==='ar'?'وفّر ٦٣٪':'Save 63%'}
+                        <span className="text-[22px] font-black" style={{ color:BLUE }}>ريال</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-[16px] font-semibold line-through" style={{ color:'rgba(255,255,255,0.25)' }}>٢٥٬٠٠٠ ريال</span>
+                        <span className="text-[12px] font-black px-2.5 py-1 rounded-full"
+                          style={{ background:'rgba(34,197,94,0.2)', color:'#4ADE80', border:'1px solid rgba(34,197,94,0.4)' }}>
+                          {lang==='ar'?'توفّر ١٥٬٨٠٠ ريال 🎉':'Save SAR 15,800 🎉'}
                         </span>
                       </div>
+                    </div>
+                    <div className="flex flex-col gap-1 sm:text-left text-right">
+                      <span className="text-[11px] font-black tracking-widest uppercase" style={{ color:MUTED }}>
+                        {lang==='ar'?'منظومة متكاملة تشمل':'Complete system includes'}
+                      </span>
+                      {['تطبيق مريض','موقع طبي','لوحة إدارة'].map(it=>(
+                        <span key={it} className="text-[13px] font-bold" style={{ color:'#BAE6FD' }}>✓ {it}</span>
+                      ))}
                     </div>
                   </div>
 
                   {/* Payment options */}
-                  <p className="text-[12px] font-black tracking-widest uppercase mb-4" style={{ color:MUTED }}>
-                    {lang==='ar'?'خيارات الدفع':'Payment options'}
+                  <p className="text-[11px] font-black tracking-widest uppercase mb-4" style={{ color:MUTED }}>
+                    {lang==='ar'?'اختر طريقة الدفع':'Choose payment method'}
                   </p>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
                     {[
                       {
-                        icon:'💰',
-                        title: lang==='ar'?'كامل مقدماً':'Full upfront',
-                        desc:  lang==='ar'?'٩٬٢٠٠ ريال قبل بدء المشروع':'SAR 9,200 before start',
-                        badge: lang==='ar'?'أسرع تسليم':'Fastest delivery',
-                        badgeColor:'#22C55E',
+                        icon:'⚡',
+                        title:  lang==='ar'?'كامل مقدماً':'Full upfront',
+                        amount: lang==='ar'?'٩٬٢٠٠ ريال':'SAR 9,200',
+                        sub:    lang==='ar'?'قبل بدء المشروع':'before project starts',
+                        badge:  lang==='ar'?'أسرع تسليم ✓':'Fastest delivery ✓',
+                        bc:'#22C55E', highlight: false,
                       },
                       {
                         icon:'✂️',
-                        title: lang==='ar'?'نصفين':'50 / 50',
-                        desc:  lang==='ar'?'٤٬٦٠٠ الآن · ٤٬٦٠٠ عند التسليم':'SAR 4,600 now · 4,600 on delivery',
-                        badge: lang==='ar'?'الأكثر شيوعاً':'Most popular',
-                        badgeColor: BLUE,
+                        title:  lang==='ar'?'نصف ونصف':'50 / 50',
+                        amount: lang==='ar'?'٤٬٦٠٠ + ٤٬٦٠٠':'4,600 + 4,600',
+                        sub:    lang==='ar'?'الآن · عند التسليم':'now · on delivery',
+                        badge:  lang==='ar'?'الأكثر طلباً ★':'Most popular ★',
+                        bc: BLUE, highlight: true,
                       },
                       {
                         icon:'📅',
-                        title: lang==='ar'?'تقسيط':'Installments',
-                        desc:  lang==='ar'?'٤٬٦٠٠ الآن · الباقي ٦ أشهر':'SAR 4,600 now · rest in 6 mo',
-                        badge: lang==='ar'?'تابي · تمارا':'Tabby · Tamara',
-                        badgeColor:'#A78BFA',
+                        title:  lang==='ar'?'تقسيط':'Installments',
+                        amount: lang==='ar'?'٤٬٦٠٠ ثم ٧٦٧ × ٦':'4,600 then 767×6',
+                        sub:    lang==='ar'?'الآن · ٦ أشهر بتابي أو تمارا':'now · 6 mo via Tabby/Tamara',
+                        badge:  lang==='ar'?'تابي · تمارا':'Tabby · Tamara',
+                        bc:'#A78BFA', highlight: false,
                       },
                     ].map((opt,i) => (
-                      <div key={i} className="rounded-[18px] p-4" style={{ background:'rgba(255,255,255,0.04)', border:`1.5px solid ${GLASSBORDER}` }}>
-                        <div className="text-[24px] mb-2">{opt.icon}</div>
-                        <p className="font-black text-[14px] mb-1" style={{ color:TEXT }}>{opt.title}</p>
-                        <p className="text-[12px] leading-relaxed mb-3" style={{ color:MUTED }}>{opt.desc}</p>
-                        <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background:`${opt.badgeColor}22`, color:opt.badgeColor, border:`1px solid ${opt.badgeColor}44` }}>
+                      <div key={i} className="rounded-[18px] p-4 transition-all"
+                        style={{
+                          background: opt.highlight ? 'rgba(14,165,233,0.15)' : 'rgba(255,255,255,0.04)',
+                          border: opt.highlight ? `2px solid ${BLUE}` : `1.5px solid rgba(255,255,255,0.08)`,
+                          boxShadow: opt.highlight ? `0 0 24px rgba(14,165,233,0.2)` : 'none',
+                        }}>
+                        <div className="text-[22px] mb-2">{opt.icon}</div>
+                        <p className="font-black text-[15px] mb-1" style={{ color:TEXT }}>{opt.title}</p>
+                        <p className="font-black text-[13px]" style={{ color: opt.highlight?BLUE:'#BAE6FD' }}>{opt.amount}</p>
+                        <p className="text-[11px] mb-3" style={{ color:MUTED }}>{opt.sub}</p>
+                        <span className="text-[10px] font-black px-2 py-0.5 rounded-full"
+                          style={{ background:`${opt.bc}22`, color:opt.bc, border:`1px solid ${opt.bc}55` }}>
                           {opt.badge}
                         </span>
                       </div>
@@ -1469,51 +1540,43 @@ export default function App() {
                   </div>
 
                   {/* Inclusions */}
-                  <p className="text-[12px] font-black tracking-widest uppercase mb-4" style={{ color:MUTED }}>
-                    {lang==='ar'?'ما يشمله العرض':"What's included"}
+                  <p className="text-[11px] font-black tracking-widest uppercase mb-4" style={{ color:MUTED }}>
+                    {lang==='ar'?'ما يشمله العرض — بالتفصيل':"What's included — in detail"}
                   </p>
-                  <div className="space-y-3">
+                  <div className="space-y-2.5">
                     {[
                       {
-                        icon:'🌐',
-                        label: lang==='ar'?'الموقع الطبي':'Medical website',
-                        details: lang==='ar'
-                          ?['استضافة مجانية','دومين مدفوع ٤ سنوات مجاناً']
-                          :['Free hosting','Domain paid 4 years — free'],
-                        free: true,
+                        icon:'🌐', color:'#38BDF8',
+                        label:   lang==='ar'?'الموقع الطبي':'Medical website',
+                        tags:    lang==='ar'?['استضافة مجانية ✓','دومين مجاني ٤ سنوات ✓']:['Free hosting ✓','Free domain 4 yrs ✓'],
+                        tagColor:'#22C55E',
                       },
                       {
-                        icon:'🖥️',
-                        label: lang==='ar'?'لوحة تحكم الملاك والإدارة':'Owner & admin dashboard',
-                        details: lang==='ar'
-                          ?['استضافة مجانية','دومين مجاني']
-                          :['Free hosting','Free domain'],
-                        free: true,
+                        icon:'🖥️', color:'#818CF8',
+                        label:   lang==='ar'?'لوحة تحكم الملاك والاستقبال':'Owner & reception dashboard',
+                        tags:    lang==='ar'?['استضافة مجانية ✓','دومين مجاني ✓']:['Free hosting ✓','Free domain ✓'],
+                        tagColor:'#22C55E',
                       },
                       {
-                        icon:'📱',
-                        label: lang==='ar'?'تطبيق المريض (iOS + Android)':'Patient app (iOS + Android)',
-                        details: lang==='ar'
-                          ?['استضافة · دعم · حماية','٧٩٩ ريال / شهر — يبدأ بعد ٦ أشهر','أول ٦ أشهر مجانية تماماً']
-                          :['Hosting · support · security','SAR 799/mo — starts after 6 months','First 6 months completely free'],
-                        free: false,
-                        note: lang==='ar'?'أول ٦ أشهر مجاني':'First 6 mo free',
+                        icon:'📱', color:'#34D399',
+                        label:   lang==='ar'?'تطبيق المريض — iOS + Android':'Patient app — iOS + Android',
+                        tags:    lang==='ar'?['أول ٦ أشهر مجانية تماماً 🎁','ثم ٧٩٩ ريال/شهر فقط']:['First 6 months completely free 🎁','Then SAR 799/mo only'],
+                        tagColor:'#A78BFA',
                       },
-                    ].map((item,i) => (
-                      <div key={i} className="flex gap-4 p-4 rounded-[16px]" style={{ background:'rgba(255,255,255,0.03)', border:`1px solid ${GLASSBORDER}` }}>
-                        <span className="text-[22px] mt-0.5 shrink-0">{item.icon}</span>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <p className="font-black text-[14px]" style={{ color:TEXT }}>{item.label}</p>
-                            {item.free
-                              ? <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background:'rgba(34,197,94,0.15)', color:'#22C55E', border:'1px solid rgba(34,197,94,0.3)' }}>مجاني</span>
-                              : item.note && <span className="text-[10px] font-black px-2 py-0.5 rounded-full" style={{ background:'rgba(167,139,250,0.15)', color:'#A78BFA', border:'1px solid rgba(167,139,250,0.3)' }}>{item.note}</span>
-                            }
-                          </div>
-                          <div className="flex flex-wrap gap-x-4 gap-y-0.5">
-                            {item.details.map((d,j) => (
-                              <span key={j} className="text-[12px]" style={{ color: j===2&&!item.free?'#22C55E':MUTED }}>
-                                {j===0&&!item.free?'':'✓ '}{d}
+                    ].map((it,i) => (
+                      <div key={i} className="flex items-center gap-4 p-4 rounded-[16px]"
+                        style={{ background:'rgba(255,255,255,0.03)', border:`1px solid rgba(255,255,255,0.07)` }}>
+                        <div className="w-10 h-10 rounded-[12px] flex items-center justify-center text-[20px] shrink-0"
+                          style={{ background:`${it.color}18`, border:`1px solid ${it.color}33` }}>
+                          {it.icon}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-black text-[14px] mb-1.5" style={{ color:TEXT }}>{it.label}</p>
+                          <div className="flex flex-wrap gap-2">
+                            {it.tags.map((tag,j) => (
+                              <span key={j} className="text-[11px] font-bold px-2 py-0.5 rounded-full"
+                                style={{ background:`${it.tagColor}18`, color:it.tagColor, border:`1px solid ${it.tagColor}33` }}>
+                                {tag}
                               </span>
                             ))}
                           </div>
@@ -1522,15 +1585,30 @@ export default function App() {
                     ))}
                   </div>
 
+                  {/* Value summary */}
+                  <div className="mt-6 p-4 rounded-[18px] text-center"
+                    style={{ background:'rgba(34,197,94,0.07)', border:'1.5px solid rgba(34,197,94,0.2)' }}>
+                    <p className="text-[13px] font-black" style={{ color:'#4ADE80' }}>
+                      {lang==='ar'
+                        ?'💡 قيمة المنظومة الكاملة تتجاوز ٦٠٬٠٠٠ ريال — أنت تدفع ٩٬٢٠٠ فقط.'
+                        :'💡 Full system value exceeds SAR 60,000 — you pay only SAR 9,200.'}
+                    </p>
+                  </div>
+
                 </div>
-              </Glass>
+              </div>
             </Reveal>
 
             {/* ─ Contact form ─ */}
-            <Reveal delay={0.15}>
-              <p className="text-center text-[14px] font-semibold mb-6" style={{ color:MUTED }}>
-                {lang==='ar'?'تواصل معنا واحجز عيادتك في العرض الآن':'Contact us and reserve your spot now'}
-              </p>
+            <Reveal delay={0.18}>
+              <div className="text-center mb-5">
+                <p className="text-[16px] font-black mb-1" style={{ color:TEXT }}>
+                  {lang==='ar'?'احجز مكانك الآن قبل انتهاء العرض 👇':'Reserve your spot before the offer ends 👇'}
+                </p>
+                <p className="text-[13px]" style={{ color:MUTED }}>
+                  {lang==='ar'?'أرسل بياناتك ونتواصل معك خلال ٢٤ ساعة بعقد رسمي.':'Send your details and we\'ll reach out within 24h with a formal contract.'}
+                </p>
+              </div>
               <Glass accent={BLUE} style={{ borderRadius:28 }}>
                 <div className="p-8">
                   <div className="space-y-4 mb-6">
