@@ -12,6 +12,49 @@ import { ScreenNotifications }    from '../components/ScreenNotifications';
 import { ScreenPackages }         from '../components/ScreenPackages';
 import { ScreenAI }               from '../components/ScreenAI';
 
+/* ── Apple Wallet Button (landing page) ───────────────────────── */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function WalletBtn({ label, sub, gradient, border, endpoint, filename, body }: {
+  label: string; sub: string; gradient: string; border: string;
+  endpoint: string; filename: string; body: any;
+}) {
+  const [loading, setLoading] = React.useState(false);
+  const [done,    setDone]    = React.useState(false);
+  const handle = async () => {
+    if (loading || done) return;
+    setLoading(true);
+    try {
+      const res = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body) });
+      if (res.ok) {
+        const url = URL.createObjectURL(await res.blob());
+        const a = document.createElement('a'); a.href = url; a.download = filename; a.click();
+        URL.revokeObjectURL(url);
+        setDone(true); setTimeout(() => setDone(false), 3000);
+      }
+    } catch(_) {}
+    setLoading(false);
+  };
+  return (
+    <motion.button whileTap={{ scale:0.97 }} onClick={handle}
+      className="flex items-center gap-3 px-5 py-3 rounded-[16px] w-full sm:w-auto"
+      style={{ background: done ? 'rgba(52,199,89,0.15)' : gradient, border:`1px solid ${done ? 'rgba(52,199,89,0.4)' : border}`, opacity: loading ? 0.7 : 1 }}>
+      {loading ? (
+        <motion.div className="w-4 h-4 rounded-full border-2 border-white/30 border-t-white shrink-0" animate={{ rotate:360 }} transition={{ duration:0.8, repeat:Infinity, ease:'linear' }}/>
+      ) : done ? (
+        <span className="text-[#34C759] text-lg shrink-0">✓</span>
+      ) : (
+        <svg width="13" height="16" viewBox="0 0 17 20" fill="white" className="shrink-0"><path d="M14.1 10.64c-.02-2.04 1.67-3.02 1.74-3.06-0.95-1.39-2.43-1.58-2.95-1.60-1.26-.13-2.46.74-3.10.74-.64 0-1.63-.72-2.68-.70C5.55 6.04 4.05 6.97 3.22 8.36 1.54 11.17 2.80 15.35 4.42 17.65c.80 1.15 1.77 2.45 3.04 2.40 1.22-.05 1.68-.78 3.16-.78 1.47 0 1.89.78 3.18.76 1.31-.02 2.15-1.18 2.94-2.34.93-1.34 1.32-2.64 1.34-2.71-.03-.01-2.57-.99-2.98-3.34zM11.96 3.83c.67-.81 1.12-1.93 1.00-3.06-.96.04-2.13.64-2.82 1.45-.62.71-1.16 1.86-1.01 2.96 1.07.08 2.16-.54 2.83-1.35z"/></svg>
+      )}
+      <div className="text-right">
+        <p className={`font-bold text-[13px] leading-none ${done ? 'text-[#34C759]' : 'text-white'}`}>
+          {done ? 'تمت الإضافة ✓' : loading ? 'جارٍ التحميل…' : label}
+        </p>
+        <p className="text-white/35 text-[10px] mt-0.5">{sub}</p>
+      </div>
+    </motion.button>
+  );
+}
+
 /* ── Face ID Lock Screen ──────────────────────────────────────── */
 function FaceIDScreen({ onUnlock }: { onUnlock: () => void }) {
   const [phase, setPhase] = useState<'idle'|'scanning'|'done'>('idle');
@@ -408,6 +451,28 @@ export default function Home() {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* زرّا Apple Wallet */}
+          <div className="flex flex-col sm:flex-row gap-3 mt-6">
+            <WalletBtn
+              label="هويتي الطبية"
+              sub="بطاقة المريض الرقمية"
+              gradient="linear-gradient(135deg,#000,#1a1a1a)"
+              border="rgba(255,255,255,0.15)"
+              endpoint="/api/wallet/pass"
+              filename="talqa-patient-card.pkpass"
+              body={{ patientName:'اسم المريض', patientId:'PT-001', clinicName:'عيادتك', bloodType:'O+', insurance:'بوبا', daysValid:30 }}
+            />
+            <WalletBtn
+              label="موعدي القادم"
+              sub="بطاقة الحجز الذكية"
+              gradient="linear-gradient(135deg,#1a0533,#2d1060)"
+              border="rgba(147,51,234,0.4)"
+              endpoint="/api/wallet/appointment"
+              filename="talqa-appointment.pkpass"
+              body={{ patientName:'اسم المريض', patientId:'PT-001', doctorName:'د. الطبيب', specialty:'طب عام', clinicName:'عيادتك', apptDate:'الأربعاء، ٢٣ يوليو', apptTime:'١٠:٣٠ ص', roomNumber:'غرفة ١', apptId:'APT-001' }}
+            />
           </div>
         </div>
       </div>
