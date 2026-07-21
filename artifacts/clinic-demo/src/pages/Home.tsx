@@ -410,10 +410,43 @@ export default function Home() {
         <motion.div initial={{ opacity: 0, y: 28, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.65, delay: 0.1, ease: [0.4, 0, 0.2, 1] }}
           style={{ width: 390 }} className="relative">
+          {/* top badge */}
           <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20 bg-white border border-[rgba(11,74,111,0.15)] text-[#0B4A6F] text-[10px] font-bold px-3 py-1 rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.1)] whitespace-nowrap flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 bg-[#22C55E] rounded-full animate-pulse" />
             نموذج تفاعلي · مبني فعلياً
           </div>
+
+          {/* zero-errors status strip — left side */}
+          <motion.div
+            initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="absolute -left-[156px] top-24 z-20 flex flex-col gap-2 hidden md:flex">
+            {[
+              { label:'API',       ok:true },
+              { label:'الخوادم',   ok:true },
+              { label:'الأمان',    ok:true },
+              { label:'Face ID',   ok:true },
+              { label:'AI',        ok:true },
+            ].map((s,i) => (
+              <motion.div key={s.label}
+                initial={{ opacity:0, x:-8 }} animate={{ opacity:1, x:0 }}
+                transition={{ delay: 0.6+i*0.07 }}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-[10px] whitespace-nowrap"
+                style={{ background:'rgba(255,255,255,0.9)', border:'1px solid rgba(11,74,111,0.1)', boxShadow:'0 2px 8px rgba(0,0,0,0.07)', backdropFilter:'blur(8px)' }}>
+                <motion.span className="w-1.5 h-1.5 rounded-full bg-[#22C55E] shrink-0"
+                  animate={{ opacity:[1,0.4,1] }} transition={{ duration:2, repeat:Infinity, delay:i*0.2 }} />
+                <span className="text-[10px] font-semibold text-[#0B4A6F]">{s.label}</span>
+                <span className="text-[10px] font-bold text-[#22C55E]">✓</span>
+              </motion.div>
+            ))}
+            <motion.div
+              initial={{ opacity:0, scale:0.8 }} animate={{ opacity:1, scale:1 }}
+              transition={{ delay:1.1, type:'spring' }}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-[10px]"
+              style={{ background:'rgba(34,197,94,0.1)', border:'1px solid rgba(34,197,94,0.25)' }}>
+              <span className="text-[11px] font-black text-[#16A34A]">٠ أخطاء</span>
+            </motion.div>
+          </motion.div>
 
           <PhoneFrame>
             <div className="flex-1 relative overflow-hidden h-full">

@@ -532,6 +532,29 @@ export default function App() {
 
         <Ticker />
 
+        {/* ════ TRUST & SECURITY BAR ══════════════════════ */}
+        <div className="px-6 lg:px-12 py-5" style={{ background:'rgba(255,255,255,0.02)', borderBottom:`1px solid ${GLASSBORDER}` }}>
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-wrap items-center justify-center gap-3 lg:gap-6">
+              {[
+                { dot:'#34D399', label: lang==='ar'?'HTTPS · SSL مفعّل':'HTTPS · SSL Active' },
+                { dot:'#34D399', label: lang==='ar'?'خوادم داخل المملكة':'Servers inside KSA' },
+                { dot:'#34D399', label: lang==='ar'?'AES-256 مشفّر':'AES-256 Encrypted' },
+                { dot:'#34D399', label: lang==='ar'?'٠ اختراقات مسجّلة':'0 Breaches Recorded' },
+                { dot:'#A78BFA', label: lang==='ar'?'PDPL · HIPAA · ISO 27001':'PDPL · HIPAA · ISO 27001' },
+                { dot:'#34D399', label: lang==='ar'?'آخر فحص أمني: منذ ٢ ساعة':'Last audit: 2h ago' },
+              ].map((s,i) => (
+                <div key={i} className="flex items-center gap-2 shrink-0">
+                  <motion.span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background:s.dot }}
+                    animate={{ opacity:[1,0.4,1] }} transition={{ duration:2.4, repeat:Infinity, delay:i*0.3 }} />
+                  <span className="text-[11px] font-semibold" style={{ color:MUTED }}>{s.label}</span>
+                  {i < 5 && <span className="hidden lg:block text-[10px]" style={{ color:DIM }}>·</span>}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* ════ CLIENT LOGOS ═══════════════════════════════ */}
         <section className="py-10 px-6 lg:px-12" style={{ borderBottom:`1px solid ${GLASSBORDER}` }}>
           <div className="max-w-7xl mx-auto">

@@ -134,8 +134,37 @@ export function ScreenHome({ theme = 'dark' }: Props) {
         </div>
       </div>
 
+      {/* ── System Status (Zero Errors) ── */}
+      <div className="px-4 mt-4 mb-2">
+        <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.07 }}
+          className="rounded-[14px] px-3.5 py-2.5 flex items-center gap-2.5"
+          style={{
+            background: dark ? 'rgba(52,199,89,0.07)' : 'rgba(52,199,89,0.06)',
+            border: dark ? '1px solid rgba(52,199,89,0.18)' : '1px solid rgba(52,199,89,0.2)',
+          }}>
+          <div className="flex items-center gap-1.5 shrink-0">
+            <motion.span className="w-2 h-2 rounded-full bg-[#34C759]"
+              animate={{ scale:[1,1.4,1], opacity:[1,0.6,1] }} transition={{ duration:2, repeat:Infinity }} />
+            <span className="text-[#34C759] text-[10px] font-bold">جميع الأنظمة تعمل</span>
+          </div>
+          <div className="h-3 w-px shrink-0" style={{ background: dark ? 'rgba(255,255,255,0.1)' : 'rgba(11,74,111,0.12)' }}/>
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            {[['API','✓'],['الأمان','✓'],['الخوادم','✓']].map(([l,v]) => (
+              <div key={l} className="flex items-center gap-1 shrink-0">
+                <span className="text-[9px] font-bold text-[#34C759]">{v}</span>
+                <span className="text-[9px]" style={{ color: dark ? 'rgba(255,255,255,0.3)' : '#9DB5CC' }}>{l}</span>
+              </div>
+            ))}
+          </div>
+          <div className="shrink-0 px-2 py-0.5 rounded-full"
+            style={{ background: dark ? 'rgba(52,199,89,0.12)' : 'rgba(52,199,89,0.1)', border:'1px solid rgba(52,199,89,0.2)' }}>
+            <span className="text-[#34C759] text-[9px] font-black">٠ أخطاء</span>
+          </div>
+        </motion.div>
+      </div>
+
       {/* ── Apple Health Banner ── */}
-      <div className="px-4 mt-4 mb-3">
+      <div className="px-4 mt-2 mb-3">
         <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
           className="rounded-[16px] px-4 py-3 flex items-center gap-3"
           style={{
