@@ -1654,6 +1654,87 @@ export default function App() {
           </div>
         </section>
 
+        {/* ════ BET / GUARANTEE ═══════════════════════════ */}
+        <section className="py-20 px-6 lg:px-12">
+          <div className="max-w-3xl mx-auto">
+            <Reveal>
+              <div className="relative rounded-[32px] overflow-hidden p-10 sm:p-14"
+                style={{ background:'linear-gradient(135deg,rgba(14,165,233,0.1) 0%,rgba(2,132,199,0.04) 100%)', border:'2px solid rgba(14,165,233,0.25)', boxShadow:'0 0 80px rgba(14,165,233,0.08)' }}>
+
+                {/* background word */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden" aria-hidden>
+                  <span className="font-black text-[clamp(80px,18vw,180px)] opacity-[0.04] whitespace-nowrap"
+                    style={{ color:BLUE, letterSpacing:'-0.04em' }}>
+                    {lang==='ar'?'رهان':'BET'}
+                  </span>
+                </div>
+
+                <div className="relative z-10">
+                  {/* eyebrow */}
+                  <p className="text-[11px] font-black tracking-[0.35em] uppercase mb-6" style={{ color:BLUE }}>
+                    {lang==='ar'?'ضمان تلقا':'Talqa Guarantee'}
+                  </p>
+
+                  {/* headline */}
+                  <h2 className="font-black leading-[1.1] mb-8"
+                    style={{ fontSize:'clamp(28px,5.5vw,52px)', letterSpacing:'-0.03em', color:TEXT }}>
+                    {lang==='ar'
+                      ? <>نراهن أن عيادتك<br /><span style={{ color:BLUE }}>ستلاحظ الفرق في ٣٠ يوماً.</span></>
+                      : <>We bet your clinic<br /><span style={{ color:BLUE }}>feels the difference in 30 days.</span></>}
+                  </h2>
+
+                  {/* bet items */}
+                  <div className="space-y-4 mb-10">
+                    {(lang==='ar' ? [
+                      { label:'إذا لم يُسلَّم مشروعك في الوقت المحدد',   outcome:'نرجّع لك ١٠٪ من قيمة المشروع عن كل أسبوع تأخير.' },
+                      { label:'إذا لم تكن راضياً عن التصميم بعد أسبوعين', outcome:'نعيد التصميم بالكامل بدون أي تكلفة إضافية.' },
+                      { label:'إذا واجه تطبيقك عطلاً تقنياً بعد الإطلاق',  outcome:'نصلح المشكلة خلال ٢٤ ساعة أو نردّ رسوم الشهر.' },
+                    ] : [
+                      { label:'If your project isn\'t delivered on time',       outcome:'We refund 10% of the project value per delayed week.' },
+                      { label:'If you\'re not satisfied with the design in 2 weeks', outcome:'We redo it entirely at no extra charge.' },
+                      { label:'If your app has a technical outage post-launch',  outcome:'We fix it within 24h or refund that month\'s fee.' },
+                    ]).map((item, i) => (
+                      <motion.div key={i}
+                        initial={{ opacity:0, x: lang==='ar'?16:-16 }}
+                        whileInView={{ opacity:1, x:0 }}
+                        viewport={{ once:true }}
+                        transition={{ delay: i*0.1, duration:0.4 }}
+                        className="flex gap-5 items-start">
+                        {/* index */}
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5 font-black text-[13px]"
+                          style={{ background:'rgba(14,165,233,0.15)', border:'1.5px solid rgba(14,165,233,0.3)', color:BLUE }}>
+                          {i+1}
+                        </div>
+                        <div>
+                          <p className="font-black text-[15px] mb-1" style={{ color:TEXT }}>{item.label}</p>
+                          <p className="text-[13px] leading-relaxed" style={{ color:MUTED }}>{item.outcome}</p>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* bottom line */}
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 pt-8"
+                    style={{ borderTop:'1px solid rgba(255,255,255,0.08)' }}>
+                    <p className="text-[13px] leading-relaxed flex-1" style={{ color:MUTED }}>
+                      {lang==='ar'
+                        ?'لأننا واثقون من جودة عملنا — نضع شروطنا في العقد الرسمي. لا وعود شفهية.'
+                        :'Because we\'re confident in our work — these terms go in the official contract. No verbal promises.'}
+                    </p>
+                    <motion.a whileHover={{ scale:1.03 }} whileTap={{ scale:0.97 }}
+                      href="#تواصل"
+                      className="shrink-0 px-7 py-3 rounded-[14px] font-black text-[14px] text-white"
+                      style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 6px 24px ${BLUE}40` }}>
+                      {lang==='ar'?'ابدأ معنا الآن':'Start with us now'}
+                    </motion.a>
+                  </div>
+
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
         {/* ════ FAQ ════════════════════════════════════════ */}
         <section className="py-24 px-6 lg:px-12">
           <div className="max-w-3xl mx-auto">
