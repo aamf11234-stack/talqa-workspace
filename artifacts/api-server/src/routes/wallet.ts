@@ -67,6 +67,8 @@ const STRIP_CARD    = readFileSync(join(ASSETS, "strip_card.png"));
 const STRIP_CARD_2X = readFileSync(join(ASSETS, "strip_card@2x.png"));
 const STRIP_APPT    = readFileSync(join(ASSETS, "strip_appt.png"));
 const STRIP_APPT_2X = readFileSync(join(ASSETS, "strip_appt@2x.png"));
+const BG_APPT       = readFileSync(join(ASSETS, "appt_bg.png"));
+const BG_APPT_2X    = readFileSync(join(ASSETS, "appt_bg@2x.png"));
 
 /* ── Icons ──────────────────────────────────────────────── */
 
@@ -225,35 +227,30 @@ router.post("/appointment", async (req, res) => {
     description:        `موعد طبي — ${String(doctorName)}`,
     logoText:           String(clinicName),
 
-    /* ── Boarding Pass: أخضر طبي راقي ── */
-    backgroundColor: "rgb(3, 32, 24)",
+    /* ── Event Ticket: بنفسجي فاخر مع خلفية AI ── */
+    backgroundColor: "rgb(10, 4, 28)",
     foregroundColor: "rgb(255, 255, 255)",
-    labelColor:      "rgb(52, 199, 89)",
+    labelColor:      "rgb(180, 160, 255)",
 
     expirationDate: expiry.toISOString(),
 
-    boardingPass: {
-      transitType: "PKTransitTypeGeneric",
-
-      /* المريض على اليسار، الطبيب على اليمين — مثل بطاقة الصعود */
-      headerFields: [
-        { key: "time", label: "وقت الموعد", value: String(apptTime), textAlignment: "PKTextAlignmentRight" },
-      ],
+    eventTicket: {
       primaryFields: [
-        { key: "patient", label: "المريض",     value: String(patientName), textAlignment: "PKTextAlignmentLeft" },
-        { key: "doctor",  label: "الطبيب",      value: String(doctorName),  textAlignment: "PKTextAlignmentRight" },
+        { key: "doctor", label: "الطبيب المعالج", value: String(doctorName) },
       ],
       secondaryFields: [
-        { key: "date",     label: "التاريخ",      value: String(apptDate),   textAlignment: "PKTextAlignmentLeft" },
-        { key: "room",     label: "الغرفة",        value: String(roomNumber), textAlignment: "PKTextAlignmentRight" },
+        { key: "date",    label: "التاريخ",     value: String(apptDate),   textAlignment: "PKTextAlignmentLeft" },
+        { key: "time",    label: "الوقت",        value: String(apptTime),   textAlignment: "PKTextAlignmentRight" },
       ],
       auxiliaryFields: [
-        { key: "specialty", label: "التخصص",       value: String(specialty),  textAlignment: "PKTextAlignmentLeft" },
-        { key: "id",        label: "رقم الموعد",   value: String(apptId),     textAlignment: "PKTextAlignmentRight" },
+        { key: "specialty", label: "التخصص",     value: String(specialty),  textAlignment: "PKTextAlignmentLeft" },
+        { key: "room",      label: "الغرفة",      value: String(roomNumber), textAlignment: "PKTextAlignmentRight" },
       ],
       backFields: [
+        { key: "patient", label: "المريض",          value: String(patientName) },
         { key: "clinic",  label: "العيادة",          value: String(clinicName) },
-        { key: "note",    label: "تعليمات",           value: "يرجى الحضور قبل ١٥ دقيقة من موعدك. أحضر هويتك وبطاقة التأمين." },
+        { key: "id",      label: "رقم الموعد",       value: String(apptId) },
+        { key: "note",    label: "تعليمات",           value: "يرجى الحضور قبل ١٥ دقيقة. أحضر هويتك وبطاقة التأمين." },
         { key: "cancel",  label: "إلغاء أو تغيير",   value: "تواصل مع الاستقبال قبل ٢٤ ساعة على الأقل." },
         { key: "app",     label: "تطبيق العيادة",    value: "clinic.tlgaads.com/clinic-demo/" },
       ],
@@ -269,8 +266,10 @@ router.post("/appointment", async (req, res) => {
 
   try {
     await buildPass(passJson, `talqa-appointment-${apptId}.pkpass`, certs, res, {
-      "strip.png":    STRIP_APPT,
-      "strip@2x.png": STRIP_APPT_2X,
+      "background.png":    BG_APPT,
+      "background@2x.png": BG_APPT_2X,
+      "strip.png":         STRIP_APPT,
+      "strip@2x.png":      STRIP_APPT_2X,
     });
     logger.info({ apptId, patientName, doctorName }, "appointment pass generated ok");
   } catch (err) {
