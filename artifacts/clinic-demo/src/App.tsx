@@ -11,28 +11,28 @@ import DoctorDashboard from './pages/DoctorDashboard';
 const queryClient = new QueryClient();
 
 function Router() {
-  return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/owner" component={OwnerDashboard} />
-      <Route path="/reception" component={ReceptionDashboard} />
-      <Route path="/doctor" component={DoctorDashboard} />
-      <Route component={NotFound} />
-    </Switch>
-  );
+ return (
+ <Switch>
+ <Route path="/" component={Home} />
+ <Route path="/owner" component={OwnerDashboard} />
+ <Route path="/reception" component={ReceptionDashboard} />
+ <Route path="/doctor" component={DoctorDashboard} />
+ <Route component={NotFound} />
+ </Switch>
+ );
 }
 
 function App() {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-          <Router />
-        </WouterRouter>
-        <Toaster />
-      </TooltipProvider>
-    </QueryClientProvider>
-  );
+ return (
+ <QueryClientProvider client={queryClient}>
+ <TooltipProvider>
+ <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+ <Router />
+ </WouterRouter>
+ <Toaster />
+ </TooltipProvider>
+ </QueryClientProvider>
+ );
 }
 
 export default App;
