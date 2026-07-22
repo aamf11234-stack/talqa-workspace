@@ -174,13 +174,30 @@ function BookSheet({ pkg, onClose, dark }: { pkg:typeof packages[0]; onClose:()=
  ))}
  </div>
 
- <div className="px-5 pb-8">
- <motion.button whileTap={{ scale:0.97 }} onClick={() => { setBooked(true); setTimeout(onClose, 2500); }}
- className="w-full py-4 rounded-[18px] text-white font-black text-[14px]"
- style={{ background:`linear-gradient(135deg,${pkg.color},${pkg.color}CC)`, boxShadow:`0 8px 24px ${pkg.color}40` }}>
- احجز الجلسة القادمة ←
- </motion.button>
- </div>
+  <div className="px-5 pb-2">
+  <p className="text-[10px] font-bold mb-2 text-center" style={{ color:txtSub }}>ادفع بعدين بدون فوائد</p>
+  <div className="flex gap-2">
+  {[
+    { src: '/clinic-demo/tabby.webp',  alt: 'Tabby'  },
+    { src: '/clinic-demo/tamara.jpeg', alt: 'تمارا' },
+  ].map(({ src, alt }) => (
+    <button key={alt}
+    className="flex-1 flex items-center justify-center py-2.5 rounded-[14px] transition-all active:scale-95"
+    style={{ background: dark ? 'rgba(255,255,255,0.06)' : '#F8F9FC',
+             border: `1px solid ${dark ? 'rgba(255,255,255,0.1)' : 'rgba(11,74,111,0.1)'}` }}>
+    <img src={src} alt={alt} className="h-6 object-contain" />
+    </button>
+  ))}
+  </div>
+  </div>
+
+  <div className="px-5 pb-8 pt-3">
+  <motion.button whileTap={{ scale:0.97 }} onClick={() => { setBooked(true); setTimeout(onClose, 2500); }}
+  className="w-full py-4 rounded-[18px] text-white font-black text-[14px]"
+  style={{ background:`linear-gradient(135deg,${pkg.color},${pkg.color}CC)`, boxShadow:`0 8px 24px ${pkg.color}40` }}>
+  احجز الجلسة القادمة ←
+  </motion.button>
+  </div>
  </>
  )}
  </motion.div>

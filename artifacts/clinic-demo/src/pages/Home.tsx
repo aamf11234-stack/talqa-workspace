@@ -472,7 +472,7 @@ export default function Home() {
  {/* Face ID overlay */}
  <AnimatePresence>
  {showFaceID && (
- <FaceIDScreen onUnlock={() => setShowFaceID(false)} />
+ <FaceIDScreen onUnlock={() => { setShowFaceID(false); setTourStep(1); }} />
  )}
  </AnimatePresence>
 
@@ -965,14 +965,20 @@ export default function Home() {
  </div>
  <p className="text-[11px] text-[#CCC] font-light">وكالة تصميم تطبيقات ومواقع احترافية · جميع الحقوق محفوظة ٢٠٢٦</p>
 
- {/* Commercial Registration Badge */}
- <div className="inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-full border border-[#E8F4F8] bg-[#F5FBFF]">
- <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0B4A6F" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
- <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
- <polyline points="22 4 12 14.01 9 11.01"/>
- </svg>
- <span className="text-[11px] text-[#0B4A6F] font-semibold">مؤسسة تلقا · سجل تجاري: 7054835322</span>
- </div>
+  {/* Commercial Registration Badge */}
+  <div className="inline-flex items-center gap-3 mt-4 px-5 py-3 rounded-[16px]"
+  style={{ background:'#F0F8FF', border:'2px solid rgba(11,74,111,0.15)', boxShadow:'0 2px 12px rgba(11,74,111,0.08)' }}>
+  <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+  style={{ background:'rgba(11,74,111,0.1)' }}>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0B4A6F" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+  </svg>
+  </div>
+  <div className="text-right">
+  <p className="text-[12px] font-black text-[#0B4A6F]">مؤسسة تلقا</p>
+  <p className="text-[10px] text-[#5B7A9A] font-semibold">سجل تجاري: 7054835322</p>
+  </div>
+  </div>
  </div>
 
  {/* Staff dashboards modal */}

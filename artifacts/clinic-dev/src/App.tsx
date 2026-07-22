@@ -1637,10 +1637,17 @@ export default function App() {
  <p className="font-black text-[15px] mb-1" style={{ color:TEXT }}>{opt.title}</p>
  <p className="font-black text-[13px]" style={{ color: opt.highlight?BLUE:'#BAE6FD' }}>{opt.amount}</p>
  <p className="text-[11px] mb-3" style={{ color:MUTED }}>{opt.sub}</p>
- <span className="text-[10px] font-black px-2 py-0.5 rounded-full"
- style={{ background:`${opt.bc}22`, color:opt.bc, border:`1px solid ${opt.bc}55` }}>
- {opt.badge}
- </span>
+  {i === 2 ? (
+  <div className="flex items-center gap-1.5 mt-1">
+  <img src="/tabby.webp"  alt="Tabby"  className="h-5 object-contain rounded-md" style={{ background:'#3DFFA0', padding:'1px 4px', borderRadius:6 }} />
+  <img src="/tamara.jpeg" alt="تمارا" className="h-5 object-contain rounded-md" />
+  </div>
+  ) : (
+  <span className="text-[10px] font-black px-2 py-0.5 rounded-full"
+  style={{ background:`${opt.bc}22`, color:opt.bc, border:`1px solid ${opt.bc}55` }}>
+  {opt.badge}
+  </span>
+  )}
  </div>
  ))}
  </div>
@@ -1745,7 +1752,7 @@ export default function App() {
  boxShadow: formName && formPhone ? `0 8px 32px ${BLUE}40` : 'none',
  color: formName && formPhone ? '#fff' : MUTED,
  cursor: formName && formPhone ? 'pointer' : 'default' }}>
- {lang==='ar'?'أرسل طلبك — وسنتواصل خلال ٢٤ ساعة':'Send request — we reply within 24 hours'}
+  {formSent==='done'?(lang==='ar'?'تم الإرسال — سنتواصل معك قريباً':'Sent — we\'ll be in touch'):formSent==='sending'?(lang==='ar'?'جاري الإرسال...':'Sending...'):(lang==='ar'?'أرسل طلبك — وسنتواصل خلال ٢٤ ساعة':'Send request — we reply within 24 hours')}
  </motion.button>
 
  <p className="text-[11px] text-center mt-4" style={{ color:DIM }}>
