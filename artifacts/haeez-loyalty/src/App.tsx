@@ -49,25 +49,25 @@ function PlayBadge() {
 
 /* ── Pillars ──────────────────────────────────────────────────────── */
 const pillars = [
-  { icon: '📱', title: 'تطبيق موبايل',      sub: 'iOS + Android',       desc: 'تجربة عضوية كاملة في جيب ضيفك',      bg: 'linear-gradient(145deg,#0D0205,#3D0809,#0D0205)' },
-  { icon: '🌐', title: 'موقع إلكتروني',     sub: 'متجاوب · سريع',      desc: 'منيو + حجوزات + ولاء عبر الويب',      bg: 'linear-gradient(145deg,#0A0A0A,#1E1E1E,#0A0A0A)' },
-  { icon: '💳', title: 'Apple & Google Wallet', sub: 'بطاقة رقمية دائمة', desc: 'تعمل بلا إنترنت · تحديث آني',       bg: 'linear-gradient(145deg,#0A0800,#2E2000,#0A0800)' },
-  { icon: '👥', title: 'مجتمع وتحديات',    sub: '١,٥٠٠+ عضو',         desc: 'منصة اجتماعية داخل التطبيق',          bg: 'linear-gradient(145deg,#040D08,#0D2814,#040D08)' },
+  { icon: '📱', title: 'تطبيق موبايل',        sub: 'iOS + Android',        desc: 'تجربة زبون كاملة في جيبه',             bg: 'linear-gradient(145deg,#0D0205,#3D0809,#0D0205)' },
+  { icon: '💬', title: 'طلب عبر واتساب',      sub: 'بدون تحميل أي شيء',   desc: 'قائمة تفاعلية مباشرة على واتساب',       bg: 'linear-gradient(145deg,#0A0A0A,#1A2E1A,#0A0A0A)' },
+  { icon: '💳', title: 'Apple & Google Wallet', sub: 'بطاقة رقمية دائمة',  desc: 'تظهر على شاشة القفل تلقائياً',          bg: 'linear-gradient(145deg,#0A0800,#2E2000,#0A0800)' },
+  { icon: '📊', title: 'تقرير أسبوعي',        sub: 'كل أحد على واتساب',   desc: 'أعداد الزبائن والأطباق والإيراد',        bg: 'linear-gradient(145deg,#040D08,#0D2814,#040D08)' },
 ];
 
 const allFeatures = [
-  { icon: '🪪', title: 'بطاقة عضوية رقمية',    desc: 'QR فوري بدون بطاقة ورقية'         },
-  { icon: '🏆', title: 'نظام نقاط ومستويات',   desc: 'كلاسيك · فضي · ذهبي'             },
-  { icon: '🔔', title: 'إشعارات فورية ذكية',   desc: 'عروض وهدايا وتذكيرات شخصية'      },
-  { icon: '📅', title: 'حجز طاولات مباشر',     desc: 'تأكيد فوري + واتساب'             },
-  { icon: '🎁', title: 'إهداء أصدقاء',         desc: 'أرسل كوب أو نقاط لصديق'          },
-  { icon: '⌚', title: 'Apple Watch',           desc: 'نقاطك ومستواك على معصمك'          },
-  { icon: '💳', title: 'Apple & Google Wallet', desc: 'بلا إنترنت · تحديث آني'         },
-  { icon: '📊', title: 'لوحة تحليلات للإدارة', desc: 'أعضاء · زيارات · إيرادات'       },
-  { icon: '🌐', title: 'موقع إلكتروني كامل',   desc: 'منيو + حجوزات + ولاء'           },
-  { icon: '📱', title: 'تطبيق iOS + Android',  desc: 'نشر على المتجرين الرسميين'        },
-  { icon: '🎁', title: 'عروض وأكواد حصرية',   desc: 'جدولة تلقائية + قياس الأثر'     },
-  { icon: '☕', title: 'منيو رقمي تفاعلي',     desc: 'يُحدَّث لحظياً · أسعار دقيقة'   },
+  { icon: '💬', title: 'طلب عبر واتساب',         desc: 'بدون تطبيق — قائمة تفاعلية مباشرة'  },
+  { icon: '💳', title: 'Apple & Google Wallet',   desc: 'بطاقة النقاط على شاشة القفل تلقائياً' },
+  { icon: '📍', title: 'زبون راح ولا رجع؟',      desc: 'لوحة تحليل الزبائن الغائبين +٣٠ يوم' },
+  { icon: '⚡', title: 'حجز طاولة بـ١٠ ثواني',  desc: 'من إنستقرام مباشرة · تأكيد فوري'      },
+  { icon: '✏️', title: 'قائمة تتغير بضغطة',      desc: 'غيّر الأسعار والصور بدون مبرمج'       },
+  { icon: '🔗', title: 'زبون يجيب زبون',          desc: 'كود إحالة خاص لكل زبون — نقاط تلقائية' },
+  { icon: '📩', title: 'تقرير أسبوعي واتساب',    desc: 'كل أحد: زبائن جدد، عودة، أكثر طبق'   },
+  { icon: '🌙', title: 'دعم عربي ٢٤/٧',          desc: 'رد بالعربي في أي وقت — مش بكرة'       },
+  { icon: '🚀', title: 'إطلاق في ٧ أيام',        desc: 'مضمون أو ترجع فلوسك كاملة'            },
+  { icon: '🔒', title: 'سعر ثابت للأبد',          desc: '٤٩٩ ريال للأوائل — لا يرتفع أبداً'   },
+  { icon: '🏆', title: 'نظام نقاط ومستويات',     desc: 'كلاسيك · فضي · ذهبي'                 },
+  { icon: '📱', title: 'تطبيق iOS + Android',    desc: 'نشر على المتجرين الرسميين'             },
 ];
 
 /* ── ROI Calculator ───────────────────────────────────────────────── */
@@ -76,7 +76,7 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
   const [spend, setSpend] = React.useState(45);
   const retention = 0.15;
   const monthly = Math.round(customers * spend * 30 * retention);
-  const weeks = Math.round((18000 / monthly) * 4.3);
+  const weeks = Math.round((3000 / monthly) * 4.3);
 
   const inner = (
     <>
@@ -87,10 +87,10 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
             <span className="text-[10px] font-black tracking-[0.2em] text-[#7B1618]">حاسبة العائد على الاستثمار</span>
           </div>
           <h2 className="text-[24px] font-bold text-[#111] leading-tight mb-2">
-            الـ ١٨,٠٠٠ ريال تسترجعها <span className="text-[#7B1618]">في أسابيع</span>
+            الـ ٣,٠٠٠ ريال تسترجعها <span className="text-[#7B1618]">في أسابيع</span>
           </h2>
           <p className="text-[13px] text-[#555] leading-relaxed mb-4">
-            التطبيق يخلي زبائنك يرجعون بشكل أكثر — حتى لو بنسبة <strong>١٥٪ فقط</strong> زيادة في الزيارات، الأرقام تتكلم وحدها.
+            المنظومة تخلي زبائنك يرجعون أكثر — حتى لو بنسبة <strong>١٥٪ فقط</strong> زيادة في الزيارات، الأرقام تتكلم وحدها.
           </p>
           <div className="flex gap-2.5">
             {[
@@ -184,61 +184,61 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
 const notifs = [
   {
     id: 1,
-    app: 'حيز',
+    app: 'مطعمك',
     icon: '🎂',
     iconBg: 'linear-gradient(135deg,#7B1618,#C9956A)',
     time: 'الآن',
     title: 'عيد ميلادك اليوم! 🎉',
-    body: 'كوب مجاني في انتظارك — هدية حيز لك في يومك الخاص',
+    body: 'وجبة مجانية في انتظارك — هدية من مطعمك في يومك الخاص',
     accent: '#C9956A',
   },
   {
     id: 2,
-    app: 'حيز',
-    icon: '🌤️',
+    app: 'مطعمك',
+    icon: '⚡',
     iconBg: 'linear-gradient(135deg,#1A5276,#2980B9)',
     time: 'منذ دقيقة',
-    title: 'الجو اليوم في أبها حلو 🏔️',
-    body: '١٨° مئوية ومشمس — جلستك المفضلة على السطح تنتظرك',
+    title: 'طلبك في الطريق! 🛵',
+    body: 'سيصل خلال ١٥ دقيقة — تتبع طلبك الآن من التطبيق',
     accent: '#2980B9',
   },
   {
     id: 3,
-    app: 'حيز',
+    app: 'مطعمك',
     icon: '⭐',
     iconBg: 'linear-gradient(135deg,#C9956A,#E8C4A0)',
     time: 'منذ ٣ دقائق',
     title: '+٢٥ نقطة أُضيفت لرصيدك',
-    body: 'زيارة الرابعة هذا الأسبوع — ٣ أكواب فقط للمستوى الفضي',
+    body: 'زيارتك الرابعة هذا الأسبوع — وجبة مجانية بعد ٣ زيارات فقط',
     accent: '#C9956A',
   },
   {
     id: 4,
-    app: 'حيز',
+    app: 'مطعمك',
     icon: '🏆',
     iconBg: 'linear-gradient(135deg,#117A65,#2D7D46)',
     time: 'منذ ١٠ دقائق',
-    title: 'وصلت المستوى الفضي! 🥈',
-    body: 'مبروك — خصم ١٠٪ دائم وأولوية الحجز من الآن',
+    title: 'وصلت المستوى الذهبي! 🥇',
+    body: 'مبروك — خصم ١٥٪ دائم وأولوية الحجز من الآن',
     accent: '#2D7D46',
   },
   {
     id: 5,
-    app: 'حيز',
-    icon: '☕',
+    app: 'مطعمك',
+    icon: '🍽️',
     iconBg: 'linear-gradient(135deg,#3D0809,#7B1618)',
     time: 'منذ ٢٠ دقيقة',
-    title: 'محصول اليوم: إثيوبيا يرقاشيفي',
-    body: 'حموضة ناعمة ورائحة زهرية — كميات محدودة اليوم فقط',
+    title: 'طبق اليوم: كبسة الجمبري 🦐',
+    body: 'طُبخت للتو — احجز طاولة قبل ما تنتهي',
     accent: '#7B1618',
   },
   {
     id: 6,
-    app: 'حيز',
+    app: 'مطعمك',
     icon: '📍',
     iconBg: 'linear-gradient(135deg,#6C3483,#9B59B6)',
     time: 'منذ ساعة',
-    title: 'اقتربت من حيز 📍',
+    title: 'اقتربت من مطعمك 📍',
     body: 'أنت على بُعد ٥ دقائق — طاولتك المفضلة متاحة الآن',
     accent: '#9B59B6',
   },
@@ -270,7 +270,7 @@ function NotificationsShowcase() {
       {/* Header */}
       <div className="text-center mb-8">
         <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1.5">إشعارات ذكية</p>
-        <h2 className="text-[24px] font-bold text-[#111]">حيز يعرف متى يتكلم</h2>
+        <h2 className="text-[24px] font-bold text-[#111]">تطبيقك يعرف متى يتكلم</h2>
         <p className="text-[13px] text-[#AAA] font-light mt-2">إشعارات تصل في اللحظة الصح — مش مجرد رسائل عشوائية</p>
       </div>
 
@@ -356,7 +356,7 @@ function NotificationsShowcase() {
 
       {/* Caption */}
       <p className="text-center text-[11px] text-[#BBB] font-light mt-5">
-        كل إشعار له سبب ← يوم الميلاد · الجو · نقاطك · قربك من حيز
+        كل إشعار له سبب ← يوم الميلاد · طلبك · نقاطك · قربك من مطعمك
       </p>
     </div>
   );
@@ -543,7 +543,7 @@ export default function App() {
             </div>
             <span className="text-[14px] font-bold text-[#111]">تلقا تك</span>
           </div>
-          <span className="text-[11px] text-[#AAA] font-light hidden sm:block">تصميم تطبيقات ومواقع احترافية · أبها</span>
+          <span className="text-[11px] text-[#AAA] font-light hidden sm:block">منظومة رقمية للمطاعم والكافيهات · المملكة</span>
           <a href="https://wa.me/966" target="_blank" rel="noopener noreferrer"
             className="text-[11px] font-semibold text-[#7B1618] border border-[rgba(123,22,24,0.2)] px-3.5 py-1.5 rounded-full hover:bg-[#7B1618]/5 transition-colors">
             تواصل الآن
@@ -574,16 +574,16 @@ export default function App() {
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <span className="inline-flex items-center gap-2 bg-[#7B1618] text-[#C9956A] text-[11px] font-semibold px-4 py-1.5 rounded-full mb-4 tracking-widest shadow-[0_4px_20px_rgba(123,22,24,0.35)]">
             <span className="w-1.5 h-1.5 bg-[#C9956A] rounded-full animate-pulse" />
-            عرض حصري · حيز كافيه · أبها
+            عرض حصري · مطاعم وكافيهات · المملكة
           </span>
           <h1 className="text-[34px] md:text-[44px] font-bold text-[#111] leading-tight mb-3 tracking-tight">
-            منصة <span className="text-[#7B1618]">حيز</span> الرقمية الكاملة
+            <span className="text-[#7B1618]">مطعمك</span> يستحق منظومة رقمية كاملة
           </h1>
           <p className="text-[22px] md:text-[28px] font-light text-[#666] mb-4 leading-relaxed">
-            تطبيق · موقع · محفظة · مجتمع · حجوزات
+            تطبيق · واتساب · محفظة · حجوزات · تقارير
           </p>
           <p className="text-[13px] text-[#888] font-light max-w-sm mx-auto leading-relaxed">
-            منظومة رقمية متكاملة تربط ضيوف حيز بمكانهم المفضل وتجعلهم يعودون دائماً
+            منظومة رقمية متكاملة تخلي زبائنك يرجعون أكثر وتجيب لك زبائن جدد تلقائياً
           </p>
         </motion.div>
       </div>
@@ -620,7 +620,7 @@ export default function App() {
             className="hidden md:flex flex-col items-center pb-8"
           >
             <AppleWatchHyz />
-            <p className="text-[10px] text-[#AAA] mt-3 font-light text-center">Apple Watch<br />حيز على معصمك</p>
+            <p className="text-[10px] text-[#AAA] mt-3 font-light text-center">Apple Watch<br />نقاطك على معصمك</p>
           </motion.div>
 
           {/* Phone */}
@@ -710,7 +710,7 @@ export default function App() {
           {/* Background photo */}
           <img
             src={cafeImg1}
-            alt="حيز كافيه أبها"
+            alt="مطعم وكافيه"
             className="absolute inset-0 w-full h-full object-cover"
             onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
           />
@@ -718,20 +718,20 @@ export default function App() {
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(8,0,3,0.92) 0%,rgba(8,0,3,0.55) 45%,rgba(8,0,3,0.15) 100%)' }} />
           {/* Content */}
           <div className="absolute inset-0 flex flex-col justify-end p-8">
-            <p className="text-[#C9956A] text-[10px] font-semibold tracking-widest uppercase mb-2">HYZ CAFÉ · ABHA · شارع لبنان</p>
+            <p className="text-[#C9956A] text-[10px] font-semibold tracking-widest uppercase mb-2">YOUR RESTAURANT · KSA · تلقا تك</p>
             <h3 className="text-white text-[26px] font-bold mb-2 leading-tight">
-              مكانك المفضل<br />يستحق أفضل تجربة رقمية
+              مطعمك يستحق<br />أفضل تجربة رقمية
             </h3>
             <p className="text-white/50 text-[13px] font-light mb-4 max-w-sm">
-              من أول زيارة تكسب نقاطاً، وبكل كوب تقترب من المستوى التالي
+              من أول زيارة يكسب زبونك نقاطاً، وبكل طلب يقترب من الوجبة المجانية
             </p>
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm border border-white/15 px-3 py-1.5 rounded-full">
                 <div className="w-1.5 h-1.5 bg-[#30D158] rounded-full animate-pulse" />
-                <span className="text-white text-[10px] font-medium">١,٥٠٠+ عضو نشط</span>
+                <span className="text-white text-[10px] font-medium">إطلاق في ٧ أيام مضمون</span>
               </div>
               <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm border border-white/15 px-3 py-1.5 rounded-full">
-                <span className="text-white text-[10px] font-medium">⭐ ٤.٩ تقييم</span>
+                <span className="text-white text-[10px] font-medium">⭐ سعر ثابت للأبد</span>
               </div>
             </div>
           </div>
@@ -741,9 +741,9 @@ export default function App() {
       {/* ── Video Section ────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="text-center mb-5">
-          <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1">من حيز</p>
-          <h2 className="text-[22px] font-bold text-[#111]">أكواب الفخار — مبيعات الرف</h2>
-          <p className="text-[12px] text-[#AAA] font-light mt-1">مصنوع ومرسوم يدوياً · نسخة لك فقط</p>
+          <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1">مثال حي</p>
+          <h2 className="text-[22px] font-bold text-[#111]">تطبيق مطعمك — كيف يبدو للزبون</h2>
+          <p className="text-[12px] text-[#AAA] font-light mt-1">منيو رقمي · نقاط ولاء · حجز طاولة · كل شيء في مكان واحد</p>
         </div>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -752,13 +752,23 @@ export default function App() {
           className="relative rounded-[24px] overflow-hidden shadow-2xl mx-auto"
           style={{ maxWidth: 400, aspectRatio: '9/16', background: '#080002' }}
         >
-          <iframe
-            src="https://www.instagram.com/reel/DUqoXYLjaVr/embed/"
-            className="absolute inset-0 w-full h-full border-0"
-            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-            allowFullScreen
-            title="حيز — أكواب الفخار"
-          />
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 p-8">
+            <div className="w-16 h-16 rounded-full flex items-center justify-center text-3xl" style={{background:'rgba(201,149,106,0.15)',border:'1px solid rgba(201,149,106,0.3)'}}>🍽️</div>
+            <div className="text-center">
+              <p className="text-[#C9956A] text-[11px] font-semibold tracking-widest mb-2">مثال على تطبيق مطعمك</p>
+              <p className="text-white text-[18px] font-bold mb-2">منيو رقمي يتحدث لحظياً</p>
+              <p className="text-white/40 text-[12px] leading-relaxed">غيّر الأسعار والصور والعروض من جوالك في ثانية — بدون مبرمج</p>
+            </div>
+            <div className="grid grid-cols-2 gap-2 w-full max-w-[260px]">
+              {[{i:'🍔',t:'برجر كلاسيك',p:'٣٥ر'},{i:'🥗',t:'سلطة سيزر',p:'٢٨ر'},{i:'☕',t:'لاتيه',p:'٢٢ر'},{i:'🍰',t:'تشيز كيك',p:'٣٠ر'}].map((item,idx)=>(
+                <div key={idx} className="rounded-[12px] p-3 text-center" style={{background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.08)'}}>
+                  <span className="text-xl block mb-1">{item.i}</span>
+                  <p className="text-white text-[9px] font-semibold">{item.t}</p>
+                  <p className="text-[#C9956A] text-[10px] font-bold mt-0.5">{item.p}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </motion.div>
       </div>
 
@@ -786,18 +796,18 @@ export default function App() {
 
             {/* Copy */}
             <div className="flex-1 text-right">
-              <p className="text-[#C9956A] text-[10px] font-semibold tracking-widest uppercase mb-2">Apple Watch · حيز</p>
+              <p className="text-[#C9956A] text-[10px] font-semibold tracking-widest uppercase mb-2">Apple Watch · مطعمك</p>
               <h3 className="text-white text-[22px] md:text-[26px] font-bold mb-3 leading-tight">
                 نقاطك ومستواك<br /><span className="text-[#C9956A]">على معصمك دائماً</span>
               </h3>
               <p className="text-white/45 text-[13px] font-light leading-relaxed mb-5 max-w-xs mr-auto ml-0 md:mr-0 md:ml-auto text-right">
-                واجهة حيز على Apple Watch تعرض نقاطك الحالية ومستواك ومدى اقترابك من الكوب التالي — بدون فتح التطبيق.
+                تطبيقك على Apple Watch يعرض نقاط زبونك ومستواه ومدى اقترابه من الوجبة المجانية — بدون فتح التطبيق.
               </p>
               <div className="space-y-2.5">
                 {[
                   'نقاطك الحالية دائماً على الشاشة',
                   'تنبيه لحظي عند الوصول للكوب المجاني',
-                  'تذكير ذكي عند اقترابك من حيز',
+                  'تذكير ذكي عند اقتراب الزبون من مطعمك',
                   'مشاركة لحظية مع تطبيق الجوال',
                 ].map((item) => (
                   <div key={item} className="flex items-center gap-2 text-white/55 text-[12px]">
@@ -893,7 +903,7 @@ export default function App() {
                       <div className="flex-1 flex justify-center">
                         <div className="flex items-center bg-[#2a2a2a] rounded-[7px] px-3 py-1.5 gap-2 mx-4 flex-1 max-w-xs">
                           <svg viewBox="0 0 12 12" className="w-2.5 h-2.5 fill-[#30D158] shrink-0"><path d="M6 1a5 5 0 100 10A5 5 0 006 1zm0 1.5a3.5 3.5 0 110 7 3.5 3.5 0 010-7z"/></svg>
-                          <span className="text-[8px] text-[#666] font-inter truncate">admin.hyz-cafe.sa/dashboard</span>
+                          <span className="text-[8px] text-[#666] font-inter truncate">admin.matar3k.sa/dashboard</span>
                         </div>
                       </div>
                       <div className="flex items-center gap-1.5 shrink-0">
@@ -969,7 +979,7 @@ export default function App() {
       {/* ── Full Features Grid ────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="text-center mb-6">
-          <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1.5">كل ما يحصل عليه حيز</p>
+          <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1.5">كل ما يحصل عليه مطعمك</p>
           <h2 className="text-[24px] font-bold text-[#111]">١٢ مزايا في منظومة واحدة</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -999,13 +1009,13 @@ export default function App() {
             <div className="flex-1">
               <p className="text-[#C9956A] text-[10px] font-semibold tracking-widest uppercase mb-2">Apple Wallet · Google Wallet</p>
               <h3 className="text-white text-[24px] font-bold mb-2.5 leading-tight">
-                بطاقة حيز في جيبك<br /><span className="text-[#C9956A]">حتى بدون إنترنت</span>
+                بطاقة زبونك في جيبه<br /><span className="text-[#C9956A]">حتى بدون إنترنت</span>
               </h3>
               <p className="text-white/45 text-[13px] font-light leading-relaxed mb-5 max-w-xs">
                 يضيف الأعضاء بطاقة العضوية لمحافظهم الرقمية بضغطة واحدة. تُحدَّث تلقائياً عند الترقية.
               </p>
               <div className="space-y-2">
-                {['تحديث فوري عند الترقية للمستوى التالي','تعمل بلا إنترنت في الصندوق','إشعارات جغرافية عند دخول منطقة حيز'].map((item) => (
+                {['تحديث فوري عند الترقية للمستوى التالي','تعمل بلا إنترنت عند الدفع','إشعار تلقائي عند اقتراب الزبون من مطعمك'].map((item) => (
                   <div key={item} className="flex items-center gap-2 text-white/55 text-[12px]">
                     <div className="w-1.5 h-1.5 bg-[#30D158] rounded-full shrink-0" />
                     {item}
@@ -1021,8 +1031,8 @@ export default function App() {
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-[#C9956A] font-bold text-[16px] leading-tight">حيز</p>
-                    <p className="text-white/25 text-[8px] font-inter tracking-wider">HYZ CAFÉ · ABHA</p>
+                    <p className="text-[#C9956A] font-bold text-[16px] leading-tight">مطعمك</p>
+                    <p className="text-white/25 text-[8px] font-inter tracking-wider">YOUR RESTAURANT · KSA</p>
                   </div>
                   <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white/15">
                     <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
@@ -1068,14 +1078,14 @@ export default function App() {
           {/* Main editorial text */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }}
             className="text-center mb-14">
-            <p className="text-white/20 text-[12px] font-light mb-5 tracking-widest">يقول أحد أعضاء حيز</p>
+            <p className="text-white/20 text-[12px] font-light mb-5 tracking-widest">يقول أحد زبائن مطعم يستخدم المنظومة</p>
             <blockquote className="text-white text-[26px] md:text-[32px] font-bold leading-relaxed mb-6 tracking-tight">
-              "حيز من مستدفئاتي<br />
+              "ما أروح مطعم ثاني<br />
               <span style={{ background: 'linear-gradient(90deg,#C9956A,#E8C4A0)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                في أيام كل زاخر
+                النقاط صنعت الإخلاص
               </span>"
             </blockquote>
-            <p className="text-white/25 text-[11px] font-light">عضو كلاسيك · ٣ سنوات في حيز</p>
+            <p className="text-white/25 text-[11px] font-light">عضو ذهبي · زبون دائم</p>
           </motion.div>
 
           {/* Three moments */}
@@ -1086,7 +1096,7 @@ export default function App() {
               {
                 time: '٦:٣٠ ص',
                 label: 'الفجر والفلتر',
-                text: 'أول كوب قهوة وأنت تشاهد أبها تصحو — اللحظة اللي تبدأ بيها يومك صح',
+                text: 'أول طلب في اليوم وزبونك يكسب نقاطه — اللحظة اللي تبدأ بيها علاقتكم',
                 icon: '☕',
                 color: '#C9956A',
               },
@@ -1133,7 +1143,7 @@ export default function App() {
         <div className="bg-white/75 rounded-[28px] p-6 border border-[rgba(123,22,24,0.07)] shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
           <div className="flex items-start justify-between mb-5">
             <div>
-              <p className="text-[10px] text-[#7B1618] font-semibold tracking-widest uppercase mb-1">مجتمع حيز</p>
+              <p className="text-[10px] text-[#7B1618] font-semibold tracking-widest uppercase mb-1">مجتمع مطعمك</p>
               <h3 className="text-[22px] font-bold text-[#111]">١,٥٠٠+ عضو نشط</h3>
               <p className="text-[12px] text-[#888] font-light mt-1">منصة اجتماعية داخل التطبيق</p>
             </div>
@@ -1175,16 +1185,18 @@ export default function App() {
             {/* Exclusive badge */}
             <div className="inline-flex items-center gap-2 border border-[rgba(201,149,106,0.3)] bg-[rgba(201,149,106,0.08)] px-4 py-1.5 rounded-full mb-4">
               <div className="w-1.5 h-1.5 bg-[#C9956A] rounded-full animate-pulse" />
-              <span className="text-[#C9956A] text-[10px] font-black tracking-[0.2em]">هذا العرض مخصص لحيز فقط</span>
+              <span className="text-[#C9956A] text-[10px] font-black tracking-[0.2em]">عرض الإطلاق الحصري · محدود</span>
             </div>
 
-            <p className="text-[#C9956A] text-[11px] font-semibold tracking-widest uppercase mb-3">الاستثمار الكلي</p>
-            <div className="flex items-start justify-center gap-1 mb-1">
-              <span className="text-white text-[52px] font-bold leading-none font-inter">18,000</span>
+            <p className="text-[#C9956A] text-[11px] font-semibold tracking-widest uppercase mb-3">عرض الإطلاق الحصري</p>
+            <div className="flex items-center justify-center gap-3 mb-1">
+              <span className="text-white/30 text-[28px] font-bold leading-none font-inter line-through">18,000</span>
+              <span className="text-white text-[52px] font-bold leading-none font-inter">3,000</span>
             </div>
-            <p className="text-[#C9956A] text-[18px] font-light mb-1.5">ريال سعودي</p>
+            <p className="text-[#C9956A] text-[18px] font-light mb-1">ريال تأسيس</p>
+            <p className="text-white/50 text-[14px] font-light mb-1.5">+ <span className="text-white font-semibold">٤٩٩ ريال</span> شهرياً — ثابت للأبد</p>
             <p className="text-white/30 text-[12px] font-light mb-6">
-              iOS + Android · موقع · Wallet · Watch · مجتمع · حجوزات · دعم كامل
+              iOS + Android · واتساب · Wallet · حجوزات · تقارير · دعم عربي ٢٤/٧
             </p>
             <div className="grid grid-cols-2 gap-2.5 mb-7 text-right">
               {['تسليم خلال ٦٠ يوم','نشر على المتجرين الرسميين','سنة دعم مجاني كامل','تدريب الفريق وتأهيله'].map((item) => (
@@ -1196,7 +1208,7 @@ export default function App() {
             </div>
 
             {/* WhatsApp CTA */}
-            <a href="https://wa.me/966500000000?text=السلام عليكم، أريد الاستفسار عن منصة حيز الرقمية" target="_blank" rel="noopener noreferrer"
+            <a href="https://wa.me/966551378531?text=السلام عليكم، أريد الاستفسار عن منظومة مطعمي الرقمية" target="_blank" rel="noopener noreferrer"
               className="flex items-center justify-center gap-3 w-full py-4 rounded-[16px] active:scale-95 transition-all duration-200 shadow-[0_8px_28px_rgba(0,0,0,0.3)] mb-3"
               style={{ background: 'linear-gradient(135deg,#25D366,#128C7E)' }}>
               <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white shrink-0">
