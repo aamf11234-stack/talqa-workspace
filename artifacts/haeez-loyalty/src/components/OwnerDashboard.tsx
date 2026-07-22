@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-const logoImg = `${import.meta.env.BASE_URL}hyz-logo.jpeg`;
+const logoImg = `${import.meta.env.BASE_URL}restaurant-logo.png`;
 
 /* ── Animated counter ─────────────────────────────────────────── */
 function useCounter(target: number, duration = 1200, delay = 0) {
@@ -169,7 +169,7 @@ const members = [
 
 const topItems = [
   { name: 'لاتيه إثيوبي', n: 284, pct: 100, c: '#7B1618' },
-  { name: 'قهوة حيز',     n: 197, pct: 69,  c: '#C9956A' },
+  { name: 'قهوة مطعمك',     n: 197, pct: 69,  c: '#C9956A' },
   { name: 'كرواسون',      n: 163, pct: 57,  c: '#B5651D' },
   { name: 'مقطرة يمني',   n: 118, pct: 42,  c: '#6B7A8D' },
   { name: 'ماتشا',        n:  96, pct: 34,  c: '#2D7D46' },
@@ -194,7 +194,7 @@ export function OwnerDashboard() {
         <div className="flex items-center gap-2 px-3 mb-5">
           <img src={logoImg} className="w-7 h-7 rounded-[8px] object-cover ring-1 ring-white/10 shrink-0" alt="" />
           <div className="min-w-0">
-            <p className="text-[#C9956A] text-[13px] font-black leading-none truncate">حيز</p>
+            <p className="text-[#C9956A] text-[13px] font-black leading-none truncate">مطعمك</p>
             <p className="text-white/25 text-[7px] font-inter mt-0.5">ADMIN</p>
           </div>
         </div>
@@ -498,7 +498,7 @@ export function MobileOwnerSummary() {
         <div className="flex items-center gap-2">
           <img src={logoImg} className="w-6 h-6 rounded-[7px] object-cover" alt="" />
           <div>
-            <p className="text-[#C9956A] text-[11px] font-extrabold leading-none">حيز</p>
+            <p className="text-[#C9956A] text-[11px] font-extrabold leading-none">مطعمك</p>
             <p className="text-white/30 text-[7px] font-inter">Admin Panel</p>
           </div>
         </div>

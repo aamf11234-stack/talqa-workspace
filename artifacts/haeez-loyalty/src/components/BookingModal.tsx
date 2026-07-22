@@ -39,7 +39,7 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
                 تم حجز طاولتك المفضلة
               </h3>
               <h3 className="text-[22px] font-bold leading-snug">
-                في <span className="text-[#7B1618]">حيز</span>{' '}
+                في <span className="text-[#7B1618]">مطعمك</span>{' '}
                 <span className="text-[#C9956A]">بنجاح!</span>
               </h3>
               <p className="text-[13px] text-[#888] font-light mt-3">

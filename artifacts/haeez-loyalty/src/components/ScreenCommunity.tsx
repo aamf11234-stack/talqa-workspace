@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, MessageCircle, Share2, Trophy, MapPin, X, Send, Camera, Plus, Check } from 'lucide-react';
 
-const logoImg = `${import.meta.env.BASE_URL}hyz-logo.jpeg`;
+const logoImg = `${import.meta.env.BASE_URL}restaurant-logo.png`;
 
 /* ─── Social platform icons ─────────────────────────────────────── */
 const platforms = [
@@ -20,7 +20,7 @@ const stories = [
     gradient: 'linear-gradient(145deg,#7B1618,#C9956A)',
   },
   {
-    id: 1, user: 'حيز', isOfficial: true, seen: false,
+    id: 1, user: 'مطعمك', isOfficial: true, seen: false,
     gradient: 'linear-gradient(145deg,#0D0205,#7B1618)',
     content: '☕ محصول اليوم: إثيوبيا يرقاشيفي — حموضة ناعمة ورائحة زهرية',
     type: 'official',
@@ -34,7 +34,7 @@ const stories = [
   {
     id: 3, user: 'س. الغامدي', avatar: 'س', seen: true,
     gradient: 'linear-gradient(145deg,#2D7D46,#1a4a2e)',
-    content: 'كرواسون اللوز + قهوة حيز 🥐',
+    content: 'كرواسون اللوز + قهوة مطعمك 🥐',
     type: 'food',
   },
   {
@@ -46,7 +46,7 @@ const stories = [
   {
     id: 5, user: 'ن. الزهراني', avatar: 'ن', seen: true,
     gradient: 'linear-gradient(145deg,#4A1A1A,#7B1618)',
-    content: 'أجواء الشتاء في حيز ❄️',
+    content: 'أجواء الشتاء المميزة ❄️',
     type: 'vibe',
   },
 ];
@@ -57,16 +57,16 @@ const feedPosts = [
     id: 0,
     user: 'م. العتيبي', avatar: 'م', avatarColor: '#7B1618',
     time: 'الآن', tag: 'تسجيل وصول', tagColor: '#7B1618',
-    content: 'وصلت حيز للتو ☕ بدأت أسبوعي بكوب الإثيوبي المعتاد. جو مثالي للعمل!',
+    content: 'وصلت للتو ☕ بدأت أسبوعي بكوب الإثيوبي المعتاد. جو مثالي للعمل!',
     postGradient: 'linear-gradient(145deg,#0D0205,#3D0809)',
     postEmoji: '☕', likes: 12, comments: 3,
     sharedTo: ['instagram', 'snapchat'],
-    location: 'حيز كافيه · أبها',
+    location: 'مطعمك',
   },
   {
     id: 1,
-    user: 'حيز', isOfficial: true,
-    time: 'منذ ٢ ساعة', tag: 'من حيز', tagColor: '#C9956A',
+    user: 'مطعمك', isOfficial: true,
+    time: 'منذ ٢ ساعة', tag: 'رسمي', tagColor: '#C9956A',
     content: '💡 نصيحة الأسبوع: جرّب محصول إثيوبيا يرقاشيفي — حموضة ناعمة ورائحة زهرية لا تُقاوم. متاح بكميات محدودة!',
     postGradient: 'linear-gradient(145deg,#0A0800,#2E1800)',
     postEmoji: '🌸', likes: 48, comments: 9,
@@ -86,7 +86,7 @@ const feedPosts = [
     id: 3,
     user: 'ع. الشهري', avatar: 'ع', avatarColor: '#2D7D46',
     time: 'أمس', tag: 'تقييم ⭐⭐⭐⭐⭐', tagColor: '#30D158',
-    content: 'تجربة الكرواسون مع اللاتيه لا تُوصف 🥐 المكان دائماً هادئ ومثالي للعمل والاستمتاع. شكراً حيز 🙏',
+    content: 'تجربة الكرواسون مع اللاتيه لا تُوصف 🥐 المكان دائماً هادئ ومثالي للعمل والاستمتاع. شكراً مطعمنا 🙏',
     postGradient: 'linear-gradient(145deg,#0D2010,#1A4A2A)',
     postEmoji: '🥐', likes: 31, comments: 5,
     sharedTo: ['instagram'],
@@ -168,7 +168,7 @@ function StoryViewer({ stories: storyList, startIndex, onClose }: {
       <div className="absolute top-7 left-4 right-4 flex items-center justify-between z-10">
         <div className="flex items-center gap-2">
           {story.isOfficial ? (
-            <img src={logoImg} alt="حيز" className="w-7 h-7 rounded-full object-cover border border-white/30" />
+            <img src={logoImg} alt="مطعمك" className="w-7 h-7 rounded-full object-cover border border-white/30" />
           ) : (
             <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center border border-white/30">
               <span className="text-white text-[11px] font-bold">{story.avatar ?? '+'}</span>
@@ -315,7 +315,7 @@ function CheckInSheet({ onClose, onPosted }: { onClose: () => void; onPosted: ()
                 />
               </div>
               <div>
-                <p className="text-[13px] font-bold text-[#111]">حيز كافيه · أبها</p>
+                <p className="text-[13px] font-bold text-[#111]">مطعمك</p>
                 <p className="text-[10px] text-[#30D158] font-medium">شارع لبنان · تم التحديد تلقائياً</p>
               </div>
               <div className="mr-auto flex items-center gap-1 bg-[#C9956A]/10 px-2.5 py-1 rounded-full">
@@ -329,7 +329,7 @@ function CheckInSheet({ onClose, onPosted }: { onClose: () => void; onPosted: ()
               <textarea
                 value={caption}
                 onChange={e => setCaption(e.target.value)}
-                placeholder="شاركنا لحظتك في حيز..."
+                placeholder="شاركنا لحظتك..."
                 className="w-full text-[13px] text-[#333] bg-transparent resize-none outline-none leading-relaxed placeholder:text-[#CCC]"
                 rows={2}
               />
@@ -418,7 +418,7 @@ function PostCard({ post, index }: { post: typeof feedPosts[0]; index: number })
         {/* Official badge */}
         {post.isOfficial && (
           <div className="absolute top-2.5 left-3 flex items-center gap-1 bg-[#C9956A]/90 backdrop-blur-sm rounded-full px-2.5 py-1">
-            <span className="text-white text-[9px] font-bold">✦ حيز</span>
+            <span className="text-white text-[9px] font-bold">✦ مطعمك</span>
           </div>
         )}
       </div>
@@ -428,7 +428,7 @@ function PostCard({ post, index }: { post: typeof feedPosts[0]; index: number })
         <div className="flex items-center justify-between mb-2.5">
           <div className="flex items-center gap-2.5">
             {post.isOfficial ? (
-              <img src={logoImg} alt="حيز" className="w-7 h-7 rounded-full object-cover border border-[rgba(201,149,106,0.3)]" />
+              <img src={logoImg} alt="مطعمك" className="w-7 h-7 rounded-full object-cover border border-[rgba(201,149,106,0.3)]" />
             ) : post.isChallenge ? (
               <div className="w-7 h-7 rounded-full bg-[#111] flex items-center justify-center">
                 <Trophy size={12} className="text-[#C9956A]" />
@@ -563,7 +563,7 @@ export function ScreenCommunity() {
         {/* ── Header ── */}
         <div className="px-4 pt-4 pb-3 flex items-center justify-between">
           <div>
-            <h1 className="text-[20px] font-bold text-[#111] leading-tight">مجتمع حيز</h1>
+            <h1 className="text-[20px] font-bold text-[#111] leading-tight">مجتمع مطعمك</h1>
             <div className="flex items-center gap-1.5 mt-0.5">
               <div className="w-1.5 h-1.5 bg-[#30D158] rounded-full animate-pulse" />
               <p className="text-[10px] text-[#30D158] font-medium">٢٣ متصل الآن</p>
@@ -616,7 +616,7 @@ export function ScreenCommunity() {
                             <Plus size={20} className="text-white/70" />
                           </div>
                         ) : story.isOfficial ? (
-                          <img src={logoImg} alt="حيز" className="w-full h-full object-cover" />
+                          <img src={logoImg} alt="مطعمك" className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
                             <span className="text-white text-[18px] font-bold">{story.avatar}</span>
@@ -673,7 +673,7 @@ export function ScreenCommunity() {
 
         {/* ── Filter Tabs ── */}
         <div className="px-4 mb-3 flex gap-2">
-          {([['all', 'الكل'], ['friends', 'أصدقاء'], ['official', 'من حيز']] as const).map(([id, label]) => (
+          {([['all', 'الكل'], ['friends', 'أصدقاء'], ['official', 'رسمي']] as const).map(([id, label]) => (
             <button
               key={id}
               onClick={() => setFilter(id)}
@@ -704,11 +704,11 @@ export function ScreenCommunity() {
           transition={{ delay: 0.5 }}
           className="mx-4 mt-4 bg-white rounded-[18px] p-4 border border-[rgba(196,181,159,0.12)] shadow-[0_2px_10px_rgba(0,0,0,0.04)]"
         >
-          <p className="text-[11px] font-bold text-[#111] mb-3">حيز على وسائل التواصل</p>
+          <p className="text-[11px] font-bold text-[#111] mb-3">تابعنا على وسائل التواصل</p>
           <div className="flex gap-2.5">
             {[
-              { icon: '📸', label: 'Instagram', sub: 'hyz_cafe', bg: 'linear-gradient(45deg,#f09433,#dc2743,#bc1888)' },
-              { icon: '♪',  label: 'TikTok',    sub: '@hyz_cafe', bg: 'linear-gradient(135deg,#010101,#69C9D0)' },
+              { icon: '📸', label: 'Instagram', sub: 'matar3k', bg: 'linear-gradient(45deg,#f09433,#dc2743,#bc1888)' },
+              { icon: '♪',  label: 'TikTok',    sub: '@matar3k', bg: 'linear-gradient(135deg,#010101,#69C9D0)' },
               { icon: '✕',  label: 'X',          sub: '@hyzcafe', bg: '#000' },
               { icon: '👻', label: 'Snap',       sub: 'hyz.cafe', bg: '#FFFC00', dark: true },
             ].map((s, i) => (
@@ -736,7 +736,7 @@ export function ScreenCommunity() {
             <div className="w-8 h-8 rounded-full bg-[rgba(123,22,24,0.07)] flex items-center justify-center shrink-0">
               <span className="text-[14px]">ع</span>
             </div>
-            <p className="text-[12px] text-[#CCC] flex-1 text-right">شاركنا لحظتك في حيز...</p>
+            <p className="text-[12px] text-[#CCC] flex-1 text-right">شاركنا لحظتك...</p>
             <div className="flex items-center gap-1">
               <Camera size={14} className="text-[#CCC]" />
               <MapPin size={14} className="text-[#CCC]" />

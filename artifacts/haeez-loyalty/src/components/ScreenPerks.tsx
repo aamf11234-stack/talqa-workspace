@@ -88,7 +88,7 @@ export function ScreenPerks() {
     <div className="flex flex-col h-full overflow-y-auto scrollbar-none pb-24">
       {/* Header */}
       <div className="px-5 pt-4 pb-3">
-        <h1 className="text-[22px] font-bold text-[#111]">مستويات حيز</h1>
+        <h1 className="text-[22px] font-bold text-[#111]">مستويات الولاء</h1>
         <p className="text-[12px] text-[#888] font-light mt-0.5">تقدّم واحصل على مزايا لا تُقاوم</p>
       </div>
 
@@ -226,7 +226,7 @@ export function ScreenPerks() {
           <p className="text-[14px] font-bold text-[#111]">عروض الأسبوع</p>
           <div className="flex items-center gap-1">
             <div className="w-1.5 h-1.5 bg-[#30D158] rounded-full animate-pulse" />
-            <span className="text-[10px] text-[#30D158] font-medium">حصرية لأعضاء حيز</span>
+            <span className="text-[10px] text-[#30D158] font-medium">حصرية للأعضاء</span>
           </div>
         </div>
         <div className="space-y-3">

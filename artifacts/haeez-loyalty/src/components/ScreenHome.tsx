@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, ChevronLeft, Calendar, Users, Tag, Zap, Flame, Star, ArrowLeft, Check, X } from 'lucide-react';
 import { EventIconMap, ICalendarIcon, IGift } from './HaizIcons';
 
-const logoImg = `${import.meta.env.BASE_URL}hyz-logo.jpeg`;
+const logoImg = `${import.meta.env.BASE_URL}restaurant-logo.png`;
 
 /* ── Weather Card ────────────────────────────────────────────────── */
 function WeatherCard() {
@@ -47,7 +47,7 @@ function WeatherCard() {
       <div className="relative z-10 flex items-center justify-between px-5 pt-4 pb-0">
         <div className="flex items-center gap-1.5">
           <div className="w-1.5 h-1.5 rounded-full bg-[#C9956A] animate-pulse" />
-          <span className="text-[#C9956A]/70 text-[9px] font-bold tracking-[0.2em]">حيز · الآن</span>
+          <span className="text-[#C9956A]/70 text-[9px] font-bold tracking-[0.2em]">مطعمك · الآن</span>
         </div>
         <span className="text-white/20 text-[9px] font-inter">السبت ١٨ يوليو</span>
       </div>
@@ -85,7 +85,7 @@ function WeatherCard() {
             style={{ background: 'rgba(201,149,106,0.12)', border: '1px solid rgba(201,149,106,0.22)' }}
           >
             <p className="text-[#E8C4A0] text-[10px] font-bold leading-snug">الغيم على أبها</p>
-            <p className="text-white/40 text-[9px] font-light mt-0.5">كوب حيز يدفّئك الليلة ☕</p>
+            <p className="text-white/40 text-[9px] font-light mt-0.5">مطعمك يدفّئك الليلة ☕</p>
           </motion.div>
           <div className="flex items-center gap-2.5">
             <div className="text-center">
@@ -184,7 +184,7 @@ function ProgressRings({ progress = 4 / 7 }: { progress?: number }) {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   تقويم حيز — Haiz Calendar
+   تقويم العروض — Haiz Calendar
 ══════════════════════════════════════════════════════════════════ */
 interface HaizEvent {
   id: string;
@@ -246,7 +246,7 @@ const haizEvents: HaizEvent[] = [
     subtitle: '٢٢ فبراير ٢٠٢٧',
     date: '2027-02-22',
     color: '#7B1618',
-    benefit: 'مشروب مجاني لكل عضو حيز',
+    benefit: 'مشروب مجاني للأعضاء',
   },
   {
     id: 'eid',
@@ -328,7 +328,7 @@ function HaizCalendar() {
         {/* ── Content ── */}
         <div className="relative px-5 pt-4 pb-5 flex flex-col gap-0">
 
-          {/* Row 1: weekday pill + HYZ tag */}
+          {/* Row 1: weekday pill + tag */}
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2 px-2.5 py-1 rounded-full"
               style={{ background: 'rgba(48,209,88,0.1)', border: '1px solid rgba(48,209,88,0.2)' }}>
@@ -336,7 +336,7 @@ function HaizCalendar() {
               <span className="text-[#30D158] text-[9px] font-bold">السبت</span>
             </div>
             <span className="text-[6px] font-black tracking-[0.32em] text-[#C9956A]/35"
-              style={{ fontFamily: 'ui-monospace,monospace' }}>HYZ CAFÉ</span>
+              style={{ fontFamily: 'ui-monospace,monospace' }}>مطعمك</span>
           </div>
 
           {/* Row 2: GIANT ٤ + month stacked */}
@@ -402,10 +402,10 @@ function HaizCalendar() {
         style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div>
           <p className="text-[8px] font-black tracking-[0.28em] text-[#C9956A] mb-1"
-            style={{ fontFamily: 'ui-monospace,monospace' }}>HAIZ CALENDAR</p>
+            style={{ fontFamily: 'ui-monospace,monospace' }}>OFFERS CALENDAR</p>
           <div className="flex items-center gap-2">
             <ICalendarIcon size={18} color="#C9956A" sw={1.4} />
-            <h3 className="text-[17px] font-black text-white leading-none">تقويم حيز</h3>
+            <h3 className="text-[17px] font-black text-white leading-none">تقويم العروض</h3>
           </div>
         </div>
         <div className="text-left">
@@ -495,7 +495,7 @@ function HaizCalendar() {
                       <div>
                         <p className="text-[7.5px] font-black tracking-widest mb-1"
                           style={{ color: ev.color, fontFamily: 'ui-monospace,monospace' }}>
-                          عرض حيز الحصري
+                          عرض مطعمك الحصري
                         </p>
                         <p className="text-white/70 text-[11px] leading-relaxed">{ev.benefit}</p>
                       </div>
@@ -511,7 +511,7 @@ function HaizCalendar() {
       {/* Footer */}
       <div className="px-5 py-3 text-center"
         style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-        <p className="text-white/15 text-[8px]">اضغط على أي مناسبة لتشوف عرض حيز ✦</p>
+        <p className="text-white/15 text-[8px]">اضغط على أي مناسبة لتشوف العرض ✦</p>
       </div>
     </motion.div>
   );
@@ -529,7 +529,7 @@ interface DailyQuestion {
 }
 
 const todayQ: DailyQuestion = {
-  question: 'ما هي طريقة تحضير القهوة التي تستغرق ٦٠ دقيقة في حيز؟',
+  question: 'ما هي طريقة تحضير القهوة التي تستغرق ٦٠ دقيقة في مطعمك؟',
   options: ['الإسبريسو', 'المقطرة في ٦٠', 'الفلتر العادي', 'الكورتادو'],
   correct: 1,
   points: 25,
@@ -876,7 +876,7 @@ export function ScreenHome() {
             </div>
             <div className="flex gap-2">
               {[
-                { name: 'قهوة حيز', price: '١٩ر', emoji: '☕', note: 'الأشهر لديك' },
+                { name: 'قهوة مطعمك', price: '١٩ر', emoji: '☕', note: 'الأشهر لديك' },
                 { name: 'كيك البيكان', price: '٢٥ر', emoji: '🎂', note: 'يُحبه أصدقاؤك' },
               ].map((rec, i) => (
                 <div key={i} className="flex-1 bg-white rounded-[14px] p-3 border border-[rgba(196,181,159,0.12)]">
@@ -890,10 +890,10 @@ export function ScreenHome() {
           </motion.div>
         </div>
 
-        {/* ── تقويم حيز — آخر شي ── */}
+        {/* ── تقويم العروض — آخر شي ── */}
         <div className="pt-2">
           <div className="flex items-center justify-between mb-4 px-4">
-            <p className="text-[13px] font-bold text-[#111]">تقويم حيز</p>
+            <p className="text-[13px] font-bold text-[#111]">تقويم العروض</p>
             <span className="text-[10px] text-[#C4B59F]">المناسبات والعروض</span>
           </div>
           <HaizCalendar />

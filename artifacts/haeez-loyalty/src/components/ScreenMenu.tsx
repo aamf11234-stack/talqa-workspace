@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, Flame, Snowflake } from 'lucide-react';
 import { CategoryIconMap, IOriginPin, IVase, ILeaf, ICoffeeBean, IEspresso } from './HaizIcons';
 
-const logoImg = `${import.meta.env.BASE_URL}hyz-logo.jpeg`;
+const logoImg = `${import.meta.env.BASE_URL}restaurant-logo.png`;
 
 /* ══════════════════════════════════════════ DATA ══ */
 interface MenuItem {
@@ -268,8 +268,8 @@ const shelfItems = [
   },
   {
     IconComp: ILeaf,
-    title: 'هدايا حيز',
-    desc: 'حوض فخار بهوية حيز مع نبتة البوتس — هدية تذكارية مثالية',
+    title: 'هدايا المطعم',
+    desc: 'حوض فخار بهوية مطعمك مع نبتة البوتس — هدية تذكارية مثالية',
     tag: 'هدية',
     color: '#2D7D46',
   },
@@ -462,7 +462,7 @@ export function ScreenMenu() {
               style={{ background: 'rgba(201,149,106,0.35)', transform: 'scale(1.3)' }} />
             <img
               src={logoImg}
-              alt="حيز"
+              alt="مطعمك"
               className="relative w-16 h-16 rounded-[22px] object-cover"
               style={{
                 border: '2px solid rgba(201,149,106,0.5)',
@@ -483,8 +483,8 @@ export function ScreenMenu() {
             className="text-center"
           >
             <p className="text-[9px] font-black tracking-[0.35em] text-[#C9956A] mb-1"
-              style={{ fontFamily: 'ui-monospace, monospace' }}>HYZ CAFÉ · ABHA</p>
-            <h1 className="text-[28px] font-black text-white leading-none tracking-tight">قائمة حيز</h1>
+              style={{ fontFamily: 'ui-monospace, monospace' }}>مطعمك</p>
+            <h1 className="text-[28px] font-black text-white leading-none tracking-tight">قائمتنا</h1>
             <p className="text-white/25 text-[10px] mt-1.5 font-light">
               {totalItems} صنف · مفتوح من ٦ص حتى ٦:٣٠م
             </p>

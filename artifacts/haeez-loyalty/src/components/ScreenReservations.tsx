@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Users, Check } from 'lucide-react';
 
-const logoImg = `${import.meta.env.BASE_URL}hyz-logo.jpeg`;
+const logoImg = `${import.meta.env.BASE_URL}restaurant-logo.png`;
 
 const today = new Date();
 const dates = Array.from({ length: 7 }, (_, i) => {
@@ -59,7 +59,7 @@ export function ScreenReservations() {
           >
             <div className="absolute inset-0 rounded-[18px] blur-xl"
               style={{ background: 'rgba(201,149,106,0.3)', transform: 'scale(1.3)' }} />
-            <img src={logoImg} alt="حيز"
+            <img src={logoImg} alt="مطعمك"
               className="relative w-14 h-14 rounded-[18px] object-cover"
               style={{ border: '2px solid rgba(201,149,106,0.45)', boxShadow: '0 0 0 1px rgba(201,149,106,0.12), 0 8px 28px rgba(0,0,0,0.5)' }}
               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
@@ -68,7 +68,7 @@ export function ScreenReservations() {
 
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-center">
             <p className="text-[9px] font-black tracking-[0.32em] text-[#C9956A] mb-1"
-              style={{ fontFamily: 'ui-monospace,monospace' }}>HYZ CAFÉ · ABHA</p>
+              style={{ fontFamily: 'ui-monospace,monospace' }}>مطعمك</p>
             <h1 className="text-[24px] font-black text-white leading-none tracking-tight">احجز طاولتك</h1>
             <p className="text-white/30 text-[10px] mt-1.5 font-light">شارع لبنان · من ٦ص حتى ٦:٣٠م</p>
           </motion.div>

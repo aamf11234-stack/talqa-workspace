@@ -1078,7 +1078,7 @@ export default function App() {
         </div>
       </div>
 
-      {/* ── روح حيز — Editorial ──────────────────────────── */}
+      {/* ── روح مطعمك — Editorial ──────────────────────────── */}
       <div className="relative overflow-hidden mb-10" style={{ background: 'linear-gradient(180deg,#080002 0%,#0D0205 40%,#1A0406 80%,#080002 100%)' }}>
 
         {/* Ambient */}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const logoImg = `${import.meta.env.BASE_URL}hyz-logo.jpeg`;
+const logoImg = `${import.meta.env.BASE_URL}restaurant-logo.png`;
 
 /* Animated progress arc */
 function WatchRing({ progress = 0.57 }: { progress?: number }) {
@@ -93,10 +93,10 @@ export function AppleWatchHyz({ compact = false }: { compact?: boolean }) {
             <div className="flex items-center gap-[8%]">
               <img
                 src={logoImg}
-                alt="حيز"
+                alt="مطعمك"
                 style={{ width: Math.round(18 * scale), height: Math.round(18 * scale), borderRadius: Math.round(5 * scale), objectFit: 'cover', border: '1px solid rgba(201,149,106,0.3)' }}
               />
-              <p className="text-[#C9956A] font-bold" style={{ fontSize: Math.round(11 * scale) }}>حيز</p>
+              <p className="text-[#C9956A] font-bold" style={{ fontSize: Math.round(11 * scale) }}>مطعمك</p>
             </div>
             <div
               className="flex items-center gap-[6%] px-[8%] py-[3%] rounded-full"

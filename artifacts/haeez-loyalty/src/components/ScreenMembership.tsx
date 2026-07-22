@@ -4,7 +4,7 @@ import { Calendar, Check, Gift, Send, Star, ChevronLeft, X, Sparkles } from 'luc
 import { QRCodeSVG } from './QRCodeSVG';
 import { BookingModal } from './BookingModal';
 
-const logoImg = `${import.meta.env.BASE_URL}hyz-logo.jpeg`;
+const logoImg = `${import.meta.env.BASE_URL}restaurant-logo.png`;
 
 /* ══════════════════════════════════════════════════════════════════
    Membership Card — Apple Wallet Style
@@ -73,7 +73,7 @@ function MembershipCard() {
         {/* ── Content ── */}
         <div className="absolute inset-0 flex flex-col justify-between z-20" style={{ padding: '18px 20px 16px' }}>
 
-          {/* TOP ROW: Apple icon left + حيز branding right */}
+          {/* TOP ROW: Apple icon left + مطعمك branding right */}
           <div className="flex items-start justify-between">
 
             {/* Apple Wallet mark */}
@@ -86,8 +86,8 @@ function MembershipCard() {
 
             {/* Haiz branding */}
             <div className="text-right flex flex-col gap-0.5">
-              <p className="text-[#C9956A] font-black leading-none tracking-tight" style={{ fontSize: 22 }}>حيز</p>
-              <p className="text-white/22 font-inter tracking-[0.2em]" style={{ fontSize: 7 }}>HYZ CAFÉ · ABHA</p>
+              <p className="text-[#C9956A] font-black leading-none tracking-tight" style={{ fontSize: 22 }}>مطعمك</p>
+              <p className="text-white/22 font-inter tracking-[0.2em]" style={{ fontSize: 7 }}>مطعمك</p>
             </div>
           </div>
 
@@ -208,7 +208,7 @@ function GiftToast({ msg, onDone }: { msg: string; onDone: () => void }) {
       </div>
       <div>
         <p className="text-[12px] font-semibold">{msg}</p>
-        <p className="text-[10px] text-white/50 font-light mt-0.5">سيصله إشعار فوري من حيز 🎁</p>
+        <p className="text-[10px] text-white/50 font-light mt-0.5">سيصله إشعار فوري من مطعمك 🎁</p>
       </div>
     </motion.div>
   );
@@ -246,7 +246,7 @@ function GiftModal({ gift, onClose, onSend }: { gift: { title: string; pts: numb
             <span className="text-[#C9956A] text-[11px] font-bold font-inter">{gift.pts}</span>
           </div>
         </div>
-        <p className="text-[11px] font-semibold text-[#888] mb-2.5 tracking-wide">اختر صديقاً من مجتمع حيز</p>
+        <p className="text-[11px] font-semibold text-[#888] mb-2.5 tracking-wide">اختر صديقاً من مجتمع مطعمك</p>
         <div className="space-y-2 mb-4 overflow-y-auto">
           {friends.map(f => (
             <button key={f} onClick={() => setSelected(f)}
@@ -272,9 +272,9 @@ function GiftModal({ gift, onClose, onSend }: { gift: { title: string; pts: numb
 /* ── Gifts Section ───────────────────────────────────────────────── */
 const giftOptions = [
   { id: 'coffee',    icon: '☕', title: 'كوب قهوة',    sub: 'قهوة اليوم مجاناً',   pts: 80,  color: '#7B1618' },
-  { id: 'croissant', icon: '🥐', title: 'كرواسون',     sub: 'من مخبوزات حيز',      pts: 60,  color: '#C9956A' },
+  { id: 'croissant', icon: '🥐', title: 'كرواسون',     sub: 'من مخبوزات مطعمك',      pts: 60,  color: '#C9956A' },
   { id: 'points',    icon: '⭐', title: 'نقاط',        sub: 'أرسل ١٠٠ نقطة',      pts: 100, color: '#D4AC0D' },
-  { id: 'latte',     icon: '🥛', title: 'لاتيه حيز',   sub: 'الخلطة الحصرية',      pts: 120, color: '#B5651D' },
+  { id: 'latte',     icon: '🥛', title: 'لاتيه مطعمك',   sub: 'الخلطة الحصرية',      pts: 120, color: '#B5651D' },
 ];
 
 function GiftsSection({ onGiftSent }: { onGiftSent: (msg: string) => void }) {
@@ -317,7 +317,7 @@ function GiftsSection({ onGiftSent }: { onGiftSent: (msg: string) => void }) {
         </div>
         <div className="text-right flex-1">
           <p className="text-[12px] font-bold text-[#111]">أرسل نقاطك لصديق</p>
-          <p className="text-[10px] text-[#AAA] font-light">حوّل نقاطك لأصدقائك في حيز</p>
+          <p className="text-[10px] text-[#AAA] font-light">حوّل نقاطك لأصدقائك</p>
         </div>
         <ChevronLeft size={14} className="text-[#CCC]" />
       </motion.button>
@@ -351,7 +351,7 @@ export function ScreenMembership() {
         {/* Header */}
         <div className="flex items-center gap-3 mb-5">
           <div className="relative">
-            <img src={logoImg} alt="حيز" className="w-12 h-12 rounded-[16px] object-cover shadow-[0_4px_18px_rgba(123,22,24,0.3)]" />
+            <img src={logoImg} alt="مطعمك" className="w-12 h-12 rounded-[16px] object-cover shadow-[0_4px_18px_rgba(123,22,24,0.3)]" />
             <div className="absolute -bottom-1.5 -left-1.5 w-5 h-5 bg-[#30D158] rounded-full border-2 border-[#FDFBF7] flex items-center justify-center">
               <Check size={10} strokeWidth={3} className="text-white" />
             </div>
