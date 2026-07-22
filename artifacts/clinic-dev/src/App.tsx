@@ -372,7 +372,7 @@ function Nav({ lang, onLang }: { lang: 'ar'|'en'; onLang: () => void }) {
  style={{ background:BLUEDIM, border:`1px solid rgba(14,165,233,0.3)`, color:BLUE }}>
  {lang === 'ar' ? 'شاهد الديمو' : 'Live Demo'}
  </a>
- <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
+ <a href="https://wa.me/966551378531" target="_blank" rel="noopener noreferrer"
  className="text-[13px] font-black px-5 py-2.5 rounded-xl text-white transition-all"
  style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 4px 16px ${BLUE}40` }}>
  {lang === 'ar' ? 'تواصل' : 'Contact'}
@@ -465,7 +465,7 @@ export default function App() {
  const handleFormSubmit = () => {
  if (!formName || !formPhone) return;
  const msg = `مرحباً تلقا تك \n\nأنا ${formName}${formClinic ? ` من ${formClinic}` : ''}.\nأرغب في معرفة تفاصيل منظومة تلقا للعيادات وعرض السعر المخصص لعيادتي.\n\nرقمي: ${formPhone}`;
- window.open(`https://wa.me/966500000000?text=${encodeURIComponent(msg)}`, '_blank');
+ window.open(`https://wa.me/966551378531?text=${encodeURIComponent(msg)}`, '_blank');
  };
 
  const t = {
@@ -536,7 +536,7 @@ export default function App() {
 
  <motion.div initial={{ opacity:0, y:12 }} animate={{ opacity:1, y:0 }} transition={{ delay:0.42 }}
  className="flex flex-wrap gap-3 mb-12">
- <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
+ <a href="https://wa.me/966551378531" target="_blank" rel="noopener noreferrer"
  className="font-black text-[15px] px-8 py-4 rounded-2xl text-white transition-all active:scale-95"
  style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 8px 32px ${BLUE}40` }}>
  ابدأ مشروع عيادتك
@@ -874,7 +874,7 @@ export default function App() {
  {lang==='ar' ? 'تحدث مع فريق Enterprise لعرض مخصص' : 'Talk to our Enterprise team for a custom quote'}
  </p>
  </div>
- <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
+ <a href="https://wa.me/966551378531" target="_blank" rel="noopener noreferrer"
  className="shrink-0 font-black text-[14px] px-8 py-4 rounded-2xl text-white transition-all active:scale-95"
  style={{ background:'linear-gradient(135deg,#8B5CF6,#6D28D9)', boxShadow:'0 8px 28px rgba(139,92,246,0.4)' }}>
  {lang==='ar' ? 'تواصل مع Enterprise ←' : 'Contact Enterprise ←'}
@@ -1815,7 +1815,7 @@ export default function App() {
         <div className="flex flex-col sm:flex-row gap-3">
          <motion.a
           whileHover={{ scale:1.02 }} whileTap={{ scale:0.97 }}
-          href={`https://wa.me/966500000000?text=${encodeURIComponent(lang==='ar'?'مرحباً، أرغب في حجز زيارة فريق تلقا لعيادتي.':'Hello, I\'d like to schedule a Talqa team visit to my clinic.')}`}
+          href={`https://wa.me/966551378531?text=${encodeURIComponent(lang==='ar'?'مرحباً، أرغب في حجز زيارة فريق تلقا لعيادتي.':'Hello, I\'d like to schedule a Talqa team visit to my clinic.')}`}
           target="_blank" rel="noopener noreferrer"
           className="flex-1 py-4 rounded-[16px] font-black text-[15px] text-white text-center"
           style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 6px 28px ${BLUE}40` }}>
@@ -2011,7 +2011,7 @@ export default function App() {
  <p className="text-[18px] mb-4 leading-relaxed" style={{ color:MUTED }}>{t.finalSub}</p>
   <p className="text-[13px] mb-12" style={{ color:DIM }}>{lang==='ar'?'زيارة مجانية خلال ٢٤ ساعة — لا التزام — نجيك للعيادة.':'Free visit within 24 hours — no commitment — we come to you.'}</p>
  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
- <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
+ <a href="https://wa.me/966551378531" target="_blank" rel="noopener noreferrer"
  className="font-black text-[16px] px-14 py-5 rounded-2xl text-white transition-all active:scale-95"
  style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 16px 48px ${BLUE}40` }}>
  {t.whatsapp}
@@ -2044,7 +2044,7 @@ export default function App() {
  onMouseEnter={e => (e.currentTarget.style.color=BLUE)} onMouseLeave={e => (e.currentTarget.style.color=MUTED)}>{l}</a>
  ))}
  </div>
- <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
+ <a href="https://wa.me/966551378531" target="_blank" rel="noopener noreferrer"
  className="font-bold text-[13px] px-5 py-2.5 rounded-xl transition-all" style={{ background:BLUEDIM, border:`1.5px solid ${BLUE}30`, color:BLUE }}>
  واتساب ←
  </a>

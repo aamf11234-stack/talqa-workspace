@@ -947,7 +947,7 @@ export default function Home() {
  </div>
  ))}
  </div>
- <a href="https://wa.me/966500000000" target="_blank" rel="noopener noreferrer"
+ <a href="https://wa.me/966551378531" target="_blank" rel="noopener noreferrer"
  className="block w-full bg-white font-bold text-[15px] py-4 rounded-[16px] hover:bg-[#F0F8FF] active:scale-95 transition-all duration-200 shadow-[0_8px_28px_rgba(0,0,0,0.2)]"
  style={{ color: '#0B4A6F' }}>
  ابدأ مشروع عيادتك مع تلقا تك 
