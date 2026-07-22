@@ -462,11 +462,25 @@ export default function App() {
  const roiExtra = Math.round(roiMonthly * 12 * 0.18); // 18% retention improvement
  const roiLost = Math.round(roiPatients * 0.22); // ~22% missed without system
 
- const handleFormSubmit = () => {
- if (!formName || !formPhone) return;
- const msg = `مرحباً تلقا تك \n\nأنا ${formName}${formClinic ? ` من ${formClinic}` : ''}.\nأرغب في معرفة تفاصيل منظومة تلقا للعيادات وعرض السعر المخصص لعيادتي.\n\nرقمي: ${formPhone}`;
- window.open(`https://wa.me/966551378531?text=${encodeURIComponent(msg)}`, '_blank');
- };
+  const [formSent, setFormSent] = useState<'idle'|'sending'|'done'>('idle');
+
+  const handleFormSubmit = async () => {
+  if (!formName || !formPhone || formSent === 'sending') return;
+  setFormSent('sending');
+  try {
+    const base = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '');
+    await fetch(`${base}/api/leads`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: formName, clinic: formClinic, phone: formPhone }),
+    });
+    setFormSent('done');
+  } catch {
+    const msg = `مرحباً تلقا تك \n\nأنا ${formName}${formClinic ? ` من ${formClinic}` : ''}.\nأرغب في معرفة تفاصيل منظومة تلقا للعيادات وعرض السعر المخصص لعيادتي.\n\nرقمي: ${formPhone}`;
+    window.open(`https://wa.me/966551378531?text=${encodeURIComponent(msg)}`, '_blank');
+    setFormSent('done');
+  }
+  };
 
  const t = {
  productsBadge: lang==='ar' ? 'المنظومة' : 'The System',
