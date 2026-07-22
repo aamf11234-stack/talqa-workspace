@@ -55,7 +55,7 @@ const menu: MenuCategory[] = [
       { name: 'كورتادو',    priceHot: 14, priceCold: 15 },
       { name: 'فلات وايت', priceHot: 15, priceCold: 17 },
       { name: 'لاتيه',     priceHot: 17, priceCold: 19 },
-      { name: 'قهوة حيز',  desc: 'خلطة حيز الحصرية', priceHot: 19, priceCold: 21, badge: 'الأشهر', badgeColor: '#7B1618', featured: true },
+      { name: 'قهوة المطعم',  desc: 'خلطة المطعم الحصرية', priceHot: 19, priceCold: 21, badge: 'الأشهر', badgeColor: '#7B1618', featured: true },
     ],
   },
   {
@@ -110,8 +110,8 @@ const menu: MenuCategory[] = [
   {
     id: 'cake', name: 'كيك', nameEn: 'CAKE', color: '#922B21', allergyNote: true,
     items: [
-      { name: 'كيكة حيز بالشوكولاتة', price: 23 },
-      { name: 'كيكة حيز بالبيكان',    price: 25, badge: 'الأشهر', badgeColor: '#C9956A', featured: true },
+      { name: 'كيكة شوكولاتة فاخرة', price: 23 },
+      { name: 'كيكة بيكان',    price: 25, badge: 'الأشهر', badgeColor: '#C9956A', featured: true },
       { name: 'تيراميسو براونيز',      price: 16 },
       { name: 'حلى الأسبوع',          desc: 'اسأل الكاشير', price: 14, badge: 'متغير', badgeColor: '#30D158' },
     ],

@@ -13,7 +13,14 @@ import { ScreenMenu }          from './components/ScreenMenu';
 import { AppleWatchHyz }       from './components/AppleWatch';
 import { OwnerDashboard, MobileOwnerSummary } from './components/OwnerDashboard';
 
-const cafeImg1 = `${import.meta.env.BASE_URL}cafe-1.jpeg`;
+const cafeImg1    = `${import.meta.env.BASE_URL}rest-hero.jpg`;
+const imgExterior = `${import.meta.env.BASE_URL}rest-exterior.jpg`;
+const imgBurger   = `${import.meta.env.BASE_URL}food-burger.jpg`;
+const imgSalad    = `${import.meta.env.BASE_URL}food-salad.jpg`;
+const imgLatte    = `${import.meta.env.BASE_URL}food-latte.jpg`;
+const imgCheesecake = `${import.meta.env.BASE_URL}food-cheesecake.jpg`;
+const imgKabsa    = `${import.meta.env.BASE_URL}food-kabsa.jpg`;
+const imgLoyalty  = `${import.meta.env.BASE_URL}loyalty-card.jpg`;
 
 /* ── App Store badges ─────────────────────────────────────────────── */
 function AppleBadge() {
@@ -752,19 +759,34 @@ export default function App() {
           className="relative rounded-[24px] overflow-hidden shadow-2xl mx-auto"
           style={{ maxWidth: 400, aspectRatio: '9/16', background: '#080002' }}
         >
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-6 p-8">
-            <div className="w-16 h-16 rounded-full flex items-center justify-center text-3xl" style={{background:'rgba(201,149,106,0.15)',border:'1px solid rgba(201,149,106,0.3)'}}>🍽️</div>
-            <div className="text-center">
-              <p className="text-[#C9956A] text-[11px] font-semibold tracking-widest mb-2">مثال على تطبيق مطعمك</p>
-              <p className="text-white text-[18px] font-bold mb-2">منيو رقمي يتحدث لحظياً</p>
-              <p className="text-white/40 text-[12px] leading-relaxed">غيّر الأسعار والصور والعروض من جوالك في ثانية — بدون مبرمج</p>
+          <div className="absolute inset-0 flex flex-col">
+            {/* Header */}
+            <div className="px-6 pt-6 pb-4 text-center">
+              <p className="text-[#C9956A] text-[10px] font-semibold tracking-widest mb-1">منيو رقمي تفاعلي</p>
+              <p className="text-white text-[16px] font-bold">يتغير بضغطة — بدون مبرمج</p>
             </div>
-            <div className="grid grid-cols-2 gap-2 w-full max-w-[260px]">
-              {[{i:'🍔',t:'برجر كلاسيك',p:'٣٥ر'},{i:'🥗',t:'سلطة سيزر',p:'٢٨ر'},{i:'☕',t:'لاتيه',p:'٢٢ر'},{i:'🍰',t:'تشيز كيك',p:'٣٠ر'}].map((item,idx)=>(
-                <div key={idx} className="rounded-[12px] p-3 text-center" style={{background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.08)'}}>
-                  <span className="text-xl block mb-1">{item.i}</span>
-                  <p className="text-white text-[9px] font-semibold">{item.t}</p>
-                  <p className="text-[#C9956A] text-[10px] font-bold mt-0.5">{item.p}</p>
+            {/* Food grid */}
+            <div className="grid grid-cols-2 gap-2 px-5 pb-5 flex-1">
+              {[
+                { img: imgBurger,     name: 'برجر كلاسيك',   price: '٣٥', badge: '🔥 الأكثر طلباً' },
+                { img: imgKabsa,      name: 'كبسة الجمبري',  price: '٨٥', badge: '⭐ مميز'          },
+                { img: imgLatte,      name: 'لاتيه فاخر',    price: '٢٢', badge: null               },
+                { img: imgCheesecake, name: 'تشيز كيك',      price: '٣٠', badge: '🎂 حلو اليوم'    },
+              ].map((item, idx) => (
+                <div key={idx} className="relative rounded-[16px] overflow-hidden flex flex-col" style={{background:'rgba(0,0,0,0.3)',border:'1px solid rgba(255,255,255,0.08)'}}>
+                  <div className="relative h-[100px]">
+                    <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
+                    <div className="absolute inset-0" style={{background:'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%)'}} />
+                    {item.badge && (
+                      <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded-full text-[7px] font-bold text-white" style={{background:'rgba(123,22,24,0.85)'}}>
+                        {item.badge}
+                      </div>
+                    )}
+                  </div>
+                  <div className="px-2.5 py-2 flex items-center justify-between">
+                    <p className="text-white text-[11px] font-semibold leading-tight">{item.name}</p>
+                    <p className="text-[#C9956A] text-[12px] font-black shrink-0">{item.price}<span className="text-[8px]">ر</span></p>
+                  </div>
                 </div>
               ))}
             </div>
