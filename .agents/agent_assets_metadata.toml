@@ -24,3 +24,9 @@ id = "PesaFTIB560rl-VBiBrpv"
 uri = "file://strip_appt.png"
 type = "image"
 title = "بطاقة الموعد — بنفسجي ذهبي"
+
+[[outputs]]
+id = "D0iDnynp0IgytQhUQNuGF"
+uri = "file://talqa-proposal-cosmoline.pdf"
+type = "pdf"
+title = "عرض تلقا — Cosmoline Clinics (PDF)"
