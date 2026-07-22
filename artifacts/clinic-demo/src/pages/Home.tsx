@@ -183,14 +183,31 @@ function FaceIDScreen({ onUnlock }: { onUnlock: () => void }) {
  <p className="text-white text-[17px] font-semibold mb-1">مرحباً، أحمد</p>
  <p className="text-white/40 text-[13px] font-light">انظر للشاشة لفتح التطبيق</p>
  </div>
+ <div className="relative">
+ {[1,2].map(n => (
+ <motion.div key={n} className="absolute inset-0 rounded-full pointer-events-none"
+ style={{ border: '1.5px solid rgba(255,255,255,0.25)' }}
+ animate={{ scale: [1, 1.5 + n*0.3], opacity: [0.5, 0] }}
+ transition={{ duration: 1.6, repeat: Infinity, delay: n * 0.5, ease: 'easeOut' }} />
+ ))}
  <motion.button onClick={scan} whileTap={{ scale: 0.95 }}
- className="flex items-center gap-2.5 px-8 py-3.5 rounded-full text-white text-[13px] font-semibold"
+ className="relative flex items-center gap-2.5 px-8 py-3.5 rounded-full text-white text-[13px] font-semibold"
  style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)', backdropFilter: 'blur(10px)' }}>
  <svg width="14" height="16" viewBox="0 0 14 18" fill="white" opacity="0.8">
  <path d="M7 0C4.8 0 3 1.8 3 4v1H1C.4 5 0 5.4 0 6v11c0 .6.4 1 1 1h12c.6 0 1-.4 1-1V6c0-.6-.4-1-1-1h-2V4C11 1.8 9.2 0 7 0zm0 2c1.1 0 2 .9 2 2v1H5V4c0-1.1.9-2 2-2zm0 7c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/>
  </svg>
  فتح بـ Face ID
  </motion.button>
+ </div>
+ <motion.div
+ initial={{ opacity: 0, y: 4 }} animate={{ opacity: [0, 1, 1, 0], y: [4, 0, 0, 4] }}
+ transition={{ duration: 2.4, repeat: Infinity, repeatDelay: 0.6, times: [0, 0.15, 0.85, 1] }}
+ className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full"
+ style={{ background: 'rgba(0,180,216,0.18)', border: '1px solid rgba(0,180,216,0.35)' }}>
+ <motion.div animate={{ y: [0, -3, 0] }} transition={{ duration: 0.9, repeat: Infinity }}
+ className="w-2 h-2 rounded-full bg-[#00B4D8]" />
+ <span className="text-[#00B4D8] text-[12px] font-semibold">اضغط هنا</span>
+ </motion.div>
  </motion.div>
  )}
  {phase === 'scanning' && (
