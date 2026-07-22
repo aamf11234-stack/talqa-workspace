@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, ChevronLeft, Calendar, ShoppingBag, Tag, Zap, Flame, Star, ArrowLeft } from 'lucide-react';
+import { Bell, ChevronLeft, Calendar, ShoppingBag, Tag, Zap, Flame, Star, ArrowLeft, Sparkles } from 'lucide-react';
 import { EventIconMap, ICalendarIcon, IGift } from './HaizIcons';
+import { SpinWheelOverlay } from './SpinWheel';
+import { ShakeHintBar } from './ShakeReveal';
 
 const logoImg = `${import.meta.env.BASE_URL}restaurant-logo.png`;
 const imgKabsa = `${import.meta.env.BASE_URL}food-kabsa.jpg`;
@@ -264,6 +266,134 @@ function HaizCalendar() {
 }
 
 /* ══════════════════════════════════════════════════════════════════
+   Mood AI Picker
+══════════════════════════════════════════════════════════════════ */
+const MOODS = [
+  { id: 'grill', emoji: '🥩', label: 'مشويات', items: ['كبسة الجمبري', 'ريش مشوية'], prices: ['٨٥ ر', '٧٥ ر'] },
+  { id: 'healthy', emoji: '🥗', label: 'صحي', items: ['سلطة الجرجير', 'عصير طازج'], prices: ['٤٠ ر', '٢٥ ر'] },
+  { id: 'sweet', emoji: '🍰', label: 'حلويات', items: ['تشيز كيك', 'بان كيك'], prices: ['٣٥ ر', '٣٠ ر'] },
+  { id: 'coffee', emoji: '☕', label: 'مشروب', items: ['لاتيه فاخر', 'ماتشا'], prices: ['٢٥ ر', '٢٨ ر'] },
+  { id: 'fast', emoji: '🍔', label: 'سريع', items: ['برجر كلاسيك', 'بطاطا مقلية'], prices: ['٣٥ ر', '٢٠ ر'] },
+];
+
+function MoodPicker() {
+  const [selected, setSelected] = useState<string | null>(null);
+  const [thinking, setThinking] = useState(false);
+  const [result, setResult] = useState<typeof MOODS[0] | null>(null);
+
+  function pick(mood: typeof MOODS[0]) {
+    if (thinking) return;
+    setSelected(mood.id);
+    setResult(null);
+    setThinking(true);
+    setTimeout(() => {
+      setThinking(false);
+      setResult(mood);
+    }, 1200);
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.22 }}
+      className="mx-4 mb-5 rounded-[22px] overflow-hidden"
+      style={{ background: '#111', border: '1px solid rgba(255,255,255,0.06)', boxShadow: '0 8px 30px rgba(0,0,0,0.2)' }}
+    >
+      {/* Header */}
+      <div className="flex items-center gap-2.5 px-4 pt-4 pb-3">
+        <div className="w-7 h-7 rounded-[10px] flex items-center justify-center shrink-0"
+          style={{ background: 'linear-gradient(135deg,rgba(175,82,222,0.2),rgba(175,82,222,0.08))' }}>
+          <Sparkles size={14} className="text-[#AF52DE]" />
+        </div>
+        <div>
+          <p className="text-white text-[13px] font-bold leading-tight">شو مزاجك اليوم؟</p>
+          <p className="text-white/30 text-[10px] font-light mt-0.5">الذكاء الاصطناعي يرشّح لك</p>
+        </div>
+        <div className="mr-auto px-2 py-0.5 rounded-full text-[7px] font-black tracking-widest text-[#AF52DE]"
+          style={{ background: 'rgba(175,82,222,0.1)', border: '1px solid rgba(175,82,222,0.2)', fontFamily: 'ui-monospace,monospace' }}>AI</div>
+      </div>
+
+      {/* Mood pills */}
+      <div className="flex gap-2 px-4 pb-4 overflow-x-auto scrollbar-none">
+        {MOODS.map((m) => {
+          const isSelected = selected === m.id;
+          return (
+            <motion.button key={m.id} whileTap={{ scale: 0.88 }} onClick={() => pick(m)}
+              className="flex flex-col items-center gap-1.5 shrink-0 px-3.5 py-2.5 rounded-[16px] transition-all"
+              style={{
+                background: isSelected ? 'rgba(175,82,222,0.15)' : 'rgba(255,255,255,0.05)',
+                border: isSelected ? '1.5px solid rgba(175,82,222,0.4)' : '1.5px solid rgba(255,255,255,0.06)',
+                boxShadow: isSelected ? '0 0 14px rgba(175,82,222,0.2)' : 'none',
+              }}>
+              <span className="text-[22px] leading-none">{m.emoji}</span>
+              <span className="text-[9px] font-bold" style={{ color: isSelected ? '#AF52DE' : 'rgba(255,255,255,0.4)' }}>{m.label}</span>
+            </motion.button>
+          );
+        })}
+      </div>
+
+      {/* AI result */}
+      <AnimatePresence>
+        {(thinking || result) && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden"
+          >
+            <div className="mx-4 mb-4 rounded-[16px] p-3.5"
+              style={{ background: 'rgba(175,82,222,0.08)', border: '1px solid rgba(175,82,222,0.15)' }}>
+              {thinking ? (
+                <div className="flex items-center gap-2.5">
+                  <div className="flex gap-1">
+                    {[0,1,2].map(i => (
+                      <motion.div key={i} className="w-1.5 h-1.5 rounded-full bg-[#AF52DE]"
+                        animate={{ y: [0, -5, 0] }}
+                        transition={{ duration: 0.7, repeat: Infinity, delay: i * 0.15 }} />
+                    ))}
+                  </div>
+                  <p className="text-[#AF52DE] text-[11px] font-medium">جاري تحليل مزاجك...</p>
+                </div>
+              ) : result ? (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                  <p className="text-[8px] font-black tracking-widest text-[#AF52DE] mb-2" style={{ fontFamily: 'ui-monospace,monospace' }}>
+                    AI RECOMMENDS · بناءً على مزاجك وزياراتك
+                  </p>
+                  <div className="flex gap-2">
+                    {result.items.map((item, i) => (
+                      <motion.a key={i}
+                        href={`https://wa.me/966551378531?text=أريد طلب ${item}`}
+                        target="_blank" rel="noopener noreferrer"
+                        initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.12 }}
+                        whileTap={{ scale: 0.94 }}
+                        className="flex-1 rounded-[12px] p-2.5 flex flex-col gap-1"
+                        style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(175,82,222,0.2)' }}>
+                        <span className="text-[18px] leading-none">{result.emoji}</span>
+                        <p className="text-white text-[10px] font-semibold leading-snug">{item}</p>
+                        <p className="text-[#C9956A] text-[9px] font-bold">{result.prices[i]}</p>
+                        <div className="flex items-center gap-1 mt-0.5">
+                          <svg viewBox="0 0 24 24" className="w-3 h-3 fill-[#25D366] shrink-0">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                          </svg>
+                          <span className="text-[#25D366] text-[8px] font-bold">اطلب</span>
+                        </div>
+                      </motion.a>
+                    ))}
+                  </div>
+                </motion.div>
+              ) : null}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════
    Today's Special — daily dish card
 ══════════════════════════════════════════════════════════════════ */
 function TodaySpecial() {
@@ -344,8 +474,9 @@ function TodaySpecial() {
 /* ══════════════════════════════════════════════════════════════════
    Main Screen
 ══════════════════════════════════════════════════════════════════ */
-export function ScreenHome() {
+export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) {
   const points = useCounter(480, 1400, 200);
+  const [showSpin, setShowSpin] = useState(false);
   const hour = new Date().getHours();
   const greeting =
     hour < 5  ? 'ليلة طيبة 🌙' :
@@ -354,7 +485,11 @@ export function ScreenHome() {
                 'مساء الخير 🌙';
 
   return (
-    <div className="h-full overflow-y-auto scrollbar-none">
+    <div className="h-full overflow-y-auto scrollbar-none relative">
+      {/* Spin wheel overlay */}
+      <AnimatePresence>
+        {showSpin && <SpinWheelOverlay onClose={() => setShowSpin(false)} />}
+      </AnimatePresence>
 
       {/* ── Dark hero ── */}
       <div className="relative overflow-hidden" style={{
@@ -413,7 +548,7 @@ export function ScreenHome() {
         </div>
 
         {/* Stats strip */}
-        <div className="flex justify-center px-6 mb-2">
+        <div className="flex justify-center px-6 mb-4">
           {[
             { val: '١٢', label: 'زيارة',       icon: '🏠' },
             { val: '٨',  label: 'هذا الشهر',  icon: '📅' },
@@ -430,6 +565,19 @@ export function ScreenHome() {
               {i < arr.length - 1 && <div className="w-px self-stretch bg-white/[0.07] mx-1 my-2" />}
             </React.Fragment>
           ))}
+        </div>
+
+        {/* Shake hint + Spin button row */}
+        <div className="flex items-center justify-center gap-3 pb-2">
+          <ShakeHintBar onReveal={onShakeTrigger ?? (() => {})} />
+          <motion.button whileTap={{ scale: 0.92 }} onClick={() => setShowSpin(true)}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-full"
+            style={{ background: 'linear-gradient(135deg,rgba(201,149,106,0.18),rgba(201,149,106,0.08))', border: '1px solid rgba(201,149,106,0.3)' }}>
+            <motion.span animate={{ rotate: [0, 15, -15, 0] }} transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+              className="text-[15px] leading-none">🎰</motion.span>
+            <span className="text-[#C9956A] text-[11px] font-bold">دوّر واربح</span>
+          </motion.button>
         </div>
       </div>
 
@@ -465,6 +613,9 @@ export function ScreenHome() {
 
         {/* طبق اليوم */}
         <TodaySpecial />
+
+        {/* Mood AI */}
+        <MoodPicker />
 
         {/* Active challenge */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.38 }}
@@ -527,6 +678,37 @@ export function ScreenHome() {
             ))}
           </div>
         </div>
+
+        {/* Spin Wheel CTA */}
+        <motion.button
+          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+          whileTap={{ scale: 0.97 }} onClick={() => setShowSpin(true)}
+          className="mx-4 mb-5 w-[calc(100%-32px)] rounded-[20px] overflow-hidden relative flex items-center gap-4 p-4"
+          style={{ background: 'linear-gradient(135deg,#0C0002 0%,#280407 50%,#0D0205 100%)', border: '1px solid rgba(201,149,106,0.2)', boxShadow: '0 8px 30px rgba(0,0,0,0.12)' }}
+        >
+          <div className="absolute inset-0 pointer-events-none"
+            style={{ background: 'radial-gradient(ellipse at 80% 50%,rgba(201,149,106,0.12) 0%,transparent 60%)' }} />
+          {/* Animated wheel preview */}
+          <div className="relative shrink-0" style={{ width: 56, height: 56 }}>
+            <motion.div animate={{ rotate: 360 }} transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
+              className="w-full h-full rounded-full"
+              style={{ background: 'conic-gradient(#7B1618 0deg 45deg,#B8860B 45deg 90deg,#1A6B3A 90deg 135deg,#2D2D2D 135deg 180deg,#7B1618 180deg 225deg,#7D3C15 225deg 270deg,#1B4F72 270deg 315deg,#6B2D8B 315deg 360deg)', border: '2px solid rgba(201,149,106,0.4)' }} />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-5 h-5 rounded-full bg-[#0D0205] border border-[rgba(201,149,106,0.4)] flex items-center justify-center text-[10px]">🎰</div>
+            </div>
+          </div>
+          <div className="flex-1 text-right">
+            <p className="text-white text-[15px] font-black">دوّر واربح</p>
+            <p className="text-white/40 text-[10px] font-light mt-0.5">وجبة مجانية · خصومات · نقاط مضاعفة</p>
+          </div>
+          <div className="shrink-0 flex flex-col items-center gap-1">
+            <div className="px-3 py-1.5 rounded-full text-[10px] font-bold text-[#C9956A]"
+              style={{ background: 'rgba(201,149,106,0.12)', border: '1px solid rgba(201,149,106,0.25)' }}>
+              مجاناً
+            </div>
+            <span className="text-white/20 text-[8px]">مرة / يوم</span>
+          </div>
+        </motion.button>
 
         {/* تقويم العروض */}
         <div className="pt-1">

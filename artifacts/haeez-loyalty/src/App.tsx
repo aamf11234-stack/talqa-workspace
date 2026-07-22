@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PhoneFrame } from './components/PhoneFrame';
 import { BottomNav } from './components/BottomNav';
@@ -12,6 +12,7 @@ import { ScreenOrders }        from './components/ScreenOrders';
 import { ScreenMenu }          from './components/ScreenMenu';
 import { AppleWatchHyz }       from './components/AppleWatch';
 import { OwnerDashboard, MobileOwnerSummary } from './components/OwnerDashboard';
+import { useShakeDetect, FlashDealModal } from './components/ShakeReveal';
 
 const cafeImg1    = `${import.meta.env.BASE_URL}rest-hero.jpg`;
 const imgExterior = `${import.meta.env.BASE_URL}rest-exterior.jpg`;
@@ -540,6 +541,11 @@ function AppScreensStrip({ onTabSelect }: { onTabSelect: (t: Tab) => void }) {
 /* ── Main App ─────────────────────────────────────────────────────── */
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('home');
+  const [showShakeDeal, setShowShakeDeal] = useState(false);
+  const handleShake = useCallback(() => {
+    if (!showShakeDeal) setShowShakeDeal(true);
+  }, [showShakeDeal]);
+  useShakeDetect(handleShake);
 
   useEffect(() => {
     document.documentElement.dir = 'rtl';
@@ -641,6 +647,15 @@ export default function App() {
           {/* Phone */}
           <div style={{ width: 390 }}>
             <PhoneFrame>
+              {/* Flash deal overlay — sits above everything inside the phone */}
+              <AnimatePresence>
+                {showShakeDeal && (
+                  <div className="absolute inset-0 z-[100] rounded-[48px] overflow-hidden pointer-events-auto">
+                    <FlashDealModal onClose={() => setShowShakeDeal(false)} />
+                  </div>
+                )}
+              </AnimatePresence>
+
               <div className="flex-1 relative overflow-hidden h-full">
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.div
@@ -651,7 +666,7 @@ export default function App() {
                     transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
                     className="absolute inset-0 overflow-y-auto scrollbar-none"
                   >
-                    {activeTab === 'home'      && <ScreenHome />}
+                    {activeTab === 'home'      && <ScreenHome onShakeTrigger={() => setShowShakeDeal(true)} />}
                     {activeTab === 'menu'      && <ScreenMenu />}
                     {activeTab === 'card'      && <ScreenMembership />}
                     {activeTab === 'book'      && <ScreenReservations />}
