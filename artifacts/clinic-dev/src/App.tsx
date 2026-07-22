@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Smartphone, Globe, LayoutDashboard, Play, GitBranch, Layers, Plug2, BarChart3, ShieldCheck, UserCheck, Lock, KeyRound, Fingerprint, HardDrive, ScanEye, FileCheck2, Zap, Bell, Heart, CreditCard, MessageCircle, Cloud, PhoneMissed, FileX2, UserX, Palette, LayoutTemplate, Sparkles, Store, CircleCheck, QrCode, CalendarCheck, FileText, Pill, Watch, Users, Wallet, FolderOpen, Activity, Shield, Puzzle, Search, Link2, TrendingUp, Star } from 'lucide-react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { TalqaShield, TalqaShieldSmall } from './components/TalqaShield';
 
@@ -11,6 +12,27 @@ const BLUEDIM = 'rgba(14,165,233,0.18)';
 const TEXT = '#fff';
 const MUTED = 'rgba(255,255,255,0.45)';
 const DIM = 'rgba(255,255,255,0.18)';
+
+
+/* ═══ ICON MAP ══════════════════════════════════════════════ */
+type LucideComp = React.ComponentType<{ size?: number; color?: string; strokeWidth?: number }>;
+const ICONS: Record<string,LucideComp> = {
+  smartphone:Smartphone, globe:Globe, dashboard:LayoutDashboard, play:Play,
+  gitbranch:GitBranch, layers:Layers, plug:Plug2, barchart:BarChart3,
+  shieldcheck:ShieldCheck, usercheck:UserCheck, lock:Lock, key:KeyRound,
+  fingerprint:Fingerprint, hdd:HardDrive, eye:ScanEye, filecheck:FileCheck2,
+  zap:Zap, bell:Bell, heart:Heart, creditcard:CreditCard, message:MessageCircle,
+  cloud:Cloud, phonemissed:PhoneMissed, filex:FileX2, userx:UserX,
+  palette:Palette, layout:LayoutTemplate, sparkles:Sparkles, store:Store,
+  check:CircleCheck, qr:QrCode, calendar:CalendarCheck, results:FileText,
+  pill:Pill, applewatch:Watch, users:Users, wallet:Wallet, folder:FolderOpen,
+  activity:Activity, shield:Shield, puzzle:Puzzle, search:Search, link:Link2,
+  trending:TrendingUp, star:Star,
+};
+function IconBox({ name, size=20, color='white' }: { name:string; size?:number; color?:string }) {
+  const Ic = ICONS[name];
+  return Ic ? <Ic size={size} color={color} strokeWidth={1.75} /> : null;
+}
 
 /* ═══ HELPERS ════════════════════════════════════════════════ */
 
@@ -40,7 +62,7 @@ function OfferBar({ lang }: { lang: 'ar'|'en' }) {
  <motion.span className="w-1.5 h-1.5 rounded-full bg-yellow-300 shrink-0"
  animate={{ opacity: [1, 0.3, 1] }} transition={{ duration: 1.2, repeat: Infinity }} />
 
- <span className="text-[11px] font-black tracking-wide whitespace-nowrap">
+ <span className="text-[11px] font-black whitespace-nowrap">
  {lang === 'ar' ? ' عرض خاص — متوفر لفترة محدودة' : ' Special offer — limited time'}
  </span>
 
@@ -127,8 +149,7 @@ function Glass({ children, className = '', accent = BLUE, style = {}, onClick }:
  ? `0 24px 64px rgba(0,0,0,0.5), 0 0 0 1px ${accent}30, inset 0 1px 0 rgba(255,255,255,0.12)`
  : '0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.07)',
  transform: h ? 'translateY(-3px)' : 'none',
- ...style,
- }}>
+ ...style }}>
  {/* top shine */}
  <div className="absolute top-0 left-0 right-0 h-px pointer-events-none"
  style={{ background: `linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent)` }} />
@@ -195,8 +216,7 @@ const SCREENS = [
  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 shrink-0" />
  </div>
  </div>
- ),
- },
+ ) },
  {
  gradient: 'linear-gradient(150deg,rgba(124,58,237,0.9) 0%,rgba(91,33,182,0.95) 100%)',
  content: (
@@ -214,8 +234,7 @@ const SCREENS = [
  <p className="text-[9px] text-emerald-300 font-bold"> بياناتك مشفرة بـ AES-256</p>
  </div>
  </div>
- ),
- },
+ ) },
  {
  gradient: 'linear-gradient(150deg,rgba(15,23,42,0.98) 0%,rgba(30,41,59,0.98) 100%)',
  content: (
@@ -239,8 +258,7 @@ const SCREENS = [
  </div>
  ))}
  </div>
- ),
- },
+ ) },
 ];
 
 function PhoneMockup({ className = '' }: { className?: string }) {
@@ -376,6 +394,40 @@ const ACTIVITIES = [
  { icon:'د', name:'عيادات دار الشفاء', city:'الرياض', action:'جاري بناء التطبيق', ago:'منذ يومين' },
 ];
 
+
+/* ── Apple Wallet Button ───────────────────────────────────────── */
+function WalletBtn({ label, sub, gradient, border, getEndpoint }: {
+ label:string; sub:string; gradient:string; border:string;
+ getEndpoint:string;
+}) {
+ const [done, setDone] = React.useState(false);
+ const handle = () => {
+  if (done) return;
+  window.location.href = getEndpoint;
+  setDone(true); setTimeout(() => setDone(false), 3200);
+ };
+ return (
+  <motion.button whileTap={{ scale:0.97 }} onClick={handle}
+   className="flex items-center gap-3 px-5 py-3.5 rounded-[16px] w-full cursor-pointer"
+   style={{
+    background: done ? 'rgba(52,199,89,0.15)' : gradient,
+    border: `1px solid ${done ? 'rgba(52,199,89,0.4)' : border}`,
+   }}>
+   {done ? (
+    <span className="text-[#34C759] text-lg shrink-0">✓</span>
+   ) : (
+    <svg width="13" height="16" viewBox="0 0 17 20" fill="white" className="shrink-0"><path d="M14.1 10.64c-.02-2.04 1.67-3.02 1.74-3.06-0.95-1.39-2.43-1.58-2.95-1.60-1.26-.13-2.46.74-3.10.74-.64 0-1.63-.72-2.68-.70C5.55 6.04 4.05 6.97 3.22 8.36 1.54 11.17 2.80 15.35 4.42 17.65c.80 1.15 1.77 2.45 3.04 2.40 1.22-.05 1.68-.78 3.16-.78 1.47 0 1.89.78 3.18.76 1.31-.02 2.15-1.18 2.94-2.34.93-1.34 1.32-2.64 1.34-2.71-.03-.01-2.57-.99-2.98-3.34zM11.96 3.83c.67-.81 1.12-1.93 1.00-3.06-.96.04-2.13.64-2.82 1.45-.62.71-1.16 1.86-1.01 2.96 1.07.08 2.16-.54 2.83-1.35z"/></svg>
+   )}
+   <div className="text-right">
+    <p className={`font-bold text-[13px] leading-none ${done ? 'text-[#34C759]' : 'text-white'}`}>
+     {done ? 'تمت الإضافة ✓' : label}
+    </p>
+    <p className="text-white/35 text-[10px] mt-0.5">{sub}</p>
+   </div>
+  </motion.button>
+ );
+}
+
 export default function App() {
  const [faqOpen, setFaqOpen] = useState<number|null>(null);
  const [lang, setLang] = useState<'ar'|'en'>('ar');
@@ -444,8 +496,7 @@ export default function App() {
  ctaDemo: lang==='ar' ? 'شاهد الديمو' : 'See Demo',
  finalHeading: lang==='ar' ? 'ابدأ اليوم.' : 'Start today.',
  finalSub: lang==='ar' ? 'استشارة مجانية · ردّ خلال ٢٤ ساعة · أو نجيك للعيادة' : 'Free consultation · Reply in 24h · Or we visit your clinic',
- whatsapp: lang==='ar' ? 'ابدأ مشروع عيادتك الآن' : 'Start your clinic project',
- };
+ whatsapp: lang==='ar' ? 'ابدأ مشروع عيادتك الآن' : 'Start your clinic project' };
 
  return (
  <div dir={lang==='ar'?'rtl':'ltr'} style={{ background:BG, fontFamily:"'Tajawal',sans-serif", overflowX:'hidden', color:TEXT, position:'relative' }}>
@@ -468,7 +519,7 @@ export default function App() {
 
  <motion.h1 initial={{ opacity:0, y:24 }} animate={{ opacity:1, y:0 }}
  transition={{ delay:0.2, duration:0.8, ease:[0.22,1,0.36,1] }}
- className="font-black leading-[1.03] mb-6" style={{ fontSize:'clamp(44px,6.5vw,84px)', letterSpacing:'-0.02em', color:TEXT }}>
+ className="font-black leading-[1.03] mb-6" style={{ fontSize:'clamp(44px,6.5vw,84px)', color:TEXT }}>
  {lang==='ar' ? <>عيادتك تستحق<br /></> : <>Your clinic deserves<br /></>}
  <span style={{ background:`linear-gradient(135deg,${BLUE} 0%,#38BDF8 50%,#7DD3FC 100%)`, WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>
  {lang==='ar' ? <>أفضل تجربة<br />رقمية.</> : <>the best digital<br />experience.</>}
@@ -559,7 +610,7 @@ export default function App() {
  {/* ════ CLIENT LOGOS ═══════════════════════════════ */}
  <section className="py-10 px-6 lg:px-12" style={{ borderBottom:`1px solid ${GLASSBORDER}` }}>
  <div className="max-w-7xl mx-auto">
- <p className="text-center text-[10px] font-black tracking-[0.3em] uppercase mb-6" style={{ color:DIM }}>
+ <p className="text-center text-[10px] font-black uppercase mb-6" style={{ color:DIM }}>
  {lang==='ar' ? 'يثقون بتلقا للعيادات' : 'Trusted by leading clinics'}
  </p>
  <div className="overflow-hidden">
@@ -606,8 +657,8 @@ export default function App() {
  <section className="py-28 px-6 lg:px-12">
  <div className="max-w-7xl mx-auto">
  <Reveal className="mb-16">
- <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>لماذا تحتاجنا؟</p>
- <h2 className="font-black leading-tight" style={{ fontSize:'clamp(32px,5.5vw,64px)', letterSpacing:'-0.02em', color:TEXT }}>
+ <p className="text-[11px] font-black mb-5" style={{ color:BLUE }}>لماذا تحتاجنا؟</p>
+ <h2 className="font-black leading-tight" style={{ fontSize:'clamp(32px,5.5vw,64px)', color:TEXT }}>
  مشاكل حقيقية.<br /><span style={{ color:DIM }}>حلول تقنية.</span>
  </h2>
  </Reveal>
@@ -647,8 +698,8 @@ export default function App() {
  <section id="المنظومة" className="py-24 px-6 lg:px-12">
  <div className="max-w-7xl mx-auto">
  <Reveal className="mb-14">
- <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>المنظومة</p>
- <h2 className="font-black leading-tight" style={{ fontSize:'clamp(30px,5vw,60px)', letterSpacing:'-0.02em', color:TEXT }}>
+ <p className="text-[11px] font-black mb-5" style={{ color:BLUE }}>المنظومة</p>
+ <h2 className="font-black leading-tight" style={{ fontSize:'clamp(30px,5vw,60px)', color:TEXT }}>
  ثلاثة منتجات.<br /><span style={{ color:DIM }}>منظومة واحدة.</span>
  </h2>
  </Reveal>
@@ -658,12 +709,12 @@ export default function App() {
  <Glass accent={BLUE} className="h-full">
  <div className="p-7 h-full flex flex-col">
  <div className="flex items-center gap-3 mb-6">
- <div className="w-12 h-12 rounded-2xl flex items-center justify-center font-black text-[13px] text-white" style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 8px 24px ${BLUE}40` }}>APP</div>
- <div><p className="text-[9px] font-black tracking-widest" style={{ color:BLUE }}>01</p><p className="text-[20px] font-black" style={{ color:TEXT }}>تطبيق المريض</p></div>
+ <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background:`linear-gradient(135deg,${BLUE},#0284C7)`, boxShadow:`0 8px 24px ${BLUE}40` }}><Smartphone size={22} color="white" strokeWidth={1.75} /></div>
+ <div><p className="text-[9px] font-black" style={{ color:BLUE }}>01</p><p className="text-[20px] font-black" style={{ color:TEXT }}>تطبيق المريض</p></div>
  </div>
  <div className="inline-flex px-3 py-1.5 rounded-full text-[10px] font-black mb-6 w-fit" style={{ background:`${BLUE}20`, color:BLUE, border:`1px solid ${BLUE}30` }}>iOS + Android بهوية عيادتك</div>
  <div className="space-y-3 flex-1">
- {[['·','بطاقة مريض QR'],['·','حجز مواعيد ٢٤/٧'],['·','نتائج مشفرة'],['·','تذكيرات أدوية'],['·','Apple Health'],['·','Apple Watch'],['·','Apple & Google Wallet'],['·','إدارة التابعين']].map(([ic,f]) => (
+ {[['check','بطاقة مريض QR'],['check','حجز مواعيد ٢٤/٧'],['check','نتائج مشفرة'],['check','تذكيرات أدوية'],['check','Apple Health'],['check','Apple Watch'],['check','Apple & Google Wallet'],['check','إدارة التابعين']].map(([ic,f]) => (
  <div key={f} className="flex items-center gap-3">
  <span className="text-[14px]">{ic}</span>
  <p className="text-[13px]" style={{ color:MUTED }}>{f}</p>
@@ -683,8 +734,8 @@ export default function App() {
  <Glass accent="#8B5CF6">
  <div className="p-7">
  <div className="flex items-center gap-3 mb-5">
- <div className="w-12 h-12 rounded-2xl flex items-center justify-center font-black text-[13px] text-white" style={{ background:'linear-gradient(135deg,#8B5CF6,#7C3AED)', boxShadow:'0 8px 24px rgba(139,92,246,0.4)' }}>WEB</div>
- <div><p className="text-[9px] font-black tracking-widest" style={{ color:'#A78BFA' }}>02</p><p className="text-[20px] font-black" style={{ color:TEXT }}>الموقع الإلكتروني</p></div>
+ <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background:'linear-gradient(135deg,#8B5CF6,#7C3AED)', boxShadow:'0 8px 24px rgba(139,92,246,0.4)' }}><Globe size={22} color="white" strokeWidth={1.75} /></div>
+ <div><p className="text-[9px] font-black" style={{ color:'#A78BFA' }}>02</p><p className="text-[20px] font-black" style={{ color:TEXT }}>الموقع الإلكتروني</p></div>
  <div className="mr-auto px-3 py-1.5 rounded-full text-[10px] font-black" style={{ background:'rgba(139,92,246,0.15)', color:'#A78BFA', border:'1px solid rgba(139,92,246,0.25)' }}>SEO متخصص طبي</div>
  </div>
  {/* mini browser */}
@@ -707,7 +758,7 @@ export default function App() {
  </div>
  </div>
  <div className="grid grid-cols-4 gap-2">
- {[['SEO','SEO طبي'],['صف','صفحة طبيب'],['حجز','حجز أونلاين'],['★','تقييمات'],['مدو','مدونة طبية'],['WA','واتساب'],['URL','الموقع'],['GA','تحليلات']].map(([ic,f]) => (
+ {[['search','SEO طبي'],['user','صفحة طبيب'],['calendar','حجز أونلاين'],['star','تقييمات'],['pen','مدونة طبية'],['msg','واتساب'],['link','الموقع'],['chart','تحليلات']].map(([ic,f]) => (
  <div key={f} className="flex items-center gap-1.5 text-[11px] rounded-xl px-2.5 py-2" style={{ background:'rgba(255,255,255,0.04)', border:`1px solid ${GLASSBORDER}`, color:MUTED }}>
  <span>{ic}</span><span>{f}</span>
  </div>
@@ -722,8 +773,8 @@ export default function App() {
  <Glass accent="#10B981">
  <div className="p-7">
  <div className="flex items-center gap-3 mb-5">
- <div className="w-12 h-12 rounded-2xl flex items-center justify-center font-black text-[13px] text-white" style={{ background:'linear-gradient(135deg,#10B981,#059669)', boxShadow:'0 8px 24px rgba(16,185,129,0.4)' }}>SYS</div>
- <div><p className="text-[9px] font-black tracking-widest text-emerald-400">03</p><p className="text-[20px] font-black" style={{ color:TEXT }}>لوحة الإدارة</p></div>
+ <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background:'linear-gradient(135deg,#10B981,#059669)', boxShadow:'0 8px 24px rgba(16,185,129,0.4)' }}><LayoutDashboard size={22} color="white" strokeWidth={1.75} /></div>
+ <div><p className="text-[9px] font-black text-emerald-400">03</p><p className="text-[20px] font-black" style={{ color:TEXT }}>لوحة الإدارة</p></div>
  <div className="mr-auto px-3 py-1.5 rounded-full text-[10px] font-black" style={{ background:'rgba(16,185,129,0.12)', color:'#34D399', border:'1px solid rgba(16,185,129,0.25)' }}>المالك · الفريق · التقارير</div>
  </div>
  {/* mini dashboard */}
@@ -743,7 +794,7 @@ export default function App() {
  </div>
  </div>
  <div className="grid grid-cols-4 gap-2">
- {[['ريال','إيرادات'],['قائمة','طابور'],['جدول','جداول'],['تقرير','تقارير'],['فريق','فريق'],['تأمين','تأمين'],['إشعار','إشعارات'],['أمان','أمان']].map(([ic,f]) => (
+ {[['$','إيرادات'],['Q','طابور'],['T','جداول'],['R','تقارير'],['F','فريق'],['I','تأمين'],['N','إشعارات'],['S','أمان']].map(([ic,f]) => (
  <div key={f} className="flex items-center gap-1.5 text-[11px] rounded-xl px-2.5 py-2" style={{ background:'rgba(255,255,255,0.04)', border:`1px solid ${GLASSBORDER}`, color:MUTED }}>
  <span>{ic}</span><span>{f}</span>
  </div>
@@ -760,7 +811,7 @@ export default function App() {
  <Glass accent={BLUE}>
  <div className="p-7 flex flex-col sm:flex-row items-center justify-between gap-5">
  <div className="flex items-center gap-5">
- <div className="w-16 h-16 rounded-2xl flex items-center justify-center font-black text-[12px]" style={{ background:`${BLUE}20`, border:`1px solid ${BLUE}30`, color:BLUE }}>DEMO</div>
+ <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ background:`${BLUE}20`, border:`1px solid ${BLUE}30` }}><Play size={26} color={BLUE} strokeWidth={1.75} /></div>
  <div>
  <p className="font-black text-[20px] mb-1" style={{ color:TEXT }}>{t.demoCta}</p>
  <p className="text-[14px]" style={{ color:MUTED }}>{t.demoSub}</p>
@@ -785,7 +836,7 @@ export default function App() {
  style={{ background:'rgba(139,92,246,0.12)', border:'1px solid rgba(139,92,246,0.25)', color:'#A78BFA' }}>
  {lang==='ar' ? 'للمجموعات الطبية الكبيرة' : 'Enterprise Healthcare'}
  </div>
- <h2 className="font-black leading-tight mb-5" style={{ fontSize:'clamp(30px,5vw,60px)', letterSpacing:'-0.02em', color:TEXT }}>
+ <h2 className="font-black leading-tight mb-5" style={{ fontSize:'clamp(30px,5vw,60px)', color:TEXT }}>
  {lang==='ar' ? <>١٠ عيادات؟ ١٠٠؟<br /><span style={{ color:DIM }}>لا فرق — نظام واحد.</span></> : <>10 clinics? 100?<br /><span style={{ color:DIM }}>One system scales all.</span></>}
  </h2>
  <p style={{ color:MUTED }} className="text-[16px] max-w-xl leading-relaxed">
@@ -794,12 +845,12 @@ export default function App() {
  </Reveal>
  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
  {[
- { icon:'MG', title: lang==='ar' ? 'إدارة متعددة الفروع' : 'Multi-Branch Management', desc: lang==='ar' ? 'لوحة تحكم مركزية لجميع الفروع مع صلاحيات مخصصة لكل مستوى إداري' : 'Centralized dashboard across all branches with role-based permissions per management level', accent:'#8B5CF6' },
- { icon:'WL', title: lang==='ar' ? 'White-Label كامل' : 'Full White-Label', desc: lang==='ar' ? 'اسمك وشعارك ولونك فقط — تلقا غير مرئية للمرضى والموظفين' : 'Your brand only — Talqa is invisible to patients and staff', accent:BLUE },
- { icon:'API', title: lang==='ar' ? 'API Enterprise' : 'Enterprise API', desc: lang==='ar' ? 'REST API كاملة + Webhooks لتكامل مع أي نظام HIS أو ERP موجود' : 'Full REST API + Webhooks for seamless integration with any existing HIS or ERP', accent:'#10B981' },
- { icon:'GA', title: lang==='ar' ? 'تقارير مجموعات' : 'Group Analytics', desc: lang==='ar' ? 'مقارنة أداء الفروع والأطباء والإيرادات مع تقارير قابلة للتصدير' : 'Cross-branch performance, doctor KPIs, and revenue with exportable reports', accent:'#F59E0B' },
- { icon:'SLA', title: lang==='ar' ? 'SLA مضمون ٩٩.٩٪' : '99.9% SLA Guarantee', desc: lang==='ar' ? 'اتفاقية مستوى خدمة مكتوبة مع تعويض تلقائي عند أي انقطاع' : 'Written SLA with automatic compensation for any downtime — enterprise grade uptime', accent:'#EF4444' },
- { icon:'AM', title: lang==='ar' ? 'مدير حساب مخصص' : 'Dedicated Account Manager', desc: lang==='ar' ? 'مدير حساب محترف متاح مباشرة — لا خطوط ساخنة ولا بوتات' : 'A dedicated professional account manager accessible directly — no hotlines, no bots', accent:'#8B5CF6' },
+ { icon:'gitbranch', title: lang==='ar' ? 'إدارة متعددة الفروع' : 'Multi-Branch Management', desc: lang==='ar' ? 'لوحة تحكم مركزية لجميع الفروع مع صلاحيات مخصصة لكل مستوى إداري' : 'Centralized dashboard across all branches with role-based permissions per management level', accent:'#8B5CF6' },
+ { icon:'layers', title: lang==='ar' ? 'White-Label كامل' : 'Full White-Label', desc: lang==='ar' ? 'اسمك وشعارك ولونك فقط — تلقا غير مرئية للمرضى والموظفين' : 'Your brand only — Talqa is invisible to patients and staff', accent:BLUE },
+ { icon:'plug', title: lang==='ar' ? 'API Enterprise' : 'Enterprise API', desc: lang==='ar' ? 'REST API كاملة + Webhooks لتكامل مع أي نظام HIS أو ERP موجود' : 'Full REST API + Webhooks for seamless integration with any existing HIS or ERP', accent:'#10B981' },
+ { icon:'barchart', title: lang==='ar' ? 'تقارير مجموعات' : 'Group Analytics', desc: lang==='ar' ? 'مقارنة أداء الفروع والأطباء والإيرادات مع تقارير قابلة للتصدير' : 'Cross-branch performance, doctor KPIs, and revenue with exportable reports', accent:'#F59E0B' },
+ { icon:'shieldcheck', title: lang==='ar' ? 'SLA مضمون ٩٩.٩٪' : '99.9% SLA Guarantee', desc: lang==='ar' ? 'اتفاقية مستوى خدمة مكتوبة مع تعويض تلقائي عند أي انقطاع' : 'Written SLA with automatic compensation for any downtime — enterprise grade uptime', accent:'#EF4444' },
+ { icon:'usercheck', title: lang==='ar' ? 'مدير حساب مخصص' : 'Dedicated Account Manager', desc: lang==='ar' ? 'مدير حساب محترف متاح مباشرة — لا خطوط ساخنة ولا بوتات' : 'A dedicated professional account manager accessible directly — no hotlines, no bots', accent:'#8B5CF6' },
  ].map((s,i) => (
  <Reveal key={i} delay={i*0.06}>
  <Glass accent={s.accent} className="h-full cursor-default">
@@ -848,10 +899,10 @@ export default function App() {
  <section className="py-28 px-6 lg:px-12">
  <div className="max-w-7xl mx-auto">
  <Reveal className="mb-14">
- <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>
+ <p className="text-[11px] font-black mb-5" style={{ color:BLUE }}>
  {lang==='ar' ? 'البنية التقنية' : 'Technology'}
  </p>
- <h2 className="font-black leading-tight" style={{ fontSize:'clamp(28px,5vw,58px)', letterSpacing:'-0.02em', color:TEXT }}>
+ <h2 className="font-black leading-tight" style={{ fontSize:'clamp(28px,5vw,58px)', color:TEXT }}>
  {lang==='ar' ? <>تقنية حديثة.<br /><span style={{ color:DIM }}>بنية موثوقة.</span></> : <>Modern technology.<br /><span style={{ color:DIM }}>Reliable architecture.</span></>}
  </h2>
  </Reveal>
@@ -859,19 +910,19 @@ export default function App() {
  {/* Tech grid */}
  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
  {[
- { label:'React Native', sub:lang==='ar'?'iOS + Android':'iOS + Android', icon:'RN', color:BLUE },
- { label:'WebSockets', sub:lang==='ar'?'تحديثات فورية':'Real-time updates', icon:'WS', color:'#EF4444' },
- { label:'REST APIs', sub:lang==='ar'?'تكامل سلس':'Seamless integration', icon:'API', color:'#8B5CF6' },
- { label:'Push Notifications', sub:lang==='ar'?'إشعارات فورية':'Instant alerts', icon:'PN', color:'#F59E0B' },
- { label:'Apple Health', sub:lang==='ar'?'مزامنة صحية':'Health sync', icon:'AH', color:'#10B981' },
- { label:'Apple Wallet', sub:lang==='ar'?'بطاقة رقمية':'Digital card', icon:'AW', color:BLUE },
- { label:'WhatsApp API', sub:lang==='ar'?'تواصل مباشر':'Direct messaging', icon:'WA', color:'#10B981' },
- { label:'Cloud Hosting', sub:lang==='ar'?'استضافة موثوقة':'Reliable hosting', icon:'CH', color:'#A78BFA' },
+ { label:'React Native', sub:lang==='ar'?'iOS + Android':'iOS + Android', icon:'smartphone', color:BLUE },
+ { label:'WebSockets', sub:lang==='ar'?'تحديثات فورية':'Real-time updates', icon:'zap', color:'#EF4444' },
+ { label:'REST APIs', sub:lang==='ar'?'تكامل سلس':'Seamless integration', icon:'plug', color:'#8B5CF6' },
+ { label:'Push Notifications', sub:lang==='ar'?'إشعارات فورية':'Instant alerts', icon:'bell', color:'#F59E0B' },
+ { label:'Apple Health', sub:lang==='ar'?'مزامنة صحية':'Health sync', icon:'heart', color:'#10B981' },
+ { label:'Apple Wallet', sub:lang==='ar'?'بطاقة رقمية':'Digital card', icon:'creditcard', color:BLUE },
+ { label:'WhatsApp API', sub:lang==='ar'?'تواصل مباشر':'Direct messaging', icon:'message', color:'#10B981' },
+ { label:'Cloud Hosting', sub:lang==='ar'?'استضافة موثوقة':'Reliable hosting', icon:'cloud', color:'#A78BFA' },
  ].map((t,i) => (
  <Reveal key={i} delay={i*0.04}>
  <Glass accent={t.color} className="cursor-default">
  <div className="p-5 text-center">
-  <div className="inline-flex items-center justify-center px-3 py-1 rounded-lg text-[11px] font-black mb-3 mx-auto" style={{ background:`${t.color}18`, border:`1px solid ${t.color}35`, color:t.color }}>{t.icon}</div>
+  <div className="w-11 h-11 rounded-2xl flex items-center justify-center mb-3 mx-auto" style={{ background:`${t.color}18`, border:`1px solid ${t.color}35` }}><IconBox name={t.icon} size={20} color={t.color} /></div>
  <p className="text-[13px] font-black mb-1" style={{ color:t.color }}>{t.label}</p>
  <p className="text-[10px]" style={{ color:MUTED }}>{t.sub}</p>
  </div>
@@ -886,8 +937,8 @@ export default function App() {
  <section id="process" className="py-28 px-6 lg:px-12">
  <div className="max-w-7xl mx-auto">
  <Reveal className="mb-16">
- <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>{t.processBadge}</p>
- <h2 className="font-black leading-tight" style={{ fontSize:'clamp(30px,5vw,60px)', letterSpacing:'-0.02em', color:TEXT }}>
+ <p className="text-[11px] font-black mb-5" style={{ color:BLUE }}>{t.processBadge}</p>
+ <h2 className="font-black leading-tight" style={{ fontSize:'clamp(30px,5vw,60px)', color:TEXT }}>
  {t.processHeading1}<br /><span style={{ color:DIM }}>{t.processHeading2}</span>
  </h2>
  </Reveal>
@@ -920,33 +971,33 @@ export default function App() {
  <section id="المميزات" className="py-24 px-6 lg:px-12">
  <div className="max-w-7xl mx-auto">
  <Reveal className="mb-14">
- <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>{t.featuresBadge}</p>
- <h2 className="font-black leading-tight" style={{ fontSize:'clamp(28px,5vw,58px)', letterSpacing:'-0.02em', color:TEXT }}>
+ <p className="text-[11px] font-black mb-5" style={{ color:BLUE }}>{t.featuresBadge}</p>
+ <h2 className="font-black leading-tight" style={{ fontSize:'clamp(28px,5vw,58px)', color:TEXT }}>
  {t.featuresHeading1}<br /><span style={{ color:DIM }}>{t.featuresHeading2}</span>
  </h2>
  </Reveal>
  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
  {[
- ['QR','بطاقة رقمية','QR فوري',BLUE],
- ['حجز','حجز مواعيد','٢٤/٧',BLUE],
- ['نتج','نتائج','للهاتف مباشرة','#8B5CF6'],
- ['دواء','تذكير أدوية','إشعارات','#8B5CF6'],
- ['AH','Apple Health','مزامنة','#EF4444'],
- ['AW','Apple Watch','مؤشرات','#374151'],
- ['أهل','التابعون','العائلة','#F59E0B'],
- ['AW','Wallet','رقمية','#10B981'],
- ['سجل','السجل الطبي','موحد',BLUE],
- ['صحة','أمراض مزمنة','سكر · ضغط','#EF4444'],
- ['لوح','لوحة المالك','تقارير','#10B981'],
- ['SEO','موقع طبي','SEO','#8B5CF6'],
- ['WA','واتساب آلي','تذكير','#10B981'],
- ['حرم','خصوصية تامة','بياناتك ملكك','#F59E0B'],
- ['HIS','تكامل HIS','أنظمة','#374151'],
+ ['qr','بطاقة رقمية','QR فوري',BLUE],
+ ['calendar','حجز مواعيد','٢٤/٧',BLUE],
+ ['results','نتائج','للهاتف مباشرة','#8B5CF6'],
+ ['pill','تذكير أدوية','إشعارات','#8B5CF6'],
+ ['heart','Apple Health','مزامنة','#EF4444'],
+ ['applewatch','Apple Watch','مؤشرات','#94A3B8'],
+ ['users','التابعون','العائلة','#F59E0B'],
+ ['wallet','Wallet','رقمية','#10B981'],
+ ['folder','السجل الطبي','موحد',BLUE],
+ ['activity','أمراض مزمنة','سكر · ضغط','#EF4444'],
+ ['barchart','لوحة المالك','تقارير','#10B981'],
+ ['globe','موقع طبي','SEO','#8B5CF6'],
+ ['message','واتساب آلي','تذكير','#10B981'],
+ ['shield','خصوصية تامة','بياناتك ملكك','#F59E0B'],
+ ['puzzle','تكامل HIS','أنظمة','#94A3B8'],
  ].map(([icon,title,sub,accent],i) => (
  <Reveal key={i} delay={i*0.02}>
  <Glass accent={accent} className="cursor-default">
  <div className="p-5 text-center">
- <span className="text-[26px] mb-3 block">{icon}</span>
+ <div className="w-11 h-11 rounded-2xl flex items-center justify-center mb-3 mx-auto" style={{ background:`${accent}18`, border:`1px solid ${accent}30` }}><IconBox name={icon} size={20} color={accent} /></div>
  <p className="text-[12px] font-black mb-0.5" style={{ color:TEXT }}>{title}</p>
  <p className="text-[10px]" style={{ color:MUTED }}>{sub}</p>
  </div>
@@ -961,18 +1012,18 @@ export default function App() {
  <section className="py-28 px-6 lg:px-12">
  <div className="max-w-7xl mx-auto">
  <Reveal className="mb-14">
- <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>
+ <p className="text-[11px] font-black mb-5" style={{ color:BLUE }}>
  {lang==='ar' ? 'لماذا رقمي؟' : 'Why digital?'}
  </p>
- <h2 className="font-black leading-tight" style={{ fontSize:'clamp(30px,5vw,60px)', letterSpacing:'-0.02em', color:TEXT }}>
+ <h2 className="font-black leading-tight" style={{ fontSize:'clamp(30px,5vw,60px)', color:TEXT }}>
  {lang==='ar' ? <>عيادتك بدون نظام<br /><span style={{ color:DIM }}>= مرضى يذهبون للمنافس.</span></> : <>Without a system,<br /><span style={{ color:DIM }}>patients go to your competition.</span></>}
  </h2>
  </Reveal>
  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
  {[
- { icon:'!', title: lang==='ar'?'لا ردّ = مريض راح':'No reply = lost patient', desc: lang==='ar'?'المريض يتصل ولا يحد يرد — يروح للمنافس. نظام الحجز الإلكتروني يستقبل ٢٤/٧ بدون موظف.':'Patient calls, no answer — goes to the competition. Online booking captures them 24/7.', accent:'#EF4444' },
- { icon:'t', title: lang==='ar'?'ملف ورقي = وقت ضائع':'Paper files = wasted time', desc: lang==='ar'?'الدكتور يقضي ١٠ دقائق يدور على ملف المريض. رقمياً — يفتحه في ثانية.':'The doctor spends 10 minutes searching for a file. Digitally — it opens in a second.', accent:'#F59E0B' },
- { icon:'↩', title: lang==='ar'?'بلا متابعة = بلا عودة':'No follow-up = no return', desc: lang==='ar'?'٧٠٪ من المرضى لا يعودون لأنهم ينسون. تذكير واتساب تلقائي يجيبهم بدون جهد.':'70% of patients do not return because they forget. Auto WhatsApp reminders bring them back effortlessly.', accent:BLUE },
+ { icon:'phonemissed', title: lang==='ar'?'لا ردّ = مريض راح':'No reply = lost patient', desc: lang==='ar'?'المريض يتصل ولا يحد يرد — يروح للمنافس. نظام الحجز الإلكتروني يستقبل ٢٤/٧ بدون موظف.':'Patient calls, no answer — goes to the competition. Online booking captures them 24/7.', accent:'#EF4444' },
+ { icon:'filex', title: lang==='ar'?'ملف ورقي = وقت ضائع':'Paper files = wasted time', desc: lang==='ar'?'الدكتور يقضي ١٠ دقائق يدور على ملف المريض. رقمياً — يفتحه في ثانية.':'The doctor spends 10 minutes searching for a file. Digitally — it opens in a second.', accent:'#F59E0B' },
+ { icon:'userx', title: lang==='ar'?'بلا متابعة = بلا عودة':'No follow-up = no return', desc: lang==='ar'?'٧٠٪ من المرضى لا يعودون لأنهم ينسون. تذكير واتساب تلقائي يجيبهم بدون جهد.':'70% of patients do not return because they forget. Auto WhatsApp reminders bring them back effortlessly.', accent:BLUE },
  ].map((s,i) => (
  <Reveal key={i} delay={i*0.07}>
  <Glass accent={s.accent} className="h-full cursor-default">
@@ -993,8 +1044,8 @@ export default function App() {
  <div className="max-w-7xl mx-auto">
  <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
  <Reveal>
- <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>{t.securityBadge}</p>
- <h2 className="font-black leading-tight mb-5" style={{ fontSize:'clamp(30px,5vw,60px)', letterSpacing:'-0.02em', color:TEXT }}>
+ <p className="text-[11px] font-black mb-5" style={{ color:BLUE }}>{t.securityBadge}</p>
+ <h2 className="font-black leading-tight mb-5" style={{ fontSize:'clamp(30px,5vw,60px)', color:TEXT }}>
  {t.securityHeading1}<br />{t.securityHeading2}
  </h2>
  <p className="text-[16px] leading-relaxed mb-8" style={{ color:MUTED }}>{lang==='ar' ? 'أمان عسكري المستوى مصمّم للقطاع الصحي. بنية تقنية — ليست وعوداً.' : 'Military-grade security engineered for healthcare. Real architecture — not promises.'}</p>
@@ -1037,12 +1088,12 @@ export default function App() {
 
  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
  {[
- { icon:'AES', title: lang==='ar'?'تشفير AES-256 كامل':'Full AES-256 Encryption', desc: lang==='ar'?'نفس معيار وزارات الدفاع. لا أحد يقرأ بيانات مرضاك إلا المخوّلون.':'Same standard as defense ministries. Only authorized personnel access patient data.', accent:BLUE },
- { icon:'ZK', title:'Zero-Knowledge', desc: lang==='ar'?'مفتاح التشفير ملكك — حتى فريق تلقا لا يستطيع رؤية بياناتك.':'Your encryption key is yours — even the Talqa team cannot read your data.', accent:'#8B5CF6' },
- { icon:'MFA', title: lang==='ar'?'مصادقة ثلاثية':'3-Factor Auth', desc: lang==='ar'?'Face ID + بصمة + رمز تحقق. لا وصول بدون إذنك.':'Face ID + fingerprint + OTP. No access without your permission.', accent:'#10B981' },
- { icon:'BAK', title: lang==='ar'?'نسخ كل ٦ ساعات':'Backup every 6 hours', desc: lang==='ar'?'مراكز بيانات موزعة مشفرة محمية من الكوارث.':'Distributed encrypted data centers protected against disasters.', accent:'#F59E0B' },
- { icon:'AI', title: lang==='ar'?'مراقبة بالذكاء الاصطناعي':'AI Threat Monitoring', desc: lang==='ar'?'يرصد أي نشاط غريب ويوقفه فوراً.':'Detects and blocks any unusual activity in real time.', accent:'#EF4444' },
- { icon:'PDPL', title: lang==='ar'?'PDPL سعودي':'Saudi PDPL', desc: lang==='ar'?'مطابق لنظام حماية البيانات ولوائح الحكومة الرقمية.':'Fully compliant with Saudi data protection regulations and Digital Government Authority.', accent:BLUE },
+ { icon:'lock', title: lang==='ar'?'تشفير AES-256 كامل':'Full AES-256 Encryption', desc: lang==='ar'?'نفس معيار وزارات الدفاع. لا أحد يقرأ بيانات مرضاك إلا المخوّلون.':'Same standard as defense ministries. Only authorized personnel access patient data.', accent:BLUE },
+ { icon:'key', title:'Zero-Knowledge', desc: lang==='ar'?'مفتاح التشفير ملكك — حتى فريق تلقا لا يستطيع رؤية بياناتك.':'Your encryption key is yours — even the Talqa team cannot read your data.', accent:'#8B5CF6' },
+ { icon:'fingerprint', title: lang==='ar'?'مصادقة ثلاثية':'3-Factor Auth', desc: lang==='ar'?'Face ID + بصمة + رمز تحقق. لا وصول بدون إذنك.':'Face ID + fingerprint + OTP. No access without your permission.', accent:'#10B981' },
+ { icon:'hdd', title: lang==='ar'?'نسخ كل ٦ ساعات':'Backup every 6 hours', desc: lang==='ar'?'مراكز بيانات موزعة مشفرة محمية من الكوارث.':'Distributed encrypted data centers protected against disasters.', accent:'#F59E0B' },
+ { icon:'eye', title: lang==='ar'?'مراقبة بالذكاء الاصطناعي':'AI Threat Monitoring', desc: lang==='ar'?'يرصد أي نشاط غريب ويوقفه فوراً.':'Detects and blocks any unusual activity in real time.', accent:'#EF4444' },
+ { icon:'filecheck', title: lang==='ar'?'PDPL سعودي':'Saudi PDPL', desc: lang==='ar'?'مطابق لنظام حماية البيانات ولوائح الحكومة الرقمية.':'Fully compliant with Saudi data protection regulations and Digital Government Authority.', accent:BLUE },
  ].map((s,i) => (
  <Reveal key={i} delay={i*0.05}>
  <Glass accent={s.accent} className="h-full cursor-default">
@@ -1059,7 +1110,7 @@ export default function App() {
  <Reveal delay={0.1} className="mt-5">
  <Glass accent={BLUE}>
  <div className="p-7 flex flex-col sm:flex-row items-center gap-6">
- <div className="text-5xl"></div>
+ <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background:`${BLUE}15`, border:`1px solid ${BLUE}30` }}><ShieldCheck size={30} color={BLUE} strokeWidth={1.75} /></div>
  <div className="flex-1 text-center sm:text-right">
  <p className="font-black text-[20px] mb-1" style={{ color:TEXT }}>{lang==='ar'?'بياناتك ملكك — نحن لا نراها.':'Your data is yours — we cannot see it.'}</p>
  <p className="text-[14px]" style={{ color:MUTED }}>{lang==='ar'?'لم يُسجَّل أي اختراق منذ التأسيس. هندسة تقنية متكاملة.':'Zero breaches recorded since founding. Integrated technical architecture.'}</p>
@@ -1112,7 +1163,7 @@ export default function App() {
  <section className="py-24 px-6 lg:px-12">
  <div className="max-w-7xl mx-auto">
  <Reveal className="mb-14">
- <h2 className="font-black leading-tight" style={{ fontSize:'clamp(30px,5vw,60px)', letterSpacing:'-0.02em', color:TEXT }}>عيادات تثق. نتائج تتكلم.</h2>
+ <h2 className="font-black leading-tight" style={{ fontSize:'clamp(30px,5vw,60px)', color:TEXT }}>عيادات تثق. نتائج تتكلم.</h2>
  </Reveal>
  <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
  {[
@@ -1148,10 +1199,10 @@ export default function App() {
  <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
  {/* Text side */}
  <Reveal>
- <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>
+ <p className="text-[11px] font-black mb-5" style={{ color:BLUE }}>
  {lang==='ar'?'Apple Wallet':'Apple Wallet'}
  </p>
- <h2 className="font-black leading-tight mb-6" style={{ fontSize:'clamp(32px,5vw,60px)', letterSpacing:'-0.02em', color:TEXT }}>
+ <h2 className="font-black leading-tight mb-6" style={{ fontSize:'clamp(32px,5vw,60px)', color:TEXT }}>
  {lang==='ar'?<>مريضك يحمل<br /><span style={{ color:BLUE }}>عيادتك في جيبه.</span></>:<>Your patient carries<br /><span style={{ color:BLUE }}>your clinic in their pocket.</span></>}
  </h2>
  <p className="text-[16px] leading-relaxed mb-8" style={{ color:MUTED }}>
@@ -1159,15 +1210,20 @@ export default function App() {
  ?'بطاقة المريض الرقمية تُضاف مباشرة لـ Apple Wallet — مع عداد تنازلي يذكّره بموعده القادم ويحفّزه على الرجوع قبل انتهاء الصلاحية.'
  :'The digital patient card goes straight to Apple Wallet — with a countdown timer that reminds patients of their next visit and motivates them to return before expiry.'}
  </p>
- <div className="space-y-3 mb-10">
- {(lang==='ar'
- ?[['●','بضغطة واحدة — ينزل مباشرة في المحفظة'],['●','عداد تنازلي يحفّز المريض على العودة'],['●','إشعار تلقائي قبل انتهاء الصلاحية'],['●','بيانات المريض مشفّرة ومحمية']]
- :[['●','One tap — downloads directly to Wallet'],['●','Countdown timer motivates return visits'],['●','Auto-notification before expiry'],['●','Patient data encrypted and protected']]
- ).map(([ic,txt])=>(
- <div key={txt as string} className="flex items-center gap-3">
- <span className="text-[20px]">{ic}</span>
- <span className="text-[14px] font-semibold" style={{ color:TEXT }}>{txt}</span>
- </div>
+ <div className="space-y-2.5 mb-10">
+ {[
+  { txt: lang==='ar'?'بضغطة واحدة — ينزل مباشرة في المحفظة':'One tap — downloads directly to Wallet' },
+  { txt: lang==='ar'?'عداد تنازلي يحفّز المريض على العودة':'Countdown timer motivates return visits' },
+  { txt: lang==='ar'?'إشعار تلقائي قبل انتهاء الصلاحية':'Auto-notification before expiry' },
+  { txt: lang==='ar'?'بيانات المريض مشفّرة ومحمية':'Patient data encrypted and protected' },
+  { txt: lang==='ar'?'Apple Watch — إشعار الموعد على الرسغ مباشرة':'Apple Watch — appointment alert on your wrist', badge: lang==='ar'?'قريباً':'Soon', green:true },
+  { txt: lang==='ar'?'Google Wallet — لمستخدمي Android':'Google Wallet — for Android users', badge: lang==='ar'?'قريباً':'Soon' },
+ ].map(({ txt, badge, green }) => (
+  <div key={txt} className="flex items-center gap-3">
+  <CircleCheck size={16} strokeWidth={2.5} className="shrink-0" style={{ color: green ? '#34C759' : BLUE }}/>
+  <span className="text-[14px] font-semibold" style={{ color:TEXT }}>{txt}</span>
+  {badge && <span className="text-[10px] font-black px-2 py-0.5 rounded-full shrink-0" style={{ background:'rgba(255,255,255,0.07)', color:'rgba(255,255,255,0.35)', border:'1px solid rgba(255,255,255,0.12)' }}>{badge}</span>}
+  </div>
  ))}
  </div>
  <a href="/clinic-demo/" target="_blank" rel="noopener noreferrer"
@@ -1212,7 +1268,7 @@ export default function App() {
  <div className="absolute inset-0" style={{ background:'radial-gradient(ellipse at 80% 20%,rgba(0,180,216,0.25) 0%,transparent 60%)' }}/>
  <div className="relative z-10 flex items-start justify-between">
  <div>
- <p className="text-white/50 text-[8px] font-bold tracking-wider mb-1">عيادة الشفاء الطبية</p>
+  <div className="flex items-center gap-1.5 mb-1.5"><TalqaShieldSmall size={11} /><p className="text-white/50 text-[8px] font-bold">عيادة الشفاء الطبية</p></div>
  <p className="text-white text-[18px] font-black leading-none">بطاقة مريض</p>
  <p className="text-white/30 text-[7px] mt-0.5">DIGITAL HEALTH CARD</p>
  </div>
@@ -1227,12 +1283,12 @@ export default function App() {
  </div>
  {/* Card body */}
  <div className="bg-white px-4 py-3">
- <p className="text-[8px] text-[#8E8E93] tracking-wider mb-0.5 uppercase">Patient</p>
+ <p className="text-[8px] text-[#8E8E93] mb-0.5 uppercase">Patient</p>
  <p className="text-[16px] font-black text-[#1C1C1E] mb-2">أحمد ناصر الشمري</p>
  <div className="grid grid-cols-3 gap-1.5 mb-3">
  {[['#PT-0842','Patient ID'],['O+','Blood'],['٣ أيام','Expires']].map(([v,l])=>(
  <div key={l} className="bg-[#F2F2F7] rounded-[8px] px-2 py-1.5">
- <p className="text-[6px] text-[#8E8E93] tracking-wider uppercase mb-0.5">{l}</p>
+ <p className="text-[6px] text-[#8E8E93] uppercase mb-0.5">{l}</p>
  <p className="text-[10px] font-bold text-[#1C1C1E]">{v}</p>
  </div>
  ))}
@@ -1251,18 +1307,61 @@ export default function App() {
  </div>
  </div>
 
- {/* Add button */}
- <div className="px-3 pb-5">
- <div className="w-full flex items-center justify-center gap-2 py-3 rounded-[14px]" style={{ background:'#000' }}>
- <svg width="13" height="15" viewBox="0 0 17 20" fill="white">
- <path d="M14.1 10.64c-.02-2.04 1.67-3.02 1.74-3.06-0.95-1.39-2.43-1.58-2.95-1.60-1.26-.13-2.46.74-3.10.74-.64 0-1.63-.72-2.68-.70C5.55 6.04 4.05 6.97 3.22 8.36 1.54 11.17 2.80 15.35 4.42 17.65c.80 1.15 1.77 2.45 3.04 2.40 1.22-.05 1.68-.78 3.16-.78 1.47 0 1.89.78 3.18.76 1.31-.02 2.15-1.18 2.94-2.34.93-1.34 1.32-2.64 1.34-2.71-.03-.01-2.57-.99-2.98-3.34zM11.96 3.83c.67-.81 1.12-1.93 1.00-3.06-.96.04-2.13.64-2.82 1.45-.62.71-1.16 1.86-1.01 2.96 1.07.08 2.16-.54 2.83-1.35z"/>
- </svg>
- <span className="text-white font-semibold text-[12px]">أضف إلى Apple Wallet</span>
  </div>
  </div>
+
+ {/* Wallet buttons — outside phone so clicks register */}
+ <div className="flex flex-col gap-2.5 w-full max-w-[280px] mt-5">
+  <WalletBtn
+   label="هويتي الطبية"
+   sub="بطاقة المريض الرقمية"
+   gradient="linear-gradient(135deg,#000,#1a1a1a)"
+   border="rgba(255,255,255,0.15)"
+   getEndpoint="/api/wallet/pass?patientName=%D8%A3%D8%AD%D9%85%D8%AF+%D9%86%D8%A7%D8%B5%D8%B1+%D8%A7%D9%84%D8%B4%D9%85%D8%B1%D9%8A&patientId=PT-0842&clinicName=%D8%B9%D9%8A%D8%A7%D8%AF%D8%A9+%D8%A7%D9%84%D8%B4%D9%81%D8%A7%D8%A1&bloodType=O%2B&insurance=%D8%A8%D9%88%D8%A8%D8%A7+%D9%A2%D9%A0%D9%A2%D9%A6&daysValid=30"
+  />
+  <WalletBtn
+   label="موعدي القادم"
+   sub="بطاقة الحجز الذكية"
+   gradient="linear-gradient(135deg,#1a0533,#2d1060)"
+   border="rgba(147,51,234,0.4)"
+   getEndpoint="/api/wallet/appointment?patientName=%D8%A3%D8%AD%D9%85%D8%AF+%D9%86%D8%A7%D8%B5%D8%B1+%D8%A7%D9%84%D8%B4%D9%85%D8%B1%D9%8A&patientId=PT-0842&doctorName=%D8%AF.+%D8%B3%D8%A7%D8%B1%D8%A9+%D8%A7%D9%84%D9%85%D8%B7%D9%8A%D8%B1%D9%8A&specialty=%D8%B7%D8%A8+%D8%B9%D8%A7%D9%85&clinicName=%D8%B9%D9%8A%D8%A7%D8%AF%D8%A9+%D8%A7%D9%84%D8%B4%D9%81%D8%A7%D8%A1&apptDate=%D8%A7%D9%84%D8%A3%D8%B1%D8%A8%D8%B9%D8%A7%D8%A1%D8%8C+%D9%A2%D9%A3+%D9%8A%D9%88%D9%84%D9%8A%D9%88&apptTime=%D9%A1%D9%A0%3A%D9%A3%D9%A0+%D8%B5&roomNumber=%D8%BA%D8%B1%D9%81%D8%A9+%D9%A3&apptId=APT-1234"
+  />
  </div>
+
+ {/* Apple Watch mockup */}
+ <div className="flex items-center justify-center gap-4 mt-5 px-2">
+  <div className="relative shrink-0">
+   <div className="absolute -inset-3 rounded-full blur-[16px] pointer-events-none" style={{ background:'rgba(52,199,89,0.18)' }}/>
+   <div className="relative" style={{ width:62, height:76 }}>
+    {/* Strap top */}
+    <div className="absolute left-1/2 -translate-x-1/2 -top-2 rounded-t-sm" style={{ width:18, height:10, background:'#1c1c1c' }}/>
+    {/* Watch body */}
+    <div className="absolute inset-0 rounded-[16px]" style={{ background:'linear-gradient(160deg,#232323,#111)', border:'2.5px solid #2e2e2e', boxShadow:'0 10px 28px rgba(0,0,0,0.55)' }}>
+     {/* Screen */}
+     <div className="absolute inset-[3px] rounded-[12px] flex flex-col items-center justify-center gap-0.5 overflow-hidden" style={{ background:'#000' }}>
+      <p className="text-white/35 leading-none" style={{ fontSize:5 }}>موعدك القادم</p>
+      <p className="text-white font-black leading-none" style={{ fontSize:13 }}>١٠:٣٠</p>
+      <div className="w-full mx-2 rounded-[4px] px-1.5 py-0.5 mt-0.5" style={{ background:'rgba(52,199,89,0.2)', border:'0.5px solid rgba(52,199,89,0.4)' }}>
+       <p className="text-[#34C759] text-center font-bold leading-none" style={{ fontSize:5 }}>د. سارة المطيري</p>
+      </div>
+      <motion.div className="flex gap-0.5 mt-1" animate={{ opacity:[1,0.25,1] }} transition={{ duration:1.6, repeat:Infinity }}>
+       {[1,0.5,0.25].map((o,k) => <div key={k} className="rounded-full" style={{ width:4, height:4, background:`rgba(52,199,89,${o})` }}/>)}
+      </motion.div>
+     </div>
+     {/* Crown */}
+     <div className="absolute top-1/2 -translate-y-1/2 -right-[4px] rounded-r-sm" style={{ width:3, height:14, background:'#2e2e2e' }}/>
+    </div>
+    {/* Strap bottom */}
+    <div className="absolute left-1/2 -translate-x-1/2 -bottom-2 rounded-b-sm" style={{ width:18, height:10, background:'#1c1c1c' }}/>
+   </div>
+  </div>
+  <div>
+   <p className="font-black text-[13px]" style={{ color:'rgba(255,255,255,0.7)' }}>Apple Watch</p>
+   <p className="text-[11px] leading-snug mt-0.5" style={{ color:'rgba(255,255,255,0.3)' }}>{lang==='ar'?'إشعار الموعد على رسغك مباشرة':'Appointment alert right on your wrist'}</p>
+   <span className="inline-block mt-1.5 text-[9px] font-black px-2 py-0.5 rounded-full" style={{ background:'rgba(52,199,89,0.1)', color:'#34C759', border:'1px solid rgba(52,199,89,0.22)' }}>{lang==='ar'?'قريباً':'Coming Soon'}</span>
+  </div>
  </div>
- </div>
+  </div>
  </Reveal>
  </div>
  </div>
@@ -1272,10 +1371,10 @@ export default function App() {
  <section className="py-20 px-6 lg:px-12" style={{ borderTop:`1px solid ${GLASSBORDER}` }}>
  <div className="max-w-7xl mx-auto">
  <Reveal className="text-center mb-14">
- <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>
+ <p className="text-[11px] font-black mb-5" style={{ color:BLUE }}>
  {lang==='ar'?'تخصيص كامل':'Full Customization'}
  </p>
- <h2 className="font-black leading-tight" style={{ fontSize:'clamp(30px,5vw,60px)', letterSpacing:'-0.02em', color:TEXT }}>
+ <h2 className="font-black leading-tight" style={{ fontSize:'clamp(30px,5vw,60px)', color:TEXT }}>
  {lang==='ar'
  ?<>مو قالب.<br /><span style={{ color:BLUE }}>مشروعك يُبنى من الصفر.</span></>
  :<>Not a template.<br /><span style={{ color:BLUE }}>Built from scratch for you.</span></>}
@@ -1289,16 +1388,16 @@ export default function App() {
  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
  {(lang==='ar'
  ?[
- { icon:'١', t:'اللون والهوية', d:'الألوان والخطوط وكل تفصيل بصري على هوية عيادتك' },
- { icon:'٢', t:'الشاشات والتدفق', d:'أضف شاشات، احذف أخرى، رتّب كل شيء على راحتك' },
- { icon:'٣', t:'أي ميزة تخطر', d:'AI، تيلميديسن، باقات، ولاء — كل شيء ممكن' },
- { icon:'٤', t:'اسمك وشعارك', d:'التطبيق ينزل في المتجر باسم عيادتك بالكامل' },
+ { icon:'palette', t:'اللون والهوية', d:'الألوان والخطوط وكل تفصيل بصري على هوية عيادتك' },
+ { icon:'layout', t:'الشاشات والتدفق', d:'أضف شاشات، احذف أخرى، رتّب كل شيء على راحتك' },
+ { icon:'sparkles', t:'أي ميزة تخطر', d:'AI، تيلميديسن، باقات، ولاء — كل شيء ممكن' },
+ { icon:'store', t:'اسمك وشعارك', d:'التطبيق ينزل في المتجر باسم عيادتك بالكامل' },
  ]
  :[
- { icon:'1', t:'Colors & Identity', d:'Every color, font, and visual detail matches your clinic brand' },
- { icon:'2', t:'Screens & Flow', d:'Add screens, remove others, arrange everything your way' },
- { icon:'3', t:'Any Feature', d:'AI, telemedicine, packages, loyalty — all possible' },
- { icon:'4', t:'Your Name & Logo', d:'The app launches on the Store under your clinic name' },
+ { icon:'palette', t:'Colors & Identity', d:'Every color, font, and visual detail matches your clinic brand' },
+ { icon:'layout', t:'Screens & Flow', d:'Add screens, remove others, arrange everything your way' },
+ { icon:'sparkles', t:'Any Feature', d:'AI, telemedicine, packages, loyalty — all possible' },
+ { icon:'store', t:'Your Name & Logo', d:'The app launches on the Store under your clinic name' },
  ]
  ).map((c,i)=>(
  <Reveal key={i} delay={i*0.07}>
@@ -1319,10 +1418,10 @@ export default function App() {
  <section className="py-24 px-6 lg:px-12">
  <div className="max-w-3xl mx-auto">
  <Reveal className="text-center mb-10">
- <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>
+ <p className="text-[11px] font-black mb-5" style={{ color:BLUE }}>
  {lang==='ar'?'احسب عائدك':'ROI Calculator'}
  </p>
- <h2 className="font-black leading-tight" style={{ fontSize:'clamp(28px,4.5vw,52px)', letterSpacing:'-0.02em', color:TEXT }}>
+ <h2 className="font-black leading-tight" style={{ fontSize:'clamp(28px,4.5vw,52px)', color:TEXT }}>
  {lang==='ar'?<>كم تخسر الآن<br /><span style={{ color:DIM }}>بدون نظام رقمي؟</span></> : <>How much are you losing<br /><span style={{ color:DIM }}>without a digital system?</span></>}
  </h2>
  </Reveal>
@@ -1393,10 +1492,10 @@ export default function App() {
 
  {/* ── Header ── */}
  <Reveal className="text-center mb-10">
- <p className="text-[11px] font-black tracking-[0.35em] uppercase mb-5" style={{ color:BLUE }}>
+ <p className="text-[11px] font-black mb-5" style={{ color:BLUE }}>
  {lang==='ar'?'عرض محدود · ينتهي قريباً':'Limited offer · ending soon'}
  </p>
- <h2 className="font-black leading-tight mb-3" style={{ fontSize:'clamp(32px,6vw,60px)', letterSpacing:'-0.03em', color:TEXT }}>
+ <h2 className="font-black leading-tight mb-3" style={{ fontSize:'clamp(32px,6vw,60px)', color:TEXT }}>
  {lang==='ar'
  ?<>ابدأ مشروعك الآن<br /><span style={{ background:'linear-gradient(90deg,#0EA5E9,#38BDF8)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>بأقل من نصف السعر.</span></>
  :<>Start now<br /><span style={{ background:'linear-gradient(90deg,#0EA5E9,#38BDF8)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>at less than half price.</span></>}
@@ -1442,8 +1541,7 @@ export default function App() {
  <div className="rounded-[28px] overflow-hidden" style={{
  background:'linear-gradient(135deg,rgba(14,165,233,0.12),rgba(2,132,199,0.06))',
  border:'2px solid rgba(14,165,233,0.35)',
- boxShadow:'0 0 60px rgba(14,165,233,0.15)',
- }}>
+ boxShadow:'0 0 60px rgba(14,165,233,0.15)' }}>
  {/* Top ribbon */}
  <div className="flex items-center justify-between px-8 py-4"
  style={{ background:'linear-gradient(90deg,rgba(14,165,233,0.25),rgba(2,132,199,0.12))', borderBottom:'1px solid rgba(14,165,233,0.2)' }}>
@@ -1466,7 +1564,7 @@ export default function App() {
  style={{ borderBottom:`1px solid rgba(255,255,255,0.08)` }}>
  <div>
  <div className="flex items-baseline gap-3 mb-2">
- <span className="font-black" style={{ fontSize:'clamp(48px,9vw,80px)', color:'#F0F9FF', letterSpacing:'-0.04em', lineHeight:1 }}>
+ <span className="font-black" style={{ fontSize:'clamp(48px,9vw,80px)', color:'#F0F9FF', lineHeight:1 }}>
  ٩٬٢٠٠
  </span>
  <span className="text-[22px] font-black" style={{ color:BLUE }}>ريال</span>
@@ -1480,7 +1578,7 @@ export default function App() {
  </div>
  </div>
  <div className="flex flex-col gap-1 sm:text-left text-right">
- <span className="text-[11px] font-black tracking-widest uppercase" style={{ color:MUTED }}>
+ <span className="text-[11px] font-black" style={{ color:MUTED }}>
  {lang==='ar'?'منظومة متكاملة تشمل':'Complete system includes'}
  </span>
  {['تطبيق مريض','موقع طبي','لوحة إدارة'].map(it=>(
@@ -1490,7 +1588,7 @@ export default function App() {
  </div>
 
  {/* Payment options */}
- <p className="text-[11px] font-black tracking-widest uppercase mb-4" style={{ color:MUTED }}>
+ <p className="text-[11px] font-black mb-4" style={{ color:MUTED }}>
  {lang==='ar'?'اختر طريقة الدفع':'Choose payment method'}
  </p>
  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
@@ -1501,31 +1599,27 @@ export default function App() {
  amount: lang==='ar'?'٩٬٢٠٠ ريال':'SAR 9,200',
  sub: lang==='ar'?'قبل بدء المشروع':'before project starts',
  badge: lang==='ar'?'أسرع تسليم':'Fastest delivery',
- bc:'#22C55E', highlight: false,
- },
+ bc:'#22C55E', highlight: false },
  {
  icon:null,
  title: lang==='ar'?'نصف ونصف':'50 / 50',
  amount: lang==='ar'?'٤٬٦٠٠ + ٤٬٦٠٠':'4,600 + 4,600',
  sub: lang==='ar'?'الآن · عند التسليم':'now · on delivery',
  badge: lang==='ar'?'الأكثر طلباً':'Most popular',
- bc: BLUE, highlight: true,
- },
+ bc: BLUE, highlight: true },
  {
  icon:null,
  title: lang==='ar'?'تقسيط':'Installments',
  amount: lang==='ar'?'٤٬٦٠٠ ثم ٧٦٧ × ٦':'4,600 then 767×6',
  sub: lang==='ar'?'الآن · ٦ أشهر بتابي أو تمارا':'now · 6 mo via Tabby/Tamara',
  badge: lang==='ar'?'تابي · تمارا':'Tabby · Tamara',
- bc:'#A78BFA', highlight: false,
- },
+ bc:'#A78BFA', highlight: false },
  ].map((opt,i) => (
  <div key={i} className="rounded-[18px] p-4 transition-all"
  style={{
  background: opt.highlight ? 'rgba(14,165,233,0.15)' : 'rgba(255,255,255,0.04)',
  border: opt.highlight ? `2px solid ${BLUE}` : `1.5px solid rgba(255,255,255,0.08)`,
- boxShadow: opt.highlight ? `0 0 24px rgba(14,165,233,0.2)` : 'none',
- }}>
+ boxShadow: opt.highlight ? `0 0 24px rgba(14,165,233,0.2)` : 'none' }}>
  <p className="font-black text-[15px] mb-1" style={{ color:TEXT }}>{opt.title}</p>
  <p className="font-black text-[13px]" style={{ color: opt.highlight?BLUE:'#BAE6FD' }}>{opt.amount}</p>
  <p className="text-[11px] mb-3" style={{ color:MUTED }}>{opt.sub}</p>
@@ -1538,7 +1632,7 @@ export default function App() {
  </div>
 
  {/* Inclusions */}
- <p className="text-[11px] font-black tracking-widest uppercase mb-4" style={{ color:MUTED }}>
+ <p className="text-[11px] font-black mb-4" style={{ color:MUTED }}>
  {lang==='ar'?'ما يشمله العرض — بالتفصيل':"What's included — in detail"}
  </p>
  <div className="space-y-2.5">
@@ -1547,20 +1641,17 @@ export default function App() {
  color:'#38BDF8',
  label: lang==='ar'?'الموقع الطبي':'Medical website',
  tags: lang==='ar'?['استضافة مجانية','دومين مجاني ٤ سنوات']:['Free hosting','Free domain 4 yrs'],
- tagColor:'#22C55E',
- },
+ tagColor:'#22C55E' },
  {
  color:'#818CF8',
  label: lang==='ar'?'لوحة تحكم الملاك والاستقبال':'Owner & reception dashboard',
  tags: lang==='ar'?['استضافة مجانية','دومين مجاني']:['Free hosting','Free domain'],
- tagColor:'#22C55E',
- },
+ tagColor:'#22C55E' },
  {
  color:'#34D399',
  label: lang==='ar'?'تطبيق المريض — iOS + Android':'Patient app — iOS + Android',
  tags: lang==='ar'?['أول ٦ أشهر مجانية','٧٩٩ ريال / شهر بعدها']:['First 6 months free','SAR 799/mo after'],
- tagColor:'#A78BFA',
- },
+ tagColor:'#A78BFA' },
  ].map((it,i) => (
  <div key={i} className="flex items-center gap-4 p-4 rounded-[16px]"
  style={{ background:'rgba(255,255,255,0.03)', border:`1px solid rgba(255,255,255,0.07)` }}>
@@ -1639,8 +1730,7 @@ export default function App() {
  : 'rgba(255,255,255,0.06)',
  boxShadow: formName && formPhone ? `0 8px 32px ${BLUE}40` : 'none',
  color: formName && formPhone ? '#fff' : MUTED,
- cursor: formName && formPhone ? 'pointer' : 'default',
- }}>
+ cursor: formName && formPhone ? 'pointer' : 'default' }}>
  {lang==='ar'?'أرسل طلبك — وسنتواصل خلال ٢٤ ساعة':'Send request — we reply within 24 hours'}
  </motion.button>
 
@@ -1665,7 +1755,7 @@ export default function App() {
       <div className="flex items-center gap-3">
        <motion.span className="w-2 h-2 rounded-full bg-[#22C55E]"
         animate={{ scale:[1,1.5,1] }} transition={{ duration:2, repeat:Infinity }} />
-       <span className="text-[12px] font-black tracking-widest uppercase" style={{ color:'#86EFAC' }}>
+       <span className="text-[12px] font-black" style={{ color:'#86EFAC' }}>
         {lang==='ar'?'زيارة مجانية — بدون أي التزام':'Free visit — no obligation'}
        </span>
       </div>
@@ -1680,11 +1770,11 @@ export default function App() {
 
        {/* left — text */}
        <div>
-        <p className="text-[11px] font-black tracking-[0.35em] uppercase mb-5" style={{ color:BLUE }}>
+        <p className="text-[11px] font-black mb-5" style={{ color:BLUE }}>
          {lang==='ar'?'نجيك أنت — ما تجينا':'We come to you'}
         </p>
         <h2 className="font-black leading-[1.1] mb-6"
-         style={{ fontSize:'clamp(26px,4.5vw,44px)', letterSpacing:'-0.03em', color:TEXT }}>
+         style={{ fontSize:'clamp(26px,4.5vw,44px)', color:TEXT }}>
          {lang==='ar'
           ? <>اطلب زيارة فريقنا<br /><span style={{ color:BLUE }}>لعيادتك مباشرةً.</span></>
           : <>Request our team<br /><span style={{ color:BLUE }}>to visit your clinic.</span></>}
@@ -1794,20 +1884,20 @@ export default function App() {
  {/* background word */}
  <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none overflow-hidden" aria-hidden>
  <span className="font-black text-[clamp(80px,18vw,180px)] opacity-[0.04] whitespace-nowrap"
- style={{ color:BLUE, letterSpacing:'-0.04em' }}>
+ style={{ color:BLUE }}>
  {lang==='ar'?'رهان':'BET'}
  </span>
  </div>
 
  <div className="relative z-10">
  {/* eyebrow */}
- <p className="text-[11px] font-black tracking-[0.35em] uppercase mb-6" style={{ color:BLUE }}>
+ <p className="text-[11px] font-black mb-6" style={{ color:BLUE }}>
  {lang==='ar'?'ضمان تلقا':'Talqa Guarantee'}
  </p>
 
  {/* headline */}
  <h2 className="font-black leading-[1.1] mb-8"
- style={{ fontSize:'clamp(28px,5.5vw,52px)', letterSpacing:'-0.03em', color:TEXT }}>
+ style={{ fontSize:'clamp(28px,5.5vw,52px)', color:TEXT }}>
  {lang==='ar'
  ? <>نراهن أن عيادتك<br /><span style={{ color:BLUE }}>ستلاحظ الفرق في ٣٠ يوماً.</span></>
  : <>We bet your clinic<br /><span style={{ color:BLUE }}>feels the difference in 30 days.</span></>}
@@ -1869,8 +1959,8 @@ export default function App() {
  <section className="py-24 px-6 lg:px-12">
  <div className="max-w-3xl mx-auto">
  <Reveal className="mb-12">
- <p className="text-[11px] font-black tracking-[0.3em] uppercase mb-5" style={{ color:BLUE }}>الأسئلة الشائعة</p>
-            <h2 className="font-black leading-tight" style={{ fontSize:'clamp(26px,4vw,50px)', letterSpacing:'-0.02em', color:TEXT }}>كل سؤال في بالك<br /><span style={{ color:DIM }}>جاوبناه هنا.</span></h2>
+ <p className="text-[11px] font-black mb-5" style={{ color:BLUE }}>الأسئلة الشائعة</p>
+            <h2 className="font-black leading-tight" style={{ fontSize:'clamp(26px,4vw,50px)', color:TEXT }}>كل سؤال في بالك<br /><span style={{ color:DIM }}>جاوبناه هنا.</span></h2>
  </Reveal>
  <div className="space-y-3">
  {[
@@ -1917,7 +2007,7 @@ export default function App() {
  <div className="mb-8 inline-block">
  <TalqaShield size={72} />
  </div>
- <h2 className="font-black mb-5 leading-tight" style={{ fontSize:'clamp(40px,8vw,90px)', letterSpacing:'-0.03em', color:TEXT }}>{t.finalHeading}</h2>
+ <h2 className="font-black mb-5 leading-tight" style={{ fontSize:'clamp(40px,8vw,90px)', color:TEXT }}>{t.finalHeading}</h2>
  <p className="text-[18px] mb-4 leading-relaxed" style={{ color:MUTED }}>{t.finalSub}</p>
   <p className="text-[13px] mb-12" style={{ color:DIM }}>{lang==='ar'?'زيارة مجانية خلال ٢٤ ساعة — لا التزام — نجيك للعيادة.':'Free visit within 24 hours — no commitment — we come to you.'}</p>
  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

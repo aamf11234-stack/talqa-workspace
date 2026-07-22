@@ -205,7 +205,7 @@ export default function DoctorDashboard() {
  <div className="p-6 space-y-5">
  {/* Vitals */}
  <div>
- <p className="text-[11px] font-bold text-[#AAA] uppercase tracking-wider mb-3 flex items-center gap-1.5">
+ <p className="text-[11px] font-bold text-[#AAA] uppercase mb-3 flex items-center gap-1.5">
  <Activity size={12} /> القياسات الحيوية
  </p>
  <div className="grid grid-cols-3 gap-3">
@@ -224,7 +224,7 @@ export default function DoctorDashboard() {
 
  {/* Last visit */}
  <div className="rounded-[16px] p-4" style={{ background: '#F8FAFC', border: '1px solid rgba(11,74,111,0.08)' }}>
- <p className="text-[11px] font-bold text-[#AAA] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+ <p className="text-[11px] font-bold text-[#AAA] uppercase mb-2 flex items-center gap-1.5">
  <FileText size={12} /> آخر زيارة — {patient.lastVisit}
  </p>
  <p className="text-[13px] text-[#555]">التشخيص: <span className="font-semibold text-[#111]">{patient.dx}</span></p>
@@ -233,7 +233,7 @@ export default function DoctorDashboard() {
  {/* Medications */}
  {patient.meds.length > 0 && (
  <div className="rounded-[16px] p-4" style={{ background: '#F5F3FF', border: '1px solid rgba(139,92,246,0.15)' }}>
- <p className="text-[11px] font-bold uppercase tracking-wider mb-2 flex items-center gap-1.5 text-[#8B5CF6]">
+ <p className="text-[11px] font-bold uppercase mb-2 flex items-center gap-1.5 text-[#8B5CF6]">
  <Pill size={12} /> الأدوية الحالية
  </p>
  <div className="space-y-1.5">

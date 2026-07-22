@@ -132,8 +132,7 @@ export function ScreenAI({ theme = 'dark' }: Props) {
  background: m.meta.urgent
  ? (dark ? 'rgba(239,68,68,0.08)' : 'rgba(239,68,68,0.05)')
  : (dark ? 'rgba(139,92,246,0.08)' : '#F3F0FF'),
- border: `1px solid ${m.meta.urgent ? 'rgba(239,68,68,0.2)' : (dark ? 'rgba(139,92,246,0.2)' : 'rgba(139,92,246,0.2)')}`,
- }}>
+ border: `1px solid ${m.meta.urgent ? 'rgba(239,68,68,0.2)' : (dark ? 'rgba(139,92,246,0.2)' : 'rgba(139,92,246,0.2)')}` }}>
  <div className="flex items-center gap-2 mb-3">
  <span className="text-[13px]">{m.meta.urgent ? '' : ''}</span>
  <p className="text-[10px] font-black"
@@ -143,8 +142,7 @@ export function ScreenAI({ theme = 'dark' }: Props) {
  <span className="mr-auto text-[8px] font-bold px-2 py-0.5 rounded-full"
  style={{
  background: m.meta.urgent ? 'rgba(239,68,68,0.12)' : (dark ? 'rgba(139,92,246,0.12)' : 'rgba(139,92,246,0.15)'),
- color: m.meta.urgent ? '#FF6B6B' : '#8B5CF6',
- }}>
+ color: m.meta.urgent ? '#FF6B6B' : '#8B5CF6' }}>
  {m.meta.spec}
  </span>
  </div>

@@ -140,8 +140,7 @@ export function ScreenHome({ theme = 'dark' }: Props) {
  className="rounded-[14px] px-3.5 py-2.5 flex items-center gap-2.5"
  style={{
  background: dark ? 'rgba(52,199,89,0.07)' : 'rgba(52,199,89,0.06)',
- border: dark ? '1px solid rgba(52,199,89,0.18)' : '1px solid rgba(52,199,89,0.2)',
- }}>
+ border: dark ? '1px solid rgba(52,199,89,0.18)' : '1px solid rgba(52,199,89,0.2)' }}>
  <div className="flex items-center gap-1.5 shrink-0">
  <motion.span className="w-2 h-2 rounded-full bg-[#34C759]"
  animate={{ scale:[1,1.4,1], opacity:[1,0.6,1] }} transition={{ duration:2, repeat:Infinity }} />
@@ -169,8 +168,7 @@ export function ScreenHome({ theme = 'dark' }: Props) {
  className="rounded-[16px] px-4 py-3 flex items-center gap-3"
  style={{
  background: dark ? 'linear-gradient(135deg,rgba(255,45,85,0.18),rgba(255,107,107,0.12))' : 'linear-gradient(135deg,rgba(255,45,85,0.08),rgba(255,107,107,0.05))',
- border: dark ? '1px solid rgba(255,45,85,0.2)' : '1px solid rgba(255,45,85,0.15)',
- }}>
+ border: dark ? '1px solid rgba(255,45,85,0.2)' : '1px solid rgba(255,45,85,0.15)' }}>
  <span className="text-[22px]"></span>
  <div className="flex-1">
  <p className="text-[12px] font-bold leading-none mb-0.5" style={{ color: txt }}>Apple Health</p>
@@ -193,9 +191,8 @@ export function ScreenHome({ theme = 'dark' }: Props) {
  <div className="px-4 py-2.5 flex items-center justify-between"
  style={{
  background: dark ? 'linear-gradient(135deg,rgba(11,74,111,0.6),rgba(0,180,216,0.3))' : 'linear-gradient(135deg,rgba(11,74,111,0.08),rgba(0,180,216,0.06))',
- borderBottom: `1px solid ${cardBorder}`,
- }}>
- <p className="text-[10px] font-semibold tracking-wider uppercase" style={{ color: txtSub }}>موعدك القادم</p>
+ borderBottom: `1px solid ${cardBorder}` }}>
+ <p className="text-[10px] font-semibold uppercase" style={{ color: txtSub }}>موعدك القادم</p>
  <span className="text-[9px] font-bold px-2 py-0.5 rounded-full"
  style={{ background: 'rgba(52,199,89,0.15)', color: '#34C759', border: '1px solid rgba(52,199,89,0.25)' }}>مؤكد </span>
  </div>
@@ -240,7 +237,7 @@ export function ScreenHome({ theme = 'dark' }: Props) {
 
  {/* ── Vitals ── */}
  <div className="px-4 mb-4">
- <p className="text-[11px] font-bold uppercase tracking-widest mb-2.5" style={{ color: txtSub }}>المؤشرات الحيوية</p>
+ <p className="text-[11px] font-bold uppercase mb-2.5" style={{ color: txtSub }}>المؤشرات الحيوية</p>
  <div className="grid grid-cols-3 gap-2">
  {vitals.map((v, i) => (
  <motion.div key={i}
@@ -263,7 +260,7 @@ export function ScreenHome({ theme = 'dark' }: Props) {
  {/* ── Medications ── */}
  <div className="px-4 mb-6">
  <div className="flex items-center justify-between mb-2.5">
- <p className="text-[11px] font-bold uppercase tracking-widest" style={{ color: txtSub }}>أدويتي اليوم</p>
+ <p className="text-[11px] font-bold uppercase" style={{ color: txtSub }}>أدويتي اليوم</p>
  <span className="text-[10px] font-semibold" style={{ color: '#00B4D8' }}>عرض الكل</span>
  </div>
  <div className="rounded-[20px] overflow-hidden"

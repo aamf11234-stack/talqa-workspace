@@ -6,33 +6,21 @@ import { Plus, Clock, CheckCircle, X, ChevronLeft } from 'lucide-react';
 function WalletBtn({ appointment: a, dark }: { appointment: any; dark: boolean }) {
  const [state, setState] = useState<'idle'|'loading'|'done'>('idle');
 
- const handleAdd = async () => {
+ const handleAdd = () => {
  if (state !== 'idle') return;
- setState('loading');
- try {
- const res = await fetch('/api/wallet/appointment', {
- method: 'POST',
- headers: { 'Content-Type': 'application/json' },
- body: JSON.stringify({
- patientName: 'أحمد ناصر الشمري',
- patientId: 'PT-0842',
- doctorName: a.dr,
- specialty: a.spec,
- clinicName: 'تلقا العيادات',
- apptDate: `${a.day}، ${a.date}`,
- apptTime: a.time,
- roomNumber: 'غرفة ٣',
- apptId: `APT-${String(Math.floor(Math.random() * 9000) + 1000)}`,
- }),
+ const apptId = `APT-${String(Math.floor(Math.random() * 9000) + 1000)}`;
+ const params = new URLSearchParams({
+  patientName: 'أحمد ناصر الشمري',
+  patientId: 'PT-0842',
+  doctorName: a.dr,
+  specialty: a.spec,
+  clinicName: 'تلقا العيادات',
+  apptDate: `${a.day}، ${a.date}`,
+  apptTime: a.time,
+  roomNumber: 'غرفة ٣',
+  apptId,
  });
- if (res.ok) {
- const blob = await res.blob();
- const url = URL.createObjectURL(blob);
- const anchor = document.createElement('a');
- anchor.href = url; anchor.download = 'talqa-appointment.pkpass'; anchor.click();
- URL.revokeObjectURL(url);
- }
- } catch (_) {}
+ window.location.href = `/api/wallet/appointment?${params.toString()}`;
  setState('done');
  setTimeout(() => setState('idle'), 3000);
  };
@@ -75,8 +63,7 @@ const times = ['٩:٠٠ ص','٩:٣٠ ص','١٠:٠٠ ص','١١:٠٠ ص','٢:٠٠ 
 const statusCfg = {
  confirmed: { label:'مؤكد ', bg:'rgba(52,199,89,0.15)', color:'#34C759', border:'rgba(52,199,89,0.25)' },
  pending: { label:'قيد المراجعة', bg:'rgba(245,158,11,0.12)', color:'#F59E0B', border:'rgba(245,158,11,0.2)' },
- done: { label:'مكتمل', bg:'', color:'', border:'' },
-};
+ done: { label:'مكتمل', bg:'', color:'', border:'' } };
 
 export function ScreenAppointments({ theme = 'dark' }: Props) {
  const dark = theme === 'dark';

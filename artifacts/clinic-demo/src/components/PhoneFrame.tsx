@@ -10,8 +10,7 @@ export function PhoneFrame({ children }: { children: React.ReactNode }) {
  background: '#F0F8FF',
  borderRadius: 52,
  border: '10px solid #1A2A3A',
- boxShadow: '0 0 0 1.5px #2A3A4A, 0 32px 80px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08)',
- }}
+ boxShadow: '0 0 0 1.5px #2A3A4A, 0 32px 80px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08)' }}
  >
  {/* Dynamic island */}
  <div className="absolute top-3 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5"

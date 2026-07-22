@@ -20,13 +20,9 @@ const badgeVariants = cva(
  // @replit shadow-xs instead of shadow, no hover because we use hover-elevate
  'border-transparent bg-destructive text-destructive-foreground shadow-xs',
  // @replit shadow-xs" - use badge outline variable
- outline: 'text-foreground border [border-color:var(--badge-outline)]',
- },
- },
+ outline: 'text-foreground border [border-color:var(--badge-outline)]' } },
  defaultVariants: {
- variant: 'default',
- },
- },
+ variant: 'default' } },
 );
 
 export interface BadgeProps

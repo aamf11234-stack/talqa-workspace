@@ -95,12 +95,13 @@ async function buildPass(
   res: import("express").Response,
   images: Record<string, Buffer> = {},
 ) {
-  const signerOptions: Record<string, string> = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const signerOptions: any = {
     wwdr:       certs.wwdr,
     signerCert: certs.cert,
     signerKey:  certs.key,
   };
-  if (certs.passphrase) signerOptions["signerKeyPassphrase"] = certs.passphrase;
+  if (certs.passphrase) signerOptions.signerKeyPassphrase = certs.passphrase;
 
   const pass = new PKPass(
     {
@@ -123,11 +124,12 @@ async function buildPass(
   res.send(buf);
 }
 
-/* ── POST /api/wallet/pass  — بطاقة المريض ─────────────── */
-router.post("/pass", async (req, res) => {
-  const certs = getCerts();
-  if (!certs) { res.status(503).json({ error: "certificates_missing" }); return; }
-
+/* ── shared pass builder for patient card ───────────────── */
+async function handlePatientPass(
+  params: Record<string, string | number>,
+  certs: NonNullable<ReturnType<typeof getCerts>>,
+  res: import("express").Response,
+) {
   const {
     patientName = "مريض",
     patientId   = "PT-0001",
@@ -135,7 +137,7 @@ router.post("/pass", async (req, res) => {
     bloodType   = "O+",
     insurance   = "بوبا",
     daysValid   = 30,
-  } = (req.body ?? {}) as Record<string, string | number>;
+  } = params;
 
   const expiry = new Date();
   expiry.setDate(expiry.getDate() + Number(daysValid));
@@ -195,13 +197,28 @@ router.post("/pass", async (req, res) => {
     logger.error({ err }, "patient card generation failed");
     res.status(500).json({ error: "generation_failed", message: String(err) });
   }
-});
+}
 
-/* ── POST /api/wallet/appointment  — بطاقة موعد Boarding Pass ── */
-router.post("/appointment", async (req, res) => {
+/* ── POST /api/wallet/pass  (legacy) ────────────────────── */
+router.post("/pass", async (req, res) => {
   const certs = getCerts();
   if (!certs) { res.status(503).json({ error: "certificates_missing" }); return; }
+  await handlePatientPass(req.body ?? {}, certs, res);
+});
 
+/* ── GET /api/wallet/pass  (Safari-compatible) ──────────── */
+router.get("/pass", async (req, res) => {
+  const certs = getCerts();
+  if (!certs) { res.status(503).json({ error: "certificates_missing" }); return; }
+  await handlePatientPass(req.query as Record<string, string>, certs, res);
+});
+
+/* ── shared appointment pass builder ────────────────────── */
+async function handleAppointmentPass(
+  params: Record<string, string>,
+  certs: NonNullable<ReturnType<typeof getCerts>>,
+  res: import("express").Response,
+) {
   const {
     patientName  = "مريض",
     patientId    = "PT-0001",
@@ -212,7 +229,7 @@ router.post("/appointment", async (req, res) => {
     apptTime     = "١٠:٣٠ ص",
     roomNumber   = "غرفة ٣",
     apptId       = "APT-0001",
-  } = (req.body ?? {}) as Record<string, string>;
+  } = params;
 
   /* expiry = يوم الموعد + ١ يوم */
   const expiry = new Date();
@@ -276,6 +293,20 @@ router.post("/appointment", async (req, res) => {
     logger.error({ err }, "appointment pass generation failed");
     res.status(500).json({ error: "generation_failed", message: String(err) });
   }
+}
+
+/* ── POST /api/wallet/appointment  (legacy) ─────────────── */
+router.post("/appointment", async (req, res) => {
+  const certs = getCerts();
+  if (!certs) { res.status(503).json({ error: "certificates_missing" }); return; }
+  await handleAppointmentPass(req.body ?? {}, certs, res);
+});
+
+/* ── GET /api/wallet/appointment  (Safari-compatible) ───── */
+router.get("/appointment", async (req, res) => {
+  const certs = getCerts();
+  if (!certs) { res.status(503).json({ error: "certificates_missing" }); return; }
+  await handleAppointmentPass(req.query as Record<string, string>, certs, res);
 });
 
 /* ── GET /api/wallet/csr  (iPhone-friendly download page) ── */

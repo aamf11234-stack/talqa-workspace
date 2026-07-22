@@ -11,8 +11,7 @@ const results = [
  { name: 'هيموغلوبين', value: '14.2', unit: 'g/dL', normal: '13.5–17.5', status: 'normal' },
  { name: 'خلايا الدم البيضاء', value: '9.8', unit: 'K/µL', normal: '4.5–11.0', status: 'normal' },
  { name: 'الصفائح الدموية', value: '420', unit: 'K/µL', normal: '150–400', status: 'high' },
- ],
- },
+ ] },
  {
  category: 'السكر والكوليسترول',
  date: '١٠ يوليو ٢٠٢٦',
@@ -22,8 +21,7 @@ const results = [
  { name: 'كوليسترول كلي', value: '215', unit: 'mg/dL', normal: '< 200', status: 'high' },
  { name: 'HDL (كوليسترول جيد)', value: '55', unit: 'mg/dL', normal: '> 40', status: 'normal' },
  { name: 'LDL (كوليسترول ضار)', value: '140', unit: 'mg/dL', normal: '< 130', status: 'high' },
- ],
- },
+ ] },
  {
  category: 'وظائف الكلى والكبد',
  date: '١ يوليو ٢٠٢٦',
@@ -32,15 +30,13 @@ const results = [
  { name: 'كرياتينين', value: '0.9', unit: 'mg/dL', normal: '0.7–1.2', status: 'normal' },
  { name: 'يوريا', value: '18', unit: 'mg/dL', normal: '7–25', status: 'normal' },
  { name: 'SGPT/ALT', value: '32', unit: 'U/L', normal: '< 40', status: 'normal' },
- ],
- },
+ ] },
 ];
 
 const statusConfig = {
  normal: { label: 'طبيعي', color: '#22C55E', bg: '#22C55E15', icon: Minus },
  high: { label: 'مرتفع', color: '#EF4444', bg: '#EF444415', icon: TrendingUp },
- low: { label: 'منخفض', color: '#F59E0B', bg: '#F59E0B15', icon: TrendingDown },
-};
+ low: { label: 'منخفض', color: '#F59E0B', bg: '#F59E0B15', icon: TrendingDown } };
 
 export function ScreenResults() {
  const [expanded, setExpanded] = useState<number>(0);

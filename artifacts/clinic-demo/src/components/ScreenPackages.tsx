@@ -24,8 +24,7 @@ const packages = [
  badge: 'الأكثر طلباً',
  badgeColor: '#8B5CF6',
  features: ['ليزر ألكساندرايت المعتمد', 'جلسة ٤٥ دقيقة كاملة', 'كريم تخدير مجاناً', 'متابعة ما بعد الجلسة'],
- savings: 'وفّرت ٨٠٠ ر.س',
- },
+ savings: 'وفّرت ٨٠٠ ر.س' },
  {
  id: 2, cat: 'dental',
  icon: '', color: '#00B4D8', lightColor: '#0284C7',
@@ -36,8 +35,7 @@ const packages = [
  badge: 'نتائج فورية',
  badgeColor: '#00B4D8',
  features: ['تقنية Zoom الأمريكية', 'تبييض ١٢ درجة في جلسة', 'فحص شامل مسبق', 'ضمان النتيجة ٦ أشهر'],
- savings: '',
- },
+ savings: '' },
  {
  id: 3, cat: 'physio',
  icon: '', color: '#34C759', lightColor: '#16A34A',
@@ -48,8 +46,7 @@ const packages = [
  badge: 'موصى به',
  badgeColor: '#34C759',
  features: ['جلسة ٦٠ دقيقة مع معالج معتمد', 'تمارين منزلية مصممة', 'متابعة إلكترونية أسبوعية', 'تقرير تقدّم مفصّل'],
- savings: 'وفّرت ٤٠٠ ر.س',
- },
+ savings: 'وفّرت ٤٠٠ ر.س' },
  {
  id: 4, cat: 'beauty',
  icon: '', color: '#F59E0B', lightColor: '#D97706',
@@ -60,8 +57,7 @@ const packages = [
  badge: 'مميز',
  badgeColor: '#F59E0B',
  features: ['بوتوكس أليرغان الأصلي ١٠٠%', 'طبيب متخصص معتمد', 'نتائج تدوم ٦ أشهر', 'جلسة مراجعة مجانية'],
- savings: '',
- },
+ savings: '' },
  {
  id: 5, cat: 'dental',
  icon: '', color: '#0B4A6F', lightColor: '#1E40AF',
@@ -72,8 +68,7 @@ const packages = [
  badge: 'باقة VIP',
  badgeColor: '#0B4A6F',
  features: ['أطباق Invisalign المعتمدة', 'متابعة شهرية مع دكتور', 'صور ثلاثية الأبعاد للنتيجة', 'ريتينر مجاني بعد الانتهاء'],
- savings: 'وفّرت ١٨٠٠ ر.س',
- },
+ savings: 'وفّرت ١٨٠٠ ر.س' },
  {
  id: 6, cat: 'laser',
  icon: '', color: '#EF4444', lightColor: '#DC2626',
@@ -84,8 +79,7 @@ const packages = [
  badge: 'حديث',
  badgeColor: '#EF4444',
  features: ['تقنية SculpSure الأمريكية', 'تكسير دهون بلا جراحة', 'جلسة ٢٥ دقيقة بلا ألم', 'نتائج ظاهرة في ٦ أسابيع'],
- savings: '',
- },
+ savings: '' },
 ];
 
 /* ── Session Progress Ring ── */

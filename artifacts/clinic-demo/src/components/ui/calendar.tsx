@@ -7,8 +7,7 @@ import { cn } from '@/lib/utils';
 import {
  ChevronDownIcon,
  ChevronLeftIcon,
- ChevronRightIcon,
-} from 'lucide-react';
+ ChevronRightIcon } from 'lucide-react';
 
 function Calendar({
  className,
@@ -37,8 +36,7 @@ function Calendar({
  formatters={{
  formatMonthDropdown: (date) =>
  date.toLocaleString('default', { month: 'short' }),
- ...formatters,
- }}
+ ...formatters }}
  classNames={{
  root: cn('w-fit', defaultClassNames.root),
  months: cn(
@@ -121,8 +119,7 @@ function Calendar({
  defaultClassNames.disabled,
  ),
  hidden: cn('invisible', defaultClassNames.hidden),
- ...classNames,
- }}
+ ...classNames }}
  components={{
  Root: ({ className, rootRef, ...props }) => {
  return (
@@ -164,8 +161,7 @@ function Calendar({
  </td>
  );
  },
- ...components,
- }}
+ ...components }}
  {...props}
  />
  );

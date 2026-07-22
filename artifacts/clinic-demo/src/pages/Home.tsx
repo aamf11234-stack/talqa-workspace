@@ -284,6 +284,7 @@ export default function Home() {
  const [phoneTheme, setPhoneTheme] = useState<'dark'|'light'>('dark');
  const [, navigate] = useLocation();
  const [staffModal, setStaffModal] = useState<null|'owner'|'reception'|'doctor'>(null);
+ const [tourStep, setTourStep] = useState(0); // 0=waiting, 1=nav, 2=card-tab, 3=wallet, 4=qr, 99=done
 
  useEffect(() => {
  document.documentElement.dir = 'rtl';
@@ -311,7 +312,7 @@ export default function Home() {
  {/* ── Hero ───────────────────────────────────────────────── */}
  <div className="max-w-5xl mx-auto px-6 pt-12 pb-8 text-center">
  <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
- <span className="inline-flex items-center gap-2 text-white text-[11px] font-semibold px-4 py-1.5 rounded-full mb-5 tracking-widest shadow-[0_4px_20px_rgba(0,180,216,0.25)]"
+ <span className="inline-flex items-center gap-2 text-white text-[11px] font-semibold px-4 py-1.5 rounded-full mb-5 shadow-[0_4px_20px_rgba(0,180,216,0.25)]"
  style={{ background: 'linear-gradient(135deg,#0B4A6F,#0077A8)' }}>
  <span className="w-1.5 h-1.5 bg-[#22C55E] rounded-full animate-pulse shrink-0" />
  نظام المريض الرقمي · مخصص لعيادتك
@@ -368,7 +369,7 @@ export default function Home() {
  {/* ── Phone Demo ─────────────────────────────────────────── */}
  <div className="flex flex-col items-center px-4 mb-10">
  <div className="text-center mb-5">
- <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1">نموذج توضيحي حقيقي</p>
+ <p className="text-[11px] text-[#AAA] font-semibold uppercase mb-1">نموذج توضيحي حقيقي</p>
  <h2 className="text-[22px] font-bold text-[#111]">شوف كيف يبدو تطبيق عيادتك</h2>
  <p className="text-[12px] text-[#AAA] mt-1 font-light">جرّب جميع الشاشات — بما فيها Face ID وAI Doctor </p>
 
@@ -448,6 +449,7 @@ export default function Home() {
  </motion.div>
  </motion.div>
 
+
  <PhoneFrame>
  <div className="flex-1 relative overflow-hidden h-full">
  {/* Face ID overlay */}
@@ -464,16 +466,128 @@ export default function Home() {
  className="absolute inset-0 overflow-y-auto scrollbar-none">
  {activeTab === 'home' && <ScreenHome theme={phoneTheme} />}
  {activeTab === 'appointments' && <ScreenAppointments theme={phoneTheme} />}
- {activeTab === 'card' && <ScreenCard theme={phoneTheme} />}
+ {activeTab === 'card' && <ScreenCard theme={phoneTheme} walletHint={tourStep===3} qrHint={tourStep===4} onWalletTap={() => tourStep===3 && setTourStep(4)} onQrTap={() => tourStep===4 && setTourStep(99)} />}
  {activeTab === 'packages' && <ScreenPackages theme={phoneTheme} />}
  {activeTab === 'ai' && <ScreenAI theme={phoneTheme} />}
  {activeTab === 'notifications' && <ScreenNotifications theme={phoneTheme} />}
  </motion.div>
  </AnimatePresence>
  </div>
- <BottomNav activeTab={activeTab} onChangeTab={setActiveTab} notifCount={2} theme={phoneTheme} />
+ <BottomNav activeTab={activeTab} onChangeTab={(t) => { setActiveTab(t); if (tourStep === 1) setTourStep(2); if (tourStep === 2 && t === 'card') setTourStep(3); }} notifCount={2} theme={phoneTheme} hintTab={tourStep === 2 ? 'card' : null} />
  </PhoneFrame>
  </motion.div>
+
+ {/* ── Apple Watch card below phone ── */}
+ <motion.div
+  initial={{ opacity: 0, y: 16, scale: 0.96 }}
+  animate={{ opacity: 1, y: 0, scale: 1 }}
+  transition={{ duration: 0.55, delay: 0.3, ease: [0.34, 1.2, 0.64, 1] }}
+  className="w-full max-w-[360px] rounded-[22px] overflow-hidden flex items-center gap-4 px-5 py-4 mt-3"
+  style={{ background: 'linear-gradient(135deg, rgba(10,20,35,0.95) 0%, rgba(14,30,22,0.95) 100%)', border: '1px solid rgba(52,199,89,0.2)', boxShadow: '0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)', backdropFilter: 'blur(20px)' }}>
+
+  {/* watch illustration */}
+  <div className="relative shrink-0" style={{ width: 52, height: 64 }}>
+   <div className="absolute left-1/2 -translate-x-1/2 -top-[10px] rounded-t-[4px]"
+    style={{ width: 16, height: 12, background: 'linear-gradient(180deg,#1e1e1e,#111)' }}/>
+   <div className="absolute inset-0 rounded-[16px]"
+    style={{ background: 'linear-gradient(145deg,#242424,#0d0d0d)', border: '2px solid rgba(52,199,89,0.25)', boxShadow: '0 0 20px rgba(52,199,89,0.15)' }}>
+    <div className="absolute inset-[3px] rounded-[12px] overflow-hidden flex flex-col items-center justify-center gap-[3px]"
+     style={{ background: '#000' }}>
+     <p className="text-white/25 font-medium" style={{ fontSize: 5 }}>موعدك</p>
+     <p className="text-white font-black" style={{ fontSize: 14, lineHeight: 1 }}>١٠:٣٠</p>
+     <motion.div className="flex gap-[3px]"
+      animate={{ opacity: [1, 0.15, 1] }}
+      transition={{ duration: 1.8, repeat: Infinity }}>
+      {[1, 0.5, 0.18].map((o, k) => (
+       <div key={k} className="rounded-full" style={{ width: 4, height: 4, background: `rgba(52,199,89,${o})` }}/>
+      ))}
+     </motion.div>
+    </div>
+    <div className="absolute top-1/2 -translate-y-1/2 -right-[3.5px] rounded-r-[2px]"
+     style={{ width: 3, height: 14, background: '#2a2a2a' }}/>
+   </div>
+   <div className="absolute left-1/2 -translate-x-1/2 -bottom-[10px] rounded-b-[4px]"
+    style={{ width: 16, height: 12, background: 'linear-gradient(0deg,#1e1e1e,#111)' }}/>
+  </div>
+
+  {/* text */}
+  <div className="flex-1 min-w-0">
+   <div className="flex items-center gap-2 mb-1">
+    <p className="text-white font-black text-[14px]">Apple Watch</p>
+    <span className="text-[8px] font-black px-2 py-[3px] rounded-full shrink-0"
+     style={{ background: 'rgba(52,199,89,0.12)', color: '#34C759', border: '1px solid rgba(52,199,89,0.25)' }}>قريباً</span>
+   </div>
+   <p className="text-[11px] leading-snug" style={{ color: 'rgba(255,255,255,0.35)' }}>إشعار موعدك مباشرة على رسغك</p>
+  </div>
+
+  {/* pulse ring */}
+  <div className="relative shrink-0 w-8 h-8 flex items-center justify-center">
+   <motion.div className="absolute inset-0 rounded-full"
+    style={{ border: '1.5px solid rgba(52,199,89,0.4)' }}
+    animate={{ scale: [1, 1.6, 1], opacity: [0.6, 0, 0.6] }}
+    transition={{ duration: 2, repeat: Infinity }}/>
+   <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#34C759' }}/>
+  </div>
+ </motion.div>
+
+  {/* ── Tour Bubble ─────────────────────────────────────────── */}
+  <AnimatePresence mode="wait">
+  {tourStep >= 1 && tourStep <= 4 && (
+   <motion.div
+    key={tourStep}
+    initial={{ opacity:0, y:14, scale:0.95 }}
+    animate={{ opacity:1, y:0, scale:1 }}
+    exit={{ opacity:0, y:8, scale:0.97 }}
+    transition={{ type:'spring', damping:22, stiffness:260 }}
+    className="mt-5 w-full max-w-[380px] rounded-[22px] overflow-hidden"
+    style={{ background:'linear-gradient(145deg,#050E1A,#0B3A5A)', border:'1px solid rgba(0,180,216,0.25)', boxShadow:'0 8px 32px rgba(0,0,0,0.22)' }}>
+    <div className="px-5 pt-4 pb-4 relative">
+     <div className="absolute inset-0 pointer-events-none" style={{ background:'radial-gradient(ellipse at 80% 20%,rgba(0,180,216,0.10) 0%,transparent 60%)' }}/>
+     <div className="relative z-10 flex items-start gap-3">
+      <div className="shrink-0 flex flex-col items-center gap-1.5 pt-1">
+       {[1,2,3,4].map(s => (
+        <motion.div key={s} className="rounded-full transition-all duration-300"
+         style={{ width:s===tourStep?6:4, height:s===tourStep?6:4, background:s<=tourStep?'#00B4D8':'rgba(255,255,255,0.12)' }}/>
+       ))}
+      </div>
+      <div className="flex-1 min-w-0">
+       <div className="flex items-center gap-2 mb-1.5">
+        <motion.div className="w-6 h-6 rounded-full flex items-center justify-center shrink-0"
+         style={{ background:'rgba(0,180,216,0.18)', border:'1px solid rgba(0,180,216,0.35)' }}
+         animate={{ scale:[1,1.2,1] }} transition={{ duration:1.4, repeat:Infinity }}>
+         <span className="text-[#00B4D8] text-[11px] font-black">
+          {tourStep===1?'↓':tourStep===2?'←':tourStep===3?'⬛':'QR'}
+         </span>
+        </motion.div>
+        <p className="text-white font-black text-[13px] leading-snug">
+         {tourStep===1 && 'جرّب الشاشات من القائمة أسفل'}
+         {tourStep===2 && 'اضغط "بطاقتي" لهوية المريض الرقمية'}
+         {tourStep===3 && 'اضغط أضف لـ Apple Wallet'}
+         {tourStep===4 && 'أو اعرض QR للاستقبال الفوري'}
+        </p>
+       </div>
+       <p className="text-white/40 text-[11px] leading-snug font-light">
+        {tourStep===1 && 'الرئيسية · مواعيد · بطاقتي · AI Doctor · تنبيهات'}
+        {tourStep===2 && 'بطاقة رقمية تُضاف لـ Apple Wallet وتُعرَض بـ QR في الاستقبال'}
+        {tourStep===3 && 'يحمّل ملف .pkpass مباشرة — يعمل بدون إنترنت في الاستقبال'}
+        {tourStep===4 && 'رمز QR فوري للاستقبال بدون ورق ولا انتظار'}
+       </p>
+      </div>
+      <button onClick={() => setTourStep(99)}
+       className="shrink-0 text-white/22 text-[10px] font-semibold hover:text-white/50 transition-colors pt-0.5 whitespace-nowrap">
+       تخطّ
+      </button>
+     </div>
+    </div>
+    <div className="h-[2px] w-full" style={{ background:'rgba(255,255,255,0.06)' }}>
+     <motion.div className="h-full rounded-full"
+      style={{ background:'linear-gradient(90deg,#0B4A6F,#00B4D8)' }}
+      animate={{ width:`${(tourStep/4)*100}%` }}
+      transition={{ duration:0.4 }}/>
+    </div>
+   </motion.div>
+  )}
+  </AnimatePresence>
 
  {/* ── Custom Design Note ─────────────────────────────────── */}
  <motion.div
@@ -488,7 +602,7 @@ export default function Home() {
  style={{ background: 'rgba(0,180,216,0.15)', border: '1px solid rgba(0,180,216,0.3)' }}>
  <span className="text-[#00B4D8] text-[12px]"></span>
  </div>
- <p className="text-[#00B4D8] text-[11px] font-bold tracking-wider uppercase">هذا مو قالب جاهز</p>
+ <p className="text-[#00B4D8] text-[11px] font-bold uppercase">هذا مو قالب جاهز</p>
  </div>
  <p className="text-white text-[15px] font-bold mb-2 leading-snug">
  تطبيقك بتصميم مخصص لك وحدك
@@ -529,7 +643,7 @@ export default function Home() {
 
  <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-7">
  <div className="flex-1">
- <p className="text-[#00B4D8] text-[10px] font-semibold tracking-widest uppercase mb-2">بطاقة المريض الرقمية</p>
+ <p className="text-[#00B4D8] text-[10px] font-semibold uppercase mb-2">بطاقة المريض الرقمية</p>
  <h3 className="text-white text-[24px] font-bold mb-2.5 leading-tight">
  هوية المريض في جيبه<br />
  <span style={{ color: '#00B4D8' }}>بدون ورق · بدون انتظار</span>
@@ -553,7 +667,7 @@ export default function Home() {
  <div className="flex items-center justify-between mb-4">
  <div>
  <p style={{ color: '#00B4D8' }} className="font-bold text-[15px]">عيادتك</p>
- <p className="text-white/20 text-[8px] tracking-wider">DIGITAL HEALTH CARD</p>
+ <p className="text-white/20 text-[8px]">DIGITAL HEALTH CARD</p>
  </div>
  <span className="text-[14px]"></span>
  </div>
@@ -647,8 +761,8 @@ export default function Home() {
  {/* ── Features grid ──────────────────────────────────────── */}
  <div className="max-w-5xl mx-auto px-6 mb-12">
  <div className="text-center mb-6">
- <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1.5">كل ما تحصل عليه عيادتك</p>
- <h2 className="text-[24px] font-bold text-[#111]">١٨ مزية في منظومة واحدة</h2>
+ <p className="text-[11px] text-[#AAA] font-semibold uppercase mb-1.5">كل ما تحصل عليه عيادتك</p>
+ <h2 className="text-[24px] font-bold text-[#111]">١٨ مزايا في منظومة واحدة</h2>
  </div>
  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
  {allFeatures.map((f, i) => (
@@ -665,7 +779,7 @@ export default function Home() {
  {/* ── Testimonials ────────────────────────────────────────── */}
  <div className="max-w-5xl mx-auto px-6 mb-12">
  <div className="text-center mb-6">
- <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1.5">قالوا عنّا</p>
+ <p className="text-[11px] text-[#AAA] font-semibold uppercase mb-1.5">قالوا عنّا</p>
  <h2 className="text-[24px] font-bold text-[#111]">عيادات ومستشفيات تثق بتلقا تك</h2>
  </div>
  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -701,7 +815,7 @@ export default function Home() {
  <div className="relative z-10 p-8 md:p-10">
  {/* Header */}
  <div className="text-center mb-8">
- <div className="inline-flex items-center gap-2 text-[#10B981] text-[11px] font-bold bg-[#10B981]/10 border border-[#10B981]/20 px-4 py-1.5 rounded-full mb-4 tracking-wider">
+ <div className="inline-flex items-center gap-2 text-[#10B981] text-[11px] font-bold bg-[#10B981]/10 border border-[#10B981]/20 px-4 py-1.5 rounded-full mb-4">
  <span className="w-1.5 h-1.5 bg-[#10B981] rounded-full animate-pulse" />
  الأمان في مقدمة أولوياتنا — دائماً
  </div>
@@ -779,7 +893,7 @@ export default function Home() {
  {/* ── FAQ ─────────────────────────────────────────────────── */}
  <div className="max-w-2xl mx-auto px-6 mb-14">
  <div className="text-center mb-7">
- <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1.5">أسئلة شائعة</p>
+ <p className="text-[11px] text-[#AAA] font-semibold uppercase mb-1.5">أسئلة شائعة</p>
  <h2 className="text-[24px] font-bold text-[#111]">كل ما يدور في بالك</h2>
  </div>
  <div className="space-y-3">
@@ -802,7 +916,7 @@ export default function Home() {
  style={{ background: 'linear-gradient(145deg,#050E1A 0%,#0B3A5A 45%,#050E1A 100%)' }}>
  <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 50% 0%,rgba(0,180,216,0.18) 0%,transparent 60%)' }} />
  <div className="relative z-10">
- <p className="text-[#00B4D8] text-[11px] font-semibold tracking-widest uppercase mb-3">سعر إطلاق خاص</p>
+ <p className="text-[#00B4D8] text-[11px] font-semibold uppercase mb-3">سعر إطلاق خاص</p>
  <p className="text-white text-[52px] font-bold leading-none mb-1">25,000</p>
  <p style={{ color: '#00B4D8' }} className="text-[18px] font-light mb-1.5">ريال سعودي</p>
  <p className="text-white/30 text-[12px] font-light mb-6 leading-relaxed">

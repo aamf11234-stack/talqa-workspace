@@ -185,13 +185,13 @@ export default function OwnerDashboard() {
 
  {/* Nav */}
  <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
- <p className="text-white/20 text-[10px] font-semibold tracking-widest uppercase px-4 mb-2">القائمة الرئيسية</p>
+ <p className="text-white/20 text-[10px] font-semibold uppercase px-4 mb-2">القائمة الرئيسية</p>
  <div onClick={() => setActiveNav('dashboard')}><SideLink icon={Home} label="لوحة التحكم" active={activeNav === 'dashboard'} /></div>
  <div onClick={() => setActiveNav('queue')} ><SideLink icon={CalendarCheck} label="الطابور اليوم" active={activeNav === 'queue'} badge="٧" /></div>
  <div onClick={() => setActiveNav('staff')} ><SideLink icon={Users} label="الفريق الطبي" active={activeNav === 'staff'} /></div>
  <div onClick={() => setActiveNav('reports')} ><SideLink icon={BarChart3} label="التقارير" active={activeNav === 'reports'} /></div>
 
- <p className="text-white/20 text-[10px] font-semibold tracking-widest uppercase px-4 mt-5 mb-2">النظام</p>
+ <p className="text-white/20 text-[10px] font-semibold uppercase px-4 mt-5 mb-2">النظام</p>
  <div onClick={() => setActiveNav('security')} ><SideLink icon={ShieldCheck} label="مركز الأمان" active={activeNav === 'security'} /></div>
  <div><SideLink icon={Settings} label="الإعدادات" /></div>
  </nav>
@@ -366,7 +366,7 @@ export default function OwnerDashboard() {
  <div className="bg-white rounded-[22px] border border-[rgba(11,74,111,0.06)] shadow-[0_2px_16px_rgba(0,0,0,0.05)] overflow-hidden">
  <div className="grid grid-cols-6 gap-4 px-6 py-3 bg-[#FAFBFC] border-b border-[#F5F7FA]">
  {['المريض','الرقم','التخصص','الطبيب','الوقت','الحالة'].map(h => (
- <p key={h} className="text-[11px] font-bold text-[#AAA] tracking-wide">{h}</p>
+ <p key={h} className="text-[11px] font-bold text-[#AAA]">{h}</p>
  ))}
  </div>
  {queue.map((p, i) => (

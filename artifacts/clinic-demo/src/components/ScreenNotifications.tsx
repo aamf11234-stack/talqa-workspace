@@ -83,8 +83,7 @@ export function ScreenNotifications({ theme = 'dark' }: Props) {
  style={{
  background: n.isNew ? cardNew : card,
  border: `1px solid ${n.isNew ? cardBorderNew : cardBorder}`,
- boxShadow: cardShadow,
- }}>
+ boxShadow: cardShadow }}>
  {n.isNew && (
  <div className="h-[2.5px]"
  style={{ background: `linear-gradient(90deg,${n.color},transparent)` }}/>

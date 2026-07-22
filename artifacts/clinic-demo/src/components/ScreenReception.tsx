@@ -14,8 +14,7 @@ const appts = [
 const statusCfg = {
  arrived: { label:'حضر', color:'#34C759', bg:'rgba(52,199,89,0.15)' },
  waiting: { label:'انتظار', color:'#FF9F0A', bg:'rgba(255,159,10,0.15)' },
- upcoming:{ label:'قادم', color:'#00B4D8', bg:'rgba(0,180,216,0.12)' },
-};
+ upcoming:{ label:'قادم', color:'#00B4D8', bg:'rgba(0,180,216,0.12)' } };
 
 export function ScreenReception() {
  const [checked, setChecked] = useState<number[]>([0]);

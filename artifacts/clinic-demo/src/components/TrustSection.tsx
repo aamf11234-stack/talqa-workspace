@@ -11,7 +11,7 @@ export const TrustSection = () => {
  <div className="max-w-4xl mx-auto text-center mb-16">
  <div className="inline-flex items-center justify-center gap-3 mb-6">
  <TalqaShield size={40} />
- <span className="text-2xl font-black text-white tracking-widest uppercase">
+ <span className="text-2xl font-black text-white uppercase">
  TALQA <span style={{ color: '#00B4D8' }}>TECH</span>
  </span>
  </div>
@@ -79,15 +79,15 @@ export const TrustSection = () => {
  <div className="mt-20 pt-10 border-t border-white/5 flex flex-wrap justify-center gap-16">
  <div className="text-center">
  <div className="text-4xl font-black text-white mb-2">50+</div>
- <div className="text-sm text-gray-500 uppercase tracking-wide">عيادة ومركز طبي</div>
+ <div className="text-sm text-gray-500 uppercase">عيادة ومركز طبي</div>
  </div>
  <div className="text-center">
  <div className="text-4xl font-black text-white mb-2">98%</div>
- <div className="text-sm text-gray-500 uppercase tracking-wide">نسبة الرضا</div>
+ <div className="text-sm text-gray-500 uppercase">نسبة الرضا</div>
  </div>
  <div className="text-center">
  <div className="text-4xl font-black text-white mb-2">24/7</div>
- <div className="text-sm text-gray-500 uppercase tracking-wide">دعم فني مستمر</div>
+ <div className="text-sm text-gray-500 uppercase">دعم فني مستمر</div>
  </div>
  </div>
 
