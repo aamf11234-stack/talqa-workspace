@@ -975,8 +975,8 @@ export default function Home() {
   </svg>
   </div>
   <div className="text-right">
-  <p className="text-[12px] font-black text-[#0B4A6F]">مؤسسة تلقا</p>
-  <p className="text-[10px] text-[#5B7A9A] font-semibold">سجل تجاري: 7054835322</p>
+  <p className="text-[12px] font-black text-[#0B4A6F]">مؤسسة تلقا — نشط</p>
+  <p className="text-[10px] text-[#5B7A9A] font-semibold">سجل تجاري: 7054835322 · 21/07/2026</p>
   </div>
   </div>
  </div>

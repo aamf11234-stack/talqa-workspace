@@ -2073,7 +2073,7 @@ export default function App() {
  <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3" style={{ borderTop:`1px solid ${GLASSBORDER}` }}>
  <div className="flex flex-col gap-1 text-center sm:text-right">
  <p className="text-[11px]" style={{ color:DIM }}>متخصصون في المنظومات الرقمية للقطاع الطبي · ٢٠٢٦</p>
- <p className="text-[10px]" style={{ color:DIM }}>مؤسسة تلقا · السجل التجاري: ٧٠٥٤٨٣٥٣٢٢ · تاريخ الإصدار: ١٤٤٧/٠١/٢٤هـ</p>
+ <p className="text-[10px]" style={{ color:DIM }}>مؤسسة تلقا · السجل التجاري: 7054835322 · تاريخ الإصدار: 21/07/2026 · الحالة: نشط</p>
  </div>
  <div className="flex gap-4">
  {['HIPAA','ISO 27001','PDPL'].map(b => <span key={b} className="text-[11px] font-bold" style={{ color:`${BLUE}80` }}>{b}</span>)}
