@@ -1,124 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, ChevronLeft, Calendar, Users, Tag, Zap, Flame, Star, ArrowLeft, Check, X } from 'lucide-react';
+import { Bell, ChevronLeft, Calendar, ShoppingBag, Tag, Zap, Flame, Star, ArrowLeft } from 'lucide-react';
 import { EventIconMap, ICalendarIcon, IGift } from './HaizIcons';
 
 const logoImg = `${import.meta.env.BASE_URL}restaurant-logo.png`;
-
-/* ── Weather Card ────────────────────────────────────────────────── */
-function WeatherCard() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.25, duration: 0.55 }}
-      className="mx-4 mb-5 rounded-[22px] overflow-hidden relative"
-      style={{
-        background: 'linear-gradient(150deg,#100203 0%,#1E0405 40%,#2A0608 70%,#120203 100%)',
-        border: '1px solid rgba(201,149,106,0.12)',
-        boxShadow: '0 8px 30px rgba(0,0,0,0.45)',
-      }}
-    >
-      {/* Ambient red glow */}
-      <div className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 30% 40%,rgba(123,22,24,0.5) 0%,transparent 60%)' }} />
-      {/* Amber glow right */}
-      <div className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 90% 80%,rgba(201,149,106,0.12) 0%,transparent 50%)' }} />
-
-      {/* Floating cloud blobs — very subtle */}
-      {[
-        { w:80, h:28, top:'12%', left:'18%', blur:18, op:0.07, dx:12, dur:9  },
-        { w:60, h:22, top:'30%', left:'45%', blur:14, op:0.05, dx:8,  dur:12 },
-        { w:90, h:30, top:'8%',  left:'55%', blur:20, op:0.06, dx:15, dur:7  },
-        { w:50, h:18, top:'55%', left:'25%', blur:12, op:0.04, dx:10, dur:14 },
-      ].map((c, i) => (
-        <motion.div key={i}
-          className="absolute rounded-full pointer-events-none"
-          style={{ width: c.w, height: c.h, top: c.top, left: c.left,
-            background: 'rgba(255,255,255,1)',
-            filter: `blur(${c.blur}px)`, opacity: c.op }}
-          animate={{ x: [0, c.dx, 0] }}
-          transition={{ duration: c.dur, repeat: Infinity, ease: 'easeInOut' }}
-        />
-      ))}
-
-      {/* Top row: location + time */}
-      <div className="relative z-10 flex items-center justify-between px-5 pt-4 pb-0">
-        <div className="flex items-center gap-1.5">
-          <div className="w-1.5 h-1.5 rounded-full bg-[#C9956A] animate-pulse" />
-          <span className="text-[#C9956A]/70 text-[9px] font-bold tracking-[0.2em]">مطعمك · الآن</span>
-        </div>
-        <span className="text-white/20 text-[9px] font-inter">السبت ١٨ يوليو</span>
-      </div>
-
-      {/* Core: temp + condition + message */}
-      <div className="relative z-10 px-5 pt-3 pb-4 flex items-end justify-between">
-
-        {/* Temp block */}
-        <div>
-          <div className="flex items-start leading-none gap-0.5">
-            <span className="text-white font-extralight" style={{ fontSize: 72, letterSpacing: '-4px', lineHeight: 1 }}>١٨</span>
-            <span className="text-white/30 text-[24px] font-light mt-3">°</span>
-          </div>
-          <div className="flex items-center gap-2 mt-1.5">
-            {/* Animated cloud icon */}
-            <motion.div
-              animate={{ y: [0, -3, 0] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut' }}
-              className="text-[22px]"
-            >☁️</motion.div>
-            <div>
-              <p className="text-white/75 text-[14px] font-semibold leading-none">غائم</p>
-              <p className="text-white/25 text-[9px] font-light mt-0.5">يشعر بـ١٥° · رطوبة ٧٢٪</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Right: message + hi/lo */}
-        <div className="flex flex-col items-end gap-3 pb-1">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.55 }}
-            className="rounded-[13px] px-3 py-2 text-right"
-            style={{ background: 'rgba(201,149,106,0.12)', border: '1px solid rgba(201,149,106,0.22)' }}
-          >
-            <p className="text-[#E8C4A0] text-[10px] font-bold leading-snug">الغيم على أبها</p>
-            <p className="text-white/40 text-[9px] font-light mt-0.5">مطعمك يدفّئك الليلة ☕</p>
-          </motion.div>
-          <div className="flex items-center gap-2.5">
-            <div className="text-center">
-              <p className="text-white/25 text-[8px]">عظمى</p>
-              <p className="text-white/65 text-[12px] font-bold font-inter">٢٢°</p>
-            </div>
-            <div className="w-px h-5 bg-white/10" />
-            <div className="text-center">
-              <p className="text-white/25 text-[8px]">صغرى</p>
-              <p className="text-white/65 text-[12px] font-bold font-inter">١٢°</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom strip */}
-      <div className="relative z-10 flex border-t"
-        style={{ borderColor: 'rgba(201,149,106,0.1)' }}>
-        {[
-          { emoji: '💧', label: 'رطوبة',  val: '٧٢٪'    },
-          { emoji: '🌬️', label: 'رياح',   val: '١٢ كم/س' },
-          { emoji: '🌡️', label: 'حرارة',  val: '١٨°م'   },
-        ].map((s, i) => (
-          <div key={i} className={`flex-1 flex flex-col items-center py-2.5 gap-0.5 ${i < 2 ? 'border-l border-[rgba(201,149,106,0.08)]' : ''}`}>
-            <span className="text-[11px]">{s.emoji}</span>
-            <p className="text-white/70 text-[10px] font-bold font-inter">{s.val}</p>
-            <p className="text-white/25 text-[7px]">{s.label}</p>
-          </div>
-        ))}
-      </div>
-    </motion.div>
-  );
-}
+const imgKabsa = `${import.meta.env.BASE_URL}food-kabsa.jpg`;
+const imgBurger = `${import.meta.env.BASE_URL}food-burger.jpg`;
 
 /* ── Counter hook ─────────────────────────────────────────────────── */
 function useCounter(target: number, duration = 1400, delay = 200) {
@@ -184,88 +71,35 @@ function ProgressRings({ progress = 4 / 7 }: { progress?: number }) {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   تقويم العروض — Haiz Calendar
+   تقويم العروض
 ══════════════════════════════════════════════════════════════════ */
 interface HaizEvent {
   id: string;
   title: string;
   subtitle: string;
-  date: string;         // YYYY-MM-DD
+  date: string;
   color: string;
-  benefit: string;      // what Haiz offers during this event
-  badge?: string;       // "جارٍ الآن" etc
+  benefit: string;
+  badge?: string;
   isNow?: boolean;
 }
 
 const haizEvents: HaizEvent[] = [
-  {
-    id: 'summer',
-    title: 'الإجازة الصيفية',
-    subtitle: 'نهايتها ٧ سبتمبر',
-    date: '2026-09-07',
-    color: '#E67E22',
-    benefit: 'خصم ١٠٪ على المشروبات الباردة طول الصيف',
-    badge: 'جارٍ الآن',
-    isNow: true,
-  },
-  {
-    id: 'national',
-    title: 'اليوم الوطني ٩٦',
-    subtitle: '٢٣ سبتمبر ٢٠٢٦',
-    date: '2026-09-23',
-    color: '#1A6B3A',
-    benefit: 'منيو وطني خاص + ضعف النقاط يوم ٢٣',
-  },
-  {
-    id: 'school',
-    title: 'بداية الدراسة',
-    subtitle: '٧ سبتمبر ٢٠٢٦',
-    date: '2026-09-07',
-    color: '#2980B9',
-    benefit: 'كوب قهوة ترحيبي بعد أول يوم دراسة',
-  },
-  {
-    id: 'winter',
-    title: 'إجازة الشتاء',
-    subtitle: 'ديسمبر ٢٠٢٦',
-    date: '2026-12-19',
-    color: '#5D6D7E',
-    benefit: 'منيو شتوي حصري + شوكولاتة مجانية',
-  },
-  {
-    id: 'midyear',
-    title: 'إجازة النصف',
-    subtitle: 'يناير ٢٠٢٧',
-    date: '2027-01-15',
-    color: '#8E44AD',
-    benefit: 'جلسات قراءة بخصم ٢٠٪ على المشروبات',
-  },
-  {
-    id: 'founding',
-    title: 'يوم التأسيس',
-    subtitle: '٢٢ فبراير ٢٠٢٧',
-    date: '2027-02-22',
-    color: '#7B1618',
-    benefit: 'مشروب مجاني للأعضاء',
-  },
-  {
-    id: 'eid',
-    title: 'عيد الفطر',
-    subtitle: 'مارس ٢٠٢٧ (تقريباً)',
-    date: '2027-03-20',
-    color: '#C9956A',
-    benefit: 'هدية عيد خاصة + مضاعفة النقاط',
-  },
+  { id: 'summer',   title: 'الإجازة الصيفية',  subtitle: 'نهايتها ٧ سبتمبر',      date: '2026-09-07', color: '#E67E22', benefit: 'خصم ١٠٪ على المشروبات الباردة طول الصيف', badge: 'جارٍ الآن', isNow: true },
+  { id: 'national', title: 'اليوم الوطني ٩٦',  subtitle: '٢٣ سبتمبر ٢٠٢٦',        date: '2026-09-23', color: '#1A6B3A', benefit: 'منيو وطني خاص + ضعف النقاط يوم ٢٣' },
+  { id: 'school',   title: 'بداية الدراسة',    subtitle: '٧ سبتمبر ٢٠٢٦',          date: '2026-09-07', color: '#2980B9', benefit: 'وجبة ترحيبية بعد أول يوم دراسة' },
+  { id: 'winter',   title: 'إجازة الشتاء',     subtitle: 'ديسمبر ٢٠٢٦',            date: '2026-12-19', color: '#5D6D7E', benefit: 'منيو شتوي حصري + حساء مجاني' },
+  { id: 'midyear',  title: 'إجازة النصف',      subtitle: 'يناير ٢٠٢٧',              date: '2027-01-15', color: '#8E44AD', benefit: 'خصم ٢٠٪ على الوجبات الجماعية' },
+  { id: 'founding', title: 'يوم التأسيس',      subtitle: '٢٢ فبراير ٢٠٢٧',         date: '2027-02-22', color: '#7B1618', benefit: 'وجبة مجانية للأعضاء' },
+  { id: 'eid',      title: 'عيد الفطر',         subtitle: 'مارس ٢٠٢٧ (تقريباً)',    date: '2027-03-20', color: '#C9956A', benefit: 'هدية عيد خاصة + مضاعفة النقاط' },
 ];
 
-/* ── Hijri + Gregorian date helpers ─── */
 function useTodayDates() {
   const now = new Date();
   const fmtHijri = (opts: Intl.DateTimeFormatOptions) =>
     new Intl.DateTimeFormat('ar-SA-u-ca-islamic-umalqura', opts).format(now);
   const fmtGreg = (opts: Intl.DateTimeFormatOptions) =>
     new Intl.DateTimeFormat('ar-SA', opts).format(now);
-
   return {
     hijriDay:     fmtHijri({ day: 'numeric' }),
     hijriMonth:   fmtHijri({ month: 'long' }),
@@ -286,118 +120,64 @@ function HaizCalendar() {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2, duration: 0.4 }}
-      className="mx-4 mb-6 rounded-[24px] overflow-hidden"
+      className="mx-4 mb-6 rounded-[24px] overflow-hidden relative"
       style={{
         background: 'linear-gradient(170deg,#080002 0%,#200407 45%,#3D0809 75%,#0D0205 100%)',
         boxShadow: '0 8px 40px rgba(0,0,0,0.25)',
       }}
     >
-      {/* Ambient glow */}
       <div className="pointer-events-none absolute inset-0 rounded-[24px]"
         style={{ background: 'radial-gradient(ellipse at 70% 20%,rgba(201,149,106,0.12) 0%,transparent 60%)' }} />
-      {/* Dot texture */}
       <div className="pointer-events-none absolute inset-0 opacity-[0.025]"
         style={{ backgroundImage: 'radial-gradient(circle,#fff 1px,transparent 1px)', backgroundSize: '10px 10px' }} />
 
-      {/* ══ DATE EDITORIAL ══ */}
+      {/* Date editorial */}
       <div className="relative overflow-hidden select-none"
         style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', minHeight: 172 }}>
-
-        {/* Warm glow bottom-left */}
         <div className="absolute inset-0 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse at 10% 100%,rgba(123,22,24,0.6) 0%,transparent 55%)' }} />
-        {/* Gold glow top-right */}
         <div className="absolute inset-0 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse at 90% 10%,rgba(201,149,106,0.11) 0%,transparent 50%)' }} />
-
-        {/* ── GHOST "صفر" — full-bleed backdrop ── */}
-        <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none"
-          style={{ paddingRight: 8 }}>
-          <span style={{
-            fontSize: 128,
-            fontWeight: 900,
-            color: '#fff',
-            opacity: 0.035,
-            letterSpacing: '-0.03em',
-            lineHeight: 1,
-            whiteSpace: 'nowrap',
-            transform: 'translateY(8px)',
-          }}>صفر</span>
+        <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none" style={{ paddingRight: 8 }}>
+          <span style={{ fontSize: 128, fontWeight: 900, color: '#fff', opacity: 0.035, letterSpacing: '-0.03em', lineHeight: 1, whiteSpace: 'nowrap', transform: 'translateY(8px)' }}>
+            {dt.hijriMonth}
+          </span>
         </div>
-
-        {/* ── Content ── */}
         <div className="relative px-5 pt-4 pb-5 flex flex-col gap-0">
-
-          {/* Row 1: weekday pill + tag */}
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2 px-2.5 py-1 rounded-full"
               style={{ background: 'rgba(48,209,88,0.1)', border: '1px solid rgba(48,209,88,0.2)' }}>
               <div className="w-1.5 h-1.5 rounded-full bg-[#30D158]" style={{ boxShadow: '0 0 5px #30D158' }} />
-              <span className="text-[#30D158] text-[9px] font-bold">السبت</span>
+              <span className="text-[#30D158] text-[9px] font-bold">{dt.hijriWeekday}</span>
             </div>
             <span className="text-[6px] font-black tracking-[0.32em] text-[#C9956A]/35"
-              style={{ fontFamily: 'ui-monospace,monospace' }}>مطعمك</span>
+              style={{ fontFamily: 'ui-monospace,monospace' }}>OFFERS CALENDAR</span>
           </div>
-
-          {/* Row 2: GIANT ٤ + month stacked */}
           <div className="flex items-end gap-0">
-
-            {/* ٤ — the hero number */}
             <span style={{
-              fontSize: 96,
-              fontWeight: 900,
-              letterSpacing: '-0.06em',
-              lineHeight: 0.85,
+              fontSize: 96, fontWeight: 900, letterSpacing: '-0.06em', lineHeight: 0.85,
               background: 'linear-gradient(175deg,#FAECD0 0%,#C9956A 45%,#7B4A1A 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              filter: 'drop-shadow(0 4px 24px rgba(201,149,106,0.45))',
-              marginLeft: -4,
-            }}>٤</span>
-
-            {/* Hijri month + year stacked beside the number */}
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+              filter: 'drop-shadow(0 4px 24px rgba(201,149,106,0.45))', marginLeft: -4,
+            }}>{dt.hijriDay}</span>
             <div className="flex flex-col justify-end pb-2 mr-1" style={{ gap: 2 }}>
-              <span style={{
-                fontSize: 34,
-                fontWeight: 900,
-                color: '#fff',
-                letterSpacing: '-0.02em',
-                lineHeight: 1,
-                textShadow: '0 2px 16px rgba(0,0,0,0.5)',
-              }}>صفر</span>
-              <span style={{
-                fontSize: 10,
-                fontWeight: 700,
-                color: 'rgba(201,149,106,0.55)',
-                letterSpacing: '0.15em',
-                fontFamily: 'ui-monospace,monospace',
-              }}>١٤٤٧ هـ</span>
+              <span style={{ fontSize: 34, fontWeight: 900, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1, textShadow: '0 2px 16px rgba(0,0,0,0.5)' }}>{dt.hijriMonth}</span>
+              <span style={{ fontSize: 10, fontWeight: 700, color: 'rgba(201,149,106,0.55)', letterSpacing: '0.15em', fontFamily: 'ui-monospace,monospace' }}>{dt.hijriYear} هـ</span>
             </div>
           </div>
-
-          {/* Row 3: decorative line + Gregorian */}
           <div className="flex items-center gap-3 mt-2">
-            {/* Angled line */}
-            <div style={{
-              width: 28,
-              height: 1,
-              background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.5))',
-              transform: 'skewX(-25deg)',
-            }} />
-            {/* Gold dot */}
-            <div className="w-1.5 h-1.5 rounded-full shrink-0"
-              style={{ background: '#C9956A', boxShadow: '0 0 6px rgba(201,149,106,0.7)' }} />
-            {/* Gregorian */}
+            <div style={{ width: 28, height: 1, background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.5))', transform: 'skewX(-25deg)' }} />
+            <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: '#C9956A', boxShadow: '0 0 6px rgba(201,149,106,0.7)' }} />
             <div className="flex items-baseline gap-2">
-              <span style={{ fontSize: 22, fontWeight: 900, color: 'rgba(255,255,255,0.55)', letterSpacing: '-0.03em', lineHeight: 1 }}>١٨</span>
-              <span style={{ fontSize: 15, fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '-0.01em' }}>يوليو</span>
-              <span style={{ fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.18)', fontFamily: 'ui-monospace,monospace' }}>٢٠٢٦ م</span>
+              <span style={{ fontSize: 22, fontWeight: 900, color: 'rgba(255,255,255,0.55)', letterSpacing: '-0.03em', lineHeight: 1 }}>{dt.gregDay}</span>
+              <span style={{ fontSize: 15, fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '-0.01em' }}>{dt.gregMonth}</span>
+              <span style={{ fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.18)', fontFamily: 'ui-monospace,monospace' }}>{dt.gregYear} م</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* ══ CALENDAR HEADER ══ */}
+      {/* Calendar header */}
       <div className="relative px-5 pt-4 pb-3 flex items-center justify-between"
         style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div>
@@ -420,34 +200,18 @@ function HaizCalendar() {
           const days = daysUntil(ev.date);
           const isOpen = expanded === ev.id;
           return (
-            <motion.div
-              key={ev.id}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.25 + i * 0.055 }}
-            >
-              <motion.button
-                className="w-full text-right"
-                whileTap={{ scale: 0.985 }}
-                onClick={() => setExpanded(isOpen ? null : ev.id)}
-              >
+            <motion.div key={ev.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 + i * 0.055 }}>
+              <motion.button className="w-full text-right" whileTap={{ scale: 0.985 }} onClick={() => setExpanded(isOpen ? null : ev.id)}>
                 <div className="flex items-center gap-3.5 px-5 py-3.5">
-                  {/* Icon badge */}
                   {(() => {
                     const EvIcon = EventIconMap[ev.id];
                     return (
                       <div className="w-10 h-10 rounded-[13px] flex items-center justify-center shrink-0"
-                        style={{
-                          background: `${ev.color}20`,
-                          border: `1px solid ${ev.color}35`,
-                          boxShadow: ev.isNow ? `0 0 14px ${ev.color}35` : 'none',
-                        }}>
+                        style={{ background: `${ev.color}20`, border: `1px solid ${ev.color}35`, boxShadow: ev.isNow ? `0 0 14px ${ev.color}35` : 'none' }}>
                         {EvIcon && <EvIcon size={20} color={ev.color} sw={1.4} />}
                       </div>
                     );
                   })()}
-
-                  {/* Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
                       <p className="text-[12px] font-bold text-white leading-snug">{ev.title}</p>
@@ -461,42 +225,27 @@ function HaizCalendar() {
                     </div>
                     <p className="text-white/30 text-[9px] font-light">{ev.subtitle}</p>
                   </div>
-
-                  {/* Countdown */}
                   <div className="shrink-0 text-left flex flex-col items-end">
                     <div className="flex items-baseline gap-0.5">
                       <span className="text-[20px] font-black font-inter leading-none"
-                        style={{ color: ev.isNow ? ev.color : 'rgba(255,255,255,0.7)' }}>
-                        {days}
-                      </span>
+                        style={{ color: ev.isNow ? ev.color : 'rgba(255,255,255,0.7)' }}>{days}</span>
                       <span className="text-[8px] text-white/25 mb-0.5">يوم</span>
                     </div>
-                    <span className="text-[7px] font-inter"
-                      style={{ color: isOpen ? ev.color : 'rgba(255,255,255,0.18)' }}>
+                    <span className="text-[7px] font-inter" style={{ color: isOpen ? ev.color : 'rgba(255,255,255,0.18)' }}>
                       {isOpen ? '▲ إخفاء' : '▼ العرض'}
                     </span>
                   </div>
                 </div>
               </motion.button>
-
-              {/* Expanded benefit */}
               <AnimatePresence>
                 {isOpen && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.22 }}
-                    className="overflow-hidden"
-                  >
+                  <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }} className="overflow-hidden">
                     <div className="mx-5 mb-3.5 px-4 py-3 rounded-[14px] flex items-start gap-2.5"
                       style={{ background: `${ev.color}12`, border: `1px solid ${ev.color}25` }}>
                       <div className="shrink-0 mt-0.5"><IGift size={16} color={ev.color} sw={1.4} /></div>
                       <div>
                         <p className="text-[7.5px] font-black tracking-widest mb-1"
-                          style={{ color: ev.color, fontFamily: 'ui-monospace,monospace' }}>
-                          عرض مطعمك الحصري
-                        </p>
+                          style={{ color: ev.color, fontFamily: 'ui-monospace,monospace' }}>عرض المطعم الحصري</p>
                         <p className="text-white/70 text-[11px] leading-relaxed">{ev.benefit}</p>
                       </div>
                     </div>
@@ -507,10 +256,7 @@ function HaizCalendar() {
           );
         })}
       </div>
-
-      {/* Footer */}
-      <div className="px-5 py-3 text-center"
-        style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+      <div className="px-5 py-3 text-center" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <p className="text-white/15 text-[8px]">اضغط على أي مناسبة لتشوف العرض ✦</p>
       </div>
     </motion.div>
@@ -518,165 +264,78 @@ function HaizCalendar() {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   سؤال اليوم — Question of the Day
+   Today's Special — daily dish card
 ══════════════════════════════════════════════════════════════════ */
-interface DailyQuestion {
-  question: string;
-  options: string[];
-  correct: number;   // index
-  points: number;
-  hint?: string;
-}
-
-const todayQ: DailyQuestion = {
-  question: 'ما هي طريقة تحضير القهوة التي تستغرق ٦٠ دقيقة في مطعمك؟',
-  options: ['الإسبريسو', 'المقطرة في ٦٠', 'الفلتر العادي', 'الكورتادو'],
-  correct: 1,
-  points: 25,
-  hint: 'تجدها في قائمة "مقطرة" في المنيو ☕',
-};
-
-function QuestionOfDay() {
-  const [picked, setPicked] = useState<number | null>(null);
-  const [showPoints, setShowPoints] = useState(false);
-  const [done, setDone] = useState(false);
-  const isCorrect = picked === todayQ.correct;
-
-  const handlePick = (i: number) => {
-    if (picked !== null) return;
-    setPicked(i);
-    if (i === todayQ.correct) {
-      setTimeout(() => setShowPoints(true), 500);
-      setTimeout(() => setShowPoints(false), 2800);
-    }
-    setTimeout(() => setDone(true), 3200);
-  };
-
+function TodaySpecial() {
+  const [liked, setLiked] = useState(false);
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.42 }}
-      className="mb-5 mx-4 rounded-[22px] overflow-hidden relative"
-      style={{ background: 'linear-gradient(145deg,#0D0205,#1A0306,#3D0809,#0D0205)' }}
+      transition={{ delay: 0.28 }}
+      className="mx-4 mb-5 rounded-[22px] overflow-hidden relative"
+      style={{ background: 'linear-gradient(150deg,#0C0002,#280506,#0D0205)', border: '1px solid rgba(201,149,106,0.12)', boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}
     >
-      {/* Animated glow */}
       <div className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 80% 20%,rgba(201,149,106,0.12) 0%,transparent 55%)' }} />
+        style={{ background: 'radial-gradient(ellipse at 90% 0%,rgba(201,149,106,0.14) 0%,transparent 55%)' }} />
 
-      {/* Floating points toast */}
-      <AnimatePresence>
-        {showPoints && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.8 }}
-            animate={{ opacity: 1, y: -8, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.8 }}
-            className="absolute top-3 right-3 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full"
-            style={{ background: 'rgba(48,209,88,0.15)', border: '1px solid rgba(48,209,88,0.3)' }}
-          >
-            <Star size={11} className="text-[#30D158]" fill="rgba(48,209,88,0.5)" />
-            <span className="text-[#30D158] text-[12px] font-black font-inter">+{todayQ.points}</span>
-            <span className="text-[#30D158]/70 text-[9px]">نقطة</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <div className="relative p-4 pb-5">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-3.5">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-[7px] flex items-center justify-center"
-              style={{ background: 'rgba(201,149,106,0.15)', border: '1px solid rgba(201,149,106,0.2)' }}>
-              <span className="text-[12px]">💡</span>
-            </div>
-            <span className="text-white text-[12px] font-bold">سؤال اليوم</span>
-          </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full"
-            style={{ background: 'rgba(201,149,106,0.12)', border: '1px solid rgba(201,149,106,0.2)' }}>
-            <Star size={10} className="text-[#C9956A]" fill="#C9956A" />
-            <span className="text-[#C9956A] text-[10px] font-bold">{todayQ.points} نقطة</span>
+      <div className="relative flex gap-4 p-4">
+        {/* Food image */}
+        <div className="relative shrink-0 rounded-[16px] overflow-hidden" style={{ width: 100, height: 100 }}>
+          <img src={imgKabsa} alt="كبسة الجمبري" className="w-full h-full object-cover" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg,rgba(0,0,0,0.15),transparent)' }} />
+          <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded-full text-[7px] font-bold text-white" style={{ background: 'rgba(230,126,34,0.9)' }}>
+            جارٍ الآن
           </div>
         </div>
 
-        {/* Question */}
-        <p className="text-white text-[13px] font-semibold leading-snug mb-4 text-right">
-          {todayQ.question}
-        </p>
-
-        {/* Options */}
-        {!done ? (
-          <div className="space-y-2">
-            {todayQ.options.map((opt, i) => {
-              const letters = ['أ', 'ب', 'ج', 'د'];
-              const isSelected = picked === i;
-              const correct = picked !== null && i === todayQ.correct;
-              const wrong = isSelected && i !== todayQ.correct;
-
-              return (
-                <motion.button
-                  key={i}
-                  whileTap={picked === null ? { scale: 0.97 } : {}}
-                  onClick={() => handlePick(i)}
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-[14px] text-right transition-all duration-300"
-                  style={{
-                    background: correct
-                      ? 'rgba(48,209,88,0.18)'
-                      : wrong
-                        ? 'rgba(255,59,48,0.18)'
-                        : isSelected
-                          ? 'rgba(201,149,106,0.15)'
-                          : 'rgba(255,255,255,0.06)',
-                    border: correct
-                      ? '1.5px solid rgba(48,209,88,0.4)'
-                      : wrong
-                        ? '1.5px solid rgba(255,59,48,0.4)'
-                        : 'none',
-                  }}
-                >
-                  <div className="w-6 h-6 rounded-full shrink-0 flex items-center justify-center"
-                    style={{
-                      background: correct
-                        ? 'rgba(48,209,88,0.25)'
-                        : wrong
-                          ? 'rgba(255,59,48,0.25)'
-                          : 'rgba(255,255,255,0.08)',
-                    }}>
-                    {correct ? (
-                      <Check size={11} className="text-[#30D158]" strokeWidth={3} />
-                    ) : wrong ? (
-                      <X size={11} className="text-[#FF3B30]" strokeWidth={3} />
-                    ) : (
-                      <span className="text-white/50 text-[10px] font-bold">{letters[i]}</span>
-                    )}
-                  </div>
-                  <span className={`text-[12px] font-medium flex-1 text-right ${
-                    correct ? 'text-[#30D158]' : wrong ? 'text-[#FF3B30]' : 'text-white/80'
-                  }`}>
-                    {opt}
-                  </span>
-                </motion.button>
-              );
-            })}
+        {/* Info */}
+        <div className="flex-1 flex flex-col justify-between py-0.5">
+          <div>
+            <p className="text-[8px] font-bold tracking-widest text-[#C9956A] mb-1" style={{ fontFamily: 'ui-monospace,monospace' }}>طبق اليوم</p>
+            <p className="text-white text-[16px] font-bold leading-tight mb-1">كبسة الجمبري</p>
+            <p className="text-white/35 text-[10px] font-light leading-snug">أرز مع جمبري طازج بالبهارات الخليجية — طُبخت الآن</p>
           </div>
-        ) : (
-          /* Result state */
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="flex flex-col items-center py-4 gap-2"
-          >
-            <div className="text-3xl">{isCorrect ? '🎉' : '💪'}</div>
-            <p className="text-white font-bold text-[14px]">
-              {isCorrect ? 'إجابة صحيحة!' : 'إجابة خاطئة'}
-            </p>
-            {isCorrect ? (
-              <p className="text-[#30D158] text-[11px]">+{todayQ.points} نقطة أُضيفت لرصيدك</p>
-            ) : (
-              <p className="text-white/40 text-[10px] text-center font-light">{todayQ.hint}</p>
-            )}
-            <p className="text-white/25 text-[9px] mt-1">يعود السؤال غداً 🌅</p>
-          </motion.div>
-        )}
+          <div className="flex items-center justify-between mt-2">
+            <div>
+              <span className="text-[22px] font-black text-white font-inter">٨٥</span>
+              <span className="text-[#C9956A] text-[11px] font-bold mr-1">ريال</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <motion.button whileTap={{ scale: 0.85 }} onClick={() => setLiked(!liked)}
+                className="w-7 h-7 rounded-full flex items-center justify-center"
+                style={{ background: liked ? 'rgba(255,59,48,0.2)' : 'rgba(255,255,255,0.08)' }}>
+                <span className="text-[14px]">{liked ? '❤️' : '🤍'}</span>
+              </motion.button>
+              <motion.a
+                href="https://wa.me/966551378531?text=أريد طلب كبسة الجمبري 🦐"
+                target="_blank" rel="noopener noreferrer"
+                whileTap={{ scale: 0.94 }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold text-white"
+                style={{ background: 'linear-gradient(135deg,#128C7E,#075E54)' }}>
+                <svg viewBox="0 0 24 24" className="w-3 h-3 fill-white shrink-0">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+                اطلب
+              </motion.a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Popular picks strip */}
+      <div className="px-4 pb-4 flex gap-2">
+        {[{ img: imgBurger, name: 'برجر كلاسيك', price: '٣٥ر' }].map((item, i) => (
+          <div key={i} className="flex items-center gap-2 flex-1 rounded-[12px] px-3 py-2"
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.06)' }}>
+            <img src={item.img} alt={item.name} className="w-8 h-8 rounded-[8px] object-cover shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-white text-[10px] font-semibold truncate">{item.name}</p>
+              <p className="text-[#C9956A] text-[9px] font-bold">{item.price}</p>
+            </div>
+            <span className="text-[9px] text-white/25 shrink-0">الأشهر</span>
+          </div>
+        ))}
       </div>
     </motion.div>
   );
@@ -697,7 +356,7 @@ export function ScreenHome() {
   return (
     <div className="h-full overflow-y-auto scrollbar-none">
 
-      {/* ── Premium Dark Hero ──────────────────────────────────────── */}
+      {/* ── Dark hero ── */}
       <div className="relative overflow-hidden" style={{
         background: 'linear-gradient(160deg,#050002 0%,#200005 30%,#3D0809 55%,#0D0205 80%,#000 100%)',
         paddingBottom: '52px',
@@ -748,7 +407,7 @@ export function ScreenHome() {
             <div className="w-2 h-2 rounded-full" style={{ background: 'linear-gradient(135deg,#C9956A,#F0D4A8)' }} />
             <span className="text-[#C9956A] text-[11px] font-bold tracking-wide">كلاسيك</span>
             <div className="w-px h-3 bg-white/15" />
-            <span className="text-white/35 text-[11px] font-light">٣ أكواب للفضي</span>
+            <span className="text-white/35 text-[11px] font-light">٣ طلبات للفضي</span>
             <ArrowLeft size={10} className="text-white/25" />
           </motion.div>
         </div>
@@ -774,37 +433,41 @@ export function ScreenHome() {
         </div>
       </div>
 
-      {/* ── Cream content ──────────────────────────────────────────── */}
+      {/* ── Cream content ── */}
       <div className="bg-[#FDFBF7] rounded-t-[30px] -mt-7 relative z-10 pt-5 pb-6">
 
         {/* Quick actions */}
         <div className="grid grid-cols-3 gap-2.5 mb-5 px-4">
           {[
-            { icon: Calendar, label: 'احجز',  color: '#7B1618', bg: '#7B161810' },
-            { icon: Users,    label: 'مجتمع', color: '#1A6B3A', bg: '#2D7D4610' },
-            { icon: Tag,      label: 'عروضي', color: '#B5651D', bg: '#C9956A12' },
-          ].map((a, i) => (
-            <motion.button key={a.label}
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 + i * 0.06 }} whileTap={{ scale: 0.88 }}
-              className="flex flex-col items-center py-4 rounded-2xl gap-2 relative overflow-hidden"
-              style={{ background: a.bg, border: `1px solid ${a.color}18` }}>
-              <div className="w-9 h-9 rounded-[12px] flex items-center justify-center" style={{ background: `${a.color}14` }}>
-                <a.icon size={17} style={{ color: a.color }} />
-              </div>
-              <span className="text-[11px] font-bold" style={{ color: a.color }}>{a.label}</span>
-            </motion.button>
-          ))}
+            { icon: ShoppingBag, label: 'اطلب',  color: '#128C7E', bg: '#128C7E12', href: 'https://wa.me/966551378531?text=أريد الطلب' },
+            { icon: Calendar,    label: 'احجز',  color: '#7B1618', bg: '#7B161812', href: null },
+            { icon: Tag,         label: 'عروضي', color: '#B5651D', bg: '#C9956A12', href: null },
+          ].map((a, i) => {
+            const inner = (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 + i * 0.06 }}
+                className="flex flex-col items-center py-4 rounded-2xl gap-2 relative overflow-hidden w-full"
+                style={{ background: a.bg, border: `1px solid ${a.color}22` }}>
+                <div className="w-9 h-9 rounded-[12px] flex items-center justify-center" style={{ background: `${a.color}18` }}>
+                  <a.icon size={17} style={{ color: a.color }} />
+                </div>
+                <span className="text-[11px] font-bold" style={{ color: a.color }}>{a.label}</span>
+              </motion.div>
+            );
+            return a.href ? (
+              <motion.a key={a.label} href={a.href} target="_blank" rel="noopener noreferrer" whileTap={{ scale: 0.88 }}>{inner}</motion.a>
+            ) : (
+              <motion.button key={a.label} whileTap={{ scale: 0.88 }}>{inner}</motion.button>
+            );
+          })}
         </div>
 
-        {/* ── طقس أبها ── */}
-        <WeatherCard />
-
-        {/* ── سؤال اليوم ── */}
-        <QuestionOfDay />
+        {/* طبق اليوم */}
+        <TodaySpecial />
 
         {/* Active challenge */}
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.48 }}
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.38 }}
           className="mx-4 mb-5 rounded-[18px] p-4 flex items-center gap-3 relative overflow-hidden"
           style={{ background: '#111', border: '1px solid rgba(255,255,255,0.06)' }}>
           <div className="absolute inset-0 pointer-events-none"
@@ -814,46 +477,44 @@ export function ScreenHome() {
             <Zap size={18} className="text-[#30D158]" fill="rgba(48,209,88,0.3)" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-white text-[13px] font-bold leading-tight">تحدي الأسبوع: ٥ أكواب</p>
-            <p className="text-white/35 text-[10px] mt-0.5">٤ من ٥ — كوب واحد فقط للفوز</p>
+            <p className="text-white text-[13px] font-bold leading-tight">تحدي الأسبوع: ٥ طلبات</p>
+            <p className="text-white/35 text-[10px] mt-0.5">٤ من ٥ — طلب واحد فقط للفوز بوجبة مجانية</p>
             <div className="flex gap-1 mt-2">
-              {[0,1,2,3,4].map(i => (
-                <motion.div key={i} initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
-                  transition={{ delay: 0.5 + i * 0.07 }}
+              {[0,1,2,3,4].map(idx => (
+                <motion.div key={idx} initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
+                  transition={{ delay: 0.5 + idx * 0.07 }}
                   className="h-1.5 flex-1 rounded-full"
-                  style={{ background: i < 4 ? 'linear-gradient(90deg,#30D158,#25A349)' : 'rgba(255,255,255,0.1)', transformOrigin: 'left' }} />
+                  style={{ background: idx < 4 ? 'linear-gradient(90deg,#30D158,#25A349)' : 'rgba(255,255,255,0.1)', transformOrigin: 'left' }} />
               ))}
             </div>
           </div>
           <div className="flex flex-col items-end gap-1 shrink-0">
             <div className="w-2 h-2 bg-[#30D158] rounded-full animate-pulse" />
-            <span className="text-[#30D158] text-[9px] font-bold">مشارك</span>
+            <span className="text-[#30D158] text-[9px] font-bold">نشط</span>
           </div>
         </motion.div>
 
         {/* Recent activity */}
-        <div className="px-4">
+        <div className="px-4 mb-5">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-[13px] font-bold text-[#111]">آخر النشاطات</p>
+            <p className="text-[13px] font-bold text-[#111]">آخر الطلبات</p>
             <button className="text-[11px] text-[#C4B59F] flex items-center gap-0.5">
               عرض الكل <ChevronLeft size={11} />
             </button>
           </div>
           <div className="space-y-1.5">
             {[
-              { item: 'لاتيه إثيوبي — فلتر',  time: 'اليوم، ١١:٢٠ص', pts: '+١٥', emoji: '☕', color: '#7B1618' },
-              { item: 'كرواسون بالزبدة',       time: 'أمس، ٣:٠٠م',    pts: '+٨',  emoji: '🥐', color: '#C9956A' },
-              { item: 'باريستا ستايل خاص',    time: 'الأحد، ١٠:٤٥ص', pts: '+١٢', emoji: '🌟', color: '#2D7D46' },
+              { item: 'كبسة الجمبري',        time: 'اليوم، ١١:٢٠ص', pts: '+٢٥', emoji: '🦐', color: '#7B1618' },
+              { item: 'برجر كلاسيك + لاتيه', time: 'أمس، ٣:٠٠م',    pts: '+١٥', emoji: '🍔', color: '#C9956A' },
+              { item: 'تشيز كيك + قهوة',    time: 'الأحد، ١٠:٤٥ص', pts: '+١٢', emoji: '🎂', color: '#2D7D46' },
             ].map((r, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.55 + i * 0.08 }}
+                transition={{ delay: 0.45 + i * 0.08 }}
                 className="flex items-center gap-3 bg-white rounded-[16px] p-3.5 border border-[rgba(196,181,159,0.1)]"
                 style={{ boxShadow: '0 2px 10px rgba(0,0,0,0.04)' }}>
                 <div className="w-10 h-10 rounded-[12px] flex items-center justify-center text-[18px] shrink-0"
-                  style={{ background: `${r.color}0F` }}>
-                  {r.emoji}
-                </div>
+                  style={{ background: `${r.color}0F` }}>{r.emoji}</div>
                 <div className="flex-1 min-w-0">
                   <p className="text-[12px] font-semibold text-[#111] truncate">{r.item}</p>
                   <p className="text-[10px] text-[#BBB] font-inter mt-0.5">{r.time}</p>
@@ -865,40 +526,16 @@ export function ScreenHome() {
               </motion.div>
             ))}
           </div>
-
-          {/* Recommendations */}
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.72 }}
-            className="mt-4 rounded-[18px] p-4"
-            style={{ background: 'linear-gradient(135deg,#FDF9F4,#F8F0E8)', border: '1px solid rgba(201,149,106,0.15)' }}>
-            <div className="flex items-center gap-2 mb-3">
-              <Star size={13} className="text-[#C9956A]" fill="#C9956A" />
-              <p className="text-[12px] font-bold text-[#111]">موصى لك</p>
-            </div>
-            <div className="flex gap-2">
-              {[
-                { name: 'قهوة مطعمك', price: '١٩ر', emoji: '☕', note: 'الأشهر لديك' },
-                { name: 'كيك البيكان', price: '٢٥ر', emoji: '🎂', note: 'يُحبه أصدقاؤك' },
-              ].map((rec, i) => (
-                <div key={i} className="flex-1 bg-white rounded-[14px] p-3 border border-[rgba(196,181,159,0.12)]">
-                  <div className="text-2xl mb-1.5">{rec.emoji}</div>
-                  <p className="text-[11px] font-bold text-[#111] leading-tight">{rec.name}</p>
-                  <p className="text-[9px] text-[#C9956A] mt-0.5">{rec.note}</p>
-                  <p className="text-[12px] font-black text-[#7B1618] mt-1.5 font-inter">{rec.price}</p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
         </div>
 
-        {/* ── تقويم العروض — آخر شي ── */}
-        <div className="pt-2">
+        {/* تقويم العروض */}
+        <div className="pt-1">
           <div className="flex items-center justify-between mb-4 px-4">
             <p className="text-[13px] font-bold text-[#111]">تقويم العروض</p>
             <span className="text-[10px] text-[#C4B59F]">المناسبات والعروض</span>
           </div>
           <HaizCalendar />
         </div>
-
       </div>
     </div>
   );

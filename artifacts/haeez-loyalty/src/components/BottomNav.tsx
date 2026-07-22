@@ -1,9 +1,9 @@
 import React from 'react';
-import { Home, CreditCard, BookOpen, CalendarDays, Users } from 'lucide-react';
+import { Home, CreditCard, BookOpen, CalendarDays, ShoppingBag } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
-type Tab = 'home' | 'menu' | 'card' | 'book' | 'community';
+type Tab = 'home' | 'menu' | 'card' | 'book' | 'orders';
 
 interface BottomNavProps {
   activeTab: Tab;
@@ -12,14 +12,14 @@ interface BottomNavProps {
 }
 
 const tabs: { id: Tab; icon: React.ElementType; label: string }[] = [
-  { id: 'home',      icon: Home,         label: 'الرئيسية' },
-  { id: 'menu',      icon: BookOpen,     label: 'المنيو'   },
-  { id: 'card',      icon: CreditCard,   label: 'بطاقتي'  },
-  { id: 'book',      icon: CalendarDays, label: 'احجز'    },
-  { id: 'community', icon: Users,        label: 'مجتمع'   },
+  { id: 'home',   icon: Home,        label: 'الرئيسية' },
+  { id: 'menu',   icon: BookOpen,    label: 'المنيو'   },
+  { id: 'card',   icon: CreditCard,  label: 'بطاقتي'  },
+  { id: 'book',   icon: CalendarDays,label: 'احجز'    },
+  { id: 'orders', icon: ShoppingBag, label: 'طلباتي'  },
 ];
 
-export function BottomNav({ activeTab, onChangeTab, notifCount = 3 }: BottomNavProps) {
+export function BottomNav({ activeTab, onChangeTab, notifCount = 1 }: BottomNavProps) {
   return (
     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-32px)] h-[58px] bg-white/80 backdrop-blur-2xl rounded-full border border-[rgba(196,181,159,0.2)] flex items-center justify-around px-1 shadow-[0_8px_32px_rgba(0,0,0,0.10)] z-40">
       {tabs.map((tab) => {
@@ -45,7 +45,7 @@ export function BottomNav({ activeTab, onChangeTab, notifCount = 3 }: BottomNavP
                 isActive ? 'text-white' : 'text-[#AAA]'
               )}
             />
-            {tab.id === 'community' && notifCount > 0 && !isActive && (
+            {tab.id === 'orders' && notifCount > 0 && !isActive && (
               <span className="absolute top-0.5 right-0.5 w-4 h-4 bg-[#30D158] rounded-full text-white text-[8px] font-bold flex items-center justify-center font-inter z-20">
                 {notifCount}
               </span>

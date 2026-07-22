@@ -20,25 +20,18 @@ function MembershipCard() {
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={0.03}
     >
-      {/* ── Card shell ── */}
       <div className="relative w-full rounded-[24px] overflow-hidden"
         style={{
           aspectRatio: '1.586/1',
           background: 'linear-gradient(155deg,#0C0002 0%,#2A0407 30%,#4D0C10 55%,#1C0406 78%,#060001 100%)',
           boxShadow: '0 24px 60px rgba(0,0,0,0.55), 0 8px 20px rgba(123,22,24,0.3)',
         }}>
-
-        {/* Glows */}
         <div className="absolute inset-0 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse at 80% 10%,rgba(201,149,106,0.18) 0%,transparent 52%)' }} />
         <div className="absolute inset-0 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse at 0% 100%,rgba(123,22,24,0.55) 0%,transparent 48%)' }} />
-
-        {/* Dot grid texture */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
           style={{ backgroundImage: 'radial-gradient(circle,#fff 1px,transparent 1px)', backgroundSize: '12px 12px' }} />
-
-        {/* Geometric circle art (top right) */}
         <div className="absolute pointer-events-none" style={{ right: '-10%', top: '-25%', width: '58%', aspectRatio: '1/1' }}>
           <svg viewBox="0 0 200 200" fill="none" className="w-full h-full opacity-[0.06]">
             <circle cx="100" cy="100" r="90" stroke="#C9956A" strokeWidth="0.8" />
@@ -50,79 +43,53 @@ function MembershipCard() {
                 x2={100+Math.cos(r)*88} y2={100+Math.sin(r)*88}
                 stroke="#C9956A" strokeWidth="0.35" />;
             })}
-            <defs>
-              <linearGradient id="cg1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#C9956A" /><stop offset="100%" stopColor="#fff" />
-              </linearGradient>
-            </defs>
           </svg>
         </div>
-
-        {/* Shimmer */}
         <div className="absolute top-0 bottom-0 w-[50%] pointer-events-none z-10"
           style={{
             background: 'linear-gradient(90deg,transparent,rgba(255,255,255,0.035),rgba(201,149,106,0.06),rgba(255,255,255,0.025),transparent)',
             transform: 'skewX(-18deg)',
             animation: 'card-shimmer 5s ease-in-out infinite',
           }} />
-
-        {/* Gold border */}
         <div className="absolute inset-0 rounded-[24px] pointer-events-none"
           style={{ boxShadow: 'inset 0 0 0 1px rgba(201,149,106,0.22)' }} />
 
-        {/* ── Content ── */}
         <div className="absolute inset-0 flex flex-col justify-between z-20" style={{ padding: '18px 20px 16px' }}>
-
-          {/* TOP ROW: Apple icon left + مطعمك branding right */}
           <div className="flex items-start justify-between">
-
-            {/* Apple Wallet mark */}
             <div className="flex flex-col items-start gap-0.5">
               <svg viewBox="0 0 24 24" className="w-6 h-6" style={{ fill: 'rgba(255,255,255,0.55)' }}>
                 <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
               </svg>
               <p className="text-white/18 text-[6px] font-inter tracking-[0.18em] uppercase">Wallet</p>
             </div>
-
-            {/* Haiz branding */}
             <div className="text-right flex flex-col gap-0.5">
-              <p className="text-[#C9956A] font-black leading-none tracking-tight" style={{ fontSize: 22 }}>مطعمك</p>
-              <p className="text-white/22 font-inter tracking-[0.2em]" style={{ fontSize: 7 }}>مطعمك</p>
+              <p className="text-[#C9956A] font-black leading-none tracking-tight" style={{ fontSize: 20 }}>مطعمك</p>
+              <p className="text-white/22 font-inter tracking-[0.15em]" style={{ fontSize: 7 }}>YOUR RESTAURANT · KSA</p>
             </div>
           </div>
-
-          {/* MIDDLE: thin divider + CARDHOLDER block */}
           <div>
             <div className="mb-3" style={{ height: 1, background: 'linear-gradient(90deg,rgba(201,149,106,0.08),rgba(201,149,106,0.22),rgba(201,149,106,0.08))' }} />
             <p className="text-white/22 font-inter tracking-[0.22em] mb-1" style={{ fontSize: 7 }}>CARDHOLDER</p>
             <p className="text-white font-bold tracking-wide leading-none" style={{ fontSize: 16 }}>عبدالإله علي</p>
           </div>
-
-          {/* BOTTOM: points left, level right, ID below */}
           <div>
             <div className="flex items-end justify-between">
-              {/* Points */}
               <div>
                 <p className="text-white/22 font-inter tracking-[0.22em] mb-1" style={{ fontSize: 7 }}>POINTS</p>
                 <div className="flex items-baseline gap-1">
                   <span className="text-white font-black font-inter leading-none" style={{ fontSize: 26 }}>480</span>
                   <span className="text-white/35 font-inter mb-0.5" style={{ fontSize: 9 }}>PTS</span>
                 </div>
-                {/* 7-bar progress */}
                 <div className="flex items-center gap-[3px] mt-1.5">
                   {[0,1,2,3,4,5,6].map(i => (
                     <div key={i} style={{
                       width: 13, height: 2.5, borderRadius: 99,
-                      background: i < 4
-                        ? 'linear-gradient(90deg,#C9956A,#E8C48A)'
-                        : 'rgba(255,255,255,0.1)',
+                      background: i < 4 ? 'linear-gradient(90deg,#C9956A,#E8C48A)' : 'rgba(255,255,255,0.1)',
                     }} />
                   ))}
                 </div>
                 <p className="text-white/18 font-inter mt-1" style={{ fontSize: 7 }}>٤ من ٧ للمستوى الفضي</p>
               </div>
-
-              {/* Level + ID */}
               <div className="text-right flex flex-col items-end gap-1">
                 <div>
                   <p className="text-white/22 font-inter tracking-[0.22em] mb-1" style={{ fontSize: 7 }}>LEVEL</p>
@@ -132,13 +99,11 @@ function MembershipCard() {
                     <span className="text-[#C9956A] font-bold" style={{ fontSize: 10 }}>كلاسيك</span>
                   </div>
                 </div>
-                <p className="text-white/12 font-inter tracking-widest" style={{ fontSize: 7 }}>#HC-2024-8821</p>
+                <p className="text-white/12 font-inter tracking-widest" style={{ fontSize: 7 }}>#MR-2024-8821</p>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Bottom edge glow */}
         <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ height: 1, background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.28),transparent)' }} />
       </div>
     </motion.div>
@@ -167,7 +132,7 @@ function QRModal({ onClose }: { onClose: () => void }) {
             transition={{ duration: 2.2, ease: 'easeInOut', repeat: Infinity, repeatDelay: 0.8 }}
           />
         </div>
-        <p className="text-[11px] text-[#AAA] mt-4 font-inter tracking-widest">#HC-2024-8821</p>
+        <p className="text-[11px] text-[#AAA] mt-4 font-inter tracking-widest">#MR-2024-8821</p>
         <div className="flex-1" />
         <button onClick={onClose} className="w-full py-4 rounded-[16px] bg-[#111] text-white font-semibold text-[14px] active:scale-95 transition-transform">إغلاق</button>
       </motion.div>
@@ -175,9 +140,135 @@ function QRModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-/* ── Wallet toast ────────────────────────────────────────────────── */
-function WalletToast({ type, onDone }: { type: 'apple' | 'google'; onDone: () => void }) {
-  useEffect(() => { const t = setTimeout(onDone, 2800); return () => clearTimeout(t); }, [onDone]);
+/* ── Apple Wallet Pass modal ─────────────────────────────────────── */
+function AppleWalletModal({ onClose }: { onClose: () => void }) {
+  const [phase, setPhase] = useState<'adding' | 'done'>('adding');
+
+  useEffect(() => {
+    const t = setTimeout(() => setPhase('done'), 2000);
+    return () => clearTimeout(t);
+  }, []);
+
+  return (
+    <>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        onClick={phase === 'done' ? onClose : undefined}
+        className="absolute inset-0 bg-black/80 backdrop-blur-xl z-50 rounded-[48px]" />
+
+      <motion.div
+        initial={{ y: '110%' }}
+        animate={{ y: 0 }}
+        exit={{ y: '110%' }}
+        transition={{ type: 'spring', damping: 28, stiffness: 300 }}
+        className="absolute bottom-0 left-0 right-0 z-50 bg-[#1C1C1E] rounded-t-[36px] overflow-hidden"
+        style={{ maxHeight: '88%' }}
+      >
+        {/* iOS-style header */}
+        <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-white/8">
+          <button onClick={onClose} className="text-[14px] text-[#007AFF] font-medium">إغلاق</button>
+          <p className="text-white text-[14px] font-semibold">Apple Wallet</p>
+          <div className="w-10" />
+        </div>
+
+        <div className="px-5 pt-6 pb-8 flex flex-col items-center gap-5">
+          {/* Wallet pass preview */}
+          <motion.div
+            initial={{ scale: 0.85, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2, type: 'spring', stiffness: 200, damping: 22 }}
+            className="w-full rounded-[24px] overflow-hidden relative"
+            style={{
+              background: 'linear-gradient(150deg,#0C0002,#2A0407,#4D0C10,#1C0406)',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,149,106,0.2)',
+              aspectRatio: '1.586/1',
+            }}
+          >
+            <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 80% 10%,rgba(201,149,106,0.2) 0%,transparent 52%)' }} />
+            <div className="absolute inset-0 flex flex-col justify-between p-5 z-10">
+              {/* Top */}
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-2">
+                  <svg viewBox="0 0 24 24" className="w-5 h-5" style={{ fill: 'rgba(255,255,255,0.6)' }}>
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+                  </svg>
+                  <span className="text-white/30 text-[8px] font-inter tracking-[0.2em]">WALLET</span>
+                </div>
+                <p className="text-[#C9956A] font-black text-[18px]">مطعمك</p>
+              </div>
+              {/* Bottom */}
+              <div className="flex items-end justify-between">
+                <div>
+                  <p className="text-white/25 text-[7px] font-inter tracking-widest">POINTS</p>
+                  <p className="text-white font-black font-inter text-[28px] leading-none">480</p>
+                  <div className="flex gap-[3px] mt-1.5">
+                    {[0,1,2,3,4,5,6].map(i => (
+                      <div key={i} className="h-[3px] rounded-full" style={{ width: 14, background: i < 4 ? 'linear-gradient(90deg,#C9956A,#E8C48A)' : 'rgba(255,255,255,0.12)' }} />
+                    ))}
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-white/25 text-[7px] font-inter tracking-widest">CARDHOLDER</p>
+                  <p className="text-white font-bold text-[13px]">عبدالإله علي</p>
+                  <div className="flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full justify-end" style={{ background: 'rgba(201,149,106,0.15)' }}>
+                    <Sparkles size={8} className="text-[#C9956A]" />
+                    <span className="text-[#C9956A] text-[9px] font-bold">كلاسيك</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Status */}
+          <AnimatePresence mode="wait">
+            {phase === 'adding' ? (
+              <motion.div key="adding" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                className="flex flex-col items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                    className="w-5 h-5 rounded-full border-2 border-white/20 border-t-white"
+                  />
+                  <p className="text-white/60 text-[13px]">جاري الإضافة إلى Apple Wallet...</p>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div key="done" initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }}
+                className="flex flex-col items-center gap-3">
+                <motion.div
+                  initial={{ scale: 0 }} animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                  className="w-14 h-14 bg-[#30D158] rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(48,209,88,0.5)]">
+                  <Check size={24} strokeWidth={3} className="text-white" />
+                </motion.div>
+                <div className="text-center">
+                  <p className="text-white text-[16px] font-semibold">تمت الإضافة!</p>
+                  <p className="text-white/40 text-[12px] font-light mt-1">بطاقتك متاحة على شاشة القفل حتى بدون إنترنت</p>
+                </div>
+                <div className="flex items-center gap-2 mt-1 px-4 py-2 rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }}>
+                  <span className="text-[12px]">🔒</span>
+                  <p className="text-white/50 text-[11px]">تظهر تلقائياً عند اقترابك من المطعم</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {phase === 'done' && (
+            <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+              onClick={onClose}
+              className="w-full py-4 rounded-[16px] bg-[#007AFF] text-white font-semibold text-[15px] active:scale-95 transition-transform">
+              تم
+            </motion.button>
+          )}
+        </div>
+      </motion.div>
+    </>
+  );
+}
+
+/* ── Google Wallet Toast ─────────────────────────────────────────── */
+function GWalletToast({ onDone }: { onDone: () => void }) {
+  useEffect(() => { const t = setTimeout(onDone, 3000); return () => clearTimeout(t); }, [onDone]);
   return (
     <motion.div
       initial={{ opacity: 0, y: -28, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -16, scale: 0.9 }}
@@ -187,7 +278,7 @@ function WalletToast({ type, onDone }: { type: 'apple' | 'google'; onDone: () =>
         <Check size={14} strokeWidth={3} className="text-white" />
       </div>
       <div>
-        <p className="text-[12px] font-semibold">{type === 'apple' ? 'تمت الإضافة إلى Apple Wallet' : 'تمت الإضافة إلى Google Wallet'}</p>
+        <p className="text-[12px] font-semibold">تمت الإضافة إلى Google Wallet</p>
         <p className="text-[10px] text-white/50 font-light mt-0.5">بطاقتك متاحة حتى بدون إنترنت</p>
       </div>
     </motion.div>
@@ -219,7 +310,6 @@ function GiftModal({ gift, onClose, onSend }: { gift: { title: string; pts: numb
   const friends = ['محمد العمري', 'سارة الغامدي', 'خالد الدوسري', 'نورة الزهراني'];
   const [selected, setSelected] = useState<string | null>(null);
   const handleSend = () => { onClose(); onSend(); };
-
   return (
     <>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -246,7 +336,7 @@ function GiftModal({ gift, onClose, onSend }: { gift: { title: string; pts: numb
             <span className="text-[#C9956A] text-[11px] font-bold font-inter">{gift.pts}</span>
           </div>
         </div>
-        <p className="text-[11px] font-semibold text-[#888] mb-2.5 tracking-wide">اختر صديقاً من مجتمع مطعمك</p>
+        <p className="text-[11px] font-semibold text-[#888] mb-2.5 tracking-wide">اختر صديقاً من الأعضاء</p>
         <div className="space-y-2 mb-4 overflow-y-auto">
           {friends.map(f => (
             <button key={f} onClick={() => setSelected(f)}
@@ -271,10 +361,10 @@ function GiftModal({ gift, onClose, onSend }: { gift: { title: string; pts: numb
 
 /* ── Gifts Section ───────────────────────────────────────────────── */
 const giftOptions = [
-  { id: 'coffee',    icon: '☕', title: 'كوب قهوة',    sub: 'قهوة اليوم مجاناً',   pts: 80,  color: '#7B1618' },
-  { id: 'croissant', icon: '🥐', title: 'كرواسون',     sub: 'من مخبوزات مطعمك',      pts: 60,  color: '#C9956A' },
-  { id: 'points',    icon: '⭐', title: 'نقاط',        sub: 'أرسل ١٠٠ نقطة',      pts: 100, color: '#D4AC0D' },
-  { id: 'latte',     icon: '🥛', title: 'لاتيه مطعمك',   sub: 'الخلطة الحصرية',      pts: 120, color: '#B5651D' },
+  { id: 'meal',      icon: '🍽️', title: 'وجبة مجانية', sub: 'من قائمة مطعمك',    pts: 150, color: '#7B1618' },
+  { id: 'drink',     icon: '🥤', title: 'مشروب',        sub: 'أي مشروب تختاره',  pts: 60,  color: '#C9956A' },
+  { id: 'points',    icon: '⭐', title: 'نقاط',         sub: 'أرسل ١٠٠ نقطة',   pts: 100, color: '#D4AC0D' },
+  { id: 'dessert',   icon: '🎂', title: 'حلى',          sub: 'حلو اليوم مجاناً', pts: 80,  color: '#B5651D' },
 ];
 
 function GiftsSection({ onGiftSent }: { onGiftSent: (msg: string) => void }) {
@@ -337,14 +427,16 @@ function GiftsSection({ onGiftSent }: { onGiftSent: (msg: string) => void }) {
 export function ScreenMembership() {
   const [showQR, setShowQR] = useState(false);
   const [showBooking, setShowBooking] = useState(false);
-  const [walletToast, setWalletToast] = useState<'apple' | 'google' | null>(null);
+  const [showAppleWallet, setShowAppleWallet] = useState(false);
+  const [showGWallet, setShowGWallet] = useState(false);
   const [giftToast, setGiftToast] = useState<string | null>(null);
 
   return (
     <div className="flex flex-col h-full relative">
-      <AnimatePresence>{walletToast && <WalletToast type={walletToast} onDone={() => setWalletToast(null)} />}</AnimatePresence>
+      <AnimatePresence>{showGWallet && <GWalletToast onDone={() => setShowGWallet(false)} />}</AnimatePresence>
       <AnimatePresence>{giftToast && <GiftToast msg={giftToast} onDone={() => setGiftToast(null)} />}</AnimatePresence>
       <AnimatePresence>{showQR && <QRModal onClose={() => setShowQR(false)} />}</AnimatePresence>
+      <AnimatePresence>{showAppleWallet && <AppleWalletModal onClose={() => setShowAppleWallet(false)} />}</AnimatePresence>
 
       <div className="flex-1 overflow-y-auto scrollbar-none px-5 pt-4 pb-28">
 
@@ -367,7 +459,7 @@ export function ScreenMembership() {
           </div>
         </div>
 
-        {/* ── Premium Card ── */}
+        {/* Card */}
         <MembershipCard />
 
         {/* QR button */}
@@ -381,7 +473,8 @@ export function ScreenMembership() {
 
         {/* Wallet Buttons */}
         <div className="flex gap-3 mt-3">
-          <motion.button whileTap={{ scale: 0.95 }} onClick={() => setWalletToast('apple')}
+          {/* Apple Wallet — full experience */}
+          <motion.button whileTap={{ scale: 0.95 }} onClick={() => setShowAppleWallet(true)}
             className="flex-1 flex items-center justify-center gap-2 bg-[#111] text-white rounded-2xl py-3.5 shadow-[0_4px_18px_rgba(0,0,0,0.25)]">
             <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white shrink-0">
               <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
@@ -391,7 +484,9 @@ export function ScreenMembership() {
               <p className="text-[12px] font-semibold">Apple Wallet</p>
             </div>
           </motion.button>
-          <motion.button whileTap={{ scale: 0.95 }} onClick={() => setWalletToast('google')}
+
+          {/* Google Wallet */}
+          <motion.button whileTap={{ scale: 0.95 }} onClick={() => setShowGWallet(true)}
             className="flex-1 flex items-center justify-center gap-2 bg-white border border-[rgba(196,181,159,0.3)] text-[#111] rounded-2xl py-3.5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
             <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -406,16 +501,26 @@ export function ScreenMembership() {
           </motion.button>
         </div>
 
-        {/* Gifts Section */}
+        {/* Lock screen note */}
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }}
+          className="mt-3 flex items-center gap-2.5 px-4 py-3 rounded-[14px]"
+          style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid rgba(196,181,159,0.15)' }}>
+          <span className="text-[16px] shrink-0">🔒</span>
+          <p className="text-[11px] text-[#888] font-light leading-snug">
+            تظهر بطاقتك تلقائياً على شاشة القفل عند اقترابك من المطعم — بدون فتح التطبيق
+          </p>
+        </motion.div>
+
+        {/* Gifts */}
         <GiftsSection onGiftSent={(msg) => setGiftToast(msg)} />
 
-        {/* Progress Section */}
+        {/* Progress */}
         <div className="mt-4 bg-white rounded-[18px] p-4 border border-[rgba(196,181,159,0.15)] shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
           <div className="flex justify-between items-center mb-1.5">
             <h2 className="text-[13px] font-semibold text-[#111]">تقدمك نحو الفضي</h2>
             <span className="text-[11px] font-bold text-[#C9956A]">٤ / ٧</span>
           </div>
-          <p className="text-[10px] text-[#AAA] mb-3 font-light">٣ أكواب أخرى وتنتقل للمستوى الفضي 🎯</p>
+          <p className="text-[10px] text-[#AAA] mb-3 font-light">٣ طلبات أخرى وتنتقل للمستوى الفضي 🎯</p>
           <div className="flex items-center gap-1.5 w-full">
             {Array.from({ length: 7 }).map((_, i) => {
               const filled = i < 4;
@@ -428,7 +533,7 @@ export function ScreenMembership() {
                     style={{ background: filled ? 'linear-gradient(135deg,#7B1618,#4A0D0F)' : 'rgba(196,181,159,0.15)' }}>
                     <svg viewBox="0 0 24 24" className={`${filled ? 'w-4 h-4' : 'w-3.5 h-3.5'}`} fill="none"
                       stroke={filled ? 'rgba(201,149,106,0.8)' : 'rgba(196,181,159,0.35)'} strokeWidth={1.5} strokeLinecap="round">
-                      <path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z M6 1v3M10 1v3M14 1v3" />
+                      <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" />
                     </svg>
                   </motion.div>
                   {i < 6 && <div className={`flex-1 h-0.5 rounded-full ${i < 3 ? 'bg-gradient-to-r from-[#7B1618] to-[#C9956A]' : 'bg-[rgba(196,181,159,0.2)]'}`} />}

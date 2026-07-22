@@ -8,7 +8,7 @@ import { ScreenPerks }         from './components/ScreenPerks';
 import { ScreenNotifications } from './components/ScreenNotifications';
 import { ScreenHome }          from './components/ScreenHome';
 import { ScreenReservations }  from './components/ScreenReservations';
-import { ScreenCommunity }     from './components/ScreenCommunity';
+import { ScreenOrders }        from './components/ScreenOrders';
 import { ScreenMenu }          from './components/ScreenMenu';
 import { AppleWatchHyz }       from './components/AppleWatch';
 import { OwnerDashboard, MobileOwnerSummary } from './components/OwnerDashboard';
@@ -468,28 +468,36 @@ const screens: { tab: Tab; label: string; color: string; bg: string; preview: Re
     ),
   },
   {
-    tab: 'community', label: 'مجتمع', color: '#6C3483',
-    bg: '#F5EFE8',
+    tab: 'orders', label: 'طلباتي', color: '#128C7E',
+    bg: '#F0FAF8',
     preview: (
       <div className="absolute inset-0 flex flex-col px-2 pt-3 gap-1.5">
-        <div className="flex gap-1.5">
-          {[0,1,2,3].map(i=>(
-            <div key={i} className="flex flex-col items-center gap-0.5">
-              <div className={`w-7 h-7 rounded-full p-[1.5px]`}
-                style={{background:i===0?'linear-gradient(135deg,#7B1618,#C9956A)':'rgba(196,181,159,0.3)'}}>
-                <div className="w-full h-full rounded-full bg-[#DDD]" />
-              </div>
-              <div className="w-4 h-1 bg-[#888]/30 rounded-full" />
-            </div>
-          ))}
+        {/* WhatsApp CTA */}
+        <div className="w-full h-8 rounded-[7px] flex items-center gap-1.5 px-2"
+          style={{background:'linear-gradient(135deg,#128C7E,#075E54)'}}>
+          <div className="w-3.5 h-3.5 rounded-full bg-white/30 shrink-0" />
+          <div className="flex-1 h-1.5 bg-white/40 rounded-full" />
         </div>
-        {[1,0.7,0.9].map((o,i)=>(
-          <div key={i} className="w-full rounded-[6px] bg-white shadow-sm p-1.5 flex gap-1.5" style={{opacity:o}}>
-            <div className="w-5 h-5 rounded-full bg-[#7B1618]/20 shrink-0" />
-            <div className="flex-1 flex flex-col gap-0.5">
-              <div className="w-8 h-1 bg-[#111]/20 rounded-full" />
-              <div className="w-full h-1 bg-[#111]/10 rounded-full" />
+        {/* Active order */}
+        <div className="w-full rounded-[6px] p-1.5" style={{background:'linear-gradient(135deg,#0C0002,#280506)'}}>
+          <div className="flex gap-1 justify-between mb-1">
+            {['#30D158','#C9956A','#007AFF','rgba(255,255,255,0.2)'].map((c,i)=>(
+              <div key={i} className="flex flex-col items-center gap-0.5 flex-1">
+                <div className="w-4 h-4 rounded-full" style={{background:`${c}30`,border:`1px solid ${c}60`}} />
+                <div className="w-3 h-0.5 rounded-full" style={{background:c}} />
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Past orders */}
+        {[1,0.7,0.85].map((o,i)=>(
+          <div key={i} className="w-full rounded-[5px] bg-white shadow-sm p-1.5 flex gap-1" style={{opacity:o}}>
+            <div className="w-4 h-4 rounded-full bg-[#128C7E]/20 shrink-0" />
+            <div className="flex-1 flex flex-col gap-0.5 justify-center">
+              <div className="w-10 h-1 bg-[#111]/20 rounded-full" />
+              <div className="w-7 h-0.5 bg-[#111]/10 rounded-full" />
             </div>
+            <div className="w-5 h-1 bg-[#30D158]/50 rounded-full self-center" />
           </div>
         ))}
       </div>
@@ -647,11 +655,11 @@ export default function App() {
                     {activeTab === 'menu'      && <ScreenMenu />}
                     {activeTab === 'card'      && <ScreenMembership />}
                     {activeTab === 'book'      && <ScreenReservations />}
-                    {activeTab === 'community' && <ScreenCommunity />}
+                    {activeTab === 'orders'    && <ScreenOrders />}
                   </motion.div>
                 </AnimatePresence>
               </div>
-              <BottomNav activeTab={activeTab} onChangeTab={setActiveTab} notifCount={3} />
+              <BottomNav activeTab={activeTab} onChangeTab={setActiveTab} notifCount={1} />
             </PhoneFrame>
           </div>
 
