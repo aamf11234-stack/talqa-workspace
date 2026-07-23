@@ -7,6 +7,8 @@ import Home from './pages/Home';
 import OwnerDashboard from './pages/OwnerDashboard';
 import ReceptionDashboard from './pages/ReceptionDashboard';
 import DoctorDashboard from './pages/DoctorDashboard';
+import ThankYou from './pages/ThankYou';
+import LeadsDashboard from './pages/LeadsDashboard';
 
 const queryClient = new QueryClient();
 
@@ -17,6 +19,8 @@ function Router() {
  <Route path="/owner" component={OwnerDashboard} />
  <Route path="/reception" component={ReceptionDashboard} />
  <Route path="/doctor" component={DoctorDashboard} />
+ <Route path="/thank-you" component={ThankYou} />
+ <Route path="/leads" component={LeadsDashboard} />
  <Route component={NotFound} />
  </Switch>
  );
