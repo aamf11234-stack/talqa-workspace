@@ -13,6 +13,62 @@ import { ScreenMenu }          from './components/ScreenMenu';
 import { AppleWatchHyz }       from './components/AppleWatch';
 import { OwnerDashboard, MobileOwnerSummary } from './components/OwnerDashboard';
 import { useShakeDetect, FlashDealModal } from './components/ShakeReveal';
+import { BrandProvider, useBrand, RESTAURANT_BRAND, CAFE_BRAND } from './BrandContext';
+
+/* ── Brand toggle (inside BrandProvider) ──────────────────────── */
+function BrandToggle() {
+  const { brand, setBrand } = useBrand();
+  const isRest = brand.type === 'restaurant';
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2 }}
+      className="flex items-center justify-center mb-6"
+    >
+      <div className="relative flex items-center p-1 rounded-full gap-0"
+        style={{
+          background: 'rgba(255,255,255,0.55)',
+          border: '1px solid rgba(196,181,159,0.35)',
+          backdropFilter: 'blur(12px)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+        }}>
+
+        {/* Sliding indicator */}
+        <motion.div
+          className="absolute top-1 bottom-1 rounded-full"
+          style={{
+            background: 'linear-gradient(135deg,#0C0002,#280407)',
+            boxShadow: '0 2px 12px rgba(123,22,24,0.35)',
+          }}
+          animate={{ right: isRest ? '50%' : '4px', left: isRest ? '4px' : '50%' }}
+          transition={{ type: 'spring', damping: 28, stiffness: 320 }}
+        />
+
+        {/* Restaurant */}
+        <button
+          onClick={() => setBrand(RESTAURANT_BRAND)}
+          className="relative z-10 flex items-center gap-2 px-5 py-2.5 rounded-full text-[12px] font-bold transition-colors"
+          style={{ color: isRest ? '#C9956A' : '#999' }}
+        >
+          <span className="text-[15px] leading-none">🍽️</span>
+          مطعم
+        </button>
+
+        {/* Cafe */}
+        <button
+          onClick={() => setBrand(CAFE_BRAND)}
+          className="relative z-10 flex items-center gap-2 px-5 py-2.5 rounded-full text-[12px] font-bold transition-colors"
+          style={{ color: !isRest ? '#C9956A' : '#999' }}
+        >
+          <span className="text-[15px] leading-none">☕</span>
+          كوفي
+        </button>
+      </div>
+    </motion.div>
+  );
+}
 
 const cafeImg1    = `${import.meta.env.BASE_URL}rest-hero.jpg`;
 const imgExterior = `${import.meta.env.BASE_URL}rest-exterior.jpg`;
@@ -553,6 +609,7 @@ export default function App() {
   }, []);
 
   return (
+    <BrandProvider>
     <div className="min-h-screen w-full font-sans" style={{ background: 'linear-gradient(180deg,#F0E6D8 0%,#E8DDD0 35%,#EAE0D5 70%,#E5D9CC 100%)' }} dir="rtl">
 
       {/* ── Agency top bar ─────────────────────────────────── */}
@@ -624,6 +681,9 @@ export default function App() {
           ))}
         </div>
       </div>
+
+      {/* ── Brand toggle ───────────────────────────────────── */}
+      <BrandToggle />
 
       {/* ── Phone mockup + Watch ───────────────────────────── */}
       <div className="flex flex-col items-center px-4 mb-4">
@@ -1287,5 +1347,6 @@ export default function App() {
         </div>
       </div>
     </div>
+    </BrandProvider>
   );
 }

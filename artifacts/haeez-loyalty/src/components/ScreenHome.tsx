@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, ChevronLeft, Calendar, ShoppingBag, Tag, Zap, Flame, Star, ArrowLeft, Sparkles } from 'lucide-react';
+import { Bell, ChevronLeft, Calendar, ShoppingBag, Tag, Zap, Flame, ArrowLeft, Sparkles } from 'lucide-react';
 import { EventIconMap, ICalendarIcon, IGift } from './HaizIcons';
 import { SpinWheelOverlay } from './SpinWheel';
 import { ShakeHintBar } from './ShakeReveal';
-
-const logoImg = `${import.meta.env.BASE_URL}restaurant-logo.png`;
-const imgKabsa = `${import.meta.env.BASE_URL}food-kabsa.jpg`;
-const imgBurger = `${import.meta.env.BASE_URL}food-burger.jpg`;
+import { useBrand } from '../BrandContext';
+import type { BrandConfig } from '../BrandContext';
 
 /* ── Counter hook ─────────────────────────────────────────────────── */
 function useCounter(target: number, duration = 1400, delay = 200) {
@@ -27,14 +25,13 @@ function useCounter(target: number, duration = 1400, delay = 200) {
   return value;
 }
 
-/* ── Live countdown (days) from today ────────────────────────────── */
 function daysUntil(dateStr: string): number {
   const now = new Date();
   const target = new Date(dateStr);
   return Math.max(0, Math.ceil((target.getTime() - now.getTime()) / 86400000));
 }
 
-/* ── Triple progress rings ────────────────────────────────────────── */
+/* ── Progress rings ───────────────────────────────────────────────── */
 function ProgressRings({ progress = 4 / 7 }: { progress?: number }) {
   const size = 140; const cx = size / 2; const cy = size / 2;
   const rings = [
@@ -73,19 +70,202 @@ function ProgressRings({ progress = 4 / 7 }: { progress?: number }) {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   تقويم العروض
+   Mood AI Picker
 ══════════════════════════════════════════════════════════════════ */
-interface HaizEvent {
-  id: string;
-  title: string;
-  subtitle: string;
-  date: string;
-  color: string;
-  benefit: string;
-  badge?: string;
-  isNow?: boolean;
+function MoodPicker() {
+  const { brand } = useBrand();
+  const [selected, setSelected] = useState<string | null>(null);
+  const [thinking, setThinking] = useState(false);
+  const [result, setResult] = useState<BrandConfig['moods'][0] | null>(null);
+
+  // Reset when brand changes
+  useEffect(() => { setSelected(null); setResult(null); setThinking(false); }, [brand.type]);
+
+  function pick(mood: BrandConfig['moods'][0]) {
+    if (thinking) return;
+    setSelected(mood.id);
+    setResult(null);
+    setThinking(true);
+    setTimeout(() => { setThinking(false); setResult(mood); }, 1200);
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.22 }}
+      className="mx-4 mb-5 rounded-[22px] overflow-hidden"
+      style={{ background: '#111', border: '1px solid rgba(255,255,255,0.06)', boxShadow: '0 8px 30px rgba(0,0,0,0.2)' }}
+    >
+      <div className="flex items-center gap-2.5 px-4 pt-4 pb-3">
+        <div className="w-7 h-7 rounded-[10px] flex items-center justify-center shrink-0"
+          style={{ background: 'linear-gradient(135deg,rgba(175,82,222,0.2),rgba(175,82,222,0.08))' }}>
+          <Sparkles size={14} className="text-[#AF52DE]" />
+        </div>
+        <div>
+          <p className="text-white text-[13px] font-bold leading-tight">شو مزاجك اليوم؟</p>
+          <p className="text-white/30 text-[10px] font-light mt-0.5">الذكاء الاصطناعي يرشّح لك</p>
+        </div>
+        <div className="mr-auto px-2 py-0.5 rounded-full text-[7px] font-black tracking-widest text-[#AF52DE]"
+          style={{ background: 'rgba(175,82,222,0.1)', border: '1px solid rgba(175,82,222,0.2)', fontFamily: 'ui-monospace,monospace' }}>AI</div>
+      </div>
+
+      <div className="flex gap-2 px-4 pb-4 overflow-x-auto scrollbar-none">
+        {brand.moods.map((m) => {
+          const isSel = selected === m.id;
+          return (
+            <motion.button key={m.id} whileTap={{ scale: 0.88 }} onClick={() => pick(m)}
+              className="flex flex-col items-center gap-1.5 shrink-0 px-3.5 py-2.5 rounded-[16px] transition-all"
+              style={{
+                background: isSel ? 'rgba(175,82,222,0.15)' : 'rgba(255,255,255,0.05)',
+                border: isSel ? '1.5px solid rgba(175,82,222,0.4)' : '1.5px solid rgba(255,255,255,0.06)',
+                boxShadow: isSel ? '0 0 14px rgba(175,82,222,0.2)' : 'none',
+              }}>
+              <span className="text-[22px] leading-none">{m.emoji}</span>
+              <span className="text-[9px] font-bold" style={{ color: isSel ? '#AF52DE' : 'rgba(255,255,255,0.4)' }}>{m.label}</span>
+            </motion.button>
+          );
+        })}
+      </div>
+
+      <AnimatePresence>
+        {(thinking || result) && (
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
+            <div className="mx-4 mb-4 rounded-[16px] p-3.5"
+              style={{ background: 'rgba(175,82,222,0.08)', border: '1px solid rgba(175,82,222,0.15)' }}>
+              {thinking ? (
+                <div className="flex items-center gap-2.5">
+                  <div className="flex gap-1">
+                    {[0,1,2].map(i => (
+                      <motion.div key={i} className="w-1.5 h-1.5 rounded-full bg-[#AF52DE]"
+                        animate={{ y: [0, -5, 0] }}
+                        transition={{ duration: 0.7, repeat: Infinity, delay: i * 0.15 }} />
+                    ))}
+                  </div>
+                  <p className="text-[#AF52DE] text-[11px] font-medium">جاري تحليل مزاجك...</p>
+                </div>
+              ) : result ? (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                  <p className="text-[8px] font-black tracking-widest text-[#AF52DE] mb-2"
+                    style={{ fontFamily: 'ui-monospace,monospace' }}>AI RECOMMENDS · بناءً على مزاجك وزياراتك</p>
+                  <div className="flex gap-2">
+                    {result.items.map((item, i) => (
+                      <motion.a key={i}
+                        href={`https://wa.me/966551378531?text=أريد طلب ${item}`}
+                        target="_blank" rel="noopener noreferrer"
+                        initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: i * 0.12 }}
+                        whileTap={{ scale: 0.94 }}
+                        className="flex-1 rounded-[12px] p-2.5 flex flex-col gap-1"
+                        style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(175,82,222,0.2)' }}>
+                        <span className="text-[18px] leading-none">{result.emoji}</span>
+                        <p className="text-white text-[10px] font-semibold leading-snug">{item}</p>
+                        <p className="text-[#C9956A] text-[9px] font-bold">{result.prices[i]}</p>
+                        <div className="flex items-center gap-1 mt-0.5">
+                          <svg viewBox="0 0 24 24" className="w-3 h-3 fill-[#25D366] shrink-0">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                          </svg>
+                          <span className="text-[#25D366] text-[8px] font-bold">اطلب</span>
+                        </div>
+                      </motion.a>
+                    ))}
+                  </div>
+                </motion.div>
+              ) : null}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   Today's Special — brand-aware
+══════════════════════════════════════════════════════════════════ */
+function TodaySpecial() {
+  const { brand } = useBrand();
+  const t = brand.todaySpecial;
+  const [liked, setLiked] = useState(false);
+
+  useEffect(() => setLiked(false), [brand.type]);
+
+  return (
+    <motion.div
+      key={brand.type}
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.28 }}
+      className="mx-4 mb-5 rounded-[22px] overflow-hidden relative"
+      style={{ background: 'linear-gradient(150deg,#0C0002,#280506,#0D0205)', border: '1px solid rgba(201,149,106,0.12)', boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}
+    >
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at 90% 0%,rgba(201,149,106,0.14) 0%,transparent 55%)' }} />
+
+      <div className="relative flex gap-4 p-4">
+        <div className="relative shrink-0 rounded-[16px] overflow-hidden" style={{ width: 100, height: 100 }}>
+          <img src={t.img} alt={t.name} className="w-full h-full object-cover" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg,rgba(0,0,0,0.15),transparent)' }} />
+          <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded-full text-[7px] font-bold text-white"
+            style={{ background: 'rgba(230,126,34,0.9)' }}>جارٍ الآن</div>
+        </div>
+        <div className="flex-1 flex flex-col justify-between py-0.5">
+          <div>
+            <p className="text-[8px] font-bold tracking-widest text-[#C9956A] mb-1"
+              style={{ fontFamily: 'ui-monospace,monospace' }}>{t.badge}</p>
+            <p className="text-white text-[16px] font-bold leading-tight mb-1">{t.name}</p>
+            <p className="text-white/35 text-[10px] font-light leading-snug">{t.desc}</p>
+          </div>
+          <div className="flex items-center justify-between mt-2">
+            <div>
+              <span className="text-[22px] font-black text-white font-inter">{t.price}</span>
+              <span className="text-[#C9956A] text-[11px] font-bold mr-1">ريال</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <motion.button whileTap={{ scale: 0.85 }} onClick={() => setLiked(!liked)}
+                className="w-7 h-7 rounded-full flex items-center justify-center"
+                style={{ background: liked ? 'rgba(255,59,48,0.2)' : 'rgba(255,255,255,0.08)' }}>
+                <span className="text-[14px]">{liked ? '❤️' : '🤍'}</span>
+              </motion.button>
+              <motion.a
+                href={`https://wa.me/966551378531?text=أريد طلب ${t.name} ${t.emoji}`}
+                target="_blank" rel="noopener noreferrer"
+                whileTap={{ scale: 0.94 }}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold text-white"
+                style={{ background: 'linear-gradient(135deg,#128C7E,#075E54)' }}>
+                <svg viewBox="0 0 24 24" className="w-3 h-3 fill-white shrink-0">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                </svg>
+                اطلب
+              </motion.a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="px-4 pb-4 flex gap-2">
+        <div className="flex items-center gap-2 flex-1 rounded-[12px] px-3 py-2"
+          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.06)' }}>
+          <img src={t.popImg} alt={t.popName} className="w-8 h-8 rounded-[8px] object-cover shrink-0" />
+          <div className="flex-1 min-w-0">
+            <p className="text-white text-[10px] font-semibold truncate">{t.popName}</p>
+            <p className="text-[#C9956A] text-[9px] font-bold">{t.popPrice}</p>
+          </div>
+          <span className="text-[9px] text-white/25 shrink-0">الأشهر</span>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   تقويم العروض (same for both brands)
+══════════════════════════════════════════════════════════════════ */
+interface HaizEvent {
+  id: string; title: string; subtitle: string; date: string;
+  color: string; benefit: string; badge?: string; isNow?: boolean;
+}
 const haizEvents: HaizEvent[] = [
   { id: 'summer',   title: 'الإجازة الصيفية',  subtitle: 'نهايتها ٧ سبتمبر',      date: '2026-09-07', color: '#E67E22', benefit: 'خصم ١٠٪ على المشروبات الباردة طول الصيف', badge: 'جارٍ الآن', isNow: true },
   { id: 'national', title: 'اليوم الوطني ٩٦',  subtitle: '٢٣ سبتمبر ٢٠٢٦',        date: '2026-09-23', color: '#1A6B3A', benefit: 'منيو وطني خاص + ضعف النقاط يوم ٢٣' },
@@ -133,13 +313,11 @@ function HaizCalendar() {
       <div className="pointer-events-none absolute inset-0 opacity-[0.025]"
         style={{ backgroundImage: 'radial-gradient(circle,#fff 1px,transparent 1px)', backgroundSize: '10px 10px' }} />
 
-      {/* Date editorial */}
+      {/* Date section */}
       <div className="relative overflow-hidden select-none"
         style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', minHeight: 172 }}>
         <div className="absolute inset-0 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse at 10% 100%,rgba(123,22,24,0.6) 0%,transparent 55%)' }} />
-        <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 90% 10%,rgba(201,149,106,0.11) 0%,transparent 50%)' }} />
         <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none" style={{ paddingRight: 8 }}>
           <span style={{ fontSize: 128, fontWeight: 900, color: '#fff', opacity: 0.035, letterSpacing: '-0.03em', lineHeight: 1, whiteSpace: 'nowrap', transform: 'translateY(8px)' }}>
             {dt.hijriMonth}
@@ -179,7 +357,7 @@ function HaizCalendar() {
         </div>
       </div>
 
-      {/* Calendar header */}
+      {/* Header */}
       <div className="relative px-5 pt-4 pb-3 flex items-center justify-between"
         style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div>
@@ -196,7 +374,7 @@ function HaizCalendar() {
         </div>
       </div>
 
-      {/* Events list */}
+      {/* Events */}
       <div className="relative divide-y" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
         {haizEvents.map((ev, i) => {
           const days = daysUntil(ev.date);
@@ -205,15 +383,12 @@ function HaizCalendar() {
             <motion.div key={ev.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 + i * 0.055 }}>
               <motion.button className="w-full text-right" whileTap={{ scale: 0.985 }} onClick={() => setExpanded(isOpen ? null : ev.id)}>
                 <div className="flex items-center gap-3.5 px-5 py-3.5">
-                  {(() => {
-                    const EvIcon = EventIconMap[ev.id];
-                    return (
-                      <div className="w-10 h-10 rounded-[13px] flex items-center justify-center shrink-0"
-                        style={{ background: `${ev.color}20`, border: `1px solid ${ev.color}35`, boxShadow: ev.isNow ? `0 0 14px ${ev.color}35` : 'none' }}>
-                        {EvIcon && <EvIcon size={20} color={ev.color} sw={1.4} />}
-                      </div>
-                    );
-                  })()}
+                  {(() => { const EvIcon = EventIconMap[ev.id]; return (
+                    <div className="w-10 h-10 rounded-[13px] flex items-center justify-center shrink-0"
+                      style={{ background: `${ev.color}20`, border: `1px solid ${ev.color}35`, boxShadow: ev.isNow ? `0 0 14px ${ev.color}35` : 'none' }}>
+                      {EvIcon && <EvIcon size={20} color={ev.color} sw={1.4} />}
+                    </div>
+                  ); })()}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
                       <p className="text-[12px] font-bold text-white leading-snug">{ev.title}</p>
@@ -241,13 +416,14 @@ function HaizCalendar() {
               </motion.button>
               <AnimatePresence>
                 {isOpen && (
-                  <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }} className="overflow-hidden">
+                  <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.22 }} className="overflow-hidden">
                     <div className="mx-5 mb-3.5 px-4 py-3 rounded-[14px] flex items-start gap-2.5"
                       style={{ background: `${ev.color}12`, border: `1px solid ${ev.color}25` }}>
                       <div className="shrink-0 mt-0.5"><IGift size={16} color={ev.color} sw={1.4} /></div>
                       <div>
                         <p className="text-[7.5px] font-black tracking-widest mb-1"
-                          style={{ color: ev.color, fontFamily: 'ui-monospace,monospace' }}>عرض المطعم الحصري</p>
+                          style={{ color: ev.color, fontFamily: 'ui-monospace,monospace' }}>عرض المحل الحصري</p>
                         <p className="text-white/70 text-[11px] leading-relaxed">{ev.benefit}</p>
                       </div>
                     </div>
@@ -266,215 +442,10 @@ function HaizCalendar() {
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   Mood AI Picker
-══════════════════════════════════════════════════════════════════ */
-const MOODS = [
-  { id: 'grill', emoji: '🥩', label: 'مشويات', items: ['كبسة الجمبري', 'ريش مشوية'], prices: ['٨٥ ر', '٧٥ ر'] },
-  { id: 'healthy', emoji: '🥗', label: 'صحي', items: ['سلطة الجرجير', 'عصير طازج'], prices: ['٤٠ ر', '٢٥ ر'] },
-  { id: 'sweet', emoji: '🍰', label: 'حلويات', items: ['تشيز كيك', 'بان كيك'], prices: ['٣٥ ر', '٣٠ ر'] },
-  { id: 'coffee', emoji: '☕', label: 'مشروب', items: ['لاتيه فاخر', 'ماتشا'], prices: ['٢٥ ر', '٢٨ ر'] },
-  { id: 'fast', emoji: '🍔', label: 'سريع', items: ['برجر كلاسيك', 'بطاطا مقلية'], prices: ['٣٥ ر', '٢٠ ر'] },
-];
-
-function MoodPicker() {
-  const [selected, setSelected] = useState<string | null>(null);
-  const [thinking, setThinking] = useState(false);
-  const [result, setResult] = useState<typeof MOODS[0] | null>(null);
-
-  function pick(mood: typeof MOODS[0]) {
-    if (thinking) return;
-    setSelected(mood.id);
-    setResult(null);
-    setThinking(true);
-    setTimeout(() => {
-      setThinking(false);
-      setResult(mood);
-    }, 1200);
-  }
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.22 }}
-      className="mx-4 mb-5 rounded-[22px] overflow-hidden"
-      style={{ background: '#111', border: '1px solid rgba(255,255,255,0.06)', boxShadow: '0 8px 30px rgba(0,0,0,0.2)' }}
-    >
-      {/* Header */}
-      <div className="flex items-center gap-2.5 px-4 pt-4 pb-3">
-        <div className="w-7 h-7 rounded-[10px] flex items-center justify-center shrink-0"
-          style={{ background: 'linear-gradient(135deg,rgba(175,82,222,0.2),rgba(175,82,222,0.08))' }}>
-          <Sparkles size={14} className="text-[#AF52DE]" />
-        </div>
-        <div>
-          <p className="text-white text-[13px] font-bold leading-tight">شو مزاجك اليوم؟</p>
-          <p className="text-white/30 text-[10px] font-light mt-0.5">الذكاء الاصطناعي يرشّح لك</p>
-        </div>
-        <div className="mr-auto px-2 py-0.5 rounded-full text-[7px] font-black tracking-widest text-[#AF52DE]"
-          style={{ background: 'rgba(175,82,222,0.1)', border: '1px solid rgba(175,82,222,0.2)', fontFamily: 'ui-monospace,monospace' }}>AI</div>
-      </div>
-
-      {/* Mood pills */}
-      <div className="flex gap-2 px-4 pb-4 overflow-x-auto scrollbar-none">
-        {MOODS.map((m) => {
-          const isSelected = selected === m.id;
-          return (
-            <motion.button key={m.id} whileTap={{ scale: 0.88 }} onClick={() => pick(m)}
-              className="flex flex-col items-center gap-1.5 shrink-0 px-3.5 py-2.5 rounded-[16px] transition-all"
-              style={{
-                background: isSelected ? 'rgba(175,82,222,0.15)' : 'rgba(255,255,255,0.05)',
-                border: isSelected ? '1.5px solid rgba(175,82,222,0.4)' : '1.5px solid rgba(255,255,255,0.06)',
-                boxShadow: isSelected ? '0 0 14px rgba(175,82,222,0.2)' : 'none',
-              }}>
-              <span className="text-[22px] leading-none">{m.emoji}</span>
-              <span className="text-[9px] font-bold" style={{ color: isSelected ? '#AF52DE' : 'rgba(255,255,255,0.4)' }}>{m.label}</span>
-            </motion.button>
-          );
-        })}
-      </div>
-
-      {/* AI result */}
-      <AnimatePresence>
-        {(thinking || result) && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="overflow-hidden"
-          >
-            <div className="mx-4 mb-4 rounded-[16px] p-3.5"
-              style={{ background: 'rgba(175,82,222,0.08)', border: '1px solid rgba(175,82,222,0.15)' }}>
-              {thinking ? (
-                <div className="flex items-center gap-2.5">
-                  <div className="flex gap-1">
-                    {[0,1,2].map(i => (
-                      <motion.div key={i} className="w-1.5 h-1.5 rounded-full bg-[#AF52DE]"
-                        animate={{ y: [0, -5, 0] }}
-                        transition={{ duration: 0.7, repeat: Infinity, delay: i * 0.15 }} />
-                    ))}
-                  </div>
-                  <p className="text-[#AF52DE] text-[11px] font-medium">جاري تحليل مزاجك...</p>
-                </div>
-              ) : result ? (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  <p className="text-[8px] font-black tracking-widest text-[#AF52DE] mb-2" style={{ fontFamily: 'ui-monospace,monospace' }}>
-                    AI RECOMMENDS · بناءً على مزاجك وزياراتك
-                  </p>
-                  <div className="flex gap-2">
-                    {result.items.map((item, i) => (
-                      <motion.a key={i}
-                        href={`https://wa.me/966551378531?text=أريد طلب ${item}`}
-                        target="_blank" rel="noopener noreferrer"
-                        initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.12 }}
-                        whileTap={{ scale: 0.94 }}
-                        className="flex-1 rounded-[12px] p-2.5 flex flex-col gap-1"
-                        style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(175,82,222,0.2)' }}>
-                        <span className="text-[18px] leading-none">{result.emoji}</span>
-                        <p className="text-white text-[10px] font-semibold leading-snug">{item}</p>
-                        <p className="text-[#C9956A] text-[9px] font-bold">{result.prices[i]}</p>
-                        <div className="flex items-center gap-1 mt-0.5">
-                          <svg viewBox="0 0 24 24" className="w-3 h-3 fill-[#25D366] shrink-0">
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
-                          </svg>
-                          <span className="text-[#25D366] text-[8px] font-bold">اطلب</span>
-                        </div>
-                      </motion.a>
-                    ))}
-                  </div>
-                </motion.div>
-              ) : null}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
-  );
-}
-
-/* ══════════════════════════════════════════════════════════════════
-   Today's Special — daily dish card
-══════════════════════════════════════════════════════════════════ */
-function TodaySpecial() {
-  const [liked, setLiked] = useState(false);
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.28 }}
-      className="mx-4 mb-5 rounded-[22px] overflow-hidden relative"
-      style={{ background: 'linear-gradient(150deg,#0C0002,#280506,#0D0205)', border: '1px solid rgba(201,149,106,0.12)', boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}
-    >
-      <div className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 90% 0%,rgba(201,149,106,0.14) 0%,transparent 55%)' }} />
-
-      <div className="relative flex gap-4 p-4">
-        {/* Food image */}
-        <div className="relative shrink-0 rounded-[16px] overflow-hidden" style={{ width: 100, height: 100 }}>
-          <img src={imgKabsa} alt="كبسة الجمبري" className="w-full h-full object-cover" />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg,rgba(0,0,0,0.15),transparent)' }} />
-          <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded-full text-[7px] font-bold text-white" style={{ background: 'rgba(230,126,34,0.9)' }}>
-            جارٍ الآن
-          </div>
-        </div>
-
-        {/* Info */}
-        <div className="flex-1 flex flex-col justify-between py-0.5">
-          <div>
-            <p className="text-[8px] font-bold tracking-widest text-[#C9956A] mb-1" style={{ fontFamily: 'ui-monospace,monospace' }}>طبق اليوم</p>
-            <p className="text-white text-[16px] font-bold leading-tight mb-1">كبسة الجمبري</p>
-            <p className="text-white/35 text-[10px] font-light leading-snug">أرز مع جمبري طازج بالبهارات الخليجية — طُبخت الآن</p>
-          </div>
-          <div className="flex items-center justify-between mt-2">
-            <div>
-              <span className="text-[22px] font-black text-white font-inter">٨٥</span>
-              <span className="text-[#C9956A] text-[11px] font-bold mr-1">ريال</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <motion.button whileTap={{ scale: 0.85 }} onClick={() => setLiked(!liked)}
-                className="w-7 h-7 rounded-full flex items-center justify-center"
-                style={{ background: liked ? 'rgba(255,59,48,0.2)' : 'rgba(255,255,255,0.08)' }}>
-                <span className="text-[14px]">{liked ? '❤️' : '🤍'}</span>
-              </motion.button>
-              <motion.a
-                href="https://wa.me/966551378531?text=أريد طلب كبسة الجمبري 🦐"
-                target="_blank" rel="noopener noreferrer"
-                whileTap={{ scale: 0.94 }}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold text-white"
-                style={{ background: 'linear-gradient(135deg,#128C7E,#075E54)' }}>
-                <svg viewBox="0 0 24 24" className="w-3 h-3 fill-white shrink-0">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                </svg>
-                اطلب
-              </motion.a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Popular picks strip */}
-      <div className="px-4 pb-4 flex gap-2">
-        {[{ img: imgBurger, name: 'برجر كلاسيك', price: '٣٥ر' }].map((item, i) => (
-          <div key={i} className="flex items-center gap-2 flex-1 rounded-[12px] px-3 py-2"
-            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <img src={item.img} alt={item.name} className="w-8 h-8 rounded-[8px] object-cover shrink-0" />
-            <div className="flex-1 min-w-0">
-              <p className="text-white text-[10px] font-semibold truncate">{item.name}</p>
-              <p className="text-[#C9956A] text-[9px] font-bold">{item.price}</p>
-            </div>
-            <span className="text-[9px] text-white/25 shrink-0">الأشهر</span>
-          </div>
-        ))}
-      </div>
-    </motion.div>
-  );
-}
-
-/* ══════════════════════════════════════════════════════════════════
    Main Screen
 ══════════════════════════════════════════════════════════════════ */
 export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) {
+  const { brand } = useBrand();
   const points = useCounter(480, 1400, 200);
   const [showSpin, setShowSpin] = useState(false);
   const hour = new Date().getHours();
@@ -486,7 +457,6 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
 
   return (
     <div className="h-full overflow-y-auto scrollbar-none relative">
-      {/* Spin wheel overlay */}
       <AnimatePresence>
         {showSpin && <SpinWheelOverlay onClose={() => setShowSpin(false)} />}
       </AnimatePresence>
@@ -507,10 +477,11 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
             <p className="text-white/35 text-[11px] font-light tracking-wide">{greeting}</p>
             <p className="text-white text-[22px] font-bold mt-0.5 tracking-tight">عبدالإله علي</p>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }}
+              key={brand.type}
               className="mt-2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-orange-400/30 w-fit"
               style={{ background: 'rgba(255,140,0,0.12)' }}>
               <Flame size={11} className="text-orange-400" fill="rgba(255,140,0,0.7)" />
-              <span className="text-orange-300 text-[10px] font-bold font-inter">٧ أيام متواصلة</span>
+              <span className="text-orange-300 text-[10px] font-bold font-inter">{brand.streak.label}</span>
             </motion.div>
           </div>
           <div className="flex items-center gap-2 mt-1">
@@ -520,11 +491,14 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
               <Bell size={15} className="text-white/50" />
               <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#FF3B30] rounded-full border border-[#0D0205]" />
             </motion.button>
-            <div className="relative">
-              <img src={logoImg} alt="" className="w-10 h-10 rounded-[13px] object-cover border border-[rgba(201,149,106,0.2)]"
-                style={{ boxShadow: '0 4px 16px rgba(123,22,24,0.4)' }} />
-              <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-[#30D158] rounded-full border-2 border-[#0D0205]" />
-            </div>
+            <AnimatePresence mode="wait">
+              <motion.div key={brand.logoImg} initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.25 }} className="relative">
+                <img src={brand.logoImg} alt="" className="w-10 h-10 rounded-[13px] object-cover border border-[rgba(201,149,106,0.2)]"
+                  style={{ boxShadow: '0 4px 16px rgba(123,22,24,0.4)' }} />
+                <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-[#30D158] rounded-full border-2 border-[#0D0205]" />
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
 
@@ -547,13 +521,9 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
           </motion.div>
         </div>
 
-        {/* Stats strip */}
+        {/* Stats */}
         <div className="flex justify-center px-6 mb-4">
-          {[
-            { val: '١٢', label: 'زيارة',       icon: '🏠' },
-            { val: '٨',  label: 'هذا الشهر',  icon: '📅' },
-            { val: '٦٥', label: 'ريال توفير', icon: '💰' },
-          ].map((s, i, arr) => (
+          {brand.stats.map((s, i, arr) => (
             <React.Fragment key={s.label}>
               <motion.div className="flex-1 flex flex-col items-center gap-0.5"
                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
@@ -567,7 +537,7 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
           ))}
         </div>
 
-        {/* Shake hint + Spin button row */}
+        {/* Shake hint + Spin button */}
         <div className="flex items-center justify-center gap-3 pb-2">
           <ShakeHintBar onReveal={onShakeTrigger ?? (() => {})} />
           <motion.button whileTap={{ scale: 0.92 }} onClick={() => setShowSpin(true)}
@@ -587,7 +557,7 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
         {/* Quick actions */}
         <div className="grid grid-cols-3 gap-2.5 mb-5 px-4">
           {[
-            { icon: ShoppingBag, label: 'اطلب',  color: '#128C7E', bg: '#128C7E12', href: 'https://wa.me/966551378531?text=أريد الطلب' },
+            { icon: ShoppingBag, label: 'اطلب',  color: '#128C7E', bg: '#128C7E12', href: `https://wa.me/966551378531?text=${brand.quickOrderMsg}` },
             { icon: Calendar,    label: 'احجز',  color: '#7B1618', bg: '#7B161812', href: null },
             { icon: Tag,         label: 'عروضي', color: '#B5651D', bg: '#C9956A12', href: null },
           ].map((a, i) => {
@@ -611,13 +581,13 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
           })}
         </div>
 
-        {/* طبق اليوم */}
+        {/* طبق/قهوة اليوم */}
         <TodaySpecial />
 
         {/* Mood AI */}
         <MoodPicker />
 
-        {/* Active challenge */}
+        {/* Challenge */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.38 }}
           className="mx-4 mb-5 rounded-[18px] p-4 flex items-center gap-3 relative overflow-hidden"
           style={{ background: '#111', border: '1px solid rgba(255,255,255,0.06)' }}>
@@ -628,14 +598,14 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
             <Zap size={18} className="text-[#30D158]" fill="rgba(48,209,88,0.3)" />
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-white text-[13px] font-bold leading-tight">تحدي الأسبوع: ٥ طلبات</p>
-            <p className="text-white/35 text-[10px] mt-0.5">٤ من ٥ — طلب واحد فقط للفوز بوجبة مجانية</p>
+            <p className="text-white text-[13px] font-bold leading-tight">{brand.challenge.title}</p>
+            <p className="text-white/35 text-[10px] mt-0.5">{brand.challenge.desc}</p>
             <div className="flex gap-1 mt-2">
-              {[0,1,2,3,4].map(idx => (
+              {Array.from({ length: brand.challenge.total }).map((_, idx) => (
                 <motion.div key={idx} initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
                   transition={{ delay: 0.5 + idx * 0.07 }}
                   className="h-1.5 flex-1 rounded-full"
-                  style={{ background: idx < 4 ? 'linear-gradient(90deg,#30D158,#25A349)' : 'rgba(255,255,255,0.1)', transformOrigin: 'left' }} />
+                  style={{ background: idx < brand.challenge.progress ? 'linear-gradient(90deg,#30D158,#25A349)' : 'rgba(255,255,255,0.1)', transformOrigin: 'left' }} />
               ))}
             </div>
           </div>
@@ -645,7 +615,7 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
           </div>
         </motion.div>
 
-        {/* Recent activity */}
+        {/* Recent orders */}
         <div className="px-4 mb-5">
           <div className="flex items-center justify-between mb-3">
             <p className="text-[13px] font-bold text-[#111]">آخر الطلبات</p>
@@ -654,11 +624,7 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
             </button>
           </div>
           <div className="space-y-1.5">
-            {[
-              { item: 'كبسة الجمبري',        time: 'اليوم، ١١:٢٠ص', pts: '+٢٥', emoji: '🦐', color: '#7B1618' },
-              { item: 'برجر كلاسيك + لاتيه', time: 'أمس، ٣:٠٠م',    pts: '+١٥', emoji: '🍔', color: '#C9956A' },
-              { item: 'تشيز كيك + قهوة',    time: 'الأحد، ١٠:٤٥ص', pts: '+١٢', emoji: '🎂', color: '#2D7D46' },
-            ].map((r, i) => (
+            {brand.recentOrders.map((r, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.45 + i * 0.08 }}
@@ -688,7 +654,6 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
         >
           <div className="absolute inset-0 pointer-events-none"
             style={{ background: 'radial-gradient(ellipse at 80% 50%,rgba(201,149,106,0.12) 0%,transparent 60%)' }} />
-          {/* Animated wheel preview */}
           <div className="relative shrink-0" style={{ width: 56, height: 56 }}>
             <motion.div animate={{ rotate: 360 }} transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
               className="w-full h-full rounded-full"
@@ -703,9 +668,7 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
           </div>
           <div className="shrink-0 flex flex-col items-center gap-1">
             <div className="px-3 py-1.5 rounded-full text-[10px] font-bold text-[#C9956A]"
-              style={{ background: 'rgba(201,149,106,0.12)', border: '1px solid rgba(201,149,106,0.25)' }}>
-              مجاناً
-            </div>
+              style={{ background: 'rgba(201,149,106,0.12)', border: '1px solid rgba(201,149,106,0.25)' }}>مجاناً</div>
             <span className="text-white/20 text-[8px]">مرة / يوم</span>
           </div>
         </motion.button>

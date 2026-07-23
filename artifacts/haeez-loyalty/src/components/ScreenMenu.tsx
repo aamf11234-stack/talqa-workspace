@@ -2,8 +2,7 @@ import React, { useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, Flame, Snowflake } from 'lucide-react';
 import { CategoryIconMap, IOriginPin, IVase, ILeaf, ICoffeeBean, IEspresso } from './HaizIcons';
-
-const logoImg = `${import.meta.env.BASE_URL}restaurant-logo.png`;
+import { useBrand } from '../BrandContext';
 
 /* ══════════════════════════════════════════ DATA ══ */
 interface MenuItem {
@@ -396,6 +395,7 @@ function SearchResults({ results, query, onClear }: {
 
 /* ══════════════════════════════════════════ MAIN ══ */
 export function ScreenMenu() {
+  const { brand } = useBrand();
   const [activeId, setActiveId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
@@ -461,8 +461,8 @@ export function ScreenMenu() {
             <div className="absolute inset-0 rounded-[22px] blur-xl"
               style={{ background: 'rgba(201,149,106,0.35)', transform: 'scale(1.3)' }} />
             <img
-              src={logoImg}
-              alt="مطعمك"
+              src={brand.logoImg}
+              alt={brand.name}
               className="relative w-16 h-16 rounded-[22px] object-cover"
               style={{
                 border: '2px solid rgba(201,149,106,0.5)',
@@ -483,7 +483,7 @@ export function ScreenMenu() {
             className="text-center"
           >
             <p className="text-[9px] font-black tracking-[0.35em] text-[#C9956A] mb-1"
-              style={{ fontFamily: 'ui-monospace, monospace' }}>مطعمك</p>
+              style={{ fontFamily: 'ui-monospace, monospace' }}>{brand.name}</p>
             <h1 className="text-[28px] font-black text-white leading-none tracking-tight">قائمتنا</h1>
             <p className="text-white/25 text-[10px] mt-1.5 font-light">
               {totalItems} صنف · مفتوح من ٦ص حتى ٦:٣٠م

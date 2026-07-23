@@ -3,13 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, Check, Gift, Send, Star, ChevronLeft, X, Sparkles } from 'lucide-react';
 import { QRCodeSVG } from './QRCodeSVG';
 import { BookingModal } from './BookingModal';
-
-const logoImg = `${import.meta.env.BASE_URL}restaurant-logo.png`;
+import { useBrand } from '../BrandContext';
 
 /* ══════════════════════════════════════════════════════════════════
    Membership Card — Apple Wallet Style
 ══════════════════════════════════════════════════════════════════ */
 function MembershipCard() {
+  const { brand } = useBrand();
   return (
     <motion.div
       whileHover={{ scale: 1.015 }}
@@ -63,8 +63,8 @@ function MembershipCard() {
               <p className="text-white/18 text-[6px] font-inter tracking-[0.18em] uppercase">Wallet</p>
             </div>
             <div className="text-right flex flex-col gap-0.5">
-              <p className="text-[#C9956A] font-black leading-none tracking-tight" style={{ fontSize: 20 }}>مطعمك</p>
-              <p className="text-white/22 font-inter tracking-[0.15em]" style={{ fontSize: 7 }}>YOUR RESTAURANT · KSA</p>
+              <p className="text-[#C9956A] font-black leading-none tracking-tight" style={{ fontSize: 20 }}>{brand.memberCard.label}</p>
+              <p className="text-white/22 font-inter tracking-[0.15em]" style={{ fontSize: 7 }}>{brand.type === 'cafe' ? 'YOUR CAFÉ · KSA' : 'YOUR RESTAURANT · KSA'}</p>
             </div>
           </div>
           <div>
@@ -193,7 +193,7 @@ function AppleWalletModal({ onClose }: { onClose: () => void }) {
                   </svg>
                   <span className="text-white/30 text-[8px] font-inter tracking-[0.2em]">WALLET</span>
                 </div>
-                <p className="text-[#C9956A] font-black text-[18px]">مطعمك</p>
+                <p className="text-[#C9956A] font-black text-[18px]">{brand.memberCard.label}</p>
               </div>
               {/* Bottom */}
               <div className="flex items-end justify-between">
@@ -425,6 +425,7 @@ function GiftsSection({ onGiftSent }: { onGiftSent: (msg: string) => void }) {
    Main Screen
 ══════════════════════════════════════════════════════════════════ */
 export function ScreenMembership() {
+  const { brand } = useBrand();
   const [showQR, setShowQR] = useState(false);
   const [showBooking, setShowBooking] = useState(false);
   const [showAppleWallet, setShowAppleWallet] = useState(false);
@@ -443,7 +444,7 @@ export function ScreenMembership() {
         {/* Header */}
         <div className="flex items-center gap-3 mb-5">
           <div className="relative">
-            <img src={logoImg} alt="مطعمك" className="w-12 h-12 rounded-[16px] object-cover shadow-[0_4px_18px_rgba(123,22,24,0.3)]" />
+            <img src={brand.logoImg} alt={brand.name} className="w-12 h-12 rounded-[16px] object-cover shadow-[0_4px_18px_rgba(123,22,24,0.3)]" />
             <div className="absolute -bottom-1.5 -left-1.5 w-5 h-5 bg-[#30D158] rounded-full border-2 border-[#FDFBF7] flex items-center justify-center">
               <Check size={10} strokeWidth={3} className="text-white" />
             </div>
