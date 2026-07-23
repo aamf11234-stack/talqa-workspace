@@ -3,6 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Search, X, Flame, Snowflake } from 'lucide-react';
 import { CategoryIconMap, IOriginPin, IVase, ILeaf, ICoffeeBean, IEspresso } from './HaizIcons';
 import { useBrand } from '../BrandContext';
+import { CheckoutModal } from './CheckoutFlow';
+import type { CheckoutItem, CompletedOrderData } from './CheckoutFlow';
+import { useOrders } from '../OrdersContext';
 
 /* ══════════════════════════════════════════ DATA ══ */
 interface MenuItem {
@@ -152,7 +155,7 @@ function Price({ item }: { item: MenuItem }) {
 }
 
 /* ══════════════════════════════════════════ SECTION ══ */
-function Section({ cat, index }: { cat: MenuCategory; index: number }) {
+function Section({ cat, index, onOrder }: { cat: MenuCategory; index: number; onOrder?: (item: CheckoutItem) => void }) {
   return (
     <motion.div
       id={`cat-${cat.id}`}
@@ -238,8 +241,18 @@ function Section({ cat, index }: { cat: MenuCategory; index: number }) {
               )}
             </div>
 
-            {/* Price */}
-            <Price item={item} />
+            {/* Price + Order */}
+            <div className="flex flex-col items-end gap-1.5 shrink-0">
+              <Price item={item} />
+              {onOrder && (
+                <motion.button whileTap={{ scale: 0.88 }}
+                  onClick={() => onOrder({ name: item.name, price: String(item.price ?? item.priceHot ?? 0), emoji: '☕' })}
+                  className="text-[9px] font-black px-2.5 py-1 rounded-full text-white"
+                  style={{ background: cat.color, boxShadow: `0 3px 10px ${cat.color}55` }}>
+                  اطلب
+                </motion.button>
+              )}
+            </div>
           </motion.div>
         ))}
       </div>
@@ -396,12 +409,27 @@ function SearchResults({ results, query, onClear }: {
 /* ══════════════════════════════════════════ MAIN ══ */
 export function ScreenMenu() {
   const { brand } = useBrand();
+  const { addOrder } = useOrders();
   const [activeId, setActiveId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
   const [heroScrolled, setHeroScrolled] = useState(false);
+  const [pendingOrder, setPendingOrder] = useState<CheckoutItem | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
+
+  function handleOrderComplete(data: CompletedOrderData) {
+    addOrder({
+      itemName: data.itemName,
+      itemEmoji: data.itemEmoji,
+      totalPrice: data.totalPrice,
+      basePrice: data.basePrice,
+      orderType: data.orderType,
+      payMethod: data.payMethod,
+      pts: data.pts,
+      timestamp: data.timestamp,
+    });
+  }
 
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return null;
@@ -429,7 +457,21 @@ export function ScreenMenu() {
   const totalItems = menu.reduce((a, c) => a + c.items.length, 0);
 
   return (
-    <div className="flex flex-col h-full overflow-hidden" style={{ background: '#FAF7F3' }}>
+    <div className="flex flex-col h-full overflow-hidden relative" style={{ background: '#FAF7F3' }}>
+      <AnimatePresence>
+        {pendingOrder && (
+          <div className="absolute inset-0 z-50">
+            <CheckoutModal
+              item={pendingOrder}
+              brandName={brand.name}
+              brandType={brand.type}
+              logoImg={brand.logoImg}
+              onClose={() => setPendingOrder(null)}
+              onOrderComplete={handleOrderComplete}
+            />
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* ══ HERO HEADER ══ */}
       <div className="shrink-0 relative overflow-hidden"
@@ -595,7 +637,7 @@ export function ScreenMenu() {
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               {activeId === null && <Shelf />}
               {displayed.map((cat, i) => (
-                <Section key={cat.id} cat={cat} index={i} />
+                <Section key={cat.id} cat={cat} index={i} onOrder={setPendingOrder} />
               ))}
             </motion.div>
           )}

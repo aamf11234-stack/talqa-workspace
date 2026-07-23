@@ -7,7 +7,8 @@ import { ShakeHintBar } from './ShakeReveal';
 import { useBrand } from '../BrandContext';
 import type { BrandConfig } from '../BrandContext';
 import { CheckoutModal } from './CheckoutFlow';
-import type { CheckoutItem } from './CheckoutFlow';
+import type { CheckoutItem, CompletedOrderData } from './CheckoutFlow';
+import { useOrders } from '../OrdersContext';
 
 /* ── Counter hook ─────────────────────────────────────────────────── */
 function useCounter(target: number, duration = 1400, delay = 200) {
@@ -443,14 +444,227 @@ function HaizCalendar() {
   );
 }
 
+/* ── Notifications Panel ─────────────────────────────────────────── */
+const NOTIFS = [
+  { id: 1, icon: '✓',  bg: '#30D158', color: '#30D158', title: 'طلبك جاهز للاستلام', sub: 'رقم #٢٠٢٦-٠٤٧١ — تفضل الآن', time: 'الآن' },
+  { id: 2, icon: '⭐', bg: '#C9956A', color: '#C9956A', title: '+٢٥ نقطة أُضيفت لرصيدك', sub: 'من طلبك الأخير — رصيدك ٤٨٠ نقطة', time: 'قبل ١٥ دقيقة' },
+  { id: 3, icon: '🔥', bg: '#FF3B30', color: '#FF3B30', title: 'خصم ٢٠٪ على طبق اليوم', sub: 'العرض ينتهي هذه الليلة فقط', time: 'قبل ساعة' },
+  { id: 4, icon: '👋', bg: '#007AFF', color: '#007AFF', title: 'نفتقدك — وجبتك بتنتظر', sub: 'مر ٣ أيام على آخر زيارة لك', time: 'البارحة' },
+];
+
+function NotificationsPanel({ onClose }: { onClose: () => void }) {
+  return (
+    <>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        onClick={onClose}
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm z-40 rounded-[48px]" />
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
+        transition={{ type: 'spring', damping: 28, stiffness: 320 }}
+        className="absolute top-16 left-4 right-4 z-50 rounded-[22px] overflow-hidden"
+        style={{ background: '#1C1C1E', boxShadow: '0 20px 60px rgba(0,0,0,0.6)' }}>
+        <div className="flex items-center justify-between px-4 py-3 border-b border-white/8">
+          <p className="text-white text-[13px] font-bold">الإشعارات</p>
+          <div className="flex items-center gap-2">
+            <span className="text-[9px] px-2 py-0.5 rounded-full font-bold text-white"
+              style={{ background: '#FF3B30' }}>٤</span>
+            <button onClick={onClose}
+              className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-white/60 text-[11px]">×</button>
+          </div>
+        </div>
+        <div className="py-1">
+          {NOTIFS.map((n, i) => (
+            <motion.div key={n.id}
+              initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.06 }}
+              className="flex items-start gap-3 px-4 py-3 border-b border-white/5 last:border-0">
+              <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-[13px]"
+                style={{ background: `${n.bg}22` }}>
+                {n.icon === '✓' ? (
+                  <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke={n.color} strokeWidth={3} strokeLinecap="round">
+                    <path d="M20 6L9 17l-5-5" />
+                  </svg>
+                ) : (
+                  <span>{n.icon}</span>
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-white text-[11px] font-semibold leading-snug">{n.title}</p>
+                <p className="text-white/40 text-[9px] font-light mt-0.5 leading-snug">{n.sub}</p>
+              </div>
+              <p className="text-white/25 text-[8px] shrink-0 mt-0.5">{n.time}</p>
+            </motion.div>
+          ))}
+        </div>
+        <div className="px-4 py-3 border-t border-white/8">
+          <button onClick={onClose} className="w-full text-center text-[11px] font-medium" style={{ color: '#007AFF' }}>
+            تعيين الكل كمقروء
+          </button>
+        </div>
+      </motion.div>
+    </>
+  );
+}
+
+/* ── Quick Book Sheet ────────────────────────────────────────────── */
+const SLOTS = ['١٢:٠٠ م', '١٢:٣٠ م', '١:٠٠ م', '٧:٠٠ م', '٧:٣٠ م', '٨:٠٠ م'];
+
+function QuickBookSheet({ onClose }: { onClose: () => void }) {
+  const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
+  const [pax, setPax] = useState(2);
+  const [done, setDone] = useState(false);
+  return (
+    <>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        onClick={onClose} className="absolute inset-0 bg-black/60 backdrop-blur-sm z-40 rounded-[48px]" />
+      <motion.div
+        initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '110%' }}
+        transition={{ type: 'spring', damping: 30, stiffness: 320 }}
+        className="absolute bottom-0 left-0 right-0 bg-[#FDFBF7] rounded-t-[30px] z-50 pb-8"
+        style={{ maxHeight: '80%' }}>
+        <div className="w-10 h-1 bg-[rgba(196,181,159,0.4)] rounded-full mx-auto mt-3 mb-4" />
+        <div className="px-5">
+          {done ? (
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+              className="flex flex-col items-center gap-3 py-6">
+              <div className="w-14 h-14 rounded-full flex items-center justify-center"
+                style={{ background: 'rgba(48,209,88,0.12)' }}>
+                <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none" stroke="#30D158" strokeWidth={2.5} strokeLinecap="round">
+                  <path d="M20 6L9 17l-5-5" />
+                </svg>
+              </div>
+              <p className="text-[16px] font-bold text-[#111]">تم الحجز!</p>
+              <p className="text-[12px] text-[#AAA] font-light text-center">حجزت طاولة لـ{pax} أشخاص — {selectedSlot}</p>
+              <p className="text-[10px] text-[#CCC] font-light">ستصلك رسالة تأكيد على الجوال</p>
+              <motion.button whileTap={{ scale: 0.97 }} onClick={onClose}
+                className="mt-2 w-full py-3.5 rounded-[16px] font-semibold text-[14px] text-white"
+                style={{ background: 'linear-gradient(135deg,#7B1618,#4A0D0F)' }}>تمام</motion.button>
+            </motion.div>
+          ) : (
+            <>
+              <p className="text-[10px] text-[#7B1618] font-bold tracking-widest mb-0.5">احجز طاولة</p>
+              <h3 className="text-[19px] font-bold text-[#111] mb-4">اختر الموعد</h3>
+              <div className="flex items-center justify-between mb-4 bg-white rounded-[16px] p-3 border border-[rgba(196,181,159,0.2)]">
+                <p className="text-[13px] font-semibold text-[#111]">عدد الأشخاص</p>
+                <div className="flex items-center gap-3">
+                  <button onClick={() => setPax(p => Math.max(1, p - 1))}
+                    className="w-8 h-8 rounded-full flex items-center justify-center"
+                    style={{ background: 'rgba(123,22,24,0.08)' }}>
+                    <span className="text-[18px] font-bold text-[#7B1618] leading-none">−</span>
+                  </button>
+                  <span className="text-[15px] font-bold text-[#111] w-4 text-center">{pax}</span>
+                  <button onClick={() => setPax(p => Math.min(10, p + 1))}
+                    className="w-8 h-8 rounded-full flex items-center justify-center"
+                    style={{ background: 'rgba(123,22,24,0.08)' }}>
+                    <span className="text-[18px] font-bold text-[#7B1618] leading-none">+</span>
+                  </button>
+                </div>
+              </div>
+              <p className="text-[11px] text-[#888] font-semibold mb-2.5">المواعيد المتاحة اليوم</p>
+              <div className="grid grid-cols-3 gap-2 mb-5">
+                {SLOTS.map(slot => (
+                  <button key={slot} onClick={() => setSelectedSlot(slot)}
+                    className="py-2.5 rounded-[12px] text-[11px] font-bold transition-all"
+                    style={{
+                      background: selectedSlot === slot ? 'linear-gradient(135deg,#7B1618,#4A0D0F)' : 'white',
+                      color: selectedSlot === slot ? 'white' : '#555',
+                      border: selectedSlot === slot ? 'none' : '1px solid rgba(196,181,159,0.25)',
+                    }}>{slot}</button>
+                ))}
+              </div>
+              <motion.button whileTap={{ scale: 0.97 }}
+                onClick={() => selectedSlot && setDone(true)}
+                className="w-full py-4 rounded-[16px] font-semibold text-[14px] transition-all"
+                style={{
+                  background: selectedSlot ? 'linear-gradient(135deg,#7B1618,#4A0D0F)' : 'rgba(196,181,159,0.2)',
+                  color: selectedSlot ? 'white' : '#AAA',
+                }}>
+                {selectedSlot ? `احجز لـ${pax} أشخاص — ${selectedSlot}` : 'اختر موعداً أولاً'}
+              </motion.button>
+            </>
+          )}
+        </div>
+      </motion.div>
+    </>
+  );
+}
+
+/* ── Offers Sheet ───────────────────────────────────────────────── */
+const OFFERS = [
+  { emoji: '🍔', title: 'برجر + مشروب بـ٤٩ ريال', sub: 'وفر ٢٢٪ — ينتهي الليلة', color: '#7B1618', tag: 'الأشهر' },
+  { emoji: '☕', title: 'قهوتان للسعر الواحد', sub: 'صالح للأعضاء فقط · حتى ١٢م', color: '#C9956A', tag: 'عضوية' },
+  { emoji: '🎂', title: 'حلى مجاناً مع أي طلب', sub: 'لأعياد الميلاد هذا الشهر', color: '#2D7D46', tag: 'مناسبة' },
+];
+
+function OffersSheet({ onClose }: { onClose: () => void }) {
+  return (
+    <>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        onClick={onClose} className="absolute inset-0 bg-black/60 backdrop-blur-sm z-40 rounded-[48px]" />
+      <motion.div
+        initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '110%' }}
+        transition={{ type: 'spring', damping: 30, stiffness: 320 }}
+        className="absolute bottom-0 left-0 right-0 bg-[#FDFBF7] rounded-t-[30px] z-50 pb-8"
+        style={{ maxHeight: '78%' }}>
+        <div className="w-10 h-1 bg-[rgba(196,181,159,0.4)] rounded-full mx-auto mt-3 mb-4" />
+        <div className="px-5">
+          <p className="text-[10px] text-[#7B1618] font-bold tracking-widest mb-0.5">حصري للأعضاء</p>
+          <h3 className="text-[19px] font-bold text-[#111] mb-4">عروضك الحالية</h3>
+          <div className="space-y-3">
+            {OFFERS.map((o, i) => (
+              <motion.div key={i}
+                initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.07 }}
+                className="flex items-center gap-3 bg-white rounded-[18px] p-4 border border-[rgba(196,181,159,0.15)] shadow-[0_2px_10px_rgba(0,0,0,0.04)]">
+                <div className="w-12 h-12 rounded-[14px] flex items-center justify-center text-2xl shrink-0"
+                  style={{ background: `${o.color}0F` }}>{o.emoji}</div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-[12px] font-bold text-[#111] leading-tight">{o.title}</p>
+                  <p className="text-[10px] text-[#AAA] font-light mt-0.5">{o.sub}</p>
+                </div>
+                <span className="text-[8px] font-black px-2 py-1 rounded-full shrink-0"
+                  style={{ background: `${o.color}12`, color: o.color }}>{o.tag}</span>
+              </motion.div>
+            ))}
+          </div>
+          <motion.button whileTap={{ scale: 0.97 }} onClick={onClose}
+            className="mt-4 w-full py-3.5 rounded-[16px] font-semibold text-[13px]"
+            style={{ background: 'rgba(196,181,159,0.15)', color: '#888' }}>
+            إغلاق
+          </motion.button>
+        </div>
+      </motion.div>
+    </>
+  );
+}
+
 /* ══════════════════════════════════════════════════════════════════
    Main Screen
 ══════════════════════════════════════════════════════════════════ */
 export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) {
   const { brand } = useBrand();
+  const { addOrder } = useOrders();
   const points = useCounter(480, 1400, 200);
   const [showSpin, setShowSpin] = useState(false);
   const [pendingOrder, setPendingOrder] = useState<CheckoutItem | null>(null);
+  const [showNotifs, setShowNotifs] = useState(false);
+  const [showBookSheet, setShowBookSheet] = useState(false);
+  const [showOffersSheet, setShowOffersSheet] = useState(false);
+
+  function handleOrderComplete(data: CompletedOrderData) {
+    addOrder({
+      itemName: data.itemName,
+      itemEmoji: data.itemEmoji,
+      totalPrice: data.totalPrice,
+      basePrice: data.basePrice,
+      orderType: data.orderType,
+      payMethod: data.payMethod,
+      pts: data.pts,
+      timestamp: data.timestamp,
+    });
+  }
   const hour = new Date().getHours();
   const greeting =
     hour < 5  ? 'ليلة طيبة 🌙' :
@@ -472,9 +686,19 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
               brandType={brand.type}
               logoImg={brand.logoImg}
               onClose={() => setPendingOrder(null)}
+              onOrderComplete={handleOrderComplete}
             />
           </div>
         )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {showNotifs && <NotificationsPanel onClose={() => setShowNotifs(false)} />}
+      </AnimatePresence>
+      <AnimatePresence>
+        {showBookSheet && <QuickBookSheet onClose={() => setShowBookSheet(false)} />}
+      </AnimatePresence>
+      <AnimatePresence>
+        {showOffersSheet && <OffersSheet onClose={() => setShowOffersSheet(false)} />}
       </AnimatePresence>
 
       {/* ── Dark hero ── */}
@@ -501,11 +725,11 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
             </motion.div>
           </div>
           <div className="flex items-center gap-2 mt-1">
-            <motion.button whileTap={{ scale: 0.88 }}
+            <motion.button whileTap={{ scale: 0.88 }} onClick={() => setShowNotifs(v => !v)}
               className="relative w-9 h-9 rounded-full flex items-center justify-center border border-white/8"
-              style={{ background: 'rgba(255,255,255,0.06)' }}>
-              <Bell size={15} className="text-white/50" />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#FF3B30] rounded-full border border-[#0D0205]" />
+              style={{ background: showNotifs ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.06)' }}>
+              <Bell size={15} className={showNotifs ? 'text-white' : 'text-white/50'} />
+              {!showNotifs && <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#FF3B30] rounded-full border border-[#0D0205]" />}
             </motion.button>
             <AnimatePresence mode="wait">
               <motion.div key={brand.logoImg} initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
@@ -574,8 +798,8 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
         <div className="grid grid-cols-3 gap-2.5 mb-5 px-4">
           {[
             { icon: ShoppingBag, label: 'اطلب',  color: '#7B1618', bg: '#7B161812', href: null, onTap: () => setPendingOrder({ name: brand.todaySpecial.name, price: brand.todaySpecial.price, emoji: brand.todaySpecial.emoji }) },
-            { icon: Calendar,    label: 'احجز',  color: '#7B1618', bg: '#7B161812', href: null },
-            { icon: Tag,         label: 'عروضي', color: '#B5651D', bg: '#C9956A12', href: null },
+            { icon: Calendar,    label: 'احجز',  color: '#7B1618', bg: '#7B161812', href: null, onTap: () => setShowBookSheet(true) },
+            { icon: Tag,         label: 'عروضي', color: '#B5651D', bg: '#C9956A12', href: null, onTap: () => setShowOffersSheet(true) },
           ].map((a, i) => {
             const inner = (
               <motion.div

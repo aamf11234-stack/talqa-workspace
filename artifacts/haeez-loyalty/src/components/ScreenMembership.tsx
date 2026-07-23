@@ -142,6 +142,7 @@ function QRModal({ onClose }: { onClose: () => void }) {
 
 /* ── Apple Wallet Pass modal ─────────────────────────────────────── */
 function AppleWalletModal({ onClose }: { onClose: () => void }) {
+  const { brand } = useBrand();
   const [phase, setPhase] = useState<'adding' | 'done'>('adding');
 
   useEffect(() => {
@@ -266,22 +267,110 @@ function AppleWalletModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-/* ── Google Wallet Toast ─────────────────────────────────────────── */
-function GWalletToast({ onDone }: { onDone: () => void }) {
-  useEffect(() => { const t = setTimeout(onDone, 3000); return () => clearTimeout(t); }, [onDone]);
+/* ── Google Wallet Modal ─────────────────────────────────────────── */
+function GoogleWalletModal({ onClose }: { onClose: () => void }) {
+  const [phase, setPhase] = useState<'adding' | 'done'>('adding');
+  useEffect(() => { const t = setTimeout(() => setPhase('done'), 2200); return () => clearTimeout(t); }, []);
   return (
-    <motion.div
-      initial={{ opacity: 0, y: -28, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -16, scale: 0.9 }}
-      transition={{ type: 'spring', damping: 22, stiffness: 300 }}
-      className="absolute top-3 left-5 right-5 bg-[#1C1C1E] text-white rounded-2xl p-3.5 flex items-center gap-3 z-50 shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
-      <div className="w-8 h-8 bg-[#30D158] rounded-full flex items-center justify-center shrink-0">
-        <Check size={14} strokeWidth={3} className="text-white" />
-      </div>
-      <div>
-        <p className="text-[12px] font-semibold">تمت الإضافة إلى Google Wallet</p>
-        <p className="text-[10px] text-white/50 font-light mt-0.5">بطاقتك متاحة حتى بدون إنترنت</p>
-      </div>
-    </motion.div>
+    <>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        onClick={phase === 'done' ? onClose : undefined}
+        className="absolute inset-0 bg-black/80 backdrop-blur-xl z-50 rounded-[48px]" />
+      <motion.div
+        initial={{ y: '110%' }} animate={{ y: 0 }} exit={{ y: '110%' }}
+        transition={{ type: 'spring', damping: 28, stiffness: 300 }}
+        className="absolute bottom-0 left-0 right-0 z-50 bg-white rounded-t-[36px] overflow-hidden"
+        style={{ maxHeight: '90%' }}>
+        {/* Google-style header */}
+        <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-[#E8E8E8]">
+          <button onClick={onClose} className="text-[14px] text-[#1A73E8] font-medium">إغلاق</button>
+          <div className="flex items-center gap-2">
+            <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+            <p className="text-[#111] text-[14px] font-semibold">Google Wallet</p>
+          </div>
+          <div className="w-10" />
+        </div>
+        <div className="px-5 pt-6 pb-8 flex flex-col items-center gap-5">
+          {/* Card preview */}
+          <motion.div
+            initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: 0.2, type: 'spring', stiffness: 200, damping: 22 }}
+            className="w-full rounded-[20px] overflow-hidden relative"
+            style={{ background: 'linear-gradient(135deg,#1A73E8 0%,#0D47A1 100%)', boxShadow: '0 16px 40px rgba(26,115,232,0.3)', aspectRatio: '1.586/1' }}>
+            <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 20% 80%,rgba(255,255,255,0.1) 0%,transparent 50%)' }} />
+            <div className="absolute inset-0 flex flex-col justify-between p-5 z-10">
+              <div className="flex items-start justify-between">
+                <svg viewBox="0 0 24 24" className="w-7 h-7">
+                  <path fill="#EA4335" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                  <circle cx="12" cy="9" r="2.5" fill="white"/>
+                </svg>
+                <p className="text-white/60 text-[8px] font-medium tracking-widest">LOYALTY CARD</p>
+              </div>
+              <div>
+                <p className="text-white/50 text-[7px] tracking-widest mb-0.5">CARDHOLDER</p>
+                <p className="text-white font-bold text-[14px]">عبدالإله علي</p>
+                <div className="flex items-baseline gap-2 mt-1">
+                  <p className="text-white font-black text-[24px] font-inter leading-none">480</p>
+                  <p className="text-white/40 text-[8px]">PTS</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+          {/* NFC animation or success */}
+          <AnimatePresence mode="wait">
+            {phase === 'adding' ? (
+              <motion.div key="adding" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                className="flex flex-col items-center gap-3">
+                <div className="relative w-14 h-14 flex items-center justify-center">
+                  {[0,1,2].map(i => (
+                    <motion.div key={i} className="absolute rounded-full border-2 border-[#1A73E8]"
+                      initial={{ width: 18, height: 18, opacity: 0.8 }}
+                      animate={{ width: 52, height: 52, opacity: 0 }}
+                      transition={{ duration: 1.4, repeat: Infinity, delay: i * 0.45, ease: 'easeOut' }} />
+                  ))}
+                  <div className="w-8 h-8 rounded-full bg-[#1A73E8] flex items-center justify-center z-10">
+                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-white">
+                      <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+                    </svg>
+                  </div>
+                </div>
+                <p className="text-[#555] text-[12px]">جاري الإضافة إلى Google Wallet...</p>
+              </motion.div>
+            ) : (
+              <motion.div key="done" initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }}
+                className="flex flex-col items-center gap-3">
+                <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                  className="w-14 h-14 bg-[#34A853] rounded-full flex items-center justify-center shadow-[0_0_28px_rgba(52,168,83,0.4)]">
+                  <Check size={22} strokeWidth={3} className="text-white" />
+                </motion.div>
+                <div className="text-center">
+                  <p className="text-[#111] text-[15px] font-semibold">تمت الإضافة!</p>
+                  <p className="text-[#888] text-[11px] font-light mt-1">بطاقتك متاحة حتى بدون إنترنت</p>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#E8F5E9]">
+                  <span className="text-[11px]">📲</span>
+                  <p className="text-[#2E7D32] text-[10px]">تظهر تلقائياً عند اقترابك من المطعم</p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          {phase === 'done' && (
+            <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+              onClick={onClose}
+              className="w-full py-4 rounded-[14px] font-semibold text-[14px] text-white active:scale-95 transition-transform"
+              style={{ background: '#1A73E8' }}>
+              تم
+            </motion.button>
+          )}
+        </div>
+      </motion.div>
+    </>
   );
 }
 
@@ -367,7 +456,7 @@ const giftOptions = [
   { id: 'dessert',   icon: '🎂', title: 'حلى',          sub: 'حلو اليوم مجاناً', pts: 80,  color: '#B5651D' },
 ];
 
-function GiftsSection({ onGiftSent }: { onGiftSent: (msg: string) => void }) {
+function GiftsSection({ onGiftSent, currentPoints }: { onGiftSent: (msg: string, pts: number) => void; currentPoints: number }) {
   const [activeGift, setActiveGift] = useState<typeof giftOptions[0] | null>(null);
   return (
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="mt-4">
@@ -378,7 +467,10 @@ function GiftsSection({ onGiftSent }: { onGiftSent: (msg: string) => void }) {
           </div>
           <h2 className="text-[13px] font-bold text-[#111]">أهدِ أصدقاءك</h2>
         </div>
-        <span className="text-[10px] text-[#C4B59F]">رصيدك: ٤٨٠ نقطة</span>
+        <motion.span key={currentPoints} initial={{ scale: 1.15 }} animate={{ scale: 1 }}
+          className="text-[10px] text-[#C4B59F]">
+          رصيدك: {currentPoints} نقطة
+        </motion.span>
       </div>
       <div className="grid grid-cols-2 gap-2.5">
         {giftOptions.map((g, i) => (
@@ -414,7 +506,7 @@ function GiftsSection({ onGiftSent }: { onGiftSent: (msg: string) => void }) {
       <AnimatePresence>
         {activeGift && (
           <GiftModal gift={activeGift} onClose={() => setActiveGift(null)}
-            onSend={() => { setActiveGift(null); onGiftSent(`تم إرسال ${activeGift.title} بنجاح`); }} />
+            onSend={() => { const g = activeGift!; setActiveGift(null); onGiftSent(`تم إرسال ${g.title} بنجاح`, g.pts); }} />
         )}
       </AnimatePresence>
     </motion.div>
@@ -431,10 +523,11 @@ export function ScreenMembership() {
   const [showAppleWallet, setShowAppleWallet] = useState(false);
   const [showGWallet, setShowGWallet] = useState(false);
   const [giftToast, setGiftToast] = useState<string | null>(null);
+  const [points, setPoints] = useState(480);
 
   return (
     <div className="flex flex-col h-full relative">
-      <AnimatePresence>{showGWallet && <GWalletToast onDone={() => setShowGWallet(false)} />}</AnimatePresence>
+      <AnimatePresence>{showGWallet && <GoogleWalletModal onClose={() => setShowGWallet(false)} />}</AnimatePresence>
       <AnimatePresence>{giftToast && <GiftToast msg={giftToast} onDone={() => setGiftToast(null)} />}</AnimatePresence>
       <AnimatePresence>{showQR && <QRModal onClose={() => setShowQR(false)} />}</AnimatePresence>
       <AnimatePresence>{showAppleWallet && <AppleWalletModal onClose={() => setShowAppleWallet(false)} />}</AnimatePresence>
@@ -456,7 +549,8 @@ export function ScreenMembership() {
           <div className="mr-auto flex items-center gap-1 px-2.5 py-1.5 rounded-full"
             style={{ background: 'rgba(201,149,106,0.1)', border: '1px solid rgba(201,149,106,0.2)' }}>
             <Sparkles size={10} className="text-[#C9956A]" />
-            <span className="text-[#C9956A] text-[10px] font-bold">٤٨٠ نقطة</span>
+            <motion.span key={points} initial={{ scale: 1.2 }} animate={{ scale: 1 }}
+              className="text-[#C9956A] text-[10px] font-bold">{points} نقطة</motion.span>
           </div>
         </div>
 
@@ -513,7 +607,7 @@ export function ScreenMembership() {
         </motion.div>
 
         {/* Gifts */}
-        <GiftsSection onGiftSent={(msg) => setGiftToast(msg)} />
+        <GiftsSection currentPoints={points} onGiftSent={(msg, pts) => { setGiftToast(msg); setPoints(p => Math.max(0, p - pts)); }} />
 
         {/* Progress */}
         <div className="mt-4 bg-white rounded-[18px] p-4 border border-[rgba(196,181,159,0.15)] shadow-[0_2px_12px_rgba(0,0,0,0.04)]">

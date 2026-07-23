@@ -9,12 +9,24 @@ export interface CheckoutItem {
   emoji: string;
 }
 
+export interface CompletedOrderData {
+  itemName: string;
+  itemEmoji: string;
+  totalPrice: number;
+  basePrice: number;
+  orderType: 'dine' | 'delivery';
+  payMethod: 'apple' | 'stc' | 'card';
+  pts: number;
+  timestamp: Date;
+}
+
 interface Props {
   item: CheckoutItem;
   brandName: string;
   brandType: 'restaurant' | 'cafe';
   logoImg: string;
   onClose: () => void;
+  onOrderComplete?: (data: CompletedOrderData) => void;
 }
 
 type Phase   = 'type' | 'payment' | 'paying' | 'invoice';
@@ -105,7 +117,7 @@ function PaymentSheet({
     setCard(p => ({ ...p, [field]: val }));
   }
 
-  const orderTypeLabel = orderType === 'dine' ? (method === 'delivery' ? 'توصيل' : 'جلسة داخلية') : 'توصيل';
+  const orderTypeLabel = orderType === 'dine' ? 'جلسة داخلية' : 'توصيل';
 
   return (
     <motion.div
@@ -439,7 +451,7 @@ function InvoiceSheet({
 /* ══════════════════════════════════════════════════════════════════
    Main Checkout Modal (phone-frame overlay)
 ══════════════════════════════════════════════════════════════════ */
-export function CheckoutModal({ item, brandName, brandType, logoImg, onClose }: Props) {
+export function CheckoutModal({ item, brandName, brandType, logoImg, onClose, onOrderComplete }: Props) {
   const [phase, setPhase]         = useState<Phase>('type');
   const [orderType, setOrderType] = useState<OrderType>('dine');
   const [payMethod, setPayMethod] = useState<PayMethod>('apple');
@@ -453,6 +465,25 @@ export function CheckoutModal({ item, brandName, brandType, logoImg, onClose }: 
     setPayMethod(m);
     setPhase('paying');
     setTimeout(() => setPhase('invoice'), 1800);
+  }
+
+  function handleInvoiceClose() {
+    if (onOrderComplete) {
+      const base  = toInt(item.price);
+      const vat   = Math.round(base * 0.15);
+      const total = base + vat;
+      onOrderComplete({
+        itemName: item.name,
+        itemEmoji: item.emoji,
+        totalPrice: total,
+        basePrice: base,
+        orderType,
+        payMethod,
+        pts: Math.round(total / 4),
+        timestamp: new Date(),
+      });
+    }
+    onClose();
   }
 
   return (
@@ -473,7 +504,7 @@ export function CheckoutModal({ item, brandName, brandType, logoImg, onClose }: 
         {phase === 'paying' && <PayingSheet key="paying" />}
         {phase === 'invoice' && (
           <InvoiceSheet key="invoice" item={item} orderType={orderType} payMethod={payMethod}
-            brandName={brandName} logoImg={logoImg} onClose={onClose} />
+            brandName={brandName} logoImg={logoImg} onClose={handleInvoiceClose} />
         )}
       </AnimatePresence>
     </>

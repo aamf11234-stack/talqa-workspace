@@ -14,6 +14,7 @@ import { AppleWatchHyz }       from './components/AppleWatch';
 import { OwnerDashboard, MobileOwnerSummary } from './components/OwnerDashboard';
 import { useShakeDetect, FlashDealModal } from './components/ShakeReveal';
 import { BrandProvider, useBrand, RESTAURANT_BRAND, CAFE_BRAND } from './BrandContext';
+import { OrdersProvider } from './OrdersContext';
 
 /* ── Brand toggle (inside BrandProvider) ──────────────────────── */
 function BrandToggle() {
@@ -609,6 +610,7 @@ export default function App() {
   }, []);
 
   return (
+    <OrdersProvider>
     <BrandProvider>
     <div className="min-h-screen w-full font-sans" style={{ background: 'linear-gradient(180deg,#F0E6D8 0%,#E8DDD0 35%,#EAE0D5 70%,#E5D9CC 100%)' }} dir="rtl">
 
@@ -1348,5 +1350,6 @@ export default function App() {
       </div>
     </div>
     </BrandProvider>
+    </OrdersProvider>
   );
 }
