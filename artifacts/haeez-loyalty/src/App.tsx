@@ -99,6 +99,46 @@ function RevealHeadline({ children, className, style }: { children: string; clas
   );
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   Phone Screens — instant strip slide (no remount, CSS only)
+════════════════════════════════════════════════════════════════════ */
+const TAB_ORDER = ['home', 'menu', 'card', 'orders', 'reservations'] as const;
+type TabKey = typeof TAB_ORDER[number];
+
+function PhoneScreens({ activeTab, onShakeTrigger }: { activeTab: TabKey; onShakeTrigger: () => void }) {
+  const idx = TAB_ORDER.indexOf(activeTab);
+
+  return (
+    <div className="flex-1 relative overflow-hidden h-full">
+      {/* Horizontal strip — all 5 screens side by side, slide the strip */}
+      <div
+        style={{
+          display: 'flex',
+          width: `${TAB_ORDER.length * 100}%`,
+          height: '100%',
+          transform: `translateX(-${(idx / TAB_ORDER.length) * 100}%)`,
+          transition: 'transform 260ms cubic-bezier(0.4,0,0.2,1)',
+          willChange: 'transform',
+        }}
+      >
+        {TAB_ORDER.map(tab => (
+          <div
+            key={tab}
+            style={{ width: `${100 / TAB_ORDER.length}%`, height: '100%', flexShrink: 0, overflowY: 'auto' }}
+            className="scrollbar-none"
+          >
+            {tab === 'home'         && <ScreenHome onShakeTrigger={onShakeTrigger} />}
+            {tab === 'menu'         && <ScreenMenu />}
+            {tab === 'card'         && <ScreenMembership />}
+            {tab === 'orders'       && <ScreenOrders />}
+            {tab === 'reservations' && <ScreenReservations />}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ── Brand toggle (inside BrandProvider) ──────────────────────── */
 function BrandToggle() {
   const { brand, setBrand } = useBrand();
@@ -871,21 +911,7 @@ export default function App() {
                 )}
               </AnimatePresence>
 
-              <div className="flex-1 relative overflow-hidden h-full">
-                {(['home','menu','card','orders','reservations'] as const).map(tab => (
-                  <div
-                    key={tab}
-                    className="absolute inset-0 overflow-y-auto scrollbar-none"
-                    style={{ visibility: activeTab === tab ? 'visible' : 'hidden', pointerEvents: activeTab === tab ? 'auto' : 'none' }}
-                  >
-                    {tab === 'home'         && <ScreenHome onShakeTrigger={() => setShowShakeDeal(true)} />}
-                    {tab === 'menu'         && <ScreenMenu />}
-                    {tab === 'card'         && <ScreenMembership />}
-                    {tab === 'orders'       && <ScreenOrders />}
-                    {tab === 'reservations' && <ScreenReservations />}
-                  </div>
-                ))}
-              </div>
+              <PhoneScreens activeTab={activeTab} onShakeTrigger={() => setShowShakeDeal(true)} />
               <BottomNav activeTab={activeTab} onChangeTab={setActiveTab} notifCount={1} />
             </PhoneFrame>
           </div>
