@@ -263,7 +263,7 @@ function CartBar({ cart, onCheckout }: { cart: CartItem[]; onCheckout: () => voi
     <motion.div
       initial={{ y: 100, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 100, opacity: 0 }}
       transition={{ type: 'spring', damping: 28, stiffness: 320 }}
-      className="absolute bottom-0 left-0 right-0 z-30 px-4 pb-8 pt-4"
+      className="absolute bottom-0 left-0 right-0 z-30 px-4 pb-24 pt-4"
       style={{ background: 'linear-gradient(to top,#F8F7F5 70%,transparent)', pointerEvents: 'none' }}>
       <motion.button whileTap={{ scale: 0.97 }} onClick={onCheckout}
         className="w-full rounded-[20px] flex items-center overflow-hidden"
