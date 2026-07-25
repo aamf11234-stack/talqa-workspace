@@ -309,9 +309,10 @@ function OrderTypeSheet({ brandType, item, onSelect, onClose }: {
 /* ══════════════════════════════════════════════════════════════════
    BRANCH PICKER — with status + wait time
 ════════════════════════════════════════════════════════════════════ */
-function BranchPickerSheet({ onSelect, onBack }: {
+function BranchPickerSheet({ onSelect, onBack, orderType }: {
   onSelect: (branch: typeof BRANCHES[0]) => void;
   onBack: () => void;
+  orderType: OrderType;
 }) {
   return (
     <motion.div
@@ -321,16 +322,19 @@ function BranchPickerSheet({ onSelect, onBack }: {
       style={{ background: '#FDFBF7' }}
     >
       {/* Top bar */}
-      <div className="flex items-center gap-3 px-4 pt-5 pb-4 sticky top-0 z-10"
+      <div className="sticky top-0 z-10"
         style={{ background: 'rgba(253,251,247,0.92)', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(196,181,159,0.15)' }}>
-        <motion.button whileTap={{ scale: 0.88 }} onClick={onBack}
-          className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
-          style={{ background: 'rgba(196,120,58,0.09)', border: '1px solid rgba(196,120,58,0.18)' }}>
-          <ChevronLeft size={16} style={{ color: '#6B3210' }} />
-        </motion.button>
-        <div>
-          <p className="text-[15px] font-black text-[#111]">اختر فرعك</p>
-          <p className="text-[10px] text-[#AAA] font-light">٣ فروع · صبيا · جيزان · ضمد</p>
+        <StepIndicator phase="branch" orderType={orderType} />
+        <div className="flex items-center gap-3 px-4 pb-4">
+          <motion.button whileTap={{ scale: 0.88 }} onClick={onBack}
+            className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
+            style={{ background: 'rgba(196,120,58,0.09)', border: '1px solid rgba(196,120,58,0.18)' }}>
+            <ChevronLeft size={16} style={{ color: '#6B3210' }} />
+          </motion.button>
+          <div>
+            <p className="text-[15px] font-black text-[#111]">اختر فرعك</p>
+            <p className="text-[10px] text-[#AAA] font-light">٣ فروع · صبيا · جيزان · ضمد</p>
+          </div>
         </div>
       </div>
 
@@ -527,10 +531,11 @@ function MapPickerSheet({ onConfirm, onBack }: { onConfirm: (addr: string) => vo
 /* ══════════════════════════════════════════════════════════════════
    PAYMENT SHEET — premium dark + Face ID CTA
 ════════════════════════════════════════════════════════════════════ */
-function PaymentSheet({ item, orderType, onPay }: {
+function PaymentSheet({ item, orderType, onPay, phase }: {
   item: CheckoutItem;
   orderType: OrderType;
   onPay: (method: PayMethod) => void;
+  phase: Phase;
 }) {
   const [method, setMethod] = useState<PayMethod>('apple');
   const [card, setCard]     = useState({ num: '', exp: '', cvv: '' });
@@ -563,10 +568,13 @@ function PaymentSheet({ item, orderType, onPay }: {
       style={{ background: '#FDFBF7' }}
     >
       {/* Header */}
-      <div className="px-5 pt-5 pb-4 sticky top-0 z-10"
+      <div className="sticky top-0 z-10"
         style={{ background: 'rgba(253,251,247,0.94)', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(196,181,159,0.15)' }}>
-        <p className="text-[18px] font-black text-[#111]">تفاصيل الطلب</p>
-        <p className="text-[11px] text-[#AAA] font-light">{orderLabel} · حساب براون دوز</p>
+        <StepIndicator phase={phase} orderType={orderType} />
+        <div className="px-5 pb-3">
+          <p className="text-[18px] font-black text-[#111]">تفاصيل الطلب</p>
+          <p className="text-[11px] text-[#AAA] font-light">{orderLabel} · حساب براون دوز</p>
+        </div>
       </div>
 
       <div className="px-5 pt-4 pb-8">
@@ -1140,29 +1148,19 @@ export function CheckoutModal({ item, brandName, brandType, logoImg, onClose, on
         style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(6px)' }}
       />
 
-      {/* Step indicator */}
-      {showStep && (
-        <motion.div
-          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-          className="absolute bottom-[420px] left-4 right-4 z-[15] rounded-[18px] py-2"
-          style={{ background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(16px)', boxShadow: '0 4px 20px rgba(0,0,0,0.12)' }}
-        >
-          <StepIndicator phase={phase} orderType={orderType} />
-        </motion.div>
-      )}
 
       <AnimatePresence mode="wait">
         {phase === 'type' && (
           <OrderTypeSheet key="type" brandType={brandType} item={item} onSelect={handleTypeSelect} onClose={onClose} />
         )}
         {phase === 'branch' && (
-          <BranchPickerSheet key="branch" onSelect={handleBranchSelect} onBack={() => setPhase('type')} />
+          <BranchPickerSheet key="branch" onSelect={handleBranchSelect} onBack={() => setPhase('type')} orderType={orderType} />
         )}
         {phase === 'address' && (
           <MapPickerSheet key="address" onConfirm={handleAddressConfirm} onBack={() => setPhase('type')} />
         )}
         {phase === 'payment' && (
-          <PaymentSheet key="payment" item={item} orderType={orderType} onPay={handlePay} />
+          <PaymentSheet key="payment" item={item} orderType={orderType} onPay={handlePay} phase={phase} />
         )}
         {phase === 'paying' && <PayingSheet key="paying" payMethod={payMethod} />}
         {phase === 'invoice' && (
