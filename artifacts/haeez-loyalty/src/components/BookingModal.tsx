@@ -28,7 +28,7 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.2, type: 'spring', damping: 14, stiffness: 220 }}
-              className="w-20 h-20 rounded-full flex items-center justify-center mb-5 shadow-[0_12px_32px_rgba(123,22,24,0.35)]"
+              className="w-20 h-20 rounded-full flex items-center justify-center mb-5 shadow-[0_12px_32px_rgba(160,82,45,0.35)]"
               style={{ background: 'linear-gradient(135deg, #7B1618, #4A0D0F)' }}
             >
               <Check className="text-white" size={38} strokeWidth={3} />
@@ -56,7 +56,7 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
 
             <button
               onClick={onClose}
-              className="w-full rounded-[18px] py-4 text-[15px] font-semibold active:scale-95 transition-transform text-white shadow-[0_8px_24px_rgba(123,22,24,0.3)]"
+              className="w-full rounded-[18px] py-4 text-[15px] font-semibold active:scale-95 transition-transform text-white shadow-[0_8px_24px_rgba(160,82,45,0.3)]"
               style={{ background: 'linear-gradient(135deg, #7B1618, #4A0D0F)' }}
             >
               رائع، شكراً! 🎉

@@ -94,7 +94,7 @@ const typeIcon: Record<Notif['type'], React.ReactNode> = {
   points:    <Star size={16} className="text-[#C9956A]" fill="#C9956A" />,
   geo:       <MapPin size={16} className="text-[#2980B9]" />,
   level:     <Crown size={16} className="text-[#C9956A]" />,
-  event:     <Coffee size={16} className="text-[#B06070]" />,
+  event:     <Coffee size={16} className="text-[#C4783A]" />,
   challenge: <Zap size={16} className="text-[#8E44AD]" />,
   birthday:  <Bell size={16} className="text-[#FF6B81]" />,
 };
@@ -104,7 +104,7 @@ const typeBg: Record<Notif['type'], string> = {
   points:    'rgba(201,149,106,0.1)',
   geo:       'rgba(41,128,185,0.1)',
   level:     'rgba(201,149,106,0.12)',
-  event:     'rgba(123,22,24,0.08)',
+  event:     'rgba(160,82,45,0.08)',
   challenge: 'rgba(142,68,173,0.1)',
   birthday:  'rgba(255,107,129,0.1)',
 };
@@ -132,7 +132,7 @@ export function ScreenNotifications() {
                 <motion.div
                   initial={{ scale: 0 }} animate={{ scale: 1 }}
                   className="w-5 h-5 rounded-full flex items-center justify-center"
-                  style={{ background: 'linear-gradient(135deg,#B06070,#C44)' }}>
+                  style={{ background: 'linear-gradient(135deg,#C4783A,#C44)' }}>
                   <span className="text-white text-[9px] font-black">{unreadCount}</span>
                 </motion.div>
               )}
@@ -145,7 +145,7 @@ export function ScreenNotifications() {
             <motion.button whileTap={{ scale: 0.92 }}
               onClick={() => setAllRead(true)}
               className="px-3 py-1.5 rounded-full text-[10px] font-bold"
-              style={{ background: 'rgba(123,22,24,0.07)', color: '#B06070', border: '1px solid rgba(123,22,24,0.12)' }}>
+              style={{ background: 'rgba(160,82,45,0.07)', color: '#C4783A', border: '1px solid rgba(160,82,45,0.12)' }}>
               قراءة الكل
             </motion.button>
           )}
@@ -186,7 +186,7 @@ export function ScreenNotifications() {
                       ? `linear-gradient(135deg,${typeBg[n.type]},rgba(255,255,255,0.7))`
                       : '#fff',
                     border: isUnread
-                      ? `1px solid rgba(123,22,24,0.1)`
+                      ? `1px solid rgba(160,82,45,0.1)`
                       : '1px solid rgba(196,181,159,0.14)',
                     boxShadow: isUnread
                       ? '0 4px 20px rgba(0,0,0,0.07)'
@@ -197,7 +197,7 @@ export function ScreenNotifications() {
                   {/* Unread glow line */}
                   {isUnread && (
                     <div className="absolute right-0 top-4 bottom-4 w-[3px] rounded-l-full"
-                      style={{ background: 'linear-gradient(180deg,#B06070,#C9956A)' }} />
+                      style={{ background: 'linear-gradient(180deg,#C4783A,#C9956A)' }} />
                   )}
 
                   <div className="flex gap-3">
@@ -214,7 +214,7 @@ export function ScreenNotifications() {
                           <p className="text-[12.5px] font-bold text-[#111] leading-snug">{n.title}</p>
                           {n.badge && (
                             <span className="text-[7px] font-black px-1.5 py-0.5 rounded-full text-white"
-                              style={{ background: n.badgeColor ?? '#B06070' }}>
+                              style={{ background: n.badgeColor ?? '#C4783A' }}>
                               {n.badge}
                             </span>
                           )}
@@ -222,7 +222,7 @@ export function ScreenNotifications() {
                         <div className="flex flex-col items-end shrink-0 gap-1">
                           <span className="text-[9px] text-[#C4B5A8] whitespace-nowrap font-inter">{n.time}</span>
                           {isUnread && (
-                            <div className="w-2 h-2 rounded-full bg-[#B06070]" />
+                            <div className="w-2 h-2 rounded-full bg-[#C4783A]" />
                           )}
                         </div>
                       </div>
@@ -233,7 +233,7 @@ export function ScreenNotifications() {
                         <motion.button
                           whileTap={{ scale: 0.92 }}
                           className="flex items-center gap-1 text-[10px] font-bold"
-                          style={{ color: '#B06070' }}>
+                          style={{ color: '#C4783A' }}>
                           {n.actionLabel}
                           <ChevronLeft size={10} />
                         </motion.button>
@@ -268,8 +268,8 @@ export function ScreenNotifications() {
         {visible.length === 0 && (
           <div className="flex flex-col items-center justify-center h-64 gap-3 opacity-60">
             <div className="w-14 h-14 rounded-[18px] flex items-center justify-center"
-              style={{ background: 'rgba(123,22,24,0.06)' }}>
-              <Check size={24} className="text-[#B06070]" />
+              style={{ background: 'rgba(160,82,45,0.06)' }}>
+              <Check size={24} className="text-[#C4783A]" />
             </div>
             <p className="text-[13px] font-semibold text-[#AAA]">لا إشعارات جديدة</p>
           </div>
@@ -277,7 +277,7 @@ export function ScreenNotifications() {
 
         {/* Haiz notification footer */}
         <div className="mx-5 mt-2 mb-4 p-4 rounded-[18px] flex items-center gap-3"
-          style={{ background: 'linear-gradient(135deg,rgba(123,22,24,0.05),rgba(201,149,106,0.05))', border: '1px solid rgba(201,149,106,0.12)' }}>
+          style={{ background: 'linear-gradient(135deg,rgba(160,82,45,0.05),rgba(201,149,106,0.05))', border: '1px solid rgba(201,149,106,0.12)' }}>
           <div className="shrink-0">
             <img src={logoImg} alt="مطعمك" className="w-9 h-9 rounded-[11px] object-cover"
               style={{ border: '1px solid rgba(201,149,106,0.2)' }} />

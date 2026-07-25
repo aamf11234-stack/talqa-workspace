@@ -11,7 +11,7 @@ const ORDER_STEPS = [
   { id: 'confirmed', label: 'تم الاستلام', icon: Check,   color: '#30D158' },
   { id: 'preparing', label: 'يُحضَّر',     icon: ChefHat, color: '#C9956A' },
   { id: 'ready',     label: 'جاهز',        icon: Clock,   color: '#007AFF' },
-  { id: 'delivered', label: 'تم التوصيل', icon: Bike,    color: '#B06070' },
+  { id: 'delivered', label: 'تم التوصيل', icon: Bike,    color: '#C4783A' },
 ];
 
 function OrderTracker({ step }: { step: number }) {
@@ -169,7 +169,7 @@ function PastOrderCard({ order, onReorder }: { order: PastOrder; onReorder: (ite
           <p className="text-[10px] text-[#AAA] font-light mt-0.5">{order.date}</p>
         </div>
         <div className="text-right">
-          <p className="text-[13px] font-black text-[#B06070] font-inter">{order.total}</p>
+          <p className="text-[13px] font-black text-[#C4783A] font-inter">{order.total}</p>
           <p className="text-[9px] text-[#30D158] font-bold mt-0.5">{order.pts}</p>
         </div>
       </div>
@@ -185,7 +185,7 @@ function PastOrderCard({ order, onReorder }: { order: PastOrder; onReorder: (ite
           whileTap={{ scale: 0.95 }}
           onClick={() => onReorder({ name: order.items, price: String(order.basePrice), emoji: order.emoji })}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-semibold"
-          style={{ background: 'rgba(123,22,24,0.07)', color: '#B06070' }}>
+          style={{ background: 'rgba(160,82,45,0.07)', color: '#C4783A' }}>
           <RotateCcw size={10} />
           اعد الطلب
         </motion.button>
@@ -260,7 +260,7 @@ export function ScreenOrders() {
 
         {/* Header */}
         <div className="px-5 pt-5 pb-4">
-          <p className="text-[10px] text-[#B06070] font-bold tracking-widest mb-0.5">الطلبات</p>
+          <p className="text-[10px] text-[#C4783A] font-bold tracking-widest mb-0.5">الطلبات</p>
           <h1 className="text-[22px] font-bold text-[#111]">طلباتي</h1>
         </div>
 
@@ -271,11 +271,11 @@ export function ScreenOrders() {
             onClick={() => setPendingOrder({ name: brand.todaySpecial.name, price: brand.todaySpecial.price, emoji: brand.todaySpecial.emoji })}
             whileTap={{ scale: 0.96 }}
             className="flex-1 flex flex-col items-center gap-2 py-4 rounded-[20px] relative overflow-hidden"
-            style={{ background: 'linear-gradient(145deg,#0C0002,#280610)', border: '1px solid rgba(176,96,112,0.2)', boxShadow: '0 6px 20px rgba(0,0,0,0.2)' }}
+            style={{ background: 'linear-gradient(145deg,#0C0002,#280610)', border: '1px solid rgba(196,120,58,0.2)', boxShadow: '0 6px 20px rgba(0,0,0,0.2)' }}
           >
             <div className="w-10 h-10 rounded-[13px] flex items-center justify-center"
-              style={{ background: 'rgba(176,96,112,0.15)' }}>
-              <Package size={20} className="text-[#B06070]" />
+              style={{ background: 'rgba(196,120,58,0.15)' }}>
+              <Package size={20} className="text-[#C4783A]" />
             </div>
             <div className="text-center">
               <p className="text-white text-[13px] font-bold">استلام</p>
@@ -288,7 +288,7 @@ export function ScreenOrders() {
             onClick={() => setPendingOrder({ name: brand.todaySpecial.name, price: brand.todaySpecial.price, emoji: brand.todaySpecial.emoji })}
             whileTap={{ scale: 0.96 }}
             className="flex-1 flex flex-col items-center gap-2 py-4 rounded-[20px] relative overflow-hidden"
-            style={{ background: 'linear-gradient(145deg,#B06070,#7A3050)', boxShadow: '0 6px 20px rgba(176,96,112,0.4)' }}
+            style={{ background: 'linear-gradient(145deg,#C4783A,#6B3A1F)', boxShadow: '0 6px 20px rgba(196,120,58,0.4)' }}
           >
             <div className="w-10 h-10 rounded-[13px] flex items-center justify-center"
               style={{ background: 'rgba(255,255,255,0.15)' }}>

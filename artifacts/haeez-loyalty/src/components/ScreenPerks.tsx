@@ -12,7 +12,7 @@ const tiers = [
     cupsHave: 4,
     bg: 'linear-gradient(145deg,#080003 0%,#3D0809 40%,#0D0003 70%,#1A0405 100%)',
     accent: '#C9956A',
-    glow: 'rgba(123,22,24,0.5)',
+    glow: 'rgba(160,82,45,0.5)',
     shimmer: 'rgba(201,149,106,0.1)',
     badge: '🏅',
     benefits: [
@@ -67,7 +67,7 @@ const tiers = [
 ];
 
 const weeklyOffers = [
-  { emoji: '☕', title: 'لاتيه إثيوبي', sub: 'خصم ١٥٪ اليوم فقط', badge: '١٥٪', badgeColor: '#B06070' },
+  { emoji: '☕', title: 'لاتيه إثيوبي', sub: 'خصم ١٥٪ اليوم فقط', badge: '١٥٪', badgeColor: '#C4783A' },
   { emoji: '🥐', title: 'كرواسون + مشروب', sub: 'تحدي الاثنين — ٢٠ ر', badge: 'جديد', badgeColor: '#30D158' },
   { emoji: '🫖', title: 'محصول كينيا AA', sub: 'وصل حديثاً — كمية محدودة', badge: 'محدود', badgeColor: '#C9956A' },
 ];

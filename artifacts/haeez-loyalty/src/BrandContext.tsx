@@ -141,7 +141,7 @@ export const BROWNDOSE_BRAND: BrandConfig = {
     { id: 'quick',  emoji: '⚡', label: 'سريع',   items: ['اسبريسو', 'امريكانو'],          prices: ['١٠ ر', '١٢ ر'] },
   ],
   recentOrders: [
-    { item: 'أفقاتو براون',       time: 'اليوم، ٩:١٥ص',  pts: '+١٥', emoji: '🍫', color: '#B06070' },
+    { item: 'أفقاتو براون',       time: 'اليوم، ٩:١٥ص',  pts: '+١٥', emoji: '🍫', color: '#C4783A' },
     { item: 'كراميل لاتيه بارد',  time: 'أمس، ٥:٣٠م',    pts: '+١٢', emoji: '☕', color: '#7A3B28' },
     { item: 'موهيتو روز يري',     time: 'السبت، ٣:٠٠م',  pts: '+١٠', emoji: '🌹', color: '#A0495C' },
   ],
@@ -153,7 +153,7 @@ export const BROWNDOSE_BRAND: BrandConfig = {
   ],
   streak: { count: '٩', label: '٩ أيام متواصلة' },
   memberCard: { label: 'Brown Dose', sub: 'عضوية براون' },
-  accentColor: '#B06070',
+  accentColor: '#C4783A',
 };
 
 /* ── Context ────────────────────────────────────────────────────── */

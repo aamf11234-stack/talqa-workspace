@@ -54,13 +54,13 @@ const pinkIcon = L.divIcon({
   className: '',
   html: `<div style="
     width:36px;height:44px;position:relative;
-    filter:drop-shadow(0 4px 12px rgba(176,96,112,0.55));
+    filter:drop-shadow(0 4px 12px rgba(196,120,58,0.55));
   ">
     <svg viewBox="0 0 36 44" xmlns="http://www.w3.org/2000/svg">
       <path d="M18 0C8.059 0 0 8.059 0 18c0 13.5 18 26 18 26S36 31.5 36 18C36 8.059 27.941 0 18 0z"
-        fill="#B06070"/>
+        fill="#C4783A"/>
       <circle cx="18" cy="18" r="8" fill="white" opacity="0.9"/>
-      <circle cx="18" cy="18" r="4" fill="#B06070"/>
+      <circle cx="18" cy="18" r="4" fill="#C4783A"/>
     </svg>
   </div>`,
   iconSize: [36, 44],
@@ -82,12 +82,12 @@ function RecenterBtn({ center }: { center: [number, number] }) {
       style={{
         position: 'absolute', bottom: 180, left: 12, zIndex: 1000,
         width: 40, height: 40, borderRadius: '50%',
-        background: 'white', border: '1.5px solid rgba(176,96,112,0.25)',
+        background: 'white', border: '1.5px solid rgba(196,120,58,0.25)',
         boxShadow: '0 2px 10px rgba(0,0,0,0.15)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}
     >
-      <Navigation size={16} color="#B06070" />
+      <Navigation size={16} color="#C4783A" />
     </button>
   );
 }
@@ -114,8 +114,8 @@ function MapPickerSheet({ onConfirm, onBack }: { onConfirm: (addr: string) => vo
         style={{ borderBottom: '1px solid rgba(196,181,159,0.2)' }}>
         <button onClick={onBack}
           className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
-          style={{ background: 'rgba(176,96,112,0.08)' }}>
-          <ChevronLeft size={16} color="#B06070" />
+          style={{ background: 'rgba(196,120,58,0.08)' }}>
+          <ChevronLeft size={16} color="#C4783A" />
         </button>
         <div>
           <p className="text-[14px] font-bold text-[#111] leading-tight">حدد موقعك على الخريطة</p>
@@ -144,7 +144,7 @@ function MapPickerSheet({ onConfirm, onBack }: { onConfirm: (addr: string) => vo
             initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
             className="absolute top-3 left-1/2 -translate-x-1/2 z-[500] px-4 py-2 rounded-full flex items-center gap-2"
             style={{ background: 'rgba(13,2,5,0.82)', backdropFilter: 'blur(8px)' }}>
-            <MapPin size={12} color="#B06070" />
+            <MapPin size={12} color="#C4783A" />
             <span className="text-white text-[11px] font-medium">اضغط لتحديد موقعك</span>
           </motion.div>
         )}
@@ -154,7 +154,7 @@ function MapPickerSheet({ onConfirm, onBack }: { onConfirm: (addr: string) => vo
           <motion.div
             initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
             className="absolute top-3 left-1/2 -translate-x-1/2 z-[500] px-4 py-2 rounded-full flex items-center gap-2"
-            style={{ background: '#B06070', boxShadow: '0 4px 16px rgba(176,96,112,0.45)' }}>
+            style={{ background: '#C4783A', boxShadow: '0 4px 16px rgba(196,120,58,0.45)' }}>
             <Check size={12} color="white" strokeWidth={2.5} />
             <span className="text-white text-[11px] font-semibold">تم تحديد الموقع — يمكنك تغييره</span>
           </motion.div>
@@ -173,7 +173,7 @@ function MapPickerSheet({ onConfirm, onBack }: { onConfirm: (addr: string) => vo
             { icon: '📍', v: 'صبيا · ضمد', l: 'نطاق التوصيل' },
           ].map((s, i) => (
             <div key={i} className="flex-1 rounded-[12px] p-2 text-center"
-              style={{ background: 'rgba(176,96,112,0.06)', border: '1px solid rgba(176,96,112,0.12)' }}>
+              style={{ background: 'rgba(196,120,58,0.06)', border: '1px solid rgba(196,120,58,0.12)' }}>
               <p className="text-[12px] mb-0.5">{s.icon}</p>
               <p className="text-[10px] font-bold text-[#111]">{s.v}</p>
               <p className="text-[8px] text-[#AAA]">{s.l}</p>
@@ -188,7 +188,7 @@ function MapPickerSheet({ onConfirm, onBack }: { onConfirm: (addr: string) => vo
           placeholder="ملاحظة للمندوب (اختياري) — مثال: قرب المسجد"
           className="w-full px-3 py-2.5 rounded-[12px] text-[12px] text-[#111] placeholder-[#CCC] outline-none border mb-3"
           style={{ background: '#FDFBF7', border: '1.5px solid rgba(196,181,159,0.3)', direction: 'rtl' }}
-          onFocus={e => (e.target.style.borderColor = '#B06070')}
+          onFocus={e => (e.target.style.borderColor = '#C4783A')}
           onBlur={e => (e.target.style.borderColor = 'rgba(196,181,159,0.3)')}
         />
 
@@ -197,9 +197,9 @@ function MapPickerSheet({ onConfirm, onBack }: { onConfirm: (addr: string) => vo
           onClick={() => pin && onConfirm(`${pin[0].toFixed(5)},${pin[1].toFixed(5)}${notes ? ' · ' + notes : ''}`)}
           className="w-full py-3.5 rounded-[16px] font-bold text-[14px] flex items-center justify-center gap-2"
           style={{
-            background: pin ? 'linear-gradient(135deg,#B06070,#7A3050)' : 'rgba(196,181,159,0.3)',
+            background: pin ? 'linear-gradient(135deg,#C4783A,#6B3A1F)' : 'rgba(196,181,159,0.3)',
             color: pin ? 'white' : '#AAA',
-            boxShadow: pin ? '0 6px 20px rgba(176,96,112,0.4)' : 'none',
+            boxShadow: pin ? '0 6px 20px rgba(196,120,58,0.4)' : 'none',
           }}>
           {pin ? (
             <><Check size={16} strokeWidth={2.5} />تأكيد الموقع</>
@@ -243,7 +243,7 @@ function OrderTypeSheet({ brandType, onSelect }: { brandType: 'restaurant' | 'ca
             className="flex items-center gap-4 p-4 rounded-[20px] text-right border transition-colors"
             style={{ background: '#fff', border: '1.5px solid rgba(196,181,159,0.25)', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
             <div className="w-12 h-12 rounded-[14px] flex items-center justify-center text-[24px] shrink-0"
-              style={{ background: 'rgba(123,22,24,0.06)' }}>{o.icon}</div>
+              style={{ background: 'rgba(160,82,45,0.06)' }}>{o.icon}</div>
             <div className="flex-1">
               <p className="text-[15px] font-bold text-[#111]">{o.label}</p>
               <p className="text-[11px] text-[#AAA] font-light mt-0.5">{o.sub}</p>
@@ -303,7 +303,7 @@ function PaymentSheet({
         <div className="flex items-center gap-3 bg-white rounded-[18px] p-4 mb-5 border border-[rgba(196,181,159,0.2)]"
           style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.04)' }}>
           <div className="w-12 h-12 rounded-[13px] flex items-center justify-center text-[26px] shrink-0"
-            style={{ background: 'rgba(123,22,24,0.06)' }}>{item.emoji}</div>
+            style={{ background: 'rgba(160,82,45,0.06)' }}>{item.emoji}</div>
           <div className="flex-1">
             <p className="text-[14px] font-bold text-[#111]">{item.name}</p>
             <p className="text-[11px] text-[#C4B59F] font-light">× ١</p>
@@ -331,7 +331,7 @@ function PaymentSheet({
           <div className="h-px bg-[rgba(196,181,159,0.2)] my-1" />
           <div className="flex items-center justify-between">
             <span className="text-[14px] font-bold text-[#111]">الإجمالي</span>
-            <span className="text-[18px] font-black text-[#B06070] font-inter">{toAr(total)} ر</span>
+            <span className="text-[18px] font-black text-[#C4783A] font-inter">{toAr(total)} ر</span>
           </div>
         </div>
 
@@ -357,7 +357,7 @@ function PaymentSheet({
                   background: sel ? '#0C0002' : 'white',
                   border: `1.5px solid ${sel ? '#C9956A' : 'rgba(196,181,159,0.25)'}`,
                   color: sel ? '#C9956A' : '#888',
-                  boxShadow: sel ? '0 4px 16px rgba(123,22,24,0.2)' : '0 2px 8px rgba(0,0,0,0.04)',
+                  boxShadow: sel ? '0 4px 16px rgba(160,82,45,0.2)' : '0 2px 8px rgba(0,0,0,0.04)',
                 }}>
                 {m.icon}
                 <span className="text-[10px] font-bold">{m.label}</span>
@@ -405,7 +405,7 @@ function PaymentSheet({
               ? 'linear-gradient(135deg,#1C1C1E,#3A3A3C)'
               : method === 'stc'
               ? 'linear-gradient(135deg,#006239,#00813D)'
-              : 'linear-gradient(135deg,#B06070,#7A3050)',
+              : 'linear-gradient(135deg,#C4783A,#6B3A1F)',
             boxShadow: '0 6px 24px rgba(0,0,0,0.18)',
           }}>
           {method === 'apple' && (
@@ -439,7 +439,7 @@ function PayingSheet() {
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-        className="w-14 h-14 rounded-full border-4 border-[rgba(123,22,24,0.12)] border-t-[#B06070] mb-5"
+        className="w-14 h-14 rounded-full border-4 border-[rgba(160,82,45,0.12)] border-t-[#C4783A] mb-5"
       />
       <p className="text-[16px] font-bold text-[#111]">جاري المعالجة...</p>
       <p className="text-[11px] text-[#AAA] font-light mt-1">لا تغلق الشاشة</p>
@@ -529,7 +529,7 @@ function InvoiceSheet({
             style={{ fontFamily: 'ui-monospace,monospace' }}>الأصناف المطلوبة</p>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-[12px] flex items-center justify-center text-[20px] shrink-0"
-              style={{ background: 'rgba(123,22,24,0.06)' }}>{item.emoji}</div>
+              style={{ background: 'rgba(160,82,45,0.06)' }}>{item.emoji}</div>
             <div className="flex-1">
               <p className="text-[13px] font-semibold text-[#111]">{item.name}</p>
               <p className="text-[10px] text-[#AAA]">× ١</p>
@@ -557,7 +557,7 @@ function InvoiceSheet({
           <div className="h-px bg-[rgba(196,181,159,0.2)] my-1" />
           <div className="flex justify-between">
             <span className="text-[14px] font-bold text-[#111]">الإجمالي</span>
-            <span className="text-[18px] font-black text-[#B06070] font-inter">{toAr(total)} ر</span>
+            <span className="text-[18px] font-black text-[#C4783A] font-inter">{toAr(total)} ر</span>
           </div>
         </div>
 
@@ -603,7 +603,7 @@ function InvoiceSheet({
         <motion.button whileTap={{ scale: 0.95 }}
           className="w-14 rounded-[18px] flex items-center justify-center shrink-0"
           style={{ background: 'white', border: '1.5px solid rgba(196,181,159,0.25)', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
-          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-[#B06070]" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-[#C4783A]" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
             <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
             <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
           </svg>

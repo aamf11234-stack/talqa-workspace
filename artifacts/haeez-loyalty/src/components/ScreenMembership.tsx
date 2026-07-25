@@ -24,12 +24,12 @@ function MembershipCard() {
         style={{
           aspectRatio: '1.586/1',
           background: 'linear-gradient(155deg,#0C0002 0%,#2A0407 30%,#4D0C10 55%,#1C0406 78%,#060001 100%)',
-          boxShadow: '0 24px 60px rgba(0,0,0,0.55), 0 8px 20px rgba(123,22,24,0.3)',
+          boxShadow: '0 24px 60px rgba(0,0,0,0.55), 0 8px 20px rgba(160,82,45,0.3)',
         }}>
         <div className="absolute inset-0 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse at 80% 10%,rgba(201,149,106,0.18) 0%,transparent 52%)' }} />
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 0% 100%,rgba(123,22,24,0.55) 0%,transparent 48%)' }} />
+          style={{ background: 'radial-gradient(ellipse at 0% 100%,rgba(160,82,45,0.55) 0%,transparent 48%)' }} />
         <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
           style={{ backgroundImage: 'radial-gradient(circle,#fff 1px,transparent 1px)', backgroundSize: '12px 12px' }} />
         <div className="absolute pointer-events-none" style={{ right: '-10%', top: '-25%', width: '58%', aspectRatio: '1/1' }}>
@@ -126,7 +126,7 @@ function QRModal({ onClose }: { onClose: () => void }) {
           <QRCodeSVG />
           <motion.div
             className="absolute left-4 right-4 h-0.5 rounded-full pointer-events-none"
-            style={{ background: 'linear-gradient(90deg,transparent,#B06070,#C9956A,#B06070,transparent)', boxShadow: '0 0 8px rgba(123,22,24,0.7)' }}
+            style={{ background: 'linear-gradient(90deg,transparent,#C4783A,#C9956A,#C4783A,transparent)', boxShadow: '0 0 8px rgba(160,82,45,0.7)' }}
             initial={{ top: '16px' }}
             animate={{ top: ['16px', 'calc(100% - 16px)', '16px'] }}
             transition={{ duration: 2.2, ease: 'easeInOut', repeat: Infinity, repeatDelay: 0.8 }}
@@ -430,17 +430,17 @@ function GiftModal({ gift, onClose, onSend }: { gift: { title: string; pts: numb
           {friends.map(f => (
             <button key={f} onClick={() => setSelected(f)}
               className="w-full flex items-center gap-3 px-4 py-3 rounded-[14px] transition-all"
-              style={{ background: selected === f ? 'rgba(123,22,24,0.07)' : 'rgba(196,181,159,0.08)', border: selected === f ? '1.5px solid rgba(123,22,24,0.25)' : '1.5px solid transparent' }}>
+              style={{ background: selected === f ? 'rgba(160,82,45,0.07)' : 'rgba(196,181,159,0.08)', border: selected === f ? '1.5px solid rgba(160,82,45,0.25)' : '1.5px solid transparent' }}>
               <div className="w-8 h-8 rounded-full flex items-center justify-center text-[14px]"
                 style={{ background: 'linear-gradient(135deg,#F2EAE0,#E8DDD0)' }}>{f[0]}</div>
               <span className="text-[13px] font-medium text-[#111]">{f}</span>
-              {selected === f && <Check size={14} className="text-[#B06070] mr-auto" />}
+              {selected === f && <Check size={14} className="text-[#C4783A] mr-auto" />}
             </button>
           ))}
         </div>
         <motion.button whileTap={{ scale: 0.97 }} onClick={selected ? handleSend : undefined}
           className="w-full py-3.5 rounded-[16px] font-semibold text-[14px] transition-all"
-          style={{ background: selected ? 'linear-gradient(135deg,#B06070,#7A3050)' : 'rgba(196,181,159,0.2)', color: selected ? '#fff' : '#AAA' }}>
+          style={{ background: selected ? 'linear-gradient(135deg,#C4783A,#6B3A1F)' : 'rgba(196,181,159,0.2)', color: selected ? '#fff' : '#AAA' }}>
           {selected ? `أرسل الهدية إلى ${selected} 🎁` : 'اختر صديقاً أولاً'}
         </motion.button>
       </motion.div>
@@ -450,7 +450,7 @@ function GiftModal({ gift, onClose, onSend }: { gift: { title: string; pts: numb
 
 /* ── Gifts Section ───────────────────────────────────────────────── */
 const giftOptions = [
-  { id: 'meal',      icon: '🍽️', title: 'وجبة مجانية', sub: 'من قائمة مطعمك',    pts: 150, color: '#B06070' },
+  { id: 'meal',      icon: '🍽️', title: 'وجبة مجانية', sub: 'من قائمة مطعمك',    pts: 150, color: '#C4783A' },
   { id: 'drink',     icon: '🥤', title: 'مشروب',        sub: 'أي مشروب تختاره',  pts: 60,  color: '#C9956A' },
   { id: 'points',    icon: '⭐', title: 'نقاط',         sub: 'أرسل ١٠٠ نقطة',   pts: 100, color: '#D4AC0D' },
   { id: 'dessert',   icon: '🎂', title: 'حلى',          sub: 'حلو اليوم مجاناً', pts: 80,  color: '#B5651D' },
@@ -537,7 +537,7 @@ export function ScreenMembership() {
         {/* Header */}
         <div className="flex items-center gap-3 mb-5">
           <div className="relative">
-            <img src={brand.logoImg} alt={brand.name} className="w-12 h-12 rounded-[16px] object-cover shadow-[0_4px_18px_rgba(123,22,24,0.3)]" />
+            <img src={brand.logoImg} alt={brand.name} className="w-12 h-12 rounded-[16px] object-cover shadow-[0_4px_18px_rgba(160,82,45,0.3)]" />
             <div className="absolute -bottom-1.5 -left-1.5 w-5 h-5 bg-[#30D158] rounded-full border-2 border-[#FDFBF7] flex items-center justify-center">
               <Check size={10} strokeWidth={3} className="text-white" />
             </div>
@@ -559,11 +559,11 @@ export function ScreenMembership() {
 
         {/* QR button */}
         <motion.button whileTap={{ scale: 0.96 }} onClick={() => setShowQR(true)}
-          className="w-full mt-4 py-3.5 rounded-2xl border border-[rgba(123,22,24,0.2)] flex items-center justify-center gap-2.5 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.05)]">
-          <svg viewBox="0 0 20 20" className="w-4 h-4 fill-[#B06070]">
+          className="w-full mt-4 py-3.5 rounded-2xl border border-[rgba(160,82,45,0.2)] flex items-center justify-center gap-2.5 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.05)]">
+          <svg viewBox="0 0 20 20" className="w-4 h-4 fill-[#C4783A]">
             <path d="M2 2h6v6H2V2zm1.5 1.5v3h3v-3h-3zm8.5-1.5h6v6h-6V2zm1.5 1.5v3h3v-3h-3zM2 12h6v6H2v-6zm1.5 1.5v3h3v-3h-3zm8-1h2v2h-2v-2zm2 2h2v2h-2v-2zm-2 2h2v2h-2v-2zm2 2h2v2h-2v-2zm-4-4h2v2h-2v-2zm4-2h2v2h-2v-2z" />
           </svg>
-          <span className="text-[13px] font-semibold text-[#B06070]">عرض رمز QR للمسح</span>
+          <span className="text-[13px] font-semibold text-[#C4783A]">عرض رمز QR للمسح</span>
         </motion.button>
 
         {/* Wallet Buttons */}
@@ -625,13 +625,13 @@ export function ScreenMembership() {
                     animate={{ scale: filled ? [1, 1.15, 1] : 1 }}
                     transition={{ delay: i * 0.08, duration: 0.4 }}
                     className={`relative flex items-center justify-center rounded-full transition-all ${filled ? 'w-7 h-7' : 'w-6 h-6'}`}
-                    style={{ background: filled ? 'linear-gradient(135deg,#B06070,#7A3050)' : 'rgba(196,181,159,0.15)' }}>
+                    style={{ background: filled ? 'linear-gradient(135deg,#C4783A,#6B3A1F)' : 'rgba(196,181,159,0.15)' }}>
                     <svg viewBox="0 0 24 24" className={`${filled ? 'w-4 h-4' : 'w-3.5 h-3.5'}`} fill="none"
                       stroke={filled ? 'rgba(201,149,106,0.8)' : 'rgba(196,181,159,0.35)'} strokeWidth={1.5} strokeLinecap="round">
                       <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" />
                     </svg>
                   </motion.div>
-                  {i < 6 && <div className={`flex-1 h-0.5 rounded-full ${i < 3 ? 'bg-gradient-to-r from-[#B06070] to-[#C9956A]' : 'bg-[rgba(196,181,159,0.2)]'}`} />}
+                  {i < 6 && <div className={`flex-1 h-0.5 rounded-full ${i < 3 ? 'bg-gradient-to-r from-[#C4783A] to-[#C9956A]' : 'bg-[rgba(196,181,159,0.2)]'}`} />}
                 </React.Fragment>
               );
             })}
@@ -642,8 +642,8 @@ export function ScreenMembership() {
       {/* Book CTA */}
       <div className="absolute bottom-[72px] left-5 right-5">
         <motion.button whileTap={{ scale: 0.97 }} onClick={() => setShowBooking(true)}
-          className="w-full rounded-2xl py-4 flex items-center justify-center gap-3 text-white font-semibold text-[14px] shadow-[0_8px_28px_rgba(123,22,24,0.4)]"
-          style={{ background: 'linear-gradient(135deg,#B06070,#7A3050)' }}>
+          className="w-full rounded-2xl py-4 flex items-center justify-center gap-3 text-white font-semibold text-[14px] shadow-[0_8px_28px_rgba(160,82,45,0.4)]"
+          style={{ background: 'linear-gradient(135deg,#C4783A,#6B3A1F)' }}>
           <span>طاولتك بانتظارك</span>
           <Calendar size={16} className="opacity-80" />
         </motion.button>

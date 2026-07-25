@@ -12,13 +12,13 @@ function ZoneCard({ name, time, active, onClick }: { name: string; time: string;
     <motion.button whileTap={{ scale: 0.95 }} onClick={onClick}
       className="flex items-center gap-3 p-4 rounded-[18px] text-right transition-all"
       style={{
-        background: active ? 'linear-gradient(135deg,#B06070,#8A3050)' : 'white',
+        background: active ? 'linear-gradient(135deg,#C4783A,#8A3050)' : 'white',
         border: active ? 'none' : '1.5px solid rgba(196,181,159,0.25)',
-        boxShadow: active ? '0 6px 20px rgba(176,96,112,0.35)' : '0 2px 10px rgba(0,0,0,0.04)',
+        boxShadow: active ? '0 6px 20px rgba(196,120,58,0.35)' : '0 2px 10px rgba(0,0,0,0.04)',
       }}>
       <div className="w-10 h-10 rounded-[12px] flex items-center justify-center shrink-0"
-        style={{ background: active ? 'rgba(255,255,255,0.18)' : 'rgba(176,96,112,0.08)' }}>
-        <MapPin size={17} style={{ color: active ? 'white' : '#B06070' }} />
+        style={{ background: active ? 'rgba(255,255,255,0.18)' : 'rgba(196,120,58,0.08)' }}>
+        <MapPin size={17} style={{ color: active ? 'white' : '#C4783A' }} />
       </div>
       <div className="flex-1 text-right">
         <p className="font-bold" style={{ color: active ? 'white' : '#111', fontSize: 14 }}>{name}</p>
@@ -38,16 +38,16 @@ function PopularCard({ emoji, name, price, badge, onOrder }: { emoji: string; na
       className="flex flex-col rounded-[20px] overflow-hidden text-right"
       style={{ background: 'white', border: '1.5px solid rgba(196,181,159,0.18)', boxShadow: '0 4px 16px rgba(0,0,0,0.06)' }}>
       <div className="w-full h-[90px] flex items-center justify-center text-[42px] relative"
-        style={{ background: 'linear-gradient(135deg,rgba(176,96,112,0.08),rgba(201,149,106,0.08))' }}>
+        style={{ background: 'linear-gradient(135deg,rgba(196,120,58,0.08),rgba(201,149,106,0.08))' }}>
         {emoji}
         {badge && (
           <span className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[8px] font-black text-white"
-            style={{ background: '#B06070' }}>{badge}</span>
+            style={{ background: '#C4783A' }}>{badge}</span>
         )}
       </div>
       <div className="px-3 py-2.5">
         <p className="text-[11px] font-bold text-[#111] leading-tight mb-0.5">{name}</p>
-        <p className="text-[#B06070] text-[12px] font-black font-inter">{price} ر</p>
+        <p className="text-[#C4783A] text-[12px] font-black font-inter">{price} ر</p>
       </div>
     </motion.button>
   );
@@ -71,7 +71,7 @@ function LiveTracker({ onDone }: { onDone: () => void }) {
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
       className="mx-4 mb-5 rounded-[22px] overflow-hidden"
-      style={{ background: 'linear-gradient(145deg,#0D0205,#280610,#0D0205)', border: '1px solid rgba(176,96,112,0.2)' }}>
+      style={{ background: 'linear-gradient(145deg,#0D0205,#280610,#0D0205)', border: '1px solid rgba(196,120,58,0.2)' }}>
       <div className="p-5">
         <div className="flex items-center justify-between mb-4">
           <p className="text-white text-[13px] font-bold">تتبع طلبك</p>
@@ -86,18 +86,18 @@ function LiveTracker({ onDone }: { onDone: () => void }) {
             <motion.div key={i} initial={{ opacity: 0.3 }} animate={{ opacity: i <= step ? 1 : 0.3 }}
               className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full flex items-center justify-center text-[16px] shrink-0"
-                style={{ background: i <= step ? 'rgba(176,96,112,0.15)' : 'rgba(255,255,255,0.04)' }}>
+                style={{ background: i <= step ? 'rgba(196,120,58,0.15)' : 'rgba(255,255,255,0.04)' }}>
                 {s.icon}
               </div>
               <div className="flex-1">
                 <p className="text-[11px] font-bold" style={{ color: i <= step ? 'white' : 'rgba(255,255,255,0.3)' }}>{s.label}</p>
-                {i === step && <p className="text-[9px] text-[#B06070] mt-0.5">{s.sub}</p>}
+                {i === step && <p className="text-[9px] text-[#C4783A] mt-0.5">{s.sub}</p>}
               </div>
               {i < step && <div className="w-4 h-4 rounded-full bg-[#30D158] flex items-center justify-center shrink-0">
                 <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 fill-white"><path d="M20 6L9 17l-5-5" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>
               </div>}
               {i === step && <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 1.5 }}
-                className="w-4 h-4 rounded-full bg-[#B06070] shrink-0" />}
+                className="w-4 h-4 rounded-full bg-[#C4783A] shrink-0" />}
             </motion.div>
           ))}
         </div>
@@ -105,7 +105,7 @@ function LiveTracker({ onDone }: { onDone: () => void }) {
           <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
             whileTap={{ scale: 0.96 }} onClick={onDone}
             className="mt-4 w-full py-3 rounded-[14px] text-white font-bold text-[12px]"
-            style={{ background: 'linear-gradient(135deg,#B06070,#8A3050)' }}>
+            style={{ background: 'linear-gradient(135deg,#C4783A,#8A3050)' }}>
             تم! ⭐ قيّم تجربتك
           </motion.button>
         )}
@@ -142,7 +142,7 @@ export function ScreenDelivery() {
       <div className="relative overflow-hidden px-5 pt-6 pb-8"
         style={{ background: 'linear-gradient(160deg,#0D0205 0%,#200810 35%,#3A1530 60%,#0D0205 100%)' }}>
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 70% 30%,rgba(176,96,112,0.6) 0%,transparent 55%)' }} />
+          style={{ background: 'radial-gradient(ellipse at 70% 30%,rgba(196,120,58,0.6) 0%,transparent 55%)' }} />
         <div className="absolute inset-0 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse at 10% 80%,rgba(201,149,106,0.1) 0%,transparent 50%)' }} />
         <div className="relative">
@@ -196,7 +196,7 @@ export function ScreenDelivery() {
         <div className="mb-5">
           <div className="flex items-center justify-between mb-3">
             <p className="text-[13px] font-bold text-[#111]">الأكثر طلباً</p>
-            <span className="text-[10px] text-[#B06070] font-semibold">مثالي للتوصيل</span>
+            <span className="text-[10px] text-[#C4783A] font-semibold">مثالي للتوصيل</span>
           </div>
           <div className="grid grid-cols-2 gap-2.5">
             {popular.map((p, i) => (
@@ -210,11 +210,11 @@ export function ScreenDelivery() {
         <motion.div
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
           className="rounded-[20px] p-5 flex items-center gap-4 relative overflow-hidden"
-          style={{ background: 'linear-gradient(135deg,#0D0205,#280610)', border: '1px solid rgba(176,96,112,0.2)' }}>
+          style={{ background: 'linear-gradient(135deg,#0D0205,#280610)', border: '1px solid rgba(196,120,58,0.2)' }}>
           <div className="absolute inset-0 pointer-events-none"
-            style={{ background: 'radial-gradient(ellipse at 80% 50%,rgba(176,96,112,0.15) 0%,transparent 60%)' }} />
+            style={{ background: 'radial-gradient(ellipse at 80% 50%,rgba(196,120,58,0.15) 0%,transparent 60%)' }} />
           <div className="w-12 h-12 rounded-[14px] flex items-center justify-center text-[26px] shrink-0"
-            style={{ background: 'rgba(176,96,112,0.15)' }}>🛵</div>
+            style={{ background: 'rgba(196,120,58,0.15)' }}>🛵</div>
           <div className="flex-1 relative">
             <p className="text-white text-[13px] font-bold">تصفّح المنيو الكامل</p>
             <p className="text-white/40 text-[10px] mt-0.5">حار · بارد · مقطرة · كيك براون</p>
@@ -222,7 +222,7 @@ export function ScreenDelivery() {
           <motion.button whileTap={{ scale: 0.92 }}
             onClick={() => setPendingOrder({ name: brand.todaySpecial.name, price: brand.todaySpecial.price, emoji: brand.todaySpecial.emoji })}
             className="px-4 py-2.5 rounded-[12px] text-white text-[11px] font-bold shrink-0 relative"
-            style={{ background: 'linear-gradient(135deg,#B06070,#8A3050)' }}>
+            style={{ background: 'linear-gradient(135deg,#C4783A,#8A3050)' }}>
             اطلب
           </motion.button>
         </motion.div>

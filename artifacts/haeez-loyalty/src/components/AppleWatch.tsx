@@ -60,7 +60,7 @@ export function AppleWatchHyz({ compact = false }: { compact?: boolean }) {
         }}
       >
         {/* Screen glow */}
-        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 50% 40%,rgba(123,22,24,0.35) 0%,transparent 70%)' }} />
+        <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 50% 40%,rgba(160,82,45,0.35) 0%,transparent 70%)' }} />
 
         {/* Screen content */}
         <div className="absolute inset-0 flex flex-col items-center justify-between py-[14%] px-[10%]">

@@ -71,7 +71,7 @@ const menu: MenuCategory[] = [
       { name: 'اسبرسو خوذ',             price: 20 },
       { name: 'ايس يري',                price: 19 },
       { name: 'ماتشا',                  price: 20 },
-      { name: 'افقاتو براون',           desc: 'إسبريسو فوق الآيس كريم', price: 25, badge: 'الأحلى', badgeColor: '#8B3252', featured: true, img: `${import.meta.env.BASE_URL}bd-affogato.jpg` },
+      { name: 'افقاتو براون',           desc: 'إسبريسو فوق الآيس كريم', price: 25, badge: 'الأحلى', badgeColor: '#A0522D', featured: true, img: `${import.meta.env.BASE_URL}bd-affogato.jpg` },
     ],
   },
   {
@@ -107,7 +107,7 @@ function Price({ item }: { item: MenuItem }) {
   }
   return (
     <div className="shrink-0 text-left">
-      <span className="text-[15px] font-black font-inter tabular-nums" style={{ color: '#8B3252' }}>{item.price}</span>
+      <span className="text-[15px] font-black font-inter tabular-nums" style={{ color: '#A0522D' }}>{item.price}</span>
       <span className="text-[9px] text-[#BBA890] mr-0.5">ر</span>
     </div>
   );
@@ -159,7 +159,7 @@ function CustomizeSheet({ target, onConfirm, onClose }: {
             style={{ background:`${target.catColor}12` }}>{target.emoji}</div>
           <div>
             <p className="text-[15px] font-bold text-[#111]">{target.name}</p>
-            <p className="text-[11px] text-[#B06070] font-bold font-inter">{target.basePrice} ر</p>
+            <p className="text-[11px] text-[#C4783A] font-bold font-inter">{target.basePrice} ر</p>
           </div>
         </div>
 
@@ -222,7 +222,7 @@ function CustomizeSheet({ target, onConfirm, onClose }: {
         <div className="px-5 pb-8">
           <motion.button whileTap={{ scale:0.97 }} onClick={confirm}
             className="w-full py-4 rounded-[18px] font-bold text-[15px] text-white flex items-center justify-center gap-2"
-            style={{ background:`linear-gradient(135deg,${target.catColor},#7A3050)`, boxShadow:`0 6px 20px ${target.catColor}45` }}>
+            style={{ background:`linear-gradient(135deg,${target.catColor},#6B3A1F)`, boxShadow:`0 6px 20px ${target.catColor}45` }}>
             <Check size={16} strokeWidth={2.5} />
             أضف للسلة — {total} ريال
           </motion.button>
@@ -256,7 +256,7 @@ function CartBar({ cart, onCheckout }: { cart: CartItem[]; onCheckout: () => voi
         {/* Count badge */}
         <div className="px-4 py-4 flex items-center gap-2 border-l border-white/10">
           <div className="w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-black"
-            style={{ background: '#8B3252', color: '#fff' }}>{count}</div>
+            style={{ background: '#A0522D', color: '#fff' }}>{count}</div>
           <span className="text-white/50 text-[10px]">صنف</span>
         </div>
         {/* Label */}
@@ -462,7 +462,7 @@ const shelfItems = [
     title: 'محاصيل الرف',
     desc: 'اقتنِ محاصيلنا المميزة من الرف الحصري وجرّبها بنفسك',
     tag: 'محدود',
-    color: '#B06070',
+    color: '#C4783A',
   },
 ];
 
@@ -541,17 +541,17 @@ function SearchResults({ results, query, onClear }: {
 }) {
   if (results.length === 0) return (
     <div className="flex flex-col items-center justify-center py-20 px-8 text-center">
-      <div className="mb-4 opacity-30"><IEspresso size={52} color="#B06070" sw={1.2} /></div>
+      <div className="mb-4 opacity-30"><IEspresso size={52} color="#C4783A" sw={1.2} /></div>
       <p className="text-[14px] font-bold text-[#888]">لا نتائج لـ "{query}"</p>
       <p className="text-[11px] text-[#CCC] mt-1.5">جرّب اسماً آخر</p>
-      <button onClick={onClear} className="mt-4 text-[11px] font-bold" style={{ color: '#B06070' }}>تصفح الكل</button>
+      <button onClick={onClear} className="mt-4 text-[11px] font-bold" style={{ color: '#C4783A' }}>تصفح الكل</button>
     </div>
   );
 
   return (
     <div className="px-5 pt-3">
       <p className="text-[10px] text-[#AAA] mb-4">
-        {results.length} نتيجة لـ "<span className="font-bold" style={{ color: '#B06070' }}>{query}</span>"
+        {results.length} نتيجة لـ "<span className="font-bold" style={{ color: '#C4783A' }}>{query}</span>"
       </p>
       {results.map(({ cat, item }, i) => (
         <div key={i} className="flex items-start gap-3 py-3.5"
@@ -599,7 +599,7 @@ export function ScreenMenu() {
     setCart(prev => {
       const ex = prev.find(c => c.name === item.name);
       if (ex) return prev.map(c => c.name === item.name ? { ...c, qty: c.qty + 1 } : c);
-      return [...prev, { name: item.name, price, qty: 1, catColor: '#8B3252' }];
+      return [...prev, { name: item.name, price, qty: 1, catColor: '#A0522D' }];
     });
   }
 

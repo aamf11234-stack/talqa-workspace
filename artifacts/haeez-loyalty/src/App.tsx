@@ -40,7 +40,7 @@ function BrandToggle() {
           className="absolute top-1 bottom-1 rounded-full"
           style={{
             background: 'linear-gradient(135deg,#0C0002,#280407)',
-            boxShadow: '0 2px 12px rgba(123,22,24,0.35)',
+            boxShadow: '0 2px 12px rgba(160,82,45,0.35)',
           }}
           animate={{ right: isRest ? '4px' : '50%', left: isRest ? '50%' : '4px' }}
           transition={{ type: 'spring', damping: 28, stiffness: 320 }}
@@ -60,7 +60,7 @@ function BrandToggle() {
         <button
           onClick={() => setBrand(BROWNDOSE_BRAND)}
           className="relative z-10 flex items-center gap-2 px-5 py-2.5 rounded-full text-[12px] font-bold transition-colors"
-          style={{ color: !isRest ? '#8B3252' : '#999' }}
+          style={{ color: !isRest ? '#A0522D' : '#999' }}
         >
           <span className="text-[15px] leading-none">☕</span>
           Brown Dose
@@ -146,12 +146,12 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
     <>
       {/* Header — hidden in inline mode */}
       {!inline && (
-        <div className="px-7 pt-7 pb-5 border-b border-[rgba(123,22,24,0.08)]">
-          <div className="inline-flex items-center gap-2 bg-[#B06070]/8 border border-[rgba(123,22,24,0.15)] px-3.5 py-1.5 rounded-full mb-3">
-            <span className="text-[10px] font-black tracking-[0.2em] text-[#B06070]">حاسبة العائد على الاستثمار</span>
+        <div className="px-7 pt-7 pb-5 border-b border-[rgba(160,82,45,0.08)]">
+          <div className="inline-flex items-center gap-2 bg-[#C4783A]/8 border border-[rgba(160,82,45,0.15)] px-3.5 py-1.5 rounded-full mb-3">
+            <span className="text-[10px] font-black tracking-[0.2em] text-[#C4783A]">حاسبة العائد على الاستثمار</span>
           </div>
           <h2 className="text-[24px] font-bold text-[#111] leading-tight mb-2">
-            الـ ٣,٠٠٠ ريال تسترجعها <span className="text-[#B06070]">في أسابيع</span>
+            الـ ٣,٠٠٠ ريال تسترجعها <span className="text-[#C4783A]">في أسابيع</span>
           </h2>
           <p className="text-[13px] text-[#555] leading-relaxed mb-4">
             المنظومة تخلي زبائنك يرجعون أكثر — حتى لو بنسبة <strong>١٥٪ فقط</strong> زيادة في الزيارات، الأرقام تتكلم وحدها.
@@ -162,8 +162,8 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
               { n: '٢', text: 'شوف الإيراد الإضافي' },
               { n: '٣', text: 'احسب متى يرجع الاستثمار' },
             ].map(s => (
-              <div key={s.n} className="flex-1 flex items-center gap-2 bg-[rgba(123,22,24,0.05)] rounded-[12px] px-3 py-2.5">
-                <div className="w-5 h-5 rounded-full bg-[#B06070] flex items-center justify-center shrink-0">
+              <div key={s.n} className="flex-1 flex items-center gap-2 bg-[rgba(160,82,45,0.05)] rounded-[12px] px-3 py-2.5">
+                <div className="w-5 h-5 rounded-full bg-[#C4783A] flex items-center justify-center shrink-0">
                   <span className="text-white text-[9px] font-black">{s.n}</span>
                 </div>
                 <span className="text-[10px] font-semibold text-[#444] leading-tight">{s.text}</span>
@@ -185,20 +185,20 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
         <div>
           <div className="flex justify-between mb-2">
             <span className={`${inline ? 'text-[11px] text-white/60' : 'text-[13px] text-[#333]'} font-semibold`}>زوار اليوم</span>
-            <span className={`${inline ? 'text-[16px] text-[#C9956A]' : 'text-[18px] text-[#B06070]'} font-black font-inter`}>{customers}</span>
+            <span className={`${inline ? 'text-[16px] text-[#C9956A]' : 'text-[18px] text-[#C4783A]'} font-black font-inter`}>{customers}</span>
           </div>
           <input type="range" min={20} max={300} step={10} value={customers}
             onChange={e => setCustomers(Number(e.target.value))}
-            className="w-full h-1.5 rounded-full" style={{ accentColor: inline ? '#C9956A' : '#B06070' }} />
+            className="w-full h-1.5 rounded-full" style={{ accentColor: inline ? '#C9956A' : '#C4783A' }} />
         </div>
         <div>
           <div className="flex justify-between mb-2">
             <span className={`${inline ? 'text-[11px] text-white/60' : 'text-[13px] text-[#333]'} font-semibold`}>الفاتورة</span>
-            <span className={`${inline ? 'text-[16px] text-[#C9956A]' : 'text-[18px] text-[#B06070]'} font-black font-inter`}>{spend}ر</span>
+            <span className={`${inline ? 'text-[16px] text-[#C9956A]' : 'text-[18px] text-[#C4783A]'} font-black font-inter`}>{spend}ر</span>
           </div>
           <input type="range" min={20} max={150} step={5} value={spend}
             onChange={e => setSpend(Number(e.target.value))}
-            className="w-full h-1.5 rounded-full" style={{ accentColor: inline ? '#C9956A' : '#B06070' }} />
+            className="w-full h-1.5 rounded-full" style={{ accentColor: inline ? '#C9956A' : '#C4783A' }} />
         </div>
       </div>
 
@@ -236,7 +236,7 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
         className="rounded-[28px] overflow-hidden"
-        style={{ background: 'linear-gradient(160deg,#FDFAF6 0%,#F5EDE0 100%)', border: '1.5px solid rgba(123,22,24,0.1)', boxShadow: '0 8px 40px rgba(123,22,24,0.08)' }}
+        style={{ background: 'linear-gradient(160deg,#FDFAF6 0%,#F5EDE0 100%)', border: '1.5px solid rgba(160,82,45,0.1)', boxShadow: '0 8px 40px rgba(160,82,45,0.08)' }}
       >
         {inner}
       </motion.div>
@@ -250,7 +250,7 @@ const notifs = [
     id: 1,
     app: 'مطعمك',
     icon: '🎂',
-    iconBg: 'linear-gradient(135deg,#B06070,#C9956A)',
+    iconBg: 'linear-gradient(135deg,#C4783A,#C9956A)',
     time: 'الآن',
     title: 'عيد ميلادك اليوم! 🎉',
     body: 'وجبة مجانية في انتظارك — هدية من مطعمك في يومك الخاص',
@@ -290,11 +290,11 @@ const notifs = [
     id: 5,
     app: 'مطعمك',
     icon: '🍽️',
-    iconBg: 'linear-gradient(135deg,#3D0809,#B06070)',
+    iconBg: 'linear-gradient(135deg,#3D0809,#C4783A)',
     time: 'منذ ٢٠ دقيقة',
     title: 'طبق اليوم: كبسة الجمبري 🦐',
     body: 'طُبخت للتو — احجز طاولة قبل ما تنتهي',
-    accent: '#B06070',
+    accent: '#C4783A',
   },
   {
     id: 6,
@@ -348,7 +348,7 @@ function NotificationsShowcase() {
 
         {/* Wallpaper glow blobs */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-0 left-0 w-48 h-48 rounded-full blur-[60px]" style={{ background: 'rgba(123,22,24,0.35)', transform: 'translate(-30%,-30%)' }} />
+          <div className="absolute top-0 left-0 w-48 h-48 rounded-full blur-[60px]" style={{ background: 'rgba(160,82,45,0.35)', transform: 'translate(-30%,-30%)' }} />
           <div className="absolute bottom-0 right-0 w-48 h-48 rounded-full blur-[60px]" style={{ background: 'rgba(201,149,106,0.2)', transform: 'translate(30%,30%)' }} />
           <div className="absolute top-1/2 left-1/2 w-32 h-32 rounded-full blur-[50px]" style={{ background: 'rgba(41,128,185,0.15)', transform: 'translate(-50%,-50%)' }} />
         </div>
@@ -439,7 +439,7 @@ const screens: { tab: Tab; label: string; color: string; bg: string; preview: Re
         </div>
         <div className="flex justify-center">
           <div className="w-10 h-10 rounded-full border-2 border-[#C9956A]/50 flex items-center justify-center">
-            <div className="w-6 h-6 rounded-full border border-[#B06070]/60" />
+            <div className="w-6 h-6 rounded-full border border-[#C4783A]/60" />
           </div>
         </div>
         <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
@@ -462,13 +462,13 @@ const screens: { tab: Tab; label: string; color: string; bg: string; preview: Re
         </div>
         <div className="w-full h-2 bg-white/10 rounded-full" />
         <div className="flex gap-1">
-          {['#B06070','#2D7D46','#B5651D'].map(c=><div key={c} className="h-4 flex-1 rounded-full" style={{background:`${c}50`}}/>)}
+          {['#C4783A','#2D7D46','#B5651D'].map(c=><div key={c} className="h-4 flex-1 rounded-full" style={{background:`${c}50`}}/>)}
         </div>
         {[0.9,0.7,0.85].map((o,i)=>(
           <div key={i} className="flex items-center gap-1.5 py-1 border-b border-white/5">
             <div className="w-1.5 h-1.5 rounded-full bg-[#C9956A]/60 shrink-0" />
             <div className="flex-1 h-1.5 rounded-full bg-white/15" style={{opacity:o}} />
-            <div className="w-4 h-1.5 rounded-full bg-[#B06070]/60" />
+            <div className="w-4 h-1.5 rounded-full bg-[#C4783A]/60" />
           </div>
         ))}
       </div>
@@ -594,15 +594,15 @@ export default function App() {
       <div className="sticky top-0 z-50" style={{ background: 'rgba(253,251,247,0.85)', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(220,215,205,0.5)' }}>
         <div className="max-w-5xl mx-auto px-6 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#B06070,#7A3050)' }}>
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#C4783A,#6B3A1F)' }}>
               <span className="text-white text-[10px] font-bold">ت</span>
             </div>
             <span className="text-[14px] font-bold" style={{ color: '#2C2825' }}>تلقا تك</span>
           </div>
           <span className="text-[11px] font-light hidden sm:block" style={{ color: '#9A948C' }}>Brown Dose · نظام الولاء والطلب · جيزان</span>
           <a href="https://wa.me/966" target="_blank" rel="noopener noreferrer"
-            className="text-[11px] font-semibold text-[#B06070] px-3.5 py-1.5 rounded-full hover:bg-[#B06070]/5 transition-colors"
-            style={{ border: '1px solid rgba(176,96,112,0.25)' }}>
+            className="text-[11px] font-semibold text-[#C4783A] px-3.5 py-1.5 rounded-full hover:bg-[#C4783A]/5 transition-colors"
+            style={{ border: '1px solid rgba(196,120,58,0.25)' }}>
             تواصل الآن
           </a>
         </div>
@@ -611,12 +611,12 @@ export default function App() {
       {/* ── Hero ───────────────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 pt-12 pb-8 text-center">
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <span className="inline-flex items-center gap-2 border border-[rgba(176,96,112,0.35)] text-[#B06070] text-[11px] font-semibold px-4 py-1.5 rounded-full mb-6 tracking-widest">
-            <span className="w-1.5 h-1.5 bg-[#B06070] rounded-full animate-pulse" />
+          <span className="inline-flex items-center gap-2 border border-[rgba(196,120,58,0.35)] text-[#C4783A] text-[11px] font-semibold px-4 py-1.5 rounded-full mb-6 tracking-widest">
+            <span className="w-1.5 h-1.5 bg-[#C4783A] rounded-full animate-pulse" />
             عرض حصري · براون دوز · جيزان
           </span>
           <h1 className="text-[36px] md:text-[52px] font-bold leading-[1.15] mb-4 tracking-tight" style={{ color: '#2C2825' }}>
-            <span className="text-[#B06070]">Brown Dose</span>
+            <span className="text-[#C4783A]">Brown Dose</span>
             <br />يستحق تجربة رقمية مختلفة
           </h1>
           <p className="text-[15px] md:text-[17px] font-light max-w-md mx-auto leading-relaxed mb-2" style={{ color: '#6B6560' }}>
@@ -715,7 +715,7 @@ export default function App() {
             className="hidden md:flex flex-col gap-3 pb-8 w-[130px]"
           >
             {[
-              { label: '١,٥٠٠+', sub: 'عضو نشط', color: '#B06070' },
+              { label: '١,٥٠٠+', sub: 'عضو نشط', color: '#C4783A' },
               { label: '٤.٩ ★', sub: 'تقييم المتجر', color: '#C9956A' },
               { label: '٦٠ يوم', sub: 'وقت التسليم', color: '#2D7D46' },
             ].map((s, i) => (
@@ -752,7 +752,7 @@ export default function App() {
       {/* ── Product Gallery ───────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="text-center mb-5">
-          <p className="text-[11px] text-[#B06070] font-bold tracking-[0.22em] uppercase mb-1.5">منيو براون دوز</p>
+          <p className="text-[11px] text-[#C4783A] font-bold tracking-[0.22em] uppercase mb-1.5">منيو براون دوز</p>
           <h2 className="text-[26px] font-bold leading-tight" style={{ color: '#2C2825' }}>كل كوب له حكايته</h2>
           <p className="text-[13px] font-light mt-1.5" style={{ color: '#9A948C' }}>الأصناف الحقيقية — بالصور والأسعار</p>
         </div>
@@ -776,7 +776,7 @@ export default function App() {
               <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.25) 50%, transparent 100%)' }} />
               {item.tag && (
                 <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded-full text-[7px] font-bold text-white"
-                  style={{ background: 'rgba(176,96,112,0.85)', backdropFilter: 'blur(8px)' }}>
+                  style={{ background: 'rgba(196,120,58,0.85)', backdropFilter: 'blur(8px)' }}>
                   {item.tag}
                 </div>
               )}
@@ -871,7 +871,7 @@ export default function App() {
                     <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
                     <div className="absolute inset-0" style={{background:'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%)'}} />
                     {item.badge && (
-                      <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded-full text-[7px] font-bold text-white" style={{background:'rgba(123,22,24,0.85)'}}>
+                      <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded-full text-[7px] font-bold text-white" style={{background:'rgba(160,82,45,0.85)'}}>
                         {item.badge}
                       </div>
                     )}
@@ -893,7 +893,7 @@ export default function App() {
           className="rounded-[28px] p-7 md:p-9 relative overflow-hidden"
           style={{ background: 'linear-gradient(145deg,#0a0a0a 0%,#1a1a1a 50%,#0a0a0a 100%)' }}
         >
-          <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 30% 50%,rgba(123,22,24,0.25) 0%,transparent 60%)' }} />
+          <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 30% 50%,rgba(160,82,45,0.25) 0%,transparent 60%)' }} />
           <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 80% 50%,rgba(201,149,106,0.08) 0%,transparent 55%)' }} />
           <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
             {/* Watch */}
@@ -934,7 +934,7 @@ export default function App() {
         {/* Ambient glow blobs */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[380px] rounded-full blur-[130px]"
-            style={{ background: 'radial-gradient(ellipse,rgba(123,22,24,0.38) 0%,rgba(201,149,106,0.08) 55%,transparent 75%)' }} />
+            style={{ background: 'radial-gradient(ellipse,rgba(160,82,45,0.38) 0%,rgba(201,149,106,0.08) 55%,transparent 75%)' }} />
           <div className="absolute bottom-0 left-1/4 w-[300px] h-[200px] rounded-full blur-[100px]"
             style={{ background: 'rgba(201,149,106,0.07)' }} />
           {/* Dot grid overlay */}
@@ -1093,7 +1093,7 @@ export default function App() {
             <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.03 * i }}
               className="rounded-[20px] px-4 py-3.5 transition-all duration-200 hover:-translate-y-0.5"
               style={{ background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(220,215,205,0.5)', boxShadow: '0 10px 30px rgba(0,0,0,0.03)', backdropFilter: 'blur(10px)' }}>
-              <p className="text-[9px] font-bold text-[#B06070] tracking-[0.18em] mb-1.5" style={{ fontFamily: 'ui-monospace,monospace' }}>
+              <p className="text-[9px] font-bold text-[#C4783A] tracking-[0.18em] mb-1.5" style={{ fontFamily: 'ui-monospace,monospace' }}>
                 {String(i + 1).padStart(2,'0')}
               </p>
               <p className="text-[12px] font-semibold mb-0.5 leading-snug" style={{ color: '#2C2825' }}>{f.title}</p>
@@ -1111,7 +1111,7 @@ export default function App() {
         <div className="rounded-[28px] p-7 md:p-9 relative overflow-hidden"
           style={{ background: 'linear-gradient(145deg,#0D0205 0%,#3D0809 45%,#0D0205 80%,#1A0406 100%)' }}>
           <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 85% 20%,rgba(201,149,106,0.12) 0%,transparent 55%)' }} />
-          <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 10% 80%,rgba(123,22,24,0.35) 0%,transparent 50%)' }} />
+          <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 10% 80%,rgba(160,82,45,0.35) 0%,transparent 50%)' }} />
           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-7">
             <div className="flex-1">
               <p className="text-[#C9956A] text-[10px] font-semibold tracking-widest uppercase mb-2">Apple Wallet · Google Wallet</p>
@@ -1168,7 +1168,7 @@ export default function App() {
 
         {/* Ambient */}
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 50%,rgba(201,149,106,0.09) 0%,transparent 65%)' }} />
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 20% 80%,rgba(123,22,24,0.3) 0%,transparent 50%)' }} />
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 20% 80%,rgba(160,82,45,0.3) 0%,transparent 50%)' }} />
 
         <div className="relative max-w-5xl mx-auto px-6 py-16 md:py-20">
 
@@ -1210,7 +1210,7 @@ export default function App() {
                 label: 'ساعة هدوء',
                 text: 'جلسة عمل بعيداً عن الضجيج، كرواسون اللوز والشوكولاتة والكمبيوتر المفتوح',
                 icon: '💻',
-                color: '#B06070',
+                color: '#C4783A',
               },
               {
                 time: '٦:٠٠ م',
@@ -1245,10 +1245,10 @@ export default function App() {
 
       {/* ── Community ────────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
-        <div className="bg-white/75 rounded-[28px] p-6 border border-[rgba(123,22,24,0.07)] shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
+        <div className="bg-white/75 rounded-[28px] p-6 border border-[rgba(160,82,45,0.07)] shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
           <div className="flex items-start justify-between mb-5">
             <div>
-              <p className="text-[10px] text-[#B06070] font-semibold tracking-widest uppercase mb-1">مجتمع مطعمك</p>
+              <p className="text-[10px] text-[#C4783A] font-semibold tracking-widest uppercase mb-1">مجتمع مطعمك</p>
               <h3 className="text-[22px] font-bold text-[#111]">١,٥٠٠+ عضو نشط</h3>
               <p className="text-[12px] text-[#888] font-light mt-1">منصة اجتماعية داخل التطبيق</p>
             </div>
@@ -1337,7 +1337,7 @@ export default function App() {
       {/* ── Footer ────────────────────────────────────────── */}
       <div className="text-center pb-8 px-6">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#B06070,#7A3050)' }}>
+          <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#C4783A,#6B3A1F)' }}>
             <span className="text-white text-[9px] font-bold">ت</span>
           </div>
           <span className="text-[13px] font-bold text-[#111]">تلقا تك</span>
@@ -1346,11 +1346,11 @@ export default function App() {
 
         {/* Commercial Registration Badge */}
         <div className="inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-full border border-[#F5E6E6] bg-[#FFF8F8]">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B06070" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C4783A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
             <polyline points="22 4 12 14.01 9 11.01"/>
           </svg>
-          <span className="text-[11px] text-[#B06070] font-semibold">مؤسسة تلقا · سجل تجاري: 7054835322</span>
+          <span className="text-[11px] text-[#C4783A] font-semibold">مؤسسة تلقا · سجل تجاري: 7054835322</span>
         </div>
       </div>
     </div>
