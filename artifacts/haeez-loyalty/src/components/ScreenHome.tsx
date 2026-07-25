@@ -794,38 +794,54 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
           </div>
         </div>
 
-        {/* Triple-ring + points */}
-        <div className="flex flex-col items-center mb-5">
-          <div className="relative" style={{ width: 140, height: 140 }}>
-            <ProgressRings progress={4 / 7} />
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-white font-bold leading-none font-inter tracking-tight" style={{ fontSize: 34 }}>{points}</span>
-              <span className="text-white/30 text-[10px] tracking-[0.2em] mt-1 font-light">نقطة</span>
+        {/* Points card — linear, no rings */}
+        <div className="px-5 mb-4">
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28 }}
+            className="rounded-[24px] p-5"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="flex items-end justify-between mb-4">
+              <div>
+                <p className="text-white/30 text-[10px] tracking-[0.18em] font-light mb-1.5">رصيد النقاط</p>
+                <div className="flex items-baseline gap-1.5">
+                  <span className="text-white font-bold leading-none font-inter" style={{ fontSize: 46 }}>{points}</span>
+                  <span className="text-white/35 text-[13px] font-light">نقطة</span>
+                </div>
+              </div>
+              <div className="text-left pb-1">
+                <div className="inline-flex px-3 py-1.5 rounded-[10px] mb-1.5"
+                  style={{ background: 'rgba(201,149,106,0.14)', border: '1px solid rgba(201,149,106,0.2)' }}>
+                  <span className="text-[#C9956A] text-[11px] font-bold">كلاسيك</span>
+                </div>
+                <p className="text-white/25 text-[9px] text-right font-light">٣ طلبات للفضي</p>
+              </div>
             </div>
-          </div>
-          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.7 }}
-            className="mt-4 flex items-center gap-2 bg-white/[0.07] border border-white/[0.08] rounded-full px-4 py-2">
-            <div className="w-2 h-2 rounded-full" style={{ background: 'linear-gradient(135deg,#C9956A,#F0D4A8)' }} />
-            <span className="text-[#C9956A] text-[11px] font-bold tracking-wide">كلاسيك</span>
-            <div className="w-px h-3 bg-white/15" />
-            <span className="text-white/35 text-[11px] font-light">٣ طلبات للفضي</span>
-            <ArrowLeft size={10} className="text-white/25" />
+            {/* Linear progress bar */}
+            <div className="rounded-full overflow-hidden" style={{ height: 3, background: 'rgba(255,255,255,0.08)' }}>
+              <motion.div
+                initial={{ width: 0 }} animate={{ width: '57%' }}
+                transition={{ duration: 1.4, delay: 0.55, ease: [0.4, 0, 0.2, 1] }}
+                className="h-full rounded-full"
+                style={{ background: 'linear-gradient(90deg,#C9956A,#F0D4A8)' }}
+              />
+            </div>
+            <div className="flex justify-between mt-1.5">
+              <span className="text-white/18 text-[8px] font-light">فضي</span>
+              <span className="text-white/18 text-[8px] font-light">كلاسيك</span>
+            </div>
           </motion.div>
         </div>
 
-        {/* Stats */}
-        <div className="flex justify-center px-6 mb-4">
-          {brand.stats.map((s, i, arr) => (
-            <React.Fragment key={s.label}>
-              <motion.div className="flex-1 flex flex-col items-center gap-0.5"
-                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 + i * 0.09 }}>
-                <span className="text-[15px] mb-0.5">{s.icon}</span>
-                <p className="text-white text-[22px] font-bold leading-none font-inter">{s.val}</p>
-                <p className="text-white/30 text-[10px] mt-0.5 font-light">{s.label}</p>
-              </motion.div>
-              {i < arr.length - 1 && <div className="w-px self-stretch bg-white/[0.07] mx-1 my-2" />}
-            </React.Fragment>
+        {/* Stats — بدون إيموجي */}
+        <div className="flex px-5 mb-4 gap-2">
+          {brand.stats.map((s, i) => (
+            <motion.div key={s.label}
+              className="flex-1 rounded-[18px] px-3 py-3 flex flex-col items-center gap-0.5"
+              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.06)' }}
+              initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.38 + i * 0.07 }}>
+              <p className="text-white text-[20px] font-bold leading-none font-inter">{s.val}</p>
+              <p className="text-white/30 text-[9px] mt-1 font-light text-center">{s.label}</p>
+            </motion.div>
           ))}
         </div>
 
