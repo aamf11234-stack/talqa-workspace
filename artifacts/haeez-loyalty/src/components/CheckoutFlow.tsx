@@ -29,7 +29,7 @@ interface Props {
   onOrderComplete?: (data: CompletedOrderData) => void;
 }
 
-type Phase   = 'type' | 'payment' | 'paying' | 'invoice';
+type Phase   = 'type' | 'address' | 'payment' | 'paying' | 'invoice';
 type PayMethod = 'apple' | 'stc' | 'card';
 type OrderType = 'dine' | 'delivery';
 
@@ -46,6 +46,91 @@ const toInt = (ar: string) =>
   parseInt(ar.replace(/[٠١٢٣٤٥٦٧٨٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d).toString()), 10);
 const toAr = (n: number) =>
   n.toLocaleString('ar-EG');
+
+/* ── Address Sheet ──────────────────────────────────────────────── */
+function AddressSheet({ onConfirm, onBack }: { onConfirm: (addr: string) => void; onBack: () => void }) {
+  const [district, setDistrict] = useState('');
+  const [building, setBuilding] = useState('');
+  const [notes, setNotes]       = useState('');
+  const ready = district.trim().length > 0;
+
+  return (
+    <motion.div
+      initial={{ y: '100%' }}
+      animate={{ y: 0 }}
+      exit={{ y: '100%' }}
+      transition={{ type: 'spring', damping: 30, stiffness: 320 }}
+      className="absolute inset-0 overflow-y-auto scrollbar-none z-10"
+      style={{ background: '#FDFBF7' }}
+    >
+      <div className="px-5 pt-5 pb-8">
+        <div className="w-10 h-1 bg-[#D8CFC4] rounded-full mx-auto mb-5" />
+        <button onClick={onBack} className="flex items-center gap-1 text-[#B06070] text-[11px] font-semibold mb-4">
+          <ChevronLeft size={14} />
+          رجوع
+        </button>
+        <p className="text-[18px] font-black text-[#111] mb-1">عنوان التوصيل</p>
+        <p className="text-[11px] text-[#AAA] font-light mb-6">صبيا أو ضمد — نوصّل خلال ٣٠-٤٥ دقيقة</p>
+
+        {/* Delivery info strip */}
+        <div className="flex gap-2 mb-5">
+          {[{ icon: '🛵', v: 'مجاني', l: 'التوصيل' }, { icon: '⏱', v: '٣٠ د', l: 'متوسط' }, { icon: '📍', v: 'صبيا/ضمد', l: 'نطاق التوصيل' }].map((s, i) => (
+            <div key={i} className="flex-1 rounded-[14px] p-2.5 text-center bg-white border border-[rgba(196,181,159,0.2)]">
+              <p className="text-[14px] mb-0.5">{s.icon}</p>
+              <p className="text-[11px] font-black text-[#111]">{s.v}</p>
+              <p className="text-[8px] text-[#AAA]">{s.l}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Fields */}
+        <div className="space-y-3 mb-6">
+          <div>
+            <label className="text-[10px] font-bold text-[#888] mb-1.5 block">الحي / المنطقة *</label>
+            <input value={district} onChange={e => setDistrict(e.target.value)}
+              placeholder="مثال: حي الروضة، صبيا"
+              className="w-full px-4 py-3.5 rounded-[14px] text-[13px] text-[#111] placeholder-[#CCC] outline-none border transition-colors"
+              style={{ background: 'white', border: '1.5px solid rgba(196,181,159,0.3)', direction: 'rtl' }}
+              onFocus={e => (e.target.style.borderColor = '#B06070')}
+              onBlur={e => (e.target.style.borderColor = 'rgba(196,181,159,0.3)')}
+            />
+          </div>
+          <div>
+            <label className="text-[10px] font-bold text-[#888] mb-1.5 block">رقم المبنى / الشقة</label>
+            <input value={building} onChange={e => setBuilding(e.target.value)}
+              placeholder="مثال: فيلا ٢٤ أو شقة ٣"
+              className="w-full px-4 py-3.5 rounded-[14px] text-[13px] text-[#111] placeholder-[#CCC] outline-none border transition-colors"
+              style={{ background: 'white', border: '1.5px solid rgba(196,181,159,0.3)', direction: 'rtl' }}
+              onFocus={e => (e.target.style.borderColor = '#B06070')}
+              onBlur={e => (e.target.style.borderColor = 'rgba(196,181,159,0.3)')}
+            />
+          </div>
+          <div>
+            <label className="text-[10px] font-bold text-[#888] mb-1.5 block">ملاحظات التوصيل</label>
+            <textarea value={notes} onChange={e => setNotes(e.target.value)}
+              placeholder="مثال: قرب المسجد، اتصل عند الوصول"
+              rows={2}
+              className="w-full px-4 py-3 rounded-[14px] text-[13px] text-[#111] placeholder-[#CCC] outline-none border transition-colors resize-none"
+              style={{ background: 'white', border: '1.5px solid rgba(196,181,159,0.3)', direction: 'rtl' }}
+              onFocus={e => (e.target.style.borderColor = '#B06070')}
+              onBlur={e => (e.target.style.borderColor = 'rgba(196,181,159,0.3)')}
+            />
+          </div>
+        </div>
+
+        <motion.button whileTap={{ scale: 0.97 }}
+          onClick={() => ready && onConfirm(`${district}${building ? ' · ' + building : ''}${notes ? ' · ' + notes : ''}`)}
+          className="w-full py-4 rounded-[18px] font-bold text-[15px] text-white transition-opacity"
+          style={{
+            background: ready ? 'linear-gradient(135deg,#B06070,#7A3050)' : 'rgba(196,181,159,0.3)',
+            color: ready ? 'white' : '#AAA',
+          }}>
+          {ready ? 'تأكيد العنوان' : 'أدخل الحي أولاً'}
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+}
 
 /* ── Order Type Sheet ───────────────────────────────────────────── */
 function OrderTypeSheet({ brandType, onSelect }: { brandType: 'restaurant' | 'cafe'; onSelect: (t: OrderType) => void }) {
@@ -455,9 +540,19 @@ export function CheckoutModal({ item, brandName, brandType, logoImg, onClose, on
   const [phase, setPhase]         = useState<Phase>('type');
   const [orderType, setOrderType] = useState<OrderType>('dine');
   const [payMethod, setPayMethod] = useState<PayMethod>('apple');
+  const [address, setAddress]     = useState('');
 
   function handleTypeSelect(t: OrderType) {
     setOrderType(t);
+    if (t === 'delivery') {
+      setPhase('address');
+    } else {
+      setPhase('payment');
+    }
+  }
+
+  function handleAddressConfirm(addr: string) {
+    setAddress(addr);
     setPhase('payment');
   }
 
@@ -497,6 +592,9 @@ export function CheckoutModal({ item, brandName, brandType, logoImg, onClose, on
       <AnimatePresence mode="wait">
         {phase === 'type' && (
           <OrderTypeSheet key="type" brandType={brandType} onSelect={handleTypeSelect} />
+        )}
+        {phase === 'address' && (
+          <AddressSheet key="address" onConfirm={handleAddressConfirm} onBack={() => setPhase('type')} />
         )}
         {phase === 'payment' && (
           <PaymentSheet key="payment" item={item} orderType={orderType} onPay={handlePay} />

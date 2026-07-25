@@ -1,9 +1,9 @@
 import React from 'react';
-import { Home, CreditCard, BookOpen, CalendarDays, ShoppingBag } from 'lucide-react';
+import { Home, CreditCard, BookOpen, Truck, ShoppingBag } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
-type Tab = 'home' | 'menu' | 'card' | 'book' | 'orders';
+type Tab = 'home' | 'menu' | 'card' | 'delivery' | 'orders';
 
 interface BottomNavProps {
   activeTab: Tab;
@@ -12,11 +12,11 @@ interface BottomNavProps {
 }
 
 const tabs: { id: Tab; icon: React.ElementType; label: string }[] = [
-  { id: 'home',   icon: Home,        label: 'الرئيسية' },
-  { id: 'menu',   icon: BookOpen,    label: 'المنيو'   },
-  { id: 'card',   icon: CreditCard,  label: 'بطاقتي'  },
-  { id: 'book',   icon: CalendarDays,label: 'احجز'    },
-  { id: 'orders', icon: ShoppingBag, label: 'طلباتي'  },
+  { id: 'home',     icon: Home,       label: 'الرئيسية' },
+  { id: 'menu',     icon: BookOpen,   label: 'المنيو'   },
+  { id: 'card',     icon: CreditCard, label: 'بطاقتي'  },
+  { id: 'delivery', icon: Truck,      label: 'توصيل'   },
+  { id: 'orders',   icon: ShoppingBag,label: 'طلباتي'  },
 ];
 
 export function BottomNav({ activeTab, onChangeTab, notifCount = 1 }: BottomNavProps) {

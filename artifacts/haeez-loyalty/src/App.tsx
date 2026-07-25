@@ -7,7 +7,7 @@ import { ScreenMembership }    from './components/ScreenMembership';
 import { ScreenPerks }         from './components/ScreenPerks';
 import { ScreenNotifications } from './components/ScreenNotifications';
 import { ScreenHome }          from './components/ScreenHome';
-import { ScreenReservations }  from './components/ScreenReservations';
+import { ScreenDelivery }      from './components/ScreenDelivery';
 import { ScreenOrders }        from './components/ScreenOrders';
 import { ScreenMenu }          from './components/ScreenMenu';
 import { AppleWatchHyz }       from './components/AppleWatch';
@@ -503,7 +503,7 @@ const screens: { tab: Tab; label: string; color: string; bg: string; preview: Re
     ),
   },
   {
-    tab: 'book', label: 'احجز', color: '#1A5276',
+    tab: 'delivery', label: 'توصيل', color: '#1A5276',
     bg: '#FAF7F3',
     preview: (
       <div className="absolute inset-0 flex flex-col px-2 pt-3 gap-1.5">
@@ -730,7 +730,7 @@ export default function App() {
                     {activeTab === 'home'      && <ScreenHome onShakeTrigger={() => setShowShakeDeal(true)} />}
                     {activeTab === 'menu'      && <ScreenMenu />}
                     {activeTab === 'card'      && <ScreenMembership />}
-                    {activeTab === 'book'      && <ScreenReservations />}
+                    {activeTab === 'delivery'  && <ScreenDelivery />}
                     {activeTab === 'orders'    && <ScreenOrders />}
                   </motion.div>
                 </AnimatePresence>

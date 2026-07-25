@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, ChevronLeft, Calendar, ShoppingBag, Tag, Zap, Flame, ArrowLeft, Sparkles } from 'lucide-react';
+import { Bell, ChevronLeft, Calendar, ShoppingBag, Tag, Zap, Flame, ArrowLeft, Sparkles, Truck } from 'lucide-react';
 import { EventIconMap, ICalendarIcon, IGift } from './HaizIcons';
 import { SpinWheelOverlay } from './SpinWheel';
 import { ShakeHintBar } from './ShakeReveal';
@@ -39,7 +39,7 @@ function ProgressRings({ progress = 4 / 7 }: { progress?: number }) {
   const size = 140; const cx = size / 2; const cy = size / 2;
   const rings = [
     { r: 58, sw: 4.5, progress, id: 'gold', c1: '#C9956A', c2: '#F0D4A8' },
-    { r: 46, sw: 3,   progress: 0.82, id: 'red',  c1: '#B06070', c2: '#C44' },
+    { r: 46, sw: 3,   progress: 0.82, id: 'red',  c1: '#B06070', c2: '#E090A8' },
     { r: 35, sw: 2.5, progress: 0.55, id: 'dim',  c1: 'rgba(255,255,255,0.2)', c2: 'rgba(255,255,255,0.05)' },
   ];
   return (
@@ -703,11 +703,11 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
 
       {/* ── Dark hero ── */}
       <div className="relative overflow-hidden" style={{
-        background: 'linear-gradient(160deg,#050002 0%,#200005 30%,#3D0809 55%,#0D0205 80%,#000 100%)',
+        background: 'linear-gradient(160deg,#0D0205 0%,#1A0812 30%,#3A1530 55%,#0D0205 80%,#080002 100%)',
         paddingBottom: '52px',
       }}>
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 75% 25%,rgba(123,22,24,0.7) 0%,transparent 55%)' }} />
+          style={{ background: 'radial-gradient(ellipse at 75% 25%,rgba(176,96,112,0.65) 0%,transparent 55%)' }} />
         <div className="absolute inset-0 pointer-events-none"
           style={{ background: 'radial-gradient(ellipse at 15% 85%,rgba(201,149,106,0.12) 0%,transparent 50%)' }} />
 
@@ -797,9 +797,9 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
         {/* Quick actions */}
         <div className="grid grid-cols-3 gap-2.5 mb-5 px-4">
           {[
-            { icon: ShoppingBag, label: 'اطلب',  color: '#B06070', bg: '#B0607012', href: null, onTap: () => setPendingOrder({ name: brand.todaySpecial.name, price: brand.todaySpecial.price, emoji: brand.todaySpecial.emoji }) },
-            { icon: Calendar,    label: 'احجز',  color: '#B06070', bg: '#B0607012', href: null, onTap: () => setShowBookSheet(true) },
-            { icon: Tag,         label: 'عروضي', color: '#B5651D', bg: '#C9956A12', href: null, onTap: () => setShowOffersSheet(true) },
+            { icon: ShoppingBag, label: 'اطلب',   color: '#B06070', bg: '#B0607012', href: null, onTap: () => setPendingOrder({ name: brand.todaySpecial.name, price: brand.todaySpecial.price, emoji: brand.todaySpecial.emoji }) },
+            { icon: Truck,       label: 'توصيل',  color: '#B06070', bg: '#B0607012', href: null, onTap: () => setPendingOrder({ name: brand.todaySpecial.name, price: brand.todaySpecial.price, emoji: brand.todaySpecial.emoji }) },
+            { icon: Tag,         label: 'عروضي',  color: '#B5651D', bg: '#C9956A12', href: null, onTap: () => setShowOffersSheet(true) },
           ].map((a, i) => {
             const inner = (
               <motion.div
