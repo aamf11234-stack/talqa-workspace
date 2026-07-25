@@ -872,22 +872,19 @@ export default function App() {
               </AnimatePresence>
 
               <div className="flex-1 relative overflow-hidden h-full">
-                <AnimatePresence mode="sync" initial={false}>
-                  <motion.div
-                    key={activeTab}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.08 }}
+                {(['home','menu','card','orders','reservations'] as const).map(tab => (
+                  <div
+                    key={tab}
                     className="absolute inset-0 overflow-y-auto scrollbar-none"
+                    style={{ visibility: activeTab === tab ? 'visible' : 'hidden', pointerEvents: activeTab === tab ? 'auto' : 'none' }}
                   >
-                    {activeTab === 'home'      && <ScreenHome onShakeTrigger={() => setShowShakeDeal(true)} />}
-                    {activeTab === 'menu'      && <ScreenMenu />}
-                    {activeTab === 'card'      && <ScreenMembership />}
-                    {activeTab === 'orders'        && <ScreenOrders />}
-                    {activeTab === 'reservations'  && <ScreenReservations />}
-                  </motion.div>
-                </AnimatePresence>
+                    {tab === 'home'         && <ScreenHome onShakeTrigger={() => setShowShakeDeal(true)} />}
+                    {tab === 'menu'         && <ScreenMenu />}
+                    {tab === 'card'         && <ScreenMembership />}
+                    {tab === 'orders'       && <ScreenOrders />}
+                    {tab === 'reservations' && <ScreenReservations />}
+                  </div>
+                ))}
               </div>
               <BottomNav activeTab={activeTab} onChangeTab={setActiveTab} notifCount={1} />
             </PhoneFrame>
