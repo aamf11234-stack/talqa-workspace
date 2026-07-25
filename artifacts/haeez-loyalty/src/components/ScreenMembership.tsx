@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, Check, Gift, Send, Star, ChevronLeft, X, Sparkles, Download } from 'lucide-react';
 import { QRCodeSVG } from './QRCodeSVG';
-import { BookingModal } from './BookingModal';
 import { useBrand } from '../BrandContext';
 import { downloadPkpass } from '../utils/generatePkpass';
 
@@ -782,21 +781,22 @@ function GiftsSection({ onGiftSent, currentPoints }: { onGiftSent: (msg: string,
 }
 
 /* ══════════════════════════════════════════════════════════════════
-   REWARDS TAB — redeemable items with points
+   REWARDS — redeemable items with points
 ══════════════════════════════════════════════════════════════════ */
 const REDEEMABLE = [
-  { id: 1, emoji: '☕', name: 'قهوة صغيرة', desc: 'أي قهوة مقاس صغير من منيو براون دوز', pts: 80,  color: '#7A3B18' },
-  { id: 2, emoji: '🧁', name: 'كيك براون دوز', desc: 'كيكة براون دوز الشهيرة', pts: 120, color: '#B87333' },
-  { id: 3, emoji: '🥤', name: 'مشروب بارد', desc: 'أي مشروب بارد من قائمتنا', pts: 150, color: '#2D7D46' },
-  { id: 4, emoji: '☕', name: 'قهوة وسط', desc: 'أي قهوة مقاس وسط من اختيارك', pts: 180, color: '#7A3B18' },
-  { id: 5, emoji: '🍰', name: 'تشيز كيك', desc: 'تشيز كيك نيويورك كلاسيك', pts: 220, color: '#C4783A' },
-  { id: 6, emoji: '🛵', name: 'توصيل مجاني', desc: 'طلب واحد بتوصيل مجاني لأي موقع', pts: 300, color: '#1A6B3A' },
-  { id: 7, emoji: '🎁', name: 'طلب مجاني', desc: 'أي طلب حتى ٥٠ ريال مجاناً', pts: 480, color: '#6B3210' },
+  { id: 1, emoji: '☕', name: 'قهوة صغيرة',   desc: 'أي إسبريسو أو فلتر مقاس صغير',      pts: 80,  color: '#7A3B18', grad: 'linear-gradient(135deg,#2A0E04,#4A1A08)' },
+  { id: 2, emoji: '🧁', name: 'كيك براون دوز', desc: 'الكيكة الشهيرة بنكهة البن',          pts: 120, color: '#B87333', grad: 'linear-gradient(135deg,#1A0E00,#3A2208)' },
+  { id: 3, emoji: '🥤', name: 'مشروب بارد',    desc: 'أي مشروب بارد من قائمتنا',           pts: 150, color: '#1A6B3A', grad: 'linear-gradient(135deg,#001A0A,#023818)' },
+  { id: 4, emoji: '☕', name: 'قهوة وسط',      desc: 'أي قهوة مقاس وسط من اختيارك',       pts: 180, color: '#7A3B18', grad: 'linear-gradient(135deg,#2A0E04,#4A1A08)' },
+  { id: 5, emoji: '🍰', name: 'تشيز كيك',      desc: 'تشيز كيك نيويورك كلاسيك',           pts: 250, color: '#C4783A', grad: 'linear-gradient(135deg,#1A0800,#3A1A04)' },
+  { id: 6, emoji: '🛵', name: 'توصيل مجاني',   desc: 'طلب واحد بتوصيل مجاني لأي موقع',    pts: 350, color: '#1A5C8A', grad: 'linear-gradient(135deg,#001018,#012840)' },
+  { id: 7, emoji: '🎁', name: 'طلب مجاني',     desc: 'أي طلب حتى ٥٠ ريال — هدية كاملة',   pts: 480, color: '#8B4513', grad: 'linear-gradient(135deg,#0D0200,#2A0A00)' },
+  { id: 8, emoji: '👑', name: 'تجربة VIP',     desc: 'جلسة خاصة مع باريستا براون دوز لمدة ساعة', pts: 500, color: '#D4AC0D', grad: 'linear-gradient(135deg,#0A0800,#201800)' },
 ];
 
 function RewardsTab({ points, onRedeem }: { points: number; onRedeem: (pts: number, name: string) => void }) {
   const [redeeming, setRedeeming] = useState<number | null>(null);
-  const [done, setDone] = useState<number | null>(null);
+  const [done, setDone]           = useState<number | null>(null);
 
   function handleRedeem(item: typeof REDEEMABLE[0]) {
     if (points < item.pts || redeeming !== null) return;
@@ -805,115 +805,153 @@ function RewardsTab({ points, onRedeem }: { points: number; onRedeem: (pts: numb
       setDone(item.id);
       setRedeeming(null);
       onRedeem(item.pts, item.name);
-      setTimeout(() => setDone(null), 2000);
+      setTimeout(() => setDone(null), 2200);
     }, 1400);
   }
 
+  const available = REDEEMABLE.filter(r => points >= r.pts);
+  const locked    = REDEEMABLE.filter(r => points < r.pts);
+
   return (
-    <div className="pb-4">
-      {/* Balance banner */}
-      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-        className="rounded-[20px] p-4 mb-5 flex items-center justify-between"
-        style={{ background: 'linear-gradient(135deg,#1A0804,#3A1408)', border: '1px solid rgba(201,149,106,0.15)' }}>
-        <div>
-          <p className="text-white/40 text-[10px] tracking-widest mb-0.5">رصيدك الحالي</p>
-          <motion.p key={points} initial={{ scale: 1.15 }} animate={{ scale: 1 }}
-            className="text-white font-black text-[32px] leading-none font-inter">{points}</motion.p>
-          <p className="text-white/30 text-[10px] mt-0.5">نقطة</p>
+    <div className="pb-6">
+
+      {/* ── Section header ── */}
+      <div className="flex items-center gap-3 mb-4">
+        <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg,rgba(196,181,159,0.0),rgba(196,181,159,0.3))' }} />
+        <div className="flex items-center gap-1.5 px-3 py-1 rounded-full"
+          style={{ background: 'rgba(107,50,16,0.07)', border: '1px solid rgba(107,50,16,0.12)' }}>
+          <Gift size={11} className="text-[#7A3B18]" />
+          <span className="text-[11px] font-black text-[#7A3B18] tracking-wide">مكافآتك</span>
         </div>
-        <div className="flex flex-col items-end gap-1.5">
-          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full"
-            style={{ background: 'rgba(201,149,106,0.12)', border: '1px solid rgba(201,149,106,0.2)' }}>
-            <Star size={10} className="text-[#C4783A]" fill="#C4783A" />
-            <span className="text-[#C4783A] text-[10px] font-bold">+١٥ نقطة/طلب</span>
-          </div>
-          <p className="text-white/25 text-[9px]">كلما طلبت كلما وفّرت</p>
-        </div>
-      </motion.div>
-
-      <p className="text-[11px] font-black text-[#888] tracking-widest mb-3" style={{ fontFamily: 'ui-monospace,monospace' }}>
-        REWARDS — اختر مكافأتك
-      </p>
-
-      <div className="flex flex-col gap-3">
-        {REDEEMABLE.map((item, i) => {
-          const canRedeem = points >= item.pts;
-          const isRedeeming = redeeming === item.id;
-          const isDone = done === item.id;
-          const shortage = item.pts - points;
-
-          return (
-            <motion.div key={item.id}
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-              className="rounded-[18px] p-4 flex items-center gap-3"
-              style={{
-                background: canRedeem
-                  ? 'white'
-                  : 'rgba(0,0,0,0.025)',
-                border: canRedeem
-                  ? `1.5px solid ${item.color}25`
-                  : '1.5px solid rgba(196,181,159,0.15)',
-                boxShadow: canRedeem ? `0 4px 18px ${item.color}10` : 'none',
-                opacity: canRedeem ? 1 : 0.65,
-              }}>
-
-              {/* Emoji */}
-              <div className="w-12 h-12 rounded-[14px] flex items-center justify-center text-[22px] shrink-0"
-                style={{
-                  background: canRedeem ? `${item.color}12` : 'rgba(196,181,159,0.08)',
-                  border: `1px solid ${canRedeem ? item.color + '20' : 'rgba(196,181,159,0.12)'}`,
-                }}>
-                {isDone ? '✅' : item.emoji}
-              </div>
-
-              {/* Info */}
-              <div className="flex-1 min-w-0">
-                <p className="text-[13px] font-bold text-[#111] leading-tight">{item.name}</p>
-                <p className="text-[10px] text-[#AAA] font-light mt-0.5 leading-snug">{item.desc}</p>
-                <div className="flex items-center gap-1 mt-1.5">
-                  <Star size={9} fill={canRedeem ? item.color : '#CCC'} color={canRedeem ? item.color : '#CCC'} />
-                  <span className="text-[10px] font-black font-inter"
-                    style={{ color: canRedeem ? item.color : '#CCC' }}>{item.pts}</span>
-                  <span className="text-[9px] text-[#CCC]">نقطة</span>
-                  {!canRedeem && (
-                    <span className="text-[9px] text-[#F0A060] mr-1">· تحتاج {shortage} نقطة</span>
-                  )}
-                </div>
-              </div>
-
-              {/* Redeem button */}
-              <motion.button
-                whileTap={canRedeem ? { scale: 0.93 } : {}}
-                onClick={() => handleRedeem(item)}
-                disabled={!canRedeem || isRedeeming}
-                className="shrink-0 px-3 py-2 rounded-[11px] text-[11px] font-bold transition-all"
-                style={{
-                  background: isDone
-                    ? '#30D158'
-                    : canRedeem
-                    ? `linear-gradient(135deg,${item.color},${item.color}CC)`
-                    : 'rgba(196,181,159,0.12)',
-                  color: canRedeem || isDone ? 'white' : '#CCC',
-                  minWidth: 60,
-                }}>
-                <AnimatePresence mode="wait">
-                  {isDone ? (
-                    <motion.span key="done" initial={{ scale: 0 }} animate={{ scale: 1 }}>✓ تم</motion.span>
-                  ) : isRedeeming ? (
-                    <motion.div key="spin" className="flex justify-center"
-                      animate={{ rotate: 360 }} transition={{ duration: 0.7, repeat: Infinity, ease: 'linear' }}>
-                      <div className="w-3 h-3 rounded-full border-2 border-white/30 border-t-white" />
-                    </motion.div>
-                  ) : (
-                    <motion.span key="idle">{canRedeem ? 'استبدل' : '🔒'}</motion.span>
-                  )}
-                </AnimatePresence>
-              </motion.button>
-            </motion.div>
-          );
-        })}
+        <div className="h-px flex-1" style={{ background: 'linear-gradient(90deg,rgba(196,181,159,0.3),rgba(196,181,159,0.0))' }} />
       </div>
+
+      {/* ── Available now — dark premium cards ── */}
+      {available.length > 0 && (
+        <div className="mb-5">
+          <p className="text-[10px] font-bold text-[#30D158] tracking-widest mb-2.5 flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#30D158] inline-block" />
+            متاحة الآن · {available.length} مكافآت
+          </p>
+          <div className="flex flex-col gap-2.5">
+            {available.map((item, i) => {
+              const isRedeeming = redeeming === item.id;
+              const isDone      = done === item.id;
+              return (
+                <motion.div key={item.id}
+                  initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.06 }}
+                  className="relative overflow-hidden rounded-[20px] p-4 flex items-center gap-3.5"
+                  style={{ background: item.grad, border: `1px solid ${item.color}30`, boxShadow: `0 6px 24px ${item.color}18` }}>
+
+                  {/* Subtle shine */}
+                  <div className="absolute inset-0 pointer-events-none"
+                    style={{ background: 'linear-gradient(135deg,rgba(255,255,255,0.05) 0%,transparent 50%)' }} />
+
+                  {/* Icon */}
+                  <div className="w-13 h-13 w-[52px] h-[52px] rounded-[16px] flex items-center justify-center text-[26px] shrink-0"
+                    style={{ background: 'rgba(255,255,255,0.07)', border: `1px solid ${item.color}40` }}>
+                    {isDone ? '✅' : item.emoji}
+                  </div>
+
+                  {/* Text */}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-white text-[14px] font-bold leading-tight">{item.name}</p>
+                    <p className="text-white/40 text-[10px] font-light mt-0.5 leading-snug">{item.desc}</p>
+                    <div className="flex items-center gap-1 mt-2">
+                      <div className="flex items-center gap-1 px-2 py-0.5 rounded-full"
+                        style={{ background: `${item.color}30`, border: `1px solid ${item.color}50` }}>
+                        <Star size={8} fill={item.color} color={item.color} />
+                        <span className="text-[9px] font-black font-inter" style={{ color: item.color }}>{item.pts}</span>
+                        <span className="text-[9px]" style={{ color: item.color }}>نقطة</span>
+                      </div>
+                      <span className="text-[#30D158] text-[9px] font-bold mr-1">✓ لديك ما يكفي</span>
+                    </div>
+                  </div>
+
+                  {/* Redeem CTA */}
+                  <motion.button
+                    whileTap={{ scale: 0.91 }}
+                    onClick={() => handleRedeem(item)}
+                    disabled={isRedeeming || isDone}
+                    className="shrink-0 flex items-center justify-center rounded-[13px] font-bold text-[12px]"
+                    style={{
+                      background: isDone ? '#30D158' : `linear-gradient(135deg,${item.color},${item.color}BB)`,
+                      color: 'white',
+                      minWidth: 68,
+                      height: 38,
+                      boxShadow: isDone ? '0 4px 12px rgba(48,209,88,0.4)' : `0 4px 12px ${item.color}40`,
+                    }}>
+                    <AnimatePresence mode="wait">
+                      {isDone ? (
+                        <motion.span key="done" initial={{ scale: 0 }} animate={{ scale: 1 }}>✓ تم</motion.span>
+                      ) : isRedeeming ? (
+                        <motion.div key="spin"
+                          animate={{ rotate: 360 }} transition={{ duration: 0.7, repeat: Infinity, ease: 'linear' }}>
+                          <div className="w-3.5 h-3.5 rounded-full border-2 border-white/30 border-t-white" />
+                        </motion.div>
+                      ) : (
+                        <motion.span key="idle">استبدل</motion.span>
+                      )}
+                    </AnimatePresence>
+                  </motion.button>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ── Locked — light cards with progress bars ── */}
+      {locked.length > 0 && (
+        <div>
+          <p className="text-[10px] font-bold text-[#AAA] tracking-widest mb-2.5 flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#CCC] inline-block" />
+            اجمع المزيد · {locked.length} مكافآت
+          </p>
+          <div className="flex flex-col gap-2">
+            {locked.map((item, i) => {
+              const pct     = Math.min((points / item.pts) * 100, 100);
+              const missing = item.pts - points;
+              return (
+                <motion.div key={item.id}
+                  initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="rounded-[18px] p-3.5 flex items-center gap-3"
+                  style={{ background: 'rgba(0,0,0,0.025)', border: '1px solid rgba(196,181,159,0.13)' }}>
+
+                  {/* Icon */}
+                  <div className="w-[44px] h-[44px] rounded-[13px] flex items-center justify-center text-[20px] shrink-0"
+                    style={{ background: 'rgba(196,181,159,0.08)', border: '1px solid rgba(196,181,159,0.12)', filter: 'grayscale(0.4)' }}>
+                    {item.emoji}
+                  </div>
+
+                  {/* Text + progress */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-0.5">
+                      <p className="text-[12px] font-bold text-[#555]">{item.name}</p>
+                      <span className="text-[9px] font-black font-inter text-[#AAA]">{item.pts} نقطة</span>
+                    </div>
+                    {/* Progress bar */}
+                    <div className="h-[5px] rounded-full overflow-hidden mb-1" style={{ background: 'rgba(196,181,159,0.15)' }}>
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${pct}%` }}
+                        transition={{ duration: 1, delay: i * 0.06, ease: [0.4,0,0.2,1] }}
+                        className="h-full rounded-full"
+                        style={{ background: `linear-gradient(90deg,${item.color}80,${item.color})` }}
+                      />
+                    </div>
+                    <p className="text-[9px] text-[#BBB]">
+                      {points} / {item.pts} · <span style={{ color: '#F0A060' }}>تحتاج {missing} نقطة</span>
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -921,10 +959,9 @@ function RewardsTab({ points, onRedeem }: { points: number; onRedeem: (pts: numb
 /* ══════════════════════════════════════════════════════════════════
    Main Screen
 ══════════════════════════════════════════════════════════════════ */
-export function ScreenMembership() {
+export function ScreenMembership({ onNavigate }: { onNavigate?: (tab: string) => void }) {
   const { brand } = useBrand();
   const [showQR, setShowQR] = useState(false);
-  const [showBooking, setShowBooking] = useState(false);
   const [showAppleWallet, setShowAppleWallet] = useState(false);
   const [showGWallet, setShowGWallet] = useState(false);
   const [giftToast, setGiftToast] = useState<string | null>(null);
@@ -1160,15 +1197,13 @@ export function ScreenMembership() {
 
       {/* Book CTA */}
       <div className="absolute bottom-[72px] left-5 right-5">
-        <motion.button whileTap={{ scale: 0.97 }} onClick={() => setShowBooking(true)}
+        <motion.button whileTap={{ scale: 0.97 }} onClick={() => onNavigate?.('reservations')}
           className="w-full rounded-2xl py-4 flex items-center justify-center gap-3 text-white font-semibold text-[14px] shadow-[0_8px_28px_rgba(160,82,45,0.4)]"
           style={{ background: 'linear-gradient(135deg,#6B3210,#6B3A1F)' }}>
           <span>طاولتك بانتظارك</span>
           <Calendar size={16} className="opacity-80" />
         </motion.button>
       </div>
-
-      <BookingModal isOpen={showBooking} onClose={() => setShowBooking(false)} />
     </div>
   );
 }

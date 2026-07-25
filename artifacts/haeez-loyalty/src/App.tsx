@@ -105,9 +105,7 @@ function RevealHeadline({ children, className, style }: { children: string; clas
 const TAB_ORDER = ['home', 'menu', 'card', 'orders', 'reservations'] as const;
 type TabKey = typeof TAB_ORDER[number];
 
-function PhoneScreens({ activeTab, onShakeTrigger }: { activeTab: TabKey; onShakeTrigger: () => void }) {
-  const idx = TAB_ORDER.indexOf(activeTab);
-
+function PhoneScreens({ activeTab, onShakeTrigger, onNavigate }: { activeTab: TabKey; onShakeTrigger: () => void; onNavigate: (tab: TabKey) => void }) {
   return (
     <div className="flex-1 relative overflow-hidden h-full">
       {TAB_ORDER.map(tab => (
@@ -121,7 +119,7 @@ function PhoneScreens({ activeTab, onShakeTrigger }: { activeTab: TabKey; onShak
         >
           {tab === 'home'         && <ScreenHome onShakeTrigger={onShakeTrigger} />}
           {tab === 'menu'         && <ScreenMenu />}
-          {tab === 'card'         && <ScreenMembership />}
+          {tab === 'card'         && <ScreenMembership onNavigate={onNavigate} />}
           {tab === 'orders'       && <ScreenOrders />}
           {tab === 'reservations' && <ScreenReservations />}
         </div>
@@ -902,7 +900,7 @@ export default function App() {
                 )}
               </AnimatePresence>
 
-              <PhoneScreens activeTab={activeTab} onShakeTrigger={() => setShowShakeDeal(true)} />
+              <PhoneScreens activeTab={activeTab} onShakeTrigger={() => setShowShakeDeal(true)} onNavigate={setActiveTab} />
               <BottomNav activeTab={activeTab} onChangeTab={setActiveTab} notifCount={1} />
             </PhoneFrame>
           </div>
