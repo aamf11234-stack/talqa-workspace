@@ -588,20 +588,21 @@ export default function App() {
   return (
     <OrdersProvider>
     <BrandProvider>
-    <div className="min-h-screen w-full font-sans" style={{ background: 'linear-gradient(180deg,#F0E6D8 0%,#E8DDD0 35%,#EAE0D5 70%,#E5D9CC 100%)' }} dir="rtl">
+    <div className="min-h-screen w-full" style={{ background: '#FDFBF7', fontFamily: "'Readex Pro', 'SF Pro Display', sans-serif", color: '#2C2825' }} dir="rtl">
 
       {/* ── Agency top bar ─────────────────────────────────── */}
-      <div className="sticky top-0 z-50 border-b border-[rgba(123,22,24,0.1)] bg-[#FDFBF7]/85 backdrop-blur-xl">
+      <div className="sticky top-0 z-50" style={{ background: 'rgba(253,251,247,0.85)', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(220,215,205,0.5)' }}>
         <div className="max-w-5xl mx-auto px-6 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#B06070,#7A3050)' }}>
               <span className="text-white text-[10px] font-bold">ت</span>
             </div>
-            <span className="text-[14px] font-bold text-[#111]">تلقا تك</span>
+            <span className="text-[14px] font-bold" style={{ color: '#2C2825' }}>تلقا تك</span>
           </div>
-          <span className="text-[11px] text-[#AAA] font-light hidden sm:block">Brown Dose · نظام الولاء والطلب · جيزان</span>
+          <span className="text-[11px] font-light hidden sm:block" style={{ color: '#9A948C' }}>Brown Dose · نظام الولاء والطلب · جيزان</span>
           <a href="https://wa.me/966" target="_blank" rel="noopener noreferrer"
-            className="text-[11px] font-semibold text-[#B06070] border border-[rgba(123,22,24,0.2)] px-3.5 py-1.5 rounded-full hover:bg-[#B06070]/5 transition-colors">
+            className="text-[11px] font-semibold text-[#B06070] px-3.5 py-1.5 rounded-full hover:bg-[#B06070]/5 transition-colors"
+            style={{ border: '1px solid rgba(176,96,112,0.25)' }}>
             تواصل الآن
           </a>
         </div>
@@ -614,21 +615,20 @@ export default function App() {
             <span className="w-1.5 h-1.5 bg-[#B06070] rounded-full animate-pulse" />
             عرض حصري · براون دوز · جيزان
           </span>
-          <h1 className="text-[36px] md:text-[52px] font-bold text-[#111] leading-[1.15] mb-4 tracking-tight">
+          <h1 className="text-[36px] md:text-[52px] font-bold leading-[1.15] mb-4 tracking-tight" style={{ color: '#2C2825' }}>
             <span className="text-[#B06070]">Brown Dose</span>
             <br />يستحق تجربة رقمية مختلفة
           </h1>
-          <p className="text-[15px] md:text-[17px] text-[#777] font-light max-w-md mx-auto leading-relaxed mb-2">
+          <p className="text-[15px] md:text-[17px] font-light max-w-md mx-auto leading-relaxed mb-2" style={{ color: '#6B6560' }}>
             تطبيق ويب بهوية براون دوز — زبائنك يطلبون، يدفعون، ويكسبون نقاطاً تلقائياً
           </p>
-          <div className="flex items-center justify-center gap-6 mt-5 text-[12px] text-[#999]">
-            <span>طلب وتوصيل</span>
-            <span className="w-1 h-1 rounded-full bg-[#DDD]" />
-            <span>نقاط الولاء</span>
-            <span className="w-1 h-1 rounded-full bg-[#DDD]" />
-            <span>Apple Pay</span>
-            <span className="w-1 h-1 rounded-full bg-[#DDD]" />
-            <span>صبيا وضمد</span>
+          <div className="flex items-center justify-center gap-5 mt-6" style={{ color: '#9A948C', fontSize: 12 }}>
+            {['طلب وتوصيل', 'نقاط الولاء', 'Apple Pay', 'صبيا وضمد'].map((t, i) => (
+              <span key={t} className="flex items-center gap-5">
+                {i > 0 && <span style={{ width: 3, height: 3, borderRadius: '50%', background: '#DCD8D2', display: 'inline-block', flexShrink: 0, marginLeft: '-10px', marginRight: '-10px' }} />}
+                {t}
+              </span>
+            ))}
           </div>
         </motion.div>
       </div>
@@ -725,9 +725,10 @@ export default function App() {
               { label: '٦٠ يوم', sub: 'وقت التسليم', color: '#2D7D46' },
             ].map((s, i) => (
               <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.65 + i * 0.08 }}
-                className="bg-white/70 rounded-[16px] px-3.5 py-3 border border-[rgba(123,22,24,0.07)] text-right">
+                className="rounded-[16px] px-3.5 py-3 text-right"
+              style={{ background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(220,215,205,0.5)', boxShadow: '0 10px 30px rgba(0,0,0,0.03)', backdropFilter: 'blur(10px)' }}>
                 <p className="text-[16px] font-bold leading-tight" style={{ color: s.color }}>{s.label}</p>
-                <p className="text-[9px] text-[#999] font-light">{s.sub}</p>
+                <p className="text-[9px] font-light" style={{ color: '#9A948C' }}>{s.sub}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -757,8 +758,8 @@ export default function App() {
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="text-center mb-5">
           <p className="text-[11px] text-[#B06070] font-bold tracking-[0.22em] uppercase mb-1.5">منيو براون دوز</p>
-          <h2 className="text-[26px] font-bold text-[#111] leading-tight">كل كوب له حكايته</h2>
-          <p className="text-[13px] text-[#999] font-light mt-1.5">الأصناف الحقيقية — بالصور والأسعار</p>
+          <h2 className="text-[26px] font-bold leading-tight" style={{ color: '#2C2825' }}>كل كوب له حكايته</h2>
+          <p className="text-[13px] font-light mt-1.5" style={{ color: '#9A948C' }}>الأصناف الحقيقية — بالصور والأسعار</p>
         </div>
         <div className="grid grid-cols-3 gap-2.5 md:grid-cols-6">
           {[
@@ -796,8 +797,8 @@ export default function App() {
       {/* ── App Screens Strip ─────────────────────────────── */}
       <div className="max-w-5xl mx-auto mb-10">
         <div className="text-center mb-4 px-6">
-          <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1">شاشات التطبيق</p>
-          <h2 className="text-[22px] font-bold text-[#111]">٥ شاشات مصممة بالكامل</h2>
+          <p className="text-[11px] font-semibold tracking-widest uppercase mb-1" style={{ color: '#9A948C' }}>شاشات التطبيق</p>
+          <h2 className="text-[22px] font-bold" style={{ color: '#2C2825' }}>٥ شاشات مصممة بالكامل</h2>
         </div>
         <AppScreensStrip onTabSelect={(t) => { setActiveTab(t); document.querySelector('[data-phone]')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); }} />
       </div>
@@ -845,9 +846,9 @@ export default function App() {
       {/* ── Video Section ────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="text-center mb-5">
-          <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1">مثال حي</p>
-          <h2 className="text-[22px] font-bold text-[#111]">تطبيق براون دوز — كيف يبدو للزبون</h2>
-          <p className="text-[12px] text-[#AAA] font-light mt-1">منيو رقمي · نقاط ولاء · توصيل واستلام · كل شيء في مكان واحد</p>
+          <p className="text-[11px] font-semibold tracking-widest uppercase mb-1" style={{ color: '#9A948C' }}>مثال حي</p>
+          <h2 className="text-[22px] font-bold" style={{ color: '#2C2825' }}>تطبيق براون دوز — كيف يبدو للزبون</h2>
+          <p className="text-[12px] font-light mt-1" style={{ color: '#9A948C' }}>منيو رقمي · نقاط ولاء · توصيل واستلام · كل شيء في مكان واحد</p>
         </div>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -1089,18 +1090,19 @@ export default function App() {
       {/* ── Full Features Grid ────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="text-center mb-6">
-          <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1.5">كل ما يحصل عليه براون دوز</p>
-          <h2 className="text-[24px] font-bold text-[#111]">مزايا النظام في منظومة واحدة</h2>
+          <p className="text-[11px] font-semibold tracking-widest uppercase mb-1.5" style={{ color: '#9A948C' }}>كل ما يحصل عليه براون دوز</p>
+          <h2 className="text-[24px] font-bold" style={{ color: '#2C2825' }}>مزايا النظام في منظومة واحدة</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
           {allFeatures.map((f, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.03 * i }}
-              className="bg-white/80 rounded-[16px] px-4 py-3.5 border border-[rgba(0,0,0,0.06)] hover:border-[rgba(176,96,112,0.2)] transition-all duration-200">
+              className="rounded-[20px] px-4 py-3.5 transition-all duration-200 hover:-translate-y-0.5"
+              style={{ background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(220,215,205,0.5)', boxShadow: '0 10px 30px rgba(0,0,0,0.03)', backdropFilter: 'blur(10px)' }}>
               <p className="text-[9px] font-bold text-[#B06070] tracking-[0.18em] mb-1.5" style={{ fontFamily: 'ui-monospace,monospace' }}>
                 {String(i + 1).padStart(2,'0')}
               </p>
-              <p className="text-[12px] font-semibold text-[#111] mb-0.5 leading-snug">{f.title}</p>
-              <p className="text-[10px] text-[#999] font-light leading-relaxed">{f.desc}</p>
+              <p className="text-[12px] font-semibold mb-0.5 leading-snug" style={{ color: '#2C2825' }}>{f.title}</p>
+              <p className="text-[10px] font-light leading-relaxed" style={{ color: '#9A948C' }}>{f.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -1172,8 +1174,6 @@ export default function App() {
         {/* Ambient */}
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 50% 50%,rgba(201,149,106,0.09) 0%,transparent 65%)' }} />
         <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 20% 80%,rgba(123,22,24,0.3) 0%,transparent 50%)' }} />
-        <div className="absolute inset-0 pointer-events-none opacity-[0.025]"
-          style={{ backgroundImage: 'radial-gradient(circle,#fff 1px,transparent 1px)', backgroundSize: '12px 12px' }} />
 
         <div className="relative max-w-5xl mx-auto px-6 py-16 md:py-20">
 
