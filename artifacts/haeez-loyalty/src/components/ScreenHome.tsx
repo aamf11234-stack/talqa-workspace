@@ -786,8 +786,8 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
             <AnimatePresence mode="wait">
               <motion.div key={brand.logoImg} initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.25 }} className="relative">
-                <img src={brand.logoImg} alt="" className="w-10 h-10 rounded-[13px] object-cover border border-[rgba(201,149,106,0.2)]"
-                  style={{ boxShadow: '0 4px 16px rgba(160,82,45,0.4)' }} />
+                <img src={brand.logoImg} alt="" className="w-10 h-10 object-contain"
+                  style={{ filter: 'invert(1) brightness(0.9)' }} />
                 <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-[#30D158] rounded-full border-2 border-[#0D0205]" />
               </motion.div>
             </AnimatePresence>

@@ -678,23 +678,20 @@ export function ScreenMenu() {
 
         <div className="relative z-10 flex flex-col items-center pt-5 pb-4 px-5">
           {/* Logo */}
-          <motion.div initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
-            className="relative mb-2.5">
+          <motion.div initial={{ scale: 0.88, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.45, ease: [0.34, 1.56, 0.64, 1] }}
+            className="relative mb-3">
+            {/* Live dot */}
+            <div className="absolute -top-1 -left-1 z-10 w-3 h-3 rounded-full bg-[#30D158] border-2 border-[#110A05]" />
             <img src={brand.logoImg} alt={brand.name}
-              className="w-14 h-14 rounded-[18px] object-cover"
-              style={{ border: '2px solid rgba(201,149,106,0.45)', boxShadow: '0 0 0 4px rgba(201,149,106,0.08), 0 8px 28px rgba(0,0,0,0.5)' }} />
-            <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-[#0D0205] flex items-center justify-center">
-              <div className="w-2 h-2 rounded-full bg-[#30D158] animate-pulse" />
-            </div>
+              className="w-20 h-28 object-contain"
+              style={{ filter: 'invert(1) brightness(0.95)', dropShadow: '0 4px 20px rgba(0,0,0,0.6)' }} />
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}
+          <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14 }}
             className="text-center">
-            <p className="text-[8px] font-black tracking-[0.35em] text-[#C9956A] mb-0.5"
-              style={{ fontFamily: 'ui-monospace,monospace' }}>BROWN DOSE</p>
             <h1 className="text-[26px] font-black text-white leading-none tracking-tight">قائمتنا</h1>
-            <p className="text-white/25 text-[9px] mt-1 font-light">{totalItems} صنف · مفتوح من ٦ص حتى ٦:٣٠م</p>
+            <p className="text-white/30 text-[9px] mt-1 font-light">{totalItems} صنف · مفتوح من ٦ص حتى ٦:٣٠م</p>
           </motion.div>
 
           {/* Stats */}
