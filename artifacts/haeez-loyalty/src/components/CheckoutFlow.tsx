@@ -117,13 +117,13 @@ function FlyToTarget({ target }: { target: [number, number] | null }) {
    STEP INDICATOR
 ════════════════════════════════════════════════════════════════════ */
 const STEPS: { phase: Phase; label: string }[] = [
-  { phase: 'type',    label: 'النوع'  },
+  { phase: 'type',    label: 'الاختيار' },
   { phase: 'branch',  label: 'الفرع'  },
   { phase: 'payment', label: 'الدفع'  },
   { phase: 'invoice', label: 'تم ✓'  },
 ];
 const DELIVERY_STEPS: { phase: Phase; label: string }[] = [
-  { phase: 'type',    label: 'النوع'   },
+  { phase: 'type',    label: 'الاختيار' },
   { phase: 'address', label: 'الموقع'  },
   { phase: 'payment', label: 'الدفع'   },
   { phase: 'invoice', label: 'تم ✓'   },
