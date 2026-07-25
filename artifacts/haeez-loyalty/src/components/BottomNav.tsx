@@ -33,7 +33,7 @@ export function BottomNav({ activeTab, onChangeTab, notifCount = 1 }: BottomNavP
             {isActive && (
               <motion.div
                 layoutId="nav-pill"
-                className="absolute inset-0 bg-[#C4783A] rounded-full"
+                className="absolute inset-0 bg-[#6B3210] rounded-full"
                 transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
               />
             )}

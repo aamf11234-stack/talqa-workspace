@@ -67,7 +67,7 @@ export function ScreenReservations() {
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-center">
-            <p className="text-[9px] font-black tracking-[0.32em] text-[#C9956A] mb-1"
+            <p className="text-[9px] font-black tracking-[0.32em] text-[#7A3B18] mb-1"
               style={{ fontFamily: 'ui-monospace,monospace' }}>مطعمك</p>
             <h1 className="text-[24px] font-black text-white leading-none tracking-tight">احجز طاولتك</h1>
             <p className="text-white/30 text-[10px] mt-1.5 font-light">شارع لبنان · من ٦ص حتى ٦:٣٠م</p>
@@ -119,7 +119,7 @@ export function ScreenReservations() {
         <div className="px-5 mb-4">
           <p className="text-[11px] text-[#AAA] font-medium tracking-wider mb-2">حجوزاتك القادمة</p>
           {upcomingBookings.map((b, i) => (
-            <div key={i} className="bg-[#C4783A]/8 border border-[#C4783A]/20 rounded-2xl p-3.5 flex items-center justify-between">
+            <div key={i} className="bg-[#6B3210]/8 border border-[#6B3210]/20 rounded-2xl p-3.5 flex items-center justify-between">
               <div>
                 <p className="text-[12px] font-semibold text-[#111]">{b.date} · {b.time}</p>
                 <p className="text-[11px] text-[#888] font-light mt-0.5">{b.guests} أشخاص · {b.ref}</p>
@@ -143,7 +143,7 @@ export function ScreenReservations() {
                 onClick={() => { setSelectedDate(i); setSelectedTime(null); }}
                 className={`shrink-0 flex flex-col items-center py-2.5 px-3.5 rounded-2xl transition-all duration-200 border ${
                   isActive
-                    ? 'bg-[#C4783A] border-[#C4783A] text-white shadow-[0_4px_16px_rgba(160,82,45,0.3)]'
+                    ? 'bg-[#6B3210] border-[#6B3210] text-white shadow-[0_4px_16px_rgba(160,82,45,0.3)]'
                     : 'bg-white border-[rgba(196,181,159,0.2)] text-[#111]'
                 }`}
               >
@@ -176,7 +176,7 @@ export function ScreenReservations() {
                 onClick={() => !isUnavail && setSelectedTime(i)}
                 className={`py-2 rounded-xl text-[11px] font-medium transition-all duration-200 border ${
                   isSelected
-                    ? 'bg-[#C4783A] border-[#C4783A] text-white shadow-[0_4px_12px_rgba(160,82,45,0.25)]'
+                    ? 'bg-[#6B3210] border-[#6B3210] text-white shadow-[0_4px_12px_rgba(160,82,45,0.25)]'
                     : isUnavail
                     ? 'bg-[#F0EBE4] border-transparent text-[#CCC] cursor-not-allowed line-through'
                     : 'bg-white border-[rgba(196,181,159,0.2)] text-[#111] hover:border-[#C4B59F]'
@@ -234,7 +234,7 @@ export function ScreenReservations() {
           disabled={selectedTime === null}
           className={`w-full py-4 rounded-2xl text-[15px] font-semibold transition-all duration-300 ${
             selectedTime !== null
-              ? 'bg-[#C4783A] text-white shadow-[0_8px_24px_rgba(160,82,45,0.3)]'
+              ? 'bg-[#6B3210] text-white shadow-[0_8px_24px_rgba(160,82,45,0.3)]'
               : 'bg-[#E5DDD4] text-[#AAA] cursor-not-allowed'
           }`}
         >

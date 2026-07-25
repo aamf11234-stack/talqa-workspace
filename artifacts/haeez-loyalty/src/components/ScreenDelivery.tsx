@@ -12,13 +12,13 @@ function ZoneCard({ name, time, active, onClick }: { name: string; time: string;
     <motion.button whileTap={{ scale: 0.95 }} onClick={onClick}
       className="flex items-center gap-3 p-4 rounded-[18px] text-right transition-all"
       style={{
-        background: active ? 'linear-gradient(135deg,#C4783A,#8A3050)' : 'white',
+        background: active ? 'linear-gradient(135deg,#6B3210,#8A3050)' : 'white',
         border: active ? 'none' : '1.5px solid rgba(196,181,159,0.25)',
         boxShadow: active ? '0 6px 20px rgba(196,120,58,0.35)' : '0 2px 10px rgba(0,0,0,0.04)',
       }}>
       <div className="w-10 h-10 rounded-[12px] flex items-center justify-center shrink-0"
         style={{ background: active ? 'rgba(255,255,255,0.18)' : 'rgba(196,120,58,0.08)' }}>
-        <MapPin size={17} style={{ color: active ? 'white' : '#C4783A' }} />
+        <MapPin size={17} style={{ color: active ? 'white' : '#6B3210' }} />
       </div>
       <div className="flex-1 text-right">
         <p className="font-bold" style={{ color: active ? 'white' : '#111', fontSize: 14 }}>{name}</p>
@@ -42,12 +42,12 @@ function PopularCard({ emoji, name, price, badge, onOrder }: { emoji: string; na
         {emoji}
         {badge && (
           <span className="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[8px] font-black text-white"
-            style={{ background: '#C4783A' }}>{badge}</span>
+            style={{ background: '#6B3210' }}>{badge}</span>
         )}
       </div>
       <div className="px-3 py-2.5">
         <p className="text-[11px] font-bold text-[#111] leading-tight mb-0.5">{name}</p>
-        <p className="text-[#C4783A] text-[12px] font-black font-inter">{price} ر</p>
+        <p className="text-[#6B3210] text-[12px] font-black font-inter">{price} ر</p>
       </div>
     </motion.button>
   );
@@ -91,13 +91,13 @@ function LiveTracker({ onDone }: { onDone: () => void }) {
               </div>
               <div className="flex-1">
                 <p className="text-[11px] font-bold" style={{ color: i <= step ? 'white' : 'rgba(255,255,255,0.3)' }}>{s.label}</p>
-                {i === step && <p className="text-[9px] text-[#C4783A] mt-0.5">{s.sub}</p>}
+                {i === step && <p className="text-[9px] text-[#6B3210] mt-0.5">{s.sub}</p>}
               </div>
               {i < step && <div className="w-4 h-4 rounded-full bg-[#30D158] flex items-center justify-center shrink-0">
                 <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 fill-white"><path d="M20 6L9 17l-5-5" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="none"/></svg>
               </div>}
               {i === step && <motion.div animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 1.5 }}
-                className="w-4 h-4 rounded-full bg-[#C4783A] shrink-0" />}
+                className="w-4 h-4 rounded-full bg-[#6B3210] shrink-0" />}
             </motion.div>
           ))}
         </div>
@@ -105,7 +105,7 @@ function LiveTracker({ onDone }: { onDone: () => void }) {
           <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
             whileTap={{ scale: 0.96 }} onClick={onDone}
             className="mt-4 w-full py-3 rounded-[14px] text-white font-bold text-[12px]"
-            style={{ background: 'linear-gradient(135deg,#C4783A,#8A3050)' }}>
+            style={{ background: 'linear-gradient(135deg,#6B3210,#8A3050)' }}>
             تم! ⭐ قيّم تجربتك
           </motion.button>
         )}
@@ -196,7 +196,7 @@ export function ScreenDelivery() {
         <div className="mb-5">
           <div className="flex items-center justify-between mb-3">
             <p className="text-[13px] font-bold text-[#111]">الأكثر طلباً</p>
-            <span className="text-[10px] text-[#C4783A] font-semibold">مثالي للتوصيل</span>
+            <span className="text-[10px] text-[#6B3210] font-semibold">مثالي للتوصيل</span>
           </div>
           <div className="grid grid-cols-2 gap-2.5">
             {popular.map((p, i) => (
@@ -222,7 +222,7 @@ export function ScreenDelivery() {
           <motion.button whileTap={{ scale: 0.92 }}
             onClick={() => setPendingOrder({ name: brand.todaySpecial.name, price: brand.todaySpecial.price, emoji: brand.todaySpecial.emoji })}
             className="px-4 py-2.5 rounded-[12px] text-white text-[11px] font-bold shrink-0 relative"
-            style={{ background: 'linear-gradient(135deg,#C4783A,#8A3050)' }}>
+            style={{ background: 'linear-gradient(135deg,#6B3210,#8A3050)' }}>
             اطلب
           </motion.button>
         </motion.div>

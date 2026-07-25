@@ -38,8 +38,8 @@ function daysUntil(dateStr: string): number {
 function ProgressRings({ progress = 4 / 7 }: { progress?: number }) {
   const size = 140; const cx = size / 2; const cy = size / 2;
   const rings = [
-    { r: 58, sw: 4.5, progress, id: 'gold', c1: '#C9956A', c2: '#F0D4A8' },
-    { r: 46, sw: 3,   progress: 0.82, id: 'red',  c1: '#C4783A', c2: '#E090A8' },
+    { r: 58, sw: 4.5, progress, id: 'gold', c1: '#7A3B18', c2: '#F0D4A8' },
+    { r: 46, sw: 3,   progress: 0.82, id: 'red',  c1: '#6B3210', c2: '#E090A8' },
     { r: 35, sw: 2.5, progress: 0.55, id: 'dim',  c1: 'rgba(255,255,255,0.2)', c2: 'rgba(255,255,255,0.05)' },
   ];
   return (
@@ -163,13 +163,13 @@ function MoodPicker({ onOrder }: { onOrder: (item: CheckoutItem) => void }) {
                         style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(175,82,222,0.2)' }}>
                         <span className="text-[18px] leading-none">{result.emoji}</span>
                         <p className="text-white text-[10px] font-semibold leading-snug">{item}</p>
-                        <p className="text-[#C9956A] text-[9px] font-bold">{result.prices[i]}</p>
+                        <p className="text-[#7A3B18] text-[9px] font-bold">{result.prices[i]}</p>
                         <div className="flex items-center gap-1 mt-0.5">
                           <div className="w-3 h-3 rounded-full flex items-center justify-center shrink-0"
-                            style={{ background: 'linear-gradient(135deg,#C4783A,#6B3A1F)' }}>
+                            style={{ background: 'linear-gradient(135deg,#6B3210,#6B3A1F)' }}>
                             <span className="text-white text-[5px] font-black">✓</span>
                           </div>
-                          <span className="text-[#C9956A] text-[8px] font-bold">اطلب</span>
+                          <span className="text-[#7A3B18] text-[8px] font-bold">اطلب</span>
                         </div>
                       </motion.button>
                     ))}
@@ -215,7 +215,7 @@ function TodaySpecial({ onOrder }: { onOrder: (item: CheckoutItem) => void }) {
         </div>
         <div className="flex-1 flex flex-col justify-between py-0.5">
           <div>
-            <p className="text-[8px] font-bold tracking-widest text-[#C9956A] mb-1"
+            <p className="text-[8px] font-bold tracking-widest text-[#7A3B18] mb-1"
               style={{ fontFamily: 'ui-monospace,monospace' }}>{t.badge}</p>
             <p className="text-white text-[16px] font-bold leading-tight mb-1">{t.name}</p>
             <p className="text-white/35 text-[10px] font-light leading-snug">{t.desc}</p>
@@ -223,7 +223,7 @@ function TodaySpecial({ onOrder }: { onOrder: (item: CheckoutItem) => void }) {
           <div className="flex items-center justify-between mt-2">
             <div>
               <span className="text-[22px] font-black text-white font-inter">{t.price}</span>
-              <span className="text-[#C9956A] text-[11px] font-bold mr-1">ريال</span>
+              <span className="text-[#7A3B18] text-[11px] font-bold mr-1">ريال</span>
             </div>
             <div className="flex items-center gap-2">
               <motion.button whileTap={{ scale: 0.85 }} onClick={() => setLiked(!liked)}
@@ -235,7 +235,7 @@ function TodaySpecial({ onOrder }: { onOrder: (item: CheckoutItem) => void }) {
                 onClick={() => onOrder({ name: t.name, price: t.price, emoji: t.emoji })}
                 whileTap={{ scale: 0.94 }}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold text-white"
-                style={{ background: 'linear-gradient(135deg,#C4783A,#6B3A1F)' }}>
+                style={{ background: 'linear-gradient(135deg,#6B3210,#6B3A1F)' }}>
                 <svg viewBox="0 0 24 24" className="w-3 h-3 fill-none stroke-white shrink-0" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
                   <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
@@ -253,7 +253,7 @@ function TodaySpecial({ onOrder }: { onOrder: (item: CheckoutItem) => void }) {
           <img src={t.popImg} alt={t.popName} className="w-8 h-8 rounded-[8px] object-cover shrink-0" />
           <div className="flex-1 min-w-0">
             <p className="text-white text-[10px] font-semibold truncate">{t.popName}</p>
-            <p className="text-[#C9956A] text-[9px] font-bold">{t.popPrice}</p>
+            <p className="text-[#7A3B18] text-[9px] font-bold">{t.popPrice}</p>
           </div>
           <span className="text-[9px] text-white/25 shrink-0">الأشهر</span>
         </div>
@@ -275,8 +275,8 @@ const haizEvents: HaizEvent[] = [
   { id: 'school',   title: 'بداية الدراسة',    subtitle: '٧ سبتمبر ٢٠٢٦',          date: '2026-09-07', color: '#2980B9', benefit: 'وجبة ترحيبية بعد أول يوم دراسة' },
   { id: 'winter',   title: 'إجازة الشتاء',     subtitle: 'ديسمبر ٢٠٢٦',            date: '2026-12-19', color: '#5D6D7E', benefit: 'منيو شتوي حصري + حساء مجاني' },
   { id: 'midyear',  title: 'إجازة النصف',      subtitle: 'يناير ٢٠٢٧',              date: '2027-01-15', color: '#8E44AD', benefit: 'خصم ٢٠٪ على الوجبات الجماعية' },
-  { id: 'founding', title: 'يوم التأسيس',      subtitle: '٢٢ فبراير ٢٠٢٧',         date: '2027-02-22', color: '#C4783A', benefit: 'وجبة مجانية للأعضاء' },
-  { id: 'eid',      title: 'عيد الفطر',         subtitle: 'مارس ٢٠٢٧ (تقريباً)',    date: '2027-03-20', color: '#C9956A', benefit: 'هدية عيد خاصة + مضاعفة النقاط' },
+  { id: 'founding', title: 'يوم التأسيس',      subtitle: '٢٢ فبراير ٢٠٢٧',         date: '2027-02-22', color: '#6B3210', benefit: 'وجبة مجانية للأعضاء' },
+  { id: 'eid',      title: 'عيد الفطر',         subtitle: 'مارس ٢٠٢٧ (تقريباً)',    date: '2027-03-20', color: '#7A3B18', benefit: 'هدية عيد خاصة + مضاعفة النقاط' },
 ];
 
 function useTodayDates() {
@@ -333,13 +333,13 @@ function HaizCalendar() {
               <div className="w-1.5 h-1.5 rounded-full bg-[#30D158]" style={{ boxShadow: '0 0 5px #30D158' }} />
               <span className="text-[#30D158] text-[9px] font-bold">{dt.hijriWeekday}</span>
             </div>
-            <span className="text-[6px] font-black tracking-[0.32em] text-[#C9956A]/35"
+            <span className="text-[6px] font-black tracking-[0.32em] text-[#7A3B18]/35"
               style={{ fontFamily: 'ui-monospace,monospace' }}>OFFERS CALENDAR</span>
           </div>
           <div className="flex items-end gap-0">
             <span style={{
               fontSize: 96, fontWeight: 900, letterSpacing: '-0.06em', lineHeight: 0.85,
-              background: 'linear-gradient(175deg,#FAECD0 0%,#C9956A 45%,#7B4A1A 100%)',
+              background: 'linear-gradient(175deg,#FAECD0 0%,#7A3B18 45%,#7B4A1A 100%)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
               filter: 'drop-shadow(0 4px 24px rgba(201,149,106,0.45))', marginLeft: -4,
             }}>{dt.hijriDay}</span>
@@ -350,7 +350,7 @@ function HaizCalendar() {
           </div>
           <div className="flex items-center gap-3 mt-2">
             <div style={{ width: 28, height: 1, background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.5))', transform: 'skewX(-25deg)' }} />
-            <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: '#C9956A', boxShadow: '0 0 6px rgba(201,149,106,0.7)' }} />
+            <div className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: '#7A3B18', boxShadow: '0 0 6px rgba(201,149,106,0.7)' }} />
             <div className="flex items-baseline gap-2">
               <span style={{ fontSize: 22, fontWeight: 900, color: 'rgba(255,255,255,0.55)', letterSpacing: '-0.03em', lineHeight: 1 }}>{dt.gregDay}</span>
               <span style={{ fontSize: 15, fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '-0.01em' }}>{dt.gregMonth}</span>
@@ -364,10 +364,10 @@ function HaizCalendar() {
       <div className="relative px-5 pt-4 pb-3 flex items-center justify-between"
         style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div>
-          <p className="text-[8px] font-black tracking-[0.28em] text-[#C9956A] mb-1"
+          <p className="text-[8px] font-black tracking-[0.28em] text-[#7A3B18] mb-1"
             style={{ fontFamily: 'ui-monospace,monospace' }}>OFFERS CALENDAR</p>
           <div className="flex items-center gap-2">
-            <ICalendarIcon size={18} color="#C9956A" sw={1.4} />
+            <ICalendarIcon size={18} color="#7A3B18" sw={1.4} />
             <h3 className="text-[17px] font-black text-white leading-none">تقويم العروض</h3>
           </div>
         </div>
@@ -447,7 +447,7 @@ function HaizCalendar() {
 /* ── Notifications Panel ─────────────────────────────────────────── */
 const NOTIFS = [
   { id: 1, icon: '✓',  bg: '#30D158', color: '#30D158', title: 'طلبك جاهز للاستلام', sub: 'رقم #٢٠٢٦-٠٤٧١ — تفضل الآن', time: 'الآن' },
-  { id: 2, icon: '⭐', bg: '#C9956A', color: '#C9956A', title: '+٢٥ نقطة أُضيفت لرصيدك', sub: 'من طلبك الأخير — رصيدك ٤٨٠ نقطة', time: 'قبل ١٥ دقيقة' },
+  { id: 2, icon: '⭐', bg: '#7A3B18', color: '#7A3B18', title: '+٢٥ نقطة أُضيفت لرصيدك', sub: 'من طلبك الأخير — رصيدك ٤٨٠ نقطة', time: 'قبل ١٥ دقيقة' },
   { id: 3, icon: '🔥', bg: '#FF3B30', color: '#FF3B30', title: 'خصم ٢٠٪ على طبق اليوم', sub: 'العرض ينتهي هذه الليلة فقط', time: 'قبل ساعة' },
   { id: 4, icon: '👋', bg: '#007AFF', color: '#007AFF', title: 'نفتقدك — وجبتك بتنتظر', sub: 'مر ٣ أيام على آخر زيارة لك', time: 'البارحة' },
 ];
@@ -540,11 +540,11 @@ function QuickBookSheet({ onClose }: { onClose: () => void }) {
               <p className="text-[10px] text-[#CCC] font-light">ستصلك رسالة تأكيد على الجوال</p>
               <motion.button whileTap={{ scale: 0.97 }} onClick={onClose}
                 className="mt-2 w-full py-3.5 rounded-[16px] font-semibold text-[14px] text-white"
-                style={{ background: 'linear-gradient(135deg,#C4783A,#6B3A1F)' }}>تمام</motion.button>
+                style={{ background: 'linear-gradient(135deg,#6B3210,#6B3A1F)' }}>تمام</motion.button>
             </motion.div>
           ) : (
             <>
-              <p className="text-[10px] text-[#C4783A] font-bold tracking-widest mb-0.5">احجز طاولة</p>
+              <p className="text-[10px] text-[#6B3210] font-bold tracking-widest mb-0.5">احجز طاولة</p>
               <h3 className="text-[19px] font-bold text-[#111] mb-4">اختر الموعد</h3>
               <div className="flex items-center justify-between mb-4 bg-white rounded-[16px] p-3 border border-[rgba(196,181,159,0.2)]">
                 <p className="text-[13px] font-semibold text-[#111]">عدد الأشخاص</p>
@@ -552,13 +552,13 @@ function QuickBookSheet({ onClose }: { onClose: () => void }) {
                   <button onClick={() => setPax(p => Math.max(1, p - 1))}
                     className="w-8 h-8 rounded-full flex items-center justify-center"
                     style={{ background: 'rgba(160,82,45,0.08)' }}>
-                    <span className="text-[18px] font-bold text-[#C4783A] leading-none">−</span>
+                    <span className="text-[18px] font-bold text-[#6B3210] leading-none">−</span>
                   </button>
                   <span className="text-[15px] font-bold text-[#111] w-4 text-center">{pax}</span>
                   <button onClick={() => setPax(p => Math.min(10, p + 1))}
                     className="w-8 h-8 rounded-full flex items-center justify-center"
                     style={{ background: 'rgba(160,82,45,0.08)' }}>
-                    <span className="text-[18px] font-bold text-[#C4783A] leading-none">+</span>
+                    <span className="text-[18px] font-bold text-[#6B3210] leading-none">+</span>
                   </button>
                 </div>
               </div>
@@ -568,7 +568,7 @@ function QuickBookSheet({ onClose }: { onClose: () => void }) {
                   <button key={slot} onClick={() => setSelectedSlot(slot)}
                     className="py-2.5 rounded-[12px] text-[11px] font-bold transition-all"
                     style={{
-                      background: selectedSlot === slot ? 'linear-gradient(135deg,#C4783A,#6B3A1F)' : 'white',
+                      background: selectedSlot === slot ? 'linear-gradient(135deg,#6B3210,#6B3A1F)' : 'white',
                       color: selectedSlot === slot ? 'white' : '#555',
                       border: selectedSlot === slot ? 'none' : '1px solid rgba(196,181,159,0.25)',
                     }}>{slot}</button>
@@ -578,7 +578,7 @@ function QuickBookSheet({ onClose }: { onClose: () => void }) {
                 onClick={() => selectedSlot && setDone(true)}
                 className="w-full py-4 rounded-[16px] font-semibold text-[14px] transition-all"
                 style={{
-                  background: selectedSlot ? 'linear-gradient(135deg,#C4783A,#6B3A1F)' : 'rgba(196,181,159,0.2)',
+                  background: selectedSlot ? 'linear-gradient(135deg,#6B3210,#6B3A1F)' : 'rgba(196,181,159,0.2)',
                   color: selectedSlot ? 'white' : '#AAA',
                 }}>
                 {selectedSlot ? `احجز لـ${pax} أشخاص — ${selectedSlot}` : 'اختر موعداً أولاً'}
@@ -593,8 +593,8 @@ function QuickBookSheet({ onClose }: { onClose: () => void }) {
 
 /* ── Offers Sheet ───────────────────────────────────────────────── */
 const OFFERS = [
-  { emoji: '🍔', title: 'برجر + مشروب بـ٤٩ ريال', sub: 'وفر ٢٢٪ — ينتهي الليلة', color: '#C4783A', tag: 'الأشهر' },
-  { emoji: '☕', title: 'قهوتان للسعر الواحد', sub: 'صالح للأعضاء فقط · حتى ١٢م', color: '#C9956A', tag: 'عضوية' },
+  { emoji: '🍔', title: 'برجر + مشروب بـ٤٩ ريال', sub: 'وفر ٢٢٪ — ينتهي الليلة', color: '#6B3210', tag: 'الأشهر' },
+  { emoji: '☕', title: 'قهوتان للسعر الواحد', sub: 'صالح للأعضاء فقط · حتى ١٢م', color: '#7A3B18', tag: 'عضوية' },
   { emoji: '🎂', title: 'حلى مجاناً مع أي طلب', sub: 'لأعياد الميلاد هذا الشهر', color: '#2D7D46', tag: 'مناسبة' },
 ];
 
@@ -610,7 +610,7 @@ function OffersSheet({ onClose }: { onClose: () => void }) {
         style={{ maxHeight: '78%' }}>
         <div className="w-10 h-1 bg-[rgba(196,181,159,0.4)] rounded-full mx-auto mt-3 mb-4" />
         <div className="px-5">
-          <p className="text-[10px] text-[#C4783A] font-bold tracking-widest mb-0.5">حصري للأعضاء</p>
+          <p className="text-[10px] text-[#6B3210] font-bold tracking-widest mb-0.5">حصري للأعضاء</p>
           <h3 className="text-[19px] font-bold text-[#111] mb-4">عروضك الحالية</h3>
           <div className="space-y-3">
             {OFFERS.map((o, i) => (
@@ -648,9 +648,9 @@ function BusyMeter() {
   const levels = [
     { range:[0,7],   label:'هادي',   sub:'لا انتظار الآن',             color:'#30D158', bars:1, eta:'٢ دقيقة'  },
     { range:[7,9],   label:'خفيف',   sub:'صباح هادي — أسرع وقت',       color:'#30D158', bars:2, eta:'٣ دقائق' },
-    { range:[9,12],  label:'عادي',   sub:'إقبال متوسط',                color:'#C9956A', bars:3, eta:'٧ دقائق' },
+    { range:[9,12],  label:'عادي',   sub:'إقبال متوسط',                color:'#7A3B18', bars:3, eta:'٧ دقائق' },
     { range:[12,14], label:'مزدحم',  sub:'ذروة الغداء — انتظر شوي',    color:'#FF9F0A', bars:5, eta:'١٥ دقيقة'},
-    { range:[14,17], label:'عادي',   sub:'هدأ الوضع بعد الغداء',       color:'#C9956A', bars:3, eta:'٦ دقائق' },
+    { range:[14,17], label:'عادي',   sub:'هدأ الوضع بعد الغداء',       color:'#7A3B18', bars:3, eta:'٦ دقائق' },
     { range:[17,20], label:'مزدحم',  sub:'ذروة المساء ☕ — حماس!',      color:'#FF9F0A', bars:4, eta:'١٢ دقيقة'},
     { range:[20,24], label:'هادي',   sub:'قبيل الإغلاق — ارتاح',       color:'#30D158', bars:2, eta:'٤ دقائق' },
   ];
@@ -810,7 +810,7 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
               <div className="text-left pb-1">
                 <div className="inline-flex px-3 py-1.5 rounded-[10px] mb-1.5"
                   style={{ background: 'rgba(201,149,106,0.14)', border: '1px solid rgba(201,149,106,0.2)' }}>
-                  <span className="text-[#C9956A] text-[11px] font-bold">كلاسيك</span>
+                  <span className="text-[#7A3B18] text-[11px] font-bold">كلاسيك</span>
                 </div>
                 <p className="text-white/25 text-[9px] text-right font-light">٣ طلبات للفضي</p>
               </div>
@@ -821,7 +821,7 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
                 initial={{ width: 0 }} animate={{ width: '57%' }}
                 transition={{ duration: 1.4, delay: 0.55, ease: [0.4, 0, 0.2, 1] }}
                 className="h-full rounded-full"
-                style={{ background: 'linear-gradient(90deg,#C9956A,#F0D4A8)' }}
+                style={{ background: 'linear-gradient(90deg,#7A3B18,#F0D4A8)' }}
               />
             </div>
             <div className="flex justify-between mt-1.5">
@@ -854,7 +854,7 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
             style={{ background: 'linear-gradient(135deg,rgba(201,149,106,0.18),rgba(201,149,106,0.08))', border: '1px solid rgba(201,149,106,0.3)' }}>
             <motion.span animate={{ rotate: [0, 15, -15, 0] }} transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
               className="text-[15px] leading-none">🎰</motion.span>
-            <span className="text-[#C9956A] text-[11px] font-bold">دوّر واربح</span>
+            <span className="text-[#7A3B18] text-[11px] font-bold">دوّر واربح</span>
           </motion.button>
         </div>
       </div>
@@ -865,9 +865,9 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
         {/* Quick actions */}
         <div className="grid grid-cols-3 gap-2.5 mb-5 px-4">
           {[
-            { icon: ShoppingBag, label: 'اطلب',   color: '#C4783A', bg: '#C4783A12', href: null, onTap: () => setPendingOrder({ name: brand.todaySpecial.name, price: brand.todaySpecial.price, emoji: brand.todaySpecial.emoji }) },
-            { icon: Calendar,    label: 'احجز',   color: '#C4783A', bg: '#C4783A12', href: null, onTap: () => setShowBookSheet(true) },
-            { icon: Tag,         label: 'عروضي',  color: '#B5651D', bg: '#C9956A12', href: null, onTap: () => setShowOffersSheet(true) },
+            { icon: ShoppingBag, label: 'اطلب',   color: '#6B3210', bg: '#6B321012', href: null, onTap: () => setPendingOrder({ name: brand.todaySpecial.name, price: brand.todaySpecial.price, emoji: brand.todaySpecial.emoji }) },
+            { icon: Calendar,    label: 'احجز',   color: '#6B3210', bg: '#6B321012', href: null, onTap: () => setShowBookSheet(true) },
+            { icon: Tag,         label: 'عروضي',  color: '#B5651D', bg: '#7A3B1812', href: null, onTap: () => setShowOffersSheet(true) },
           ].map((a, i) => {
             const inner = (
               <motion.div
@@ -968,7 +968,7 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
           <div className="relative shrink-0" style={{ width: 56, height: 56 }}>
             <motion.div animate={{ rotate: 360 }} transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
               className="w-full h-full rounded-full"
-              style={{ background: 'conic-gradient(#C4783A 0deg 45deg,#B8860B 45deg 90deg,#1A6B3A 90deg 135deg,#2D2D2D 135deg 180deg,#C4783A 180deg 225deg,#7D3C15 225deg 270deg,#1B4F72 270deg 315deg,#6B2D8B 315deg 360deg)', border: '2px solid rgba(201,149,106,0.4)' }} />
+              style={{ background: 'conic-gradient(#6B3210 0deg 45deg,#B8860B 45deg 90deg,#1A6B3A 90deg 135deg,#2D2D2D 135deg 180deg,#6B3210 180deg 225deg,#7D3C15 225deg 270deg,#1B4F72 270deg 315deg,#6B2D8B 315deg 360deg)', border: '2px solid rgba(201,149,106,0.4)' }} />
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-5 h-5 rounded-full bg-[#0D0205] border border-[rgba(201,149,106,0.4)] flex items-center justify-center text-[10px]">🎰</div>
             </div>
@@ -978,7 +978,7 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
             <p className="text-white/40 text-[10px] font-light mt-0.5">وجبة مجانية · خصومات · نقاط مضاعفة</p>
           </div>
           <div className="shrink-0 flex flex-col items-center gap-1">
-            <div className="px-3 py-1.5 rounded-full text-[10px] font-bold text-[#C9956A]"
+            <div className="px-3 py-1.5 rounded-full text-[10px] font-bold text-[#7A3B18]"
               style={{ background: 'rgba(201,149,106,0.12)', border: '1px solid rgba(201,149,106,0.25)' }}>مجاناً</div>
             <span className="text-white/20 text-[8px]">مرة / يوم</span>
           </div>

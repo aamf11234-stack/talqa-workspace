@@ -8,7 +8,7 @@ const PRIZES = [
   { label: 'مشروب مجاني',  emoji: '🥤', color1: '#B8860B', color2: '#8B6914', highlight: true  },
   { label: 'نقاط مضاعفة', emoji: '⭐', color1: '#1A6B3A', color2: '#0F4828', highlight: false },
   { label: 'حاول ثانية',   emoji: '🔄', color1: '#2A2A2A', color2: '#1A1A1A', highlight: false },
-  { label: 'وجبة مجانية', emoji: '🍽️', color1: '#C4783A', color2: '#520E10', highlight: true  },
+  { label: 'وجبة مجانية', emoji: '🍽️', color1: '#6B3210', color2: '#520E10', highlight: true  },
   { label: 'خصم ١٥٪',      emoji: '💰', color1: '#7D3C15', color2: '#5C2C0F', highlight: false },
   { label: 'كوبون ٢٥ ريال',emoji: '🎟️', color1: '#1B4F72', color2: '#123558', highlight: false },
   { label: 'هدية مفاجأة',  emoji: '🎁', color1: '#6B2D8B', color2: '#4A2060', highlight: true  },
@@ -23,7 +23,7 @@ function polar(cx: number, cy: number, r: number, deg: number) {
 }
 
 /* ── Confetti burst ──────────────────────────────────────────────── */
-const CONFETTI_COLORS = ['#F0D060','#C9956A','#C4783A','#30D158','#007AFF','#FF3B30','#FF9500','#AF52DE'];
+const CONFETTI_COLORS = ['#F0D060','#7A3B18','#6B3210','#30D158','#007AFF','#FF3B30','#FF9500','#AF52DE'];
 function Confetti() {
   const particles = Array.from({ length: 50 }, (_, i) => ({
     id: i,
@@ -82,7 +82,7 @@ function WheelSVG() {
       <defs>
         <linearGradient id="goldRing" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="#F5E080" />
-          <stop offset="30%" stopColor="#C9956A" />
+          <stop offset="30%" stopColor="#7A3B18" />
           <stop offset="60%" stopColor="#F0D080" />
           <stop offset="100%" stopColor="#A07830" />
         </linearGradient>
@@ -181,7 +181,7 @@ function PrizeModal({ prize, onClose, onSpin }: { prize: typeof PRIZES[0]; onClo
               </>
             ) : (
               <>
-                <p className="text-[#C9956A] text-[11px] font-bold tracking-widest mb-1.5">🎉 مبروك!</p>
+                <p className="text-[#7A3B18] text-[11px] font-bold tracking-widest mb-1.5">🎉 مبروك!</p>
                 <p className="text-white text-[26px] font-black leading-tight">{prize.label}</p>
                 <p className="text-white/35 text-[11px] mt-2 font-light">
                   سيصلك الكوبون عبر واتساب خلال دقيقتين
@@ -197,7 +197,7 @@ function PrizeModal({ prize, onClose, onSpin }: { prize: typeof PRIZES[0]; onClo
             {isRetry ? (
               <motion.button whileTap={{ scale: 0.95 }} onClick={onSpin}
                 className="flex-1 py-3.5 rounded-[14px] text-white font-bold text-[14px] flex items-center justify-center gap-2"
-                style={{ background: 'linear-gradient(135deg,#C4783A,#6B3A1F)' }}>
+                style={{ background: 'linear-gradient(135deg,#6B3210,#6B3A1F)' }}>
                 <RotateCcw size={15} /> دوّر مرة ثانية
               </motion.button>
             ) : (
@@ -291,7 +291,7 @@ export function SpinWheelOverlay({ onClose }: { onClose: () => void }) {
           <X size={16} className="text-white/60" />
         </button>
         <div className="text-center">
-          <p className="text-[8px] font-black tracking-[0.3em] text-[#C9956A]/60" style={{ fontFamily: 'ui-monospace,monospace' }}>LUCKY DRAW</p>
+          <p className="text-[8px] font-black tracking-[0.3em] text-[#7A3B18]/60" style={{ fontFamily: 'ui-monospace,monospace' }}>LUCKY DRAW</p>
           <p className="text-white text-[16px] font-black mt-0.5">دوّر واربح</p>
         </div>
         <div className="px-3 py-1.5 rounded-full bg-white/8 border border-white/8">
@@ -308,7 +308,7 @@ export function SpinWheelOverlay({ onClose }: { onClose: () => void }) {
             <defs>
               <linearGradient id="ptr" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#F0D060" />
-                <stop offset="100%" stopColor="#C9956A" />
+                <stop offset="100%" stopColor="#7A3B18" />
               </linearGradient>
             </defs>
             <polygon points="12,26 0,2 24,2" fill="url(#ptr)" />
@@ -350,7 +350,7 @@ export function SpinWheelOverlay({ onClose }: { onClose: () => void }) {
             style={{
               background: spinning || spinsLeft <= 0
                 ? 'rgba(255,255,255,0.06)'
-                : 'linear-gradient(135deg,#C9956A 0%,#8A5A28 40%,#F0D090 55%,#8A5A28 100%)',
+                : 'linear-gradient(135deg,#7A3B18 0%,#8A5A28 40%,#F0D090 55%,#8A5A28 100%)',
               color: spinning || spinsLeft <= 0 ? 'rgba(255,255,255,0.3)' : '#0D0205',
               boxShadow: spinning || spinsLeft <= 0 ? 'none' : '0 8px 30px rgba(201,149,106,0.45)',
             }}

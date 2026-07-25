@@ -34,14 +34,14 @@ function MembershipCard() {
           style={{ backgroundImage: 'radial-gradient(circle,#fff 1px,transparent 1px)', backgroundSize: '12px 12px' }} />
         <div className="absolute pointer-events-none" style={{ right: '-10%', top: '-25%', width: '58%', aspectRatio: '1/1' }}>
           <svg viewBox="0 0 200 200" fill="none" className="w-full h-full opacity-[0.06]">
-            <circle cx="100" cy="100" r="90" stroke="#C9956A" strokeWidth="0.8" />
-            <circle cx="100" cy="100" r="72" stroke="#C9956A" strokeWidth="0.6" />
-            <circle cx="100" cy="100" r="54" stroke="#C9956A" strokeWidth="0.5" />
+            <circle cx="100" cy="100" r="90" stroke="#7A3B18" strokeWidth="0.8" />
+            <circle cx="100" cy="100" r="72" stroke="#7A3B18" strokeWidth="0.6" />
+            <circle cx="100" cy="100" r="54" stroke="#7A3B18" strokeWidth="0.5" />
             {Array.from({ length: 20 }).map((_, i) => {
               const a = (i / 20) * 360, r = (a * Math.PI) / 180;
               return <line key={i} x1={100+Math.cos(r)*55} y1={100+Math.sin(r)*55}
                 x2={100+Math.cos(r)*88} y2={100+Math.sin(r)*88}
-                stroke="#C9956A" strokeWidth="0.35" />;
+                stroke="#7A3B18" strokeWidth="0.35" />;
             })}
           </svg>
         </div>
@@ -63,7 +63,7 @@ function MembershipCard() {
               <p className="text-white/18 text-[6px] font-inter tracking-[0.18em] uppercase">Wallet</p>
             </div>
             <div className="text-right flex flex-col gap-0.5">
-              <p className="text-[#C9956A] font-black leading-none tracking-tight" style={{ fontSize: 20 }}>{brand.memberCard.label}</p>
+              <p className="text-[#7A3B18] font-black leading-none tracking-tight" style={{ fontSize: 20 }}>{brand.memberCard.label}</p>
               <p className="text-white/22 font-inter tracking-[0.15em]" style={{ fontSize: 7 }}>{brand.type === 'cafe' ? 'YOUR CAFÉ · KSA' : 'YOUR RESTAURANT · KSA'}</p>
             </div>
           </div>
@@ -84,7 +84,7 @@ function MembershipCard() {
                   {[0,1,2,3,4,5,6].map(i => (
                     <div key={i} style={{
                       width: 13, height: 2.5, borderRadius: 99,
-                      background: i < 4 ? 'linear-gradient(90deg,#C9956A,#E8C48A)' : 'rgba(255,255,255,0.1)',
+                      background: i < 4 ? 'linear-gradient(90deg,#7A3B18,#E8C48A)' : 'rgba(255,255,255,0.1)',
                     }} />
                   ))}
                 </div>
@@ -95,8 +95,8 @@ function MembershipCard() {
                   <p className="text-white/22 font-inter tracking-[0.22em] mb-1" style={{ fontSize: 7 }}>LEVEL</p>
                   <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full"
                     style={{ background: 'rgba(201,149,106,0.12)', border: '1px solid rgba(201,149,106,0.25)' }}>
-                    <Sparkles size={8} className="text-[#C9956A]" />
-                    <span className="text-[#C9956A] font-bold" style={{ fontSize: 10 }}>كلاسيك</span>
+                    <Sparkles size={8} className="text-[#7A3B18]" />
+                    <span className="text-[#7A3B18] font-bold" style={{ fontSize: 10 }}>كلاسيك</span>
                   </div>
                 </div>
                 <p className="text-white/12 font-inter tracking-widest" style={{ fontSize: 7 }}>#MR-2024-8821</p>
@@ -126,7 +126,7 @@ function QRModal({ onClose }: { onClose: () => void }) {
           <QRCodeSVG />
           <motion.div
             className="absolute left-4 right-4 h-0.5 rounded-full pointer-events-none"
-            style={{ background: 'linear-gradient(90deg,transparent,#C4783A,#C9956A,#C4783A,transparent)', boxShadow: '0 0 8px rgba(160,82,45,0.7)' }}
+            style={{ background: 'linear-gradient(90deg,transparent,#6B3210,#7A3B18,#6B3210,transparent)', boxShadow: '0 0 8px rgba(160,82,45,0.7)' }}
             initial={{ top: '16px' }}
             animate={{ top: ['16px', 'calc(100% - 16px)', '16px'] }}
             transition={{ duration: 2.2, ease: 'easeInOut', repeat: Infinity, repeatDelay: 0.8 }}
@@ -146,7 +146,7 @@ function AppleWalletModal({ onClose }: { onClose: () => void }) {
   const [phase, setPhase] = useState<'adding' | 'done'>('adding');
 
   useEffect(() => {
-    const t = setTimeout(() => setPhase('done'), 2000);
+    const t = setTimeout(() => setPhase('done'), 500);
     return () => clearTimeout(t);
   }, []);
 
@@ -194,7 +194,7 @@ function AppleWalletModal({ onClose }: { onClose: () => void }) {
                   </svg>
                   <span className="text-white/30 text-[8px] font-inter tracking-[0.2em]">WALLET</span>
                 </div>
-                <p className="text-[#C9956A] font-black text-[18px]">{brand.memberCard.label}</p>
+                <p className="text-[#7A3B18] font-black text-[18px]">{brand.memberCard.label}</p>
               </div>
               {/* Bottom */}
               <div className="flex items-end justify-between">
@@ -203,7 +203,7 @@ function AppleWalletModal({ onClose }: { onClose: () => void }) {
                   <p className="text-white font-black font-inter text-[28px] leading-none">480</p>
                   <div className="flex gap-[3px] mt-1.5">
                     {[0,1,2,3,4,5,6].map(i => (
-                      <div key={i} className="h-[3px] rounded-full" style={{ width: 14, background: i < 4 ? 'linear-gradient(90deg,#C9956A,#E8C48A)' : 'rgba(255,255,255,0.12)' }} />
+                      <div key={i} className="h-[3px] rounded-full" style={{ width: 14, background: i < 4 ? 'linear-gradient(90deg,#7A3B18,#E8C48A)' : 'rgba(255,255,255,0.12)' }} />
                     ))}
                   </div>
                 </div>
@@ -211,8 +211,8 @@ function AppleWalletModal({ onClose }: { onClose: () => void }) {
                   <p className="text-white/25 text-[7px] font-inter tracking-widest">CARDHOLDER</p>
                   <p className="text-white font-bold text-[13px]">عبدالإله علي</p>
                   <div className="flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full justify-end" style={{ background: 'rgba(201,149,106,0.15)' }}>
-                    <Sparkles size={8} className="text-[#C9956A]" />
-                    <span className="text-[#C9956A] text-[9px] font-bold">كلاسيك</span>
+                    <Sparkles size={8} className="text-[#7A3B18]" />
+                    <span className="text-[#7A3B18] text-[9px] font-bold">كلاسيك</span>
                   </div>
                 </div>
               </div>
@@ -383,7 +383,7 @@ function GiftToast({ msg, onDone }: { msg: string; onDone: () => void }) {
       transition={{ type: 'spring', damping: 22, stiffness: 300 }}
       className="absolute top-3 left-5 right-5 bg-[#1C1C1E] text-white rounded-2xl p-3.5 flex items-center gap-3 z-50 shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
       <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
-        style={{ background: 'linear-gradient(135deg,#C9956A,#8A5A28)' }}>
+        style={{ background: 'linear-gradient(135deg,#7A3B18,#8A5A28)' }}>
         <Gift size={14} strokeWidth={2.5} className="text-white" />
       </div>
       <div>
@@ -421,8 +421,8 @@ function GiftModal({ gift, onClose, onSend }: { gift: { title: string; pts: numb
             <p className="text-white/40 text-[10px] font-light mt-0.5">مجاناً من نقاطك الحالية</p>
           </div>
           <div className="flex items-center gap-1 bg-[rgba(201,149,106,0.15)] px-2.5 py-1.5 rounded-full">
-            <Star size={10} className="text-[#C9956A]" fill="#C9956A" />
-            <span className="text-[#C9956A] text-[11px] font-bold font-inter">{gift.pts}</span>
+            <Star size={10} className="text-[#7A3B18]" fill="#7A3B18" />
+            <span className="text-[#7A3B18] text-[11px] font-bold font-inter">{gift.pts}</span>
           </div>
         </div>
         <p className="text-[11px] font-semibold text-[#888] mb-2.5 tracking-wide">اختر صديقاً من الأعضاء</p>
@@ -434,13 +434,13 @@ function GiftModal({ gift, onClose, onSend }: { gift: { title: string; pts: numb
               <div className="w-8 h-8 rounded-full flex items-center justify-center text-[14px]"
                 style={{ background: 'linear-gradient(135deg,#F2EAE0,#E8DDD0)' }}>{f[0]}</div>
               <span className="text-[13px] font-medium text-[#111]">{f}</span>
-              {selected === f && <Check size={14} className="text-[#C4783A] mr-auto" />}
+              {selected === f && <Check size={14} className="text-[#6B3210] mr-auto" />}
             </button>
           ))}
         </div>
         <motion.button whileTap={{ scale: 0.97 }} onClick={selected ? handleSend : undefined}
           className="w-full py-3.5 rounded-[16px] font-semibold text-[14px] transition-all"
-          style={{ background: selected ? 'linear-gradient(135deg,#C4783A,#6B3A1F)' : 'rgba(196,181,159,0.2)', color: selected ? '#fff' : '#AAA' }}>
+          style={{ background: selected ? 'linear-gradient(135deg,#6B3210,#6B3A1F)' : 'rgba(196,181,159,0.2)', color: selected ? '#fff' : '#AAA' }}>
           {selected ? `أرسل الهدية إلى ${selected} 🎁` : 'اختر صديقاً أولاً'}
         </motion.button>
       </motion.div>
@@ -450,8 +450,8 @@ function GiftModal({ gift, onClose, onSend }: { gift: { title: string; pts: numb
 
 /* ── Gifts Section ───────────────────────────────────────────────── */
 const giftOptions = [
-  { id: 'meal',      icon: '🍽️', title: 'وجبة مجانية', sub: 'من قائمة مطعمك',    pts: 150, color: '#C4783A' },
-  { id: 'drink',     icon: '🥤', title: 'مشروب',        sub: 'أي مشروب تختاره',  pts: 60,  color: '#C9956A' },
+  { id: 'meal',      icon: '🍽️', title: 'وجبة مجانية', sub: 'من قائمة مطعمك',    pts: 150, color: '#6B3210' },
+  { id: 'drink',     icon: '🥤', title: 'مشروب',        sub: 'أي مشروب تختاره',  pts: 60,  color: '#7A3B18' },
   { id: 'points',    icon: '⭐', title: 'نقاط',         sub: 'أرسل ١٠٠ نقطة',   pts: 100, color: '#D4AC0D' },
   { id: 'dessert',   icon: '🎂', title: 'حلى',          sub: 'حلو اليوم مجاناً', pts: 80,  color: '#B5651D' },
 ];
@@ -462,8 +462,8 @@ function GiftsSection({ onGiftSent, currentPoints }: { onGiftSent: (msg: string,
     <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="mt-4">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-[7px] flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#C9956A22,#C9956A15)' }}>
-            <Gift size={13} className="text-[#C9956A]" />
+          <div className="w-6 h-6 rounded-[7px] flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#7A3B1822,#7A3B1815)' }}>
+            <Gift size={13} className="text-[#7A3B18]" />
           </div>
           <h2 className="text-[13px] font-bold text-[#111]">أهدِ أصدقاءك</h2>
         </div>
@@ -495,7 +495,7 @@ function GiftsSection({ onGiftSent, currentPoints }: { onGiftSent: (msg: string,
         className="w-full mt-2.5 flex items-center gap-3 px-4 py-3.5 rounded-[16px] border border-[rgba(201,149,106,0.2)] bg-white shadow-[0_2px_10px_rgba(0,0,0,0.04)]">
         <div className="w-9 h-9 rounded-[12px] flex items-center justify-center shrink-0"
           style={{ background: 'linear-gradient(135deg,rgba(201,149,106,0.12),rgba(201,149,106,0.06))' }}>
-          <Send size={15} className="text-[#C9956A]" />
+          <Send size={15} className="text-[#7A3B18]" />
         </div>
         <div className="text-right flex-1">
           <p className="text-[12px] font-bold text-[#111]">أرسل نقاطك لصديق</p>
@@ -548,9 +548,9 @@ export function ScreenMembership() {
           </div>
           <div className="mr-auto flex items-center gap-1 px-2.5 py-1.5 rounded-full"
             style={{ background: 'rgba(201,149,106,0.1)', border: '1px solid rgba(201,149,106,0.2)' }}>
-            <Sparkles size={10} className="text-[#C9956A]" />
+            <Sparkles size={10} className="text-[#7A3B18]" />
             <motion.span key={points} initial={{ scale: 1.2 }} animate={{ scale: 1 }}
-              className="text-[#C9956A] text-[10px] font-bold">{points} نقطة</motion.span>
+              className="text-[#7A3B18] text-[10px] font-bold">{points} نقطة</motion.span>
           </div>
         </div>
 
@@ -560,10 +560,10 @@ export function ScreenMembership() {
         {/* QR button */}
         <motion.button whileTap={{ scale: 0.96 }} onClick={() => setShowQR(true)}
           className="w-full mt-4 py-3.5 rounded-2xl border border-[rgba(160,82,45,0.2)] flex items-center justify-center gap-2.5 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.05)]">
-          <svg viewBox="0 0 20 20" className="w-4 h-4 fill-[#C4783A]">
+          <svg viewBox="0 0 20 20" className="w-4 h-4 fill-[#6B3210]">
             <path d="M2 2h6v6H2V2zm1.5 1.5v3h3v-3h-3zm8.5-1.5h6v6h-6V2zm1.5 1.5v3h3v-3h-3zM2 12h6v6H2v-6zm1.5 1.5v3h3v-3h-3zm8-1h2v2h-2v-2zm2 2h2v2h-2v-2zm-2 2h2v2h-2v-2zm2 2h2v2h-2v-2zm-4-4h2v2h-2v-2zm4-2h2v2h-2v-2z" />
           </svg>
-          <span className="text-[13px] font-semibold text-[#C4783A]">عرض رمز QR للمسح</span>
+          <span className="text-[13px] font-semibold text-[#6B3210]">عرض رمز QR للمسح</span>
         </motion.button>
 
         {/* Wallet Buttons */}
@@ -613,7 +613,7 @@ export function ScreenMembership() {
         <div className="mt-4 bg-white rounded-[18px] p-4 border border-[rgba(196,181,159,0.15)] shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
           <div className="flex justify-between items-center mb-1.5">
             <h2 className="text-[13px] font-semibold text-[#111]">تقدمك نحو الفضي</h2>
-            <span className="text-[11px] font-bold text-[#C9956A]">٤ / ٧</span>
+            <span className="text-[11px] font-bold text-[#7A3B18]">٤ / ٧</span>
           </div>
           <p className="text-[10px] text-[#AAA] mb-3 font-light">٣ طلبات أخرى وتنتقل للمستوى الفضي 🎯</p>
           <div className="flex items-center gap-1.5 w-full">
@@ -625,13 +625,13 @@ export function ScreenMembership() {
                     animate={{ scale: filled ? [1, 1.15, 1] : 1 }}
                     transition={{ delay: i * 0.08, duration: 0.4 }}
                     className={`relative flex items-center justify-center rounded-full transition-all ${filled ? 'w-7 h-7' : 'w-6 h-6'}`}
-                    style={{ background: filled ? 'linear-gradient(135deg,#C4783A,#6B3A1F)' : 'rgba(196,181,159,0.15)' }}>
+                    style={{ background: filled ? 'linear-gradient(135deg,#6B3210,#6B3A1F)' : 'rgba(196,181,159,0.15)' }}>
                     <svg viewBox="0 0 24 24" className={`${filled ? 'w-4 h-4' : 'w-3.5 h-3.5'}`} fill="none"
                       stroke={filled ? 'rgba(201,149,106,0.8)' : 'rgba(196,181,159,0.35)'} strokeWidth={1.5} strokeLinecap="round">
                       <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" />
                     </svg>
                   </motion.div>
-                  {i < 6 && <div className={`flex-1 h-0.5 rounded-full ${i < 3 ? 'bg-gradient-to-r from-[#C4783A] to-[#C9956A]' : 'bg-[rgba(196,181,159,0.2)]'}`} />}
+                  {i < 6 && <div className={`flex-1 h-0.5 rounded-full ${i < 3 ? 'bg-gradient-to-r from-[#6B3210] to-[#7A3B18]' : 'bg-[rgba(196,181,159,0.2)]'}`} />}
                 </React.Fragment>
               );
             })}
@@ -643,7 +643,7 @@ export function ScreenMembership() {
       <div className="absolute bottom-[72px] left-5 right-5">
         <motion.button whileTap={{ scale: 0.97 }} onClick={() => setShowBooking(true)}
           className="w-full rounded-2xl py-4 flex items-center justify-center gap-3 text-white font-semibold text-[14px] shadow-[0_8px_28px_rgba(160,82,45,0.4)]"
-          style={{ background: 'linear-gradient(135deg,#C4783A,#6B3A1F)' }}>
+          style={{ background: 'linear-gradient(135deg,#6B3210,#6B3A1F)' }}>
           <span>طاولتك بانتظارك</span>
           <Calendar size={16} className="opacity-80" />
         </motion.button>

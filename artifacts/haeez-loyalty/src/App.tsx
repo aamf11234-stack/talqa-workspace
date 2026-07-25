@@ -50,7 +50,7 @@ function BrandToggle() {
         <button
           onClick={() => setBrand(RESTAURANT_BRAND)}
           className="relative z-10 flex items-center gap-2 px-5 py-2.5 rounded-full text-[12px] font-bold transition-colors"
-          style={{ color: isRest ? '#C9956A' : '#999' }}
+          style={{ color: isRest ? '#7A3B18' : '#999' }}
         >
           <span className="text-[15px] leading-none">🍽️</span>
           مطعم
@@ -60,7 +60,7 @@ function BrandToggle() {
         <button
           onClick={() => setBrand(BROWNDOSE_BRAND)}
           className="relative z-10 flex items-center gap-2 px-5 py-2.5 rounded-full text-[12px] font-bold transition-colors"
-          style={{ color: !isRest ? '#A0522D' : '#999' }}
+          style={{ color: !isRest ? '#5C2A0E' : '#999' }}
         >
           <span className="text-[15px] leading-none">☕</span>
           Brown Dose
@@ -147,11 +147,11 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
       {/* Header — hidden in inline mode */}
       {!inline && (
         <div className="px-7 pt-7 pb-5 border-b border-[rgba(160,82,45,0.08)]">
-          <div className="inline-flex items-center gap-2 bg-[#C4783A]/8 border border-[rgba(160,82,45,0.15)] px-3.5 py-1.5 rounded-full mb-3">
-            <span className="text-[10px] font-black tracking-[0.2em] text-[#C4783A]">حاسبة العائد على الاستثمار</span>
+          <div className="inline-flex items-center gap-2 bg-[#6B3210]/8 border border-[rgba(160,82,45,0.15)] px-3.5 py-1.5 rounded-full mb-3">
+            <span className="text-[10px] font-black tracking-[0.2em] text-[#6B3210]">حاسبة العائد على الاستثمار</span>
           </div>
           <h2 className="text-[24px] font-bold text-[#111] leading-tight mb-2">
-            الـ ٣,٠٠٠ ريال تسترجعها <span className="text-[#C4783A]">في أسابيع</span>
+            الـ ٣,٠٠٠ ريال تسترجعها <span className="text-[#6B3210]">في أسابيع</span>
           </h2>
           <p className="text-[13px] text-[#555] leading-relaxed mb-4">
             المنظومة تخلي زبائنك يرجعون أكثر — حتى لو بنسبة <strong>١٥٪ فقط</strong> زيادة في الزيارات، الأرقام تتكلم وحدها.
@@ -163,7 +163,7 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
               { n: '٣', text: 'احسب متى يرجع الاستثمار' },
             ].map(s => (
               <div key={s.n} className="flex-1 flex items-center gap-2 bg-[rgba(160,82,45,0.05)] rounded-[12px] px-3 py-2.5">
-                <div className="w-5 h-5 rounded-full bg-[#C4783A] flex items-center justify-center shrink-0">
+                <div className="w-5 h-5 rounded-full bg-[#6B3210] flex items-center justify-center shrink-0">
                   <span className="text-white text-[9px] font-black">{s.n}</span>
                 </div>
                 <span className="text-[10px] font-semibold text-[#444] leading-tight">{s.text}</span>
@@ -185,20 +185,20 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
         <div>
           <div className="flex justify-between mb-2">
             <span className={`${inline ? 'text-[11px] text-white/60' : 'text-[13px] text-[#333]'} font-semibold`}>زوار اليوم</span>
-            <span className={`${inline ? 'text-[16px] text-[#C9956A]' : 'text-[18px] text-[#C4783A]'} font-black font-inter`}>{customers}</span>
+            <span className={`${inline ? 'text-[16px] text-[#7A3B18]' : 'text-[18px] text-[#6B3210]'} font-black font-inter`}>{customers}</span>
           </div>
           <input type="range" min={20} max={300} step={10} value={customers}
             onChange={e => setCustomers(Number(e.target.value))}
-            className="w-full h-1.5 rounded-full" style={{ accentColor: inline ? '#C9956A' : '#C4783A' }} />
+            className="w-full h-1.5 rounded-full" style={{ accentColor: inline ? '#7A3B18' : '#6B3210' }} />
         </div>
         <div>
           <div className="flex justify-between mb-2">
             <span className={`${inline ? 'text-[11px] text-white/60' : 'text-[13px] text-[#333]'} font-semibold`}>الفاتورة</span>
-            <span className={`${inline ? 'text-[16px] text-[#C9956A]' : 'text-[18px] text-[#C4783A]'} font-black font-inter`}>{spend}ر</span>
+            <span className={`${inline ? 'text-[16px] text-[#7A3B18]' : 'text-[18px] text-[#6B3210]'} font-black font-inter`}>{spend}ر</span>
           </div>
           <input type="range" min={20} max={150} step={5} value={spend}
             onChange={e => setSpend(Number(e.target.value))}
-            className="w-full h-1.5 rounded-full" style={{ accentColor: inline ? '#C9956A' : '#C4783A' }} />
+            className="w-full h-1.5 rounded-full" style={{ accentColor: inline ? '#7A3B18' : '#6B3210' }} />
         </div>
       </div>
 
@@ -209,7 +209,7 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
         <div className="relative z-10 grid grid-cols-3 gap-3 text-center">
           <div>
             <p className="text-white/30 text-[8px] font-semibold tracking-widest mb-1">إيراد إضافي/شهر</p>
-            <p className="text-[#C9956A] text-[18px] font-black font-inter leading-none">{monthly.toLocaleString('ar')}</p>
+            <p className="text-[#7A3B18] text-[18px] font-black font-inter leading-none">{monthly.toLocaleString('ar')}</p>
             <p className="text-white/25 text-[8px] mt-0.5">ريال</p>
           </div>
           <div className="border-x border-white/[0.07]">
@@ -250,11 +250,11 @@ const notifs = [
     id: 1,
     app: 'مطعمك',
     icon: '🎂',
-    iconBg: 'linear-gradient(135deg,#C4783A,#C9956A)',
+    iconBg: 'linear-gradient(135deg,#6B3210,#7A3B18)',
     time: 'الآن',
     title: 'عيد ميلادك اليوم! 🎉',
     body: 'وجبة مجانية في انتظارك — هدية من مطعمك في يومك الخاص',
-    accent: '#C9956A',
+    accent: '#7A3B18',
   },
   {
     id: 2,
@@ -270,11 +270,11 @@ const notifs = [
     id: 3,
     app: 'مطعمك',
     icon: '⭐',
-    iconBg: 'linear-gradient(135deg,#C9956A,#E8C4A0)',
+    iconBg: 'linear-gradient(135deg,#7A3B18,#E8C4A0)',
     time: 'منذ ٣ دقائق',
     title: '+٢٥ نقطة أُضيفت لرصيدك',
     body: 'زيارتك الرابعة هذا الأسبوع — وجبة مجانية بعد ٣ زيارات فقط',
-    accent: '#C9956A',
+    accent: '#7A3B18',
   },
   {
     id: 4,
@@ -290,11 +290,11 @@ const notifs = [
     id: 5,
     app: 'مطعمك',
     icon: '🍽️',
-    iconBg: 'linear-gradient(135deg,#3D0809,#C4783A)',
+    iconBg: 'linear-gradient(135deg,#3D0809,#6B3210)',
     time: 'منذ ٢٠ دقيقة',
     title: 'طبق اليوم: كبسة الجمبري 🦐',
     body: 'طُبخت للتو — احجز طاولة قبل ما تنتهي',
-    accent: '#C4783A',
+    accent: '#6B3210',
   },
   {
     id: 6,
@@ -429,21 +429,21 @@ function NotificationsShowcase() {
 /* ── App Screenshots strip ───────────────────────────────────────── */
 const screens: { tab: Tab; label: string; color: string; bg: string; preview: React.ReactNode }[] = [
   {
-    tab: 'home', label: 'الرئيسية', color: '#C9956A',
+    tab: 'home', label: 'الرئيسية', color: '#7A3B18',
     bg: 'linear-gradient(160deg,#050002 0%,#3D0809 55%,#0D0205 100%)',
     preview: (
       <div className="absolute inset-0 flex flex-col px-2 pt-3 gap-1.5">
         <div className="flex justify-between items-center mb-0.5">
           <div className="w-8 h-1.5 bg-white/20 rounded-full" />
-          <div className="w-4 h-4 rounded-full bg-[#C9956A]/30 border border-[#C9956A]/40" />
+          <div className="w-4 h-4 rounded-full bg-[#7A3B18]/30 border border-[#7A3B18]/40" />
         </div>
         <div className="flex justify-center">
-          <div className="w-10 h-10 rounded-full border-2 border-[#C9956A]/50 flex items-center justify-center">
-            <div className="w-6 h-6 rounded-full border border-[#C4783A]/60" />
+          <div className="w-10 h-10 rounded-full border-2 border-[#7A3B18]/50 flex items-center justify-center">
+            <div className="w-6 h-6 rounded-full border border-[#6B3210]/60" />
           </div>
         </div>
         <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
-          <div className="h-full w-3/5 bg-[#C9956A]/60 rounded-full" />
+          <div className="h-full w-3/5 bg-[#7A3B18]/60 rounded-full" />
         </div>
         <div className="flex gap-1 mt-0.5">
           {[1,2,3].map(i=><div key={i} className="flex-1 h-5 bg-white/8 rounded-[5px]"/>)}
@@ -458,24 +458,24 @@ const screens: { tab: Tab; label: string; color: string; bg: string; preview: Re
     preview: (
       <div className="absolute inset-0 flex flex-col px-2 pt-3 gap-1.5">
         <div className="flex justify-center mb-1">
-          <div className="w-8 h-8 rounded-[8px] bg-[#C9956A]/30 border border-[#C9956A]/40" />
+          <div className="w-8 h-8 rounded-[8px] bg-[#7A3B18]/30 border border-[#7A3B18]/40" />
         </div>
         <div className="w-full h-2 bg-white/10 rounded-full" />
         <div className="flex gap-1">
-          {['#C4783A','#2D7D46','#B5651D'].map(c=><div key={c} className="h-4 flex-1 rounded-full" style={{background:`${c}50`}}/>)}
+          {['#6B3210','#2D7D46','#B5651D'].map(c=><div key={c} className="h-4 flex-1 rounded-full" style={{background:`${c}50`}}/>)}
         </div>
         {[0.9,0.7,0.85].map((o,i)=>(
           <div key={i} className="flex items-center gap-1.5 py-1 border-b border-white/5">
-            <div className="w-1.5 h-1.5 rounded-full bg-[#C9956A]/60 shrink-0" />
+            <div className="w-1.5 h-1.5 rounded-full bg-[#7A3B18]/60 shrink-0" />
             <div className="flex-1 h-1.5 rounded-full bg-white/15" style={{opacity:o}} />
-            <div className="w-4 h-1.5 rounded-full bg-[#C4783A]/60" />
+            <div className="w-4 h-1.5 rounded-full bg-[#6B3210]/60" />
           </div>
         ))}
       </div>
     ),
   },
   {
-    tab: 'card', label: 'بطاقتي', color: '#C9956A',
+    tab: 'card', label: 'بطاقتي', color: '#7A3B18',
     bg: 'linear-gradient(145deg,#0D0205,#3D0809,#0D0205)',
     preview: (
       <div className="absolute inset-0 flex flex-col items-center px-2 pt-3 gap-2">
@@ -483,12 +483,12 @@ const screens: { tab: Tab; label: string; color: string; bg: string; preview: Re
           style={{background:'linear-gradient(135deg,#1a0406,#3D0809,#0D0205)',border:'1px solid rgba(201,149,106,0.3)'}}>
           <div className="absolute inset-0" style={{background:'radial-gradient(ellipse at 70% 20%,rgba(201,149,106,0.2) 0%,transparent 60%)'}} />
           <div className="flex justify-between items-start">
-            <div className="w-6 h-1.5 bg-[#C9956A]/60 rounded-full" />
+            <div className="w-6 h-1.5 bg-[#7A3B18]/60 rounded-full" />
             <div className="w-3 h-3 rounded-full bg-white/15" />
           </div>
           <div className="mt-1 w-8 h-2 bg-white/40 rounded-full" />
           <div className="flex justify-between mt-1">
-            <div className="w-5 h-1 bg-[#C9956A]/40 rounded-full" />
+            <div className="w-5 h-1 bg-[#7A3B18]/40 rounded-full" />
             <div className="w-5 h-1 bg-white/25 rounded-full" />
           </div>
         </div>
@@ -496,7 +496,7 @@ const screens: { tab: Tab; label: string; color: string; bg: string; preview: Re
           <div className="w-4 h-4 rounded-sm bg-white/20" />
         </div>
         <div className="w-full h-1 bg-white/8 rounded-full overflow-hidden">
-          <div className="h-full w-2/5 bg-[#C9956A]/60 rounded-full" />
+          <div className="h-full w-2/5 bg-[#7A3B18]/60 rounded-full" />
         </div>
       </div>
     ),
@@ -515,7 +515,7 @@ const screens: { tab: Tab; label: string; color: string; bg: string; preview: Re
         {/* Active order */}
         <div className="w-full rounded-[6px] p-1.5" style={{background:'linear-gradient(135deg,#0C0002,#280506)'}}>
           <div className="flex gap-1 justify-between mb-1">
-            {['#30D158','#C9956A','#007AFF','rgba(255,255,255,0.2)'].map((c,i)=>(
+            {['#30D158','#7A3B18','#007AFF','rgba(255,255,255,0.2)'].map((c,i)=>(
               <div key={i} className="flex flex-col items-center gap-0.5 flex-1">
                 <div className="w-4 h-4 rounded-full" style={{background:`${c}30`,border:`1px solid ${c}60`}} />
                 <div className="w-3 h-0.5 rounded-full" style={{background:c}} />
@@ -594,14 +594,14 @@ export default function App() {
       <div className="sticky top-0 z-50" style={{ background: 'rgba(253,251,247,0.85)', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(220,215,205,0.5)' }}>
         <div className="max-w-5xl mx-auto px-6 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#C4783A,#6B3A1F)' }}>
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#6B3210,#6B3A1F)' }}>
               <span className="text-white text-[10px] font-bold">ت</span>
             </div>
             <span className="text-[14px] font-bold" style={{ color: '#2C2825' }}>تلقا تك</span>
           </div>
           <span className="text-[11px] font-light hidden sm:block" style={{ color: '#9A948C' }}>Brown Dose · نظام الولاء والطلب · جيزان</span>
           <a href="https://wa.me/966" target="_blank" rel="noopener noreferrer"
-            className="text-[11px] font-semibold text-[#C4783A] px-3.5 py-1.5 rounded-full hover:bg-[#C4783A]/5 transition-colors"
+            className="text-[11px] font-semibold text-[#6B3210] px-3.5 py-1.5 rounded-full hover:bg-[#6B3210]/5 transition-colors"
             style={{ border: '1px solid rgba(196,120,58,0.25)' }}>
             تواصل الآن
           </a>
@@ -611,12 +611,12 @@ export default function App() {
       {/* ── Hero ───────────────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 pt-12 pb-8 text-center">
         <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <span className="inline-flex items-center gap-2 border border-[rgba(196,120,58,0.35)] text-[#C4783A] text-[11px] font-semibold px-4 py-1.5 rounded-full mb-6 tracking-widest">
-            <span className="w-1.5 h-1.5 bg-[#C4783A] rounded-full animate-pulse" />
+          <span className="inline-flex items-center gap-2 border border-[rgba(196,120,58,0.35)] text-[#6B3210] text-[11px] font-semibold px-4 py-1.5 rounded-full mb-6 tracking-widest">
+            <span className="w-1.5 h-1.5 bg-[#6B3210] rounded-full animate-pulse" />
             عرض حصري · براون دوز · جيزان
           </span>
           <h1 className="text-[36px] md:text-[52px] font-bold leading-[1.15] mb-4 tracking-tight" style={{ color: '#2C2825' }}>
-            <span className="text-[#C4783A]">Brown Dose</span>
+            <span className="text-[#6B3210]">Brown Dose</span>
             <br />يستحق تجربة رقمية مختلفة
           </h1>
           <p className="text-[15px] md:text-[17px] font-light max-w-md mx-auto leading-relaxed mb-2" style={{ color: '#6B6560' }}>
@@ -715,8 +715,8 @@ export default function App() {
             className="hidden md:flex flex-col gap-3 pb-8 w-[130px]"
           >
             {[
-              { label: '١,٥٠٠+', sub: 'عضو نشط', color: '#C4783A' },
-              { label: '٤.٩ ★', sub: 'تقييم المتجر', color: '#C9956A' },
+              { label: '١,٥٠٠+', sub: 'عضو نشط', color: '#6B3210' },
+              { label: '٤.٩ ★', sub: 'تقييم المتجر', color: '#7A3B18' },
               { label: '٦٠ يوم', sub: 'وقت التسليم', color: '#2D7D46' },
             ].map((s, i) => (
               <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.65 + i * 0.08 }}
@@ -752,7 +752,7 @@ export default function App() {
       {/* ── Product Gallery ───────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="text-center mb-5">
-          <p className="text-[11px] text-[#C4783A] font-bold tracking-[0.22em] uppercase mb-1.5">منيو براون دوز</p>
+          <p className="text-[11px] text-[#6B3210] font-bold tracking-[0.22em] uppercase mb-1.5">منيو براون دوز</p>
           <h2 className="text-[26px] font-bold leading-tight" style={{ color: '#2C2825' }}>كل كوب له حكايته</h2>
           <p className="text-[13px] font-light mt-1.5" style={{ color: '#9A948C' }}>الأصناف الحقيقية — بالصور والأسعار</p>
         </div>
@@ -782,7 +782,7 @@ export default function App() {
               )}
               <div className="absolute bottom-0 right-0 left-0 p-2.5">
                 <p className="text-white text-[10px] font-bold leading-tight mb-0.5">{item.name}</p>
-                {item.price && <p className="text-[#C9956A] text-[11px] font-black font-inter">{item.price} <span className="text-[8px] opacity-60">ر</span></p>}
+                {item.price && <p className="text-[#7A3B18] text-[11px] font-black font-inter">{item.price} <span className="text-[8px] opacity-60">ر</span></p>}
               </div>
             </motion.div>
           ))}
@@ -818,7 +818,7 @@ export default function App() {
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(8,0,3,0.92) 0%,rgba(8,0,3,0.55) 45%,rgba(8,0,3,0.15) 100%)' }} />
           {/* Content */}
           <div className="absolute inset-0 flex flex-col justify-end p-8">
-            <p className="text-[#C9956A] text-[10px] font-semibold tracking-widest uppercase mb-2">BROWN DOSE · جيزان · صبيا وضمد</p>
+            <p className="text-[#7A3B18] text-[10px] font-semibold tracking-widest uppercase mb-2">BROWN DOSE · جيزان · صبيا وضمد</p>
             <h3 className="text-white text-[26px] font-bold mb-2 leading-tight">
               براون دوز يستحق<br />هوية رقمية حقيقية
             </h3>
@@ -855,7 +855,7 @@ export default function App() {
           <div className="absolute inset-0 flex flex-col">
             {/* Header */}
             <div className="px-6 pt-6 pb-4 text-center">
-              <p className="text-[#C9956A] text-[10px] font-semibold tracking-widest mb-1">منيو رقمي تفاعلي</p>
+              <p className="text-[#7A3B18] text-[10px] font-semibold tracking-widest mb-1">منيو رقمي تفاعلي</p>
               <p className="text-white text-[16px] font-bold">يتغير بضغطة — بدون مبرمج</p>
             </div>
             {/* Food grid */}
@@ -878,7 +878,7 @@ export default function App() {
                   </div>
                   <div className="px-2.5 py-2 flex items-center justify-between">
                     <p className="text-white text-[11px] font-semibold leading-tight">{item.name}</p>
-                    <p className="text-[#C9956A] text-[12px] font-black shrink-0">{item.price}<span className="text-[8px]">ر</span></p>
+                    <p className="text-[#7A3B18] text-[12px] font-black shrink-0">{item.price}<span className="text-[8px]">ر</span></p>
                   </div>
                 </div>
               ))}
@@ -903,9 +903,9 @@ export default function App() {
 
             {/* Copy */}
             <div className="flex-1 text-right">
-              <p className="text-[#C9956A] text-[10px] font-semibold tracking-widest uppercase mb-2">Apple Watch · مطعمك</p>
+              <p className="text-[#7A3B18] text-[10px] font-semibold tracking-widest uppercase mb-2">Apple Watch · مطعمك</p>
               <h3 className="text-white text-[22px] md:text-[26px] font-bold mb-3 leading-tight">
-                نقاطك ومستواك<br /><span className="text-[#C9956A]">على معصمك دائماً</span>
+                نقاطك ومستواك<br /><span className="text-[#7A3B18]">على معصمك دائماً</span>
               </h3>
               <p className="text-white/45 text-[13px] font-light leading-relaxed mb-5 max-w-xs mr-auto ml-0 md:mr-0 md:ml-auto text-right">
                 تطبيقك على Apple Watch يعرض نقاط زبونك ومستواه ومدى اقترابه من الوجبة المجانية — بدون فتح التطبيق.
@@ -954,11 +954,11 @@ export default function App() {
           <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
             className="text-center mb-12">
             <div className="inline-flex items-center gap-2 border border-[rgba(201,149,106,0.3)] bg-[rgba(201,149,106,0.06)] backdrop-blur-sm px-4 py-2 rounded-full mb-5">
-              <div className="w-1.5 h-1.5 bg-[#C9956A] rounded-full animate-pulse" />
-              <span className="text-[#C9956A] text-[10px] font-bold tracking-[0.18em] uppercase">Owner Dashboard</span>
+              <div className="w-1.5 h-1.5 bg-[#7A3B18] rounded-full animate-pulse" />
+              <span className="text-[#7A3B18] text-[10px] font-bold tracking-[0.18em] uppercase">Owner Dashboard</span>
             </div>
             <h2 className="text-[36px] font-extrabold text-white leading-tight mb-3">
-              كل شيء في <span style={{ background: 'linear-gradient(90deg,#C9956A,#E8C4A0)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>متناول يدك</span>
+              كل شيء في <span style={{ background: 'linear-gradient(90deg,#7A3B18,#E8C4A0)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>متناول يدك</span>
             </h2>
             <p className="text-[14px] text-white/40 font-light max-w-sm mx-auto leading-relaxed">
               راقب الإيرادات والأعضاء والتحديات لحظة بلحظة — من الويب أو جوالك في أي مكان
@@ -1072,7 +1072,7 @@ export default function App() {
               <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.32 + i * 0.06 }}
                 className="rounded-[16px] p-4 border border-white/[0.06]"
                 style={{ background: 'rgba(255,255,255,0.03)' }}>
-                <p className="text-[#C9956A]/50 text-[9px] font-bold mb-2.5" style={{ fontFamily: 'ui-monospace,monospace' }}>{f.n}</p>
+                <p className="text-[#7A3B18]/50 text-[9px] font-bold mb-2.5" style={{ fontFamily: 'ui-monospace,monospace' }}>{f.n}</p>
                 <p className="text-white text-[11px] font-semibold mb-1">{f.t}</p>
                 <p className="text-white/30 text-[9px] leading-snug">{f.d}</p>
               </motion.div>
@@ -1093,7 +1093,7 @@ export default function App() {
             <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.03 * i }}
               className="rounded-[20px] px-4 py-3.5 transition-all duration-200 hover:-translate-y-0.5"
               style={{ background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(220,215,205,0.5)', boxShadow: '0 10px 30px rgba(0,0,0,0.03)', backdropFilter: 'blur(10px)' }}>
-              <p className="text-[9px] font-bold text-[#C4783A] tracking-[0.18em] mb-1.5" style={{ fontFamily: 'ui-monospace,monospace' }}>
+              <p className="text-[9px] font-bold text-[#6B3210] tracking-[0.18em] mb-1.5" style={{ fontFamily: 'ui-monospace,monospace' }}>
                 {String(i + 1).padStart(2,'0')}
               </p>
               <p className="text-[12px] font-semibold mb-0.5 leading-snug" style={{ color: '#2C2825' }}>{f.title}</p>
@@ -1114,9 +1114,9 @@ export default function App() {
           <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 10% 80%,rgba(160,82,45,0.35) 0%,transparent 50%)' }} />
           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-7">
             <div className="flex-1">
-              <p className="text-[#C9956A] text-[10px] font-semibold tracking-widest uppercase mb-2">Apple Wallet · Google Wallet</p>
+              <p className="text-[#7A3B18] text-[10px] font-semibold tracking-widest uppercase mb-2">Apple Wallet · Google Wallet</p>
               <h3 className="text-white text-[24px] font-bold mb-2.5 leading-tight">
-                بطاقة زبونك في جيبه<br /><span className="text-[#C9956A]">حتى بدون إنترنت</span>
+                بطاقة زبونك في جيبه<br /><span className="text-[#7A3B18]">حتى بدون إنترنت</span>
               </h3>
               <p className="text-white/45 text-[13px] font-light leading-relaxed mb-5 max-w-xs">
                 يضيف الأعضاء بطاقة العضوية لمحافظهم الرقمية بضغطة واحدة. تُحدَّث تلقائياً عند الترقية.
@@ -1138,7 +1138,7 @@ export default function App() {
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-[#C9956A] font-bold text-[16px] leading-tight">Brown Dose</p>
+                    <p className="text-[#7A3B18] font-bold text-[16px] leading-tight">Brown Dose</p>
                     <p className="text-white/25 text-[8px] font-inter tracking-wider">BROWN DOSE · KSA</p>
                   </div>
                   <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white/15">
@@ -1150,7 +1150,7 @@ export default function App() {
                 <div className="flex justify-between">
                   <div>
                     <p className="text-white/25 text-[8px]">LEVEL</p>
-                    <p className="text-[#C9956A] text-[12px] font-bold">كلاسيك</p>
+                    <p className="text-[#7A3B18] text-[12px] font-bold">كلاسيك</p>
                   </div>
                   <div className="text-right">
                     <p className="text-white/25 text-[8px]">POINTS</p>
@@ -1176,7 +1176,7 @@ export default function App() {
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
             className="flex items-center gap-3 mb-10 justify-center">
             <div className="h-px flex-1 max-w-[60px]" style={{ background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.4))' }} />
-            <span className="text-[#C9956A]/50 text-[8px] font-black tracking-[0.32em]" style={{ fontFamily: 'ui-monospace,monospace' }}>روح المكان</span>
+            <span className="text-[#7A3B18]/50 text-[8px] font-black tracking-[0.32em]" style={{ fontFamily: 'ui-monospace,monospace' }}>روح المكان</span>
             <div className="h-px flex-1 max-w-[60px]" style={{ background: 'linear-gradient(90deg,rgba(201,149,106,0.4),transparent)' }} />
           </motion.div>
 
@@ -1186,7 +1186,7 @@ export default function App() {
             <p className="text-white/20 text-[12px] font-light mb-5 tracking-widest">يقول أحد زبائن مطعم يستخدم المنظومة</p>
             <blockquote className="text-white text-[26px] md:text-[32px] font-bold leading-relaxed mb-6 tracking-tight">
               "ما أروح مطعم ثاني<br />
-              <span style={{ background: 'linear-gradient(90deg,#C9956A,#E8C4A0)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+              <span style={{ background: 'linear-gradient(90deg,#7A3B18,#E8C4A0)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                 النقاط صنعت الإخلاص
               </span>"
             </blockquote>
@@ -1203,14 +1203,14 @@ export default function App() {
                 label: 'الفجر والفلتر',
                 text: 'أول طلب في اليوم وزبونك يكسب نقاطه — اللحظة اللي تبدأ بيها علاقتكم',
                 icon: '☕',
-                color: '#C9956A',
+                color: '#7A3B18',
               },
               {
                 time: '١٢:٠٠ م',
                 label: 'ساعة هدوء',
                 text: 'جلسة عمل بعيداً عن الضجيج، كرواسون اللوز والشوكولاتة والكمبيوتر المفتوح',
                 icon: '💻',
-                color: '#C4783A',
+                color: '#6B3210',
               },
               {
                 time: '٦:٠٠ م',
@@ -1248,7 +1248,7 @@ export default function App() {
         <div className="bg-white/75 rounded-[28px] p-6 border border-[rgba(160,82,45,0.07)] shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
           <div className="flex items-start justify-between mb-5">
             <div>
-              <p className="text-[10px] text-[#C4783A] font-semibold tracking-widest uppercase mb-1">مجتمع مطعمك</p>
+              <p className="text-[10px] text-[#6B3210] font-semibold tracking-widest uppercase mb-1">مجتمع مطعمك</p>
               <h3 className="text-[22px] font-bold text-[#111]">١,٥٠٠+ عضو نشط</h3>
               <p className="text-[12px] text-[#888] font-light mt-1">منصة اجتماعية داخل التطبيق</p>
             </div>
@@ -1284,27 +1284,27 @@ export default function App() {
           style={{ background: 'linear-gradient(145deg,#080003 0%,#3D0809 45%,#0D0003 75%,#1A0406 100%)' }}>
           <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 50% 0%,rgba(201,149,106,0.18) 0%,transparent 60%)' }} />
           <div className="absolute bottom-0 left-0 w-36 h-36 opacity-[0.04]"
-            style={{ backgroundImage: 'radial-gradient(circle,#C9956A 1.5px,transparent 1.5px)', backgroundSize: '10px 10px' }} />
+            style={{ backgroundImage: 'radial-gradient(circle,#7A3B18 1.5px,transparent 1.5px)', backgroundSize: '10px 10px' }} />
           <div className="relative z-10">
 
             {/* Exclusive badge */}
             <div className="inline-flex items-center gap-2 border border-[rgba(201,149,106,0.3)] bg-[rgba(201,149,106,0.08)] px-4 py-1.5 rounded-full mb-4">
-              <div className="w-1.5 h-1.5 bg-[#C9956A] rounded-full animate-pulse" />
-              <span className="text-[#C9956A] text-[10px] font-black tracking-[0.2em]">عرض الإطلاق الحصري · محدود</span>
+              <div className="w-1.5 h-1.5 bg-[#7A3B18] rounded-full animate-pulse" />
+              <span className="text-[#7A3B18] text-[10px] font-black tracking-[0.2em]">عرض الإطلاق الحصري · محدود</span>
             </div>
 
-            <p className="text-[#C9956A] text-[11px] font-semibold tracking-widest uppercase mb-3">عرض الإطلاق الحصري</p>
+            <p className="text-[#7A3B18] text-[11px] font-semibold tracking-widest uppercase mb-3">عرض الإطلاق الحصري</p>
             {/* Price */}
             <div className="flex items-end justify-center gap-2 mb-1">
               <span className="text-white text-[52px] font-bold leading-none font-inter">2,000</span>
               <span className="text-white/40 text-[18px] mb-2">ريال</span>
             </div>
-            <p className="text-[#C9956A] text-[14px] font-light mb-3">تأسيس · الموقع مجاناً</p>
+            <p className="text-[#7A3B18] text-[14px] font-light mb-3">تأسيس · الموقع مجاناً</p>
             <div className="flex items-center justify-center gap-2 mb-1">
               <span className="text-white/70 text-[28px] font-bold font-inter">499</span>
               <div className="text-right leading-tight">
                 <p className="text-white/40 text-[10px]">ريال / شهرياً</p>
-                <p className="text-[#C9956A] text-[10px] font-semibold">استضافة · حماية · دعم فني</p>
+                <p className="text-[#7A3B18] text-[10px] font-semibold">استضافة · حماية · دعم فني</p>
               </div>
             </div>
             <p className="text-white/30 text-[12px] font-light mt-2 mb-6">
@@ -1337,7 +1337,7 @@ export default function App() {
       {/* ── Footer ────────────────────────────────────────── */}
       <div className="text-center pb-8 px-6">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#C4783A,#6B3A1F)' }}>
+          <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#6B3210,#6B3A1F)' }}>
             <span className="text-white text-[9px] font-bold">ت</span>
           </div>
           <span className="text-[13px] font-bold text-[#111]">تلقا تك</span>
@@ -1346,11 +1346,11 @@ export default function App() {
 
         {/* Commercial Registration Badge */}
         <div className="inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-full border border-[#F5E6E6] bg-[#FFF8F8]">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C4783A" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B3210" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
             <polyline points="22 4 12 14.01 9 11.01"/>
           </svg>
-          <span className="text-[11px] text-[#C4783A] font-semibold">مؤسسة تلقا · سجل تجاري: 7054835322</span>
+          <span className="text-[11px] text-[#6B3210] font-semibold">مؤسسة تلقا · سجل تجاري: 7054835322</span>
         </div>
       </div>
     </div>

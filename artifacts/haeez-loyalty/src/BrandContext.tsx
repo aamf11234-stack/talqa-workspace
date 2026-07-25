@@ -58,7 +58,7 @@ export const RESTAURANT_BRAND: BrandConfig = {
   ],
   recentOrders: [
     { item: 'كبسة الجمبري',        time: 'اليوم، ١١:٢٠ص', pts: '+٢٥', emoji: '🦐', color: '#7B1618' },
-    { item: 'برجر كلاسيك + لاتيه', time: 'أمس، ٣:٠٠م',    pts: '+١٥', emoji: '🍔', color: '#C9956A' },
+    { item: 'برجر كلاسيك + لاتيه', time: 'أمس، ٣:٠٠م',    pts: '+١٥', emoji: '🍔', color: '#7A3B18' },
     { item: 'تشيز كيك + قهوة',    time: 'الأحد، ١٠:٤٥ص', pts: '+١٢', emoji: '🎂', color: '#2D7D46' },
   ],
   challenge: { title: 'تحدي الأسبوع: ٥ طلبات', desc: '٤ من ٥ — طلب واحد فقط للفوز بوجبة مجانية', progress: 4, total: 5 },
@@ -141,7 +141,7 @@ export const BROWNDOSE_BRAND: BrandConfig = {
     { id: 'quick',  emoji: '⚡', label: 'سريع',   items: ['اسبريسو', 'امريكانو'],          prices: ['١٠ ر', '١٢ ر'] },
   ],
   recentOrders: [
-    { item: 'أفقاتو براون',       time: 'اليوم، ٩:١٥ص',  pts: '+١٥', emoji: '🍫', color: '#C4783A' },
+    { item: 'أفقاتو براون',       time: 'اليوم، ٩:١٥ص',  pts: '+١٥', emoji: '🍫', color: '#6B3210' },
     { item: 'كراميل لاتيه بارد',  time: 'أمس، ٥:٣٠م',    pts: '+١٢', emoji: '☕', color: '#7A3B28' },
     { item: 'موهيتو روز يري',     time: 'السبت، ٣:٠٠م',  pts: '+١٠', emoji: '🌹', color: '#A0495C' },
   ],
@@ -153,7 +153,7 @@ export const BROWNDOSE_BRAND: BrandConfig = {
   ],
   streak: { count: '٩', label: '٩ أيام متواصلة' },
   memberCard: { label: 'Brown Dose', sub: 'عضوية براون' },
-  accentColor: '#C4783A',
+  accentColor: '#6B3210',
 };
 
 /* ── Context ────────────────────────────────────────────────────── */

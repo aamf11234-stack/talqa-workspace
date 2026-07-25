@@ -1,0 +1,25 @@
+{
+  "name": "براون دوز",
+  "short_name": "Brown Dose",
+  "description": "تطبيق الولاء والطلبات — براون دوز",
+  "start_url": "/haeez-loyalty/",
+  "scope": "/haeez-loyalty/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F8F7F5",
+  "theme_color": "#6B3210",
+  "icons": [
+    {
+      "src": "/haeez-loyalty/browndose-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/haeez-loyalty/browndose-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

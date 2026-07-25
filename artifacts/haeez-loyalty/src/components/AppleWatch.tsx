@@ -27,7 +27,7 @@ function WatchRing({ progress = 0.57 }: { progress?: number }) {
       />
       <defs>
         <linearGradient id="watch-gold" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#C9956A" />
+          <stop offset="0%" stopColor="#7A3B18" />
           <stop offset="100%" stopColor="#F0D4A8" />
         </linearGradient>
       </defs>
@@ -96,7 +96,7 @@ export function AppleWatchHyz({ compact = false }: { compact?: boolean }) {
                 alt="مطعمك"
                 style={{ width: Math.round(18 * scale), height: Math.round(18 * scale), borderRadius: Math.round(5 * scale), objectFit: 'cover', border: '1px solid rgba(201,149,106,0.3)' }}
               />
-              <p className="text-[#C9956A] font-bold" style={{ fontSize: Math.round(11 * scale) }}>مطعمك</p>
+              <p className="text-[#7A3B18] font-bold" style={{ fontSize: Math.round(11 * scale) }}>مطعمك</p>
             </div>
             <div
               className="flex items-center gap-[6%] px-[8%] py-[3%] rounded-full"

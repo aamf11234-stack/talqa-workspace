@@ -11,7 +11,7 @@ const tiers = [
     cupsRequired: 0,
     cupsHave: 4,
     bg: 'linear-gradient(145deg,#080003 0%,#3D0809 40%,#0D0003 70%,#1A0405 100%)',
-    accent: '#C9956A',
+    accent: '#7A3B18',
     glow: 'rgba(160,82,45,0.5)',
     shimmer: 'rgba(201,149,106,0.1)',
     badge: '🏅',
@@ -67,9 +67,9 @@ const tiers = [
 ];
 
 const weeklyOffers = [
-  { emoji: '☕', title: 'لاتيه إثيوبي', sub: 'خصم ١٥٪ اليوم فقط', badge: '١٥٪', badgeColor: '#C4783A' },
+  { emoji: '☕', title: 'لاتيه إثيوبي', sub: 'خصم ١٥٪ اليوم فقط', badge: '١٥٪', badgeColor: '#6B3210' },
   { emoji: '🥐', title: 'كرواسون + مشروب', sub: 'تحدي الاثنين — ٢٠ ر', badge: 'جديد', badgeColor: '#30D158' },
-  { emoji: '🫖', title: 'محصول كينيا AA', sub: 'وصل حديثاً — كمية محدودة', badge: 'محدود', badgeColor: '#C9956A' },
+  { emoji: '🫖', title: 'محصول كينيا AA', sub: 'وصل حديثاً — كمية محدودة', badge: 'محدود', badgeColor: '#7A3B18' },
 ];
 
 export function ScreenPerks() {

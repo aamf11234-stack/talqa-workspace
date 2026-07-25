@@ -58,7 +58,7 @@ function BarChart({ data, labels }: { data: number[]; labels: string[] }) {
               style={{
                 height: h,
                 background: isLast
-                  ? 'linear-gradient(180deg,#C9956A 0%,#C4783A 100%)'
+                  ? 'linear-gradient(180deg,#7A3B18 0%,#6B3210 100%)'
                   : 'rgba(160,82,45,0.15)',
                 boxShadow: isLast ? '0 -3px 10px rgba(201,149,106,0.4)' : 'none',
               }}
@@ -66,7 +66,7 @@ function BarChart({ data, labels }: { data: number[]; labels: string[] }) {
               animate={{ height: h }}
               transition={{ delay: 0.05 * i, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
             />
-            <span className={`text-[7px] font-inter ${isLast ? 'text-[#C4783A] font-bold' : 'text-[#C4B5A8]'}`}>
+            <span className={`text-[7px] font-inter ${isLast ? 'text-[#6B3210] font-bold' : 'text-[#C4B5A8]'}`}>
               {labels[i]}
             </span>
           </div>
@@ -160,16 +160,16 @@ const weekLabels = ['أح', 'إث', 'ث', 'أر', 'خ', 'ج', 'س'];
 const revData    = [820, 1040, 760, 1180, 940, 1380, 1620];
 
 const members = [
-  { name: 'عبدالإله علي',   level: 'كلاسيك', pts: 480,  lc: '#C4783A', time: 'الآن'        },
+  { name: 'عبدالإله علي',   level: 'كلاسيك', pts: 480,  lc: '#6B3210', time: 'الآن'        },
   { name: 'سارة الغامدي',   level: 'فضي',    pts: 920,  lc: '#6B7A8D', time: '٩:٤٥ص'       },
-  { name: 'محمد العمري',    level: 'ذهبي',   pts: 1840, lc: '#C9956A', time: 'أمس، ٤م'     },
-  { name: 'نورة الزهراني',  level: 'كلاسيك', pts: 260,  lc: '#C4783A', time: 'أمس، ١م'     },
+  { name: 'محمد العمري',    level: 'ذهبي',   pts: 1840, lc: '#7A3B18', time: 'أمس، ٤م'     },
+  { name: 'نورة الزهراني',  level: 'كلاسيك', pts: 260,  lc: '#6B3210', time: 'أمس، ١م'     },
   { name: 'خالد الدوسري',   level: 'فضي',    pts: 780,  lc: '#6B7A8D', time: 'أمس، ١٠ص'   },
 ];
 
 const topItems = [
-  { name: 'لاتيه إثيوبي', n: 284, pct: 100, c: '#C4783A' },
-  { name: 'قهوة مطعمك',     n: 197, pct: 69,  c: '#C9956A' },
+  { name: 'لاتيه إثيوبي', n: 284, pct: 100, c: '#6B3210' },
+  { name: 'قهوة مطعمك',     n: 197, pct: 69,  c: '#7A3B18' },
   { name: 'كرواسون',      n: 163, pct: 57,  c: '#B5651D' },
   { name: 'مقطرة يمني',   n: 118, pct: 42,  c: '#6B7A8D' },
   { name: 'ماتشا',        n:  96, pct: 34,  c: '#2D7D46' },
@@ -194,7 +194,7 @@ export function OwnerDashboard() {
         <div className="flex items-center gap-2 px-3 mb-5">
           <img src={logoImg} className="w-7 h-7 rounded-[8px] object-cover ring-1 ring-white/10 shrink-0" alt="" />
           <div className="min-w-0">
-            <p className="text-[#C9956A] text-[13px] font-black leading-none truncate">مطعمك</p>
+            <p className="text-[#7A3B18] text-[13px] font-black leading-none truncate">مطعمك</p>
             <p className="text-white/25 text-[7px] font-inter mt-0.5">ADMIN</p>
           </div>
         </div>
@@ -207,10 +207,10 @@ export function OwnerDashboard() {
               <button key={item.label} onClick={() => setActive(item.label)}
                 className="w-full flex items-center gap-2 px-2.5 py-[7px] rounded-[8px] text-right transition-all duration-150"
                 style={isActive
-                  ? { background: 'rgba(201,149,106,0.15)', borderRight: '2px solid #C9956A' }
+                  ? { background: 'rgba(201,149,106,0.15)', borderRight: '2px solid #7A3B18' }
                   : { background: 'transparent' }
                 }>
-                <span className={`text-[10px] shrink-0 transition-colors ${isActive ? 'text-[#C9956A]' : 'text-white/20'}`}>
+                <span className={`text-[10px] shrink-0 transition-colors ${isActive ? 'text-[#7A3B18]' : 'text-white/20'}`}>
                   {item.icon}
                 </span>
                 <span className={`text-[9px] font-semibold truncate transition-colors ${isActive ? 'text-white' : 'text-white/30'}`}>
@@ -253,7 +253,7 @@ export function OwnerDashboard() {
             </div>
             {/* Avatar */}
             <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-[11px] font-black"
-              style={{ background: 'linear-gradient(135deg,#C4783A,#6B3A1F)' }}>م</div>
+              style={{ background: 'linear-gradient(135deg,#6B3210,#6B3A1F)' }}>م</div>
           </div>
         </div>
 
@@ -262,9 +262,9 @@ export function OwnerDashboard() {
 
           {/* ── KPIs — 2 × 2 grid ── */}
           <div className="grid grid-cols-2 gap-2.5">
-            <KpiCard icon="👥" label="إجمالي الأعضاء" target={1538} suffix=""  change="+٣١ هذا الأسبوع" up color="#C4783A" spark={[820,960,880,1100,1280,1420,1538]} delay={0}    />
+            <KpiCard icon="👥" label="إجمالي الأعضاء" target={1538} suffix=""  change="+٣١ هذا الأسبوع" up color="#6B3210" spark={[820,960,880,1100,1280,1420,1538]} delay={0}    />
             <KpiCard icon="💰" label="إيراد اليوم"    target={1620} suffix="ر" change="↑ ٢٣٪ عن أمس"    up color="#30D158" spark={revData}                          delay={0.07} />
-            <KpiCard icon="☕" label="أكواب اليوم"    target={89}   suffix=""  change="+١٢ عن أمس"       up color="#C9956A" spark={[52,61,47,74,63,81,89]}          delay={0.14} />
+            <KpiCard icon="☕" label="أكواب اليوم"    target={89}   suffix=""  change="+١٢ عن أمس"       up color="#7A3B18" spark={[52,61,47,74,63,81,89]}          delay={0.14} />
             <KpiCard icon="⭐" label="نقاط مُصرفة"   target={4260} suffix="ن" change="↑ ٨٪ هذا الشهر"  up color="#6C3483" spark={[2100,2800,2300,3100,3400,3900,4260]} delay={0.21} />
           </div>
 
@@ -288,7 +288,7 @@ export function OwnerDashboard() {
               {/* Peak label */}
               <div className="flex items-center justify-between mt-2 pt-2 border-t border-black/[0.04]">
                 <span className="text-[7px] text-[#B0A9A0]">ذروة: السبت</span>
-                <span className="text-[8px] font-bold text-[#C4783A] font-inter">١,٦٢٠ ر</span>
+                <span className="text-[8px] font-bold text-[#6B3210] font-inter">١,٦٢٠ ر</span>
               </div>
             </motion.div>
 
@@ -299,9 +299,9 @@ export function OwnerDashboard() {
               <p className="text-[10px] font-black text-[#111] mb-0.5">توزيع المستويات</p>
               <p className="text-[7px] text-[#B0A9A0] mb-3">من ١,٥٣٨ عضو</p>
               <Donut segs={[
-                { pct: 58, color: '#C4783A', label: 'كلاسيك' },
+                { pct: 58, color: '#6B3210', label: 'كلاسيك' },
                 { pct: 30, color: '#6B7A8D', label: 'فضي'    },
-                { pct: 12, color: '#C9956A', label: 'ذهبي'   },
+                { pct: 12, color: '#7A3B18', label: 'ذهبي'   },
               ]} />
             </motion.div>
           </div>
@@ -315,7 +315,7 @@ export function OwnerDashboard() {
               initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
               <div className="flex items-center justify-between mb-3">
                 <p className="text-[10px] font-black text-[#111]">آخر الأعضاء</p>
-                <button className="text-[8px] text-[#C4783A] font-bold">عرض الكل ←</button>
+                <button className="text-[8px] text-[#6B3210] font-bold">عرض الكل ←</button>
               </div>
               <div className="space-y-2">
                 {members.map((m, i) => (
@@ -388,12 +388,12 @@ export function OwnerDashboard() {
               <div className="flex items-center justify-between mb-3">
                 <p className="text-[10px] font-black text-[#111]">التحديات</p>
                 <button className="text-[7px] text-white font-bold px-2 py-0.5 rounded-full"
-                  style={{ background: 'linear-gradient(135deg,#C4783A,#6B3A1F)' }}>+ جديد</button>
+                  style={{ background: 'linear-gradient(135deg,#6B3210,#6B3A1F)' }}>+ جديد</button>
               </div>
               <div className="space-y-2">
                 {[
-                  { t: 'تحدي ٥ أكواب',     p: 67, c: '#C4783A', e: '٣ أيام' },
-                  { t: 'الزيارة الصباحية',  p: 43, c: '#C9956A', e: '٦ أيام' },
+                  { t: 'تحدي ٥ أكواب',     p: 67, c: '#6B3210', e: '٣ أيام' },
+                  { t: 'الزيارة الصباحية',  p: 43, c: '#7A3B18', e: '٦ أيام' },
                   { t: 'جرّب الفلتر',      p: 28, c: '#2D7D46', e: '٤ أيام' },
                 ].map((ch, i) => (
                   <div key={i} className="rounded-[9px] px-2.5 py-2 border"
@@ -422,8 +422,8 @@ export function OwnerDashboard() {
               <p className="text-[10px] font-black text-[#111] mb-3">إجراءات سريعة</p>
               <div className="grid grid-cols-2 gap-1.5">
                 {[
-                  { ic: '📣', l: 'إشعار جماعي', c: '#C4783A' },
-                  { ic: '🎁', l: 'عرض جديد',    c: '#C9956A' },
+                  { ic: '📣', l: 'إشعار جماعي', c: '#6B3210' },
+                  { ic: '🎁', l: 'عرض جديد',    c: '#7A3B18' },
                   { ic: '👥', l: 'إضافة عضو',   c: '#2D7D46' },
                   { ic: '☕', l: 'تحديث منيو',  c: '#1A5276' },
                   { ic: '📅', l: 'الحجوزات',    c: '#6C3483' },
@@ -448,10 +448,10 @@ export function OwnerDashboard() {
               <p className="text-[10px] font-black text-[#111] mb-3">ملخص اليوم</p>
               <div className="space-y-2 flex-1">
                 {[
-                  { l: 'أعضاء جدد',    v: '٣١',    ic: '🆕', c: '#C4783A' },
+                  { l: 'أعضاء جدد',    v: '٣١',    ic: '🆕', c: '#6B3210' },
                   { l: 'حجوزات',       v: '١٢',    ic: '📅', c: '#2D7D46' },
                   { l: 'تقييمات',      v: '٢٨',    ic: '⭐', c: '#D4AC0D' },
-                  { l: 'عروض فعّالة',  v: '٤',     ic: '🎁', c: '#C9956A' },
+                  { l: 'عروض فعّالة',  v: '٤',     ic: '🎁', c: '#7A3B18' },
                   { l: 'نقاط مكتسبة', v: '٤,٢٦٠', ic: '💎', c: '#6C3483' },
                 ].map((s, i) => (
                   <motion.div key={i}
@@ -470,7 +470,7 @@ export function OwnerDashboard() {
               <div className="mt-3 rounded-[11px] p-2.5 text-center"
                 style={{ background: 'linear-gradient(135deg,#0D0205,#3D0809)' }}>
                 <p className="text-white/35 text-[7px] mb-0.5">إيراد اليوم</p>
-                <p className="text-[#C9956A] text-[18px] font-black font-inter leading-none">١,٦٢٠</p>
+                <p className="text-[#7A3B18] text-[18px] font-black font-inter leading-none">١,٦٢٠</p>
                 <p className="text-white/25 text-[7px] mt-0.5">ريال سعودي</p>
               </div>
             </motion.div>
@@ -498,7 +498,7 @@ export function MobileOwnerSummary() {
         <div className="flex items-center gap-2">
           <img src={logoImg} className="w-6 h-6 rounded-[7px] object-cover" alt="" />
           <div>
-            <p className="text-[#C9956A] text-[11px] font-extrabold leading-none">مطعمك</p>
+            <p className="text-[#7A3B18] text-[11px] font-extrabold leading-none">مطعمك</p>
             <p className="text-white/30 text-[7px] font-inter">Admin Panel</p>
           </div>
         </div>
@@ -511,9 +511,9 @@ export function MobileOwnerSummary() {
       <div className="flex-1 overflow-y-auto scrollbar-none px-3 py-3 space-y-3">
         <div className="grid grid-cols-2 gap-2">
           {[
-            { ic: '👥', l: 'الأعضاء', v: members, c: '#C4783A', s: '' },
+            { ic: '👥', l: 'الأعضاء', v: members, c: '#6B3210', s: '' },
             { ic: '💰', l: 'الإيراد', v: revenue, c: '#30D158', s: 'ر' },
-            { ic: '☕', l: 'أكواب',  v: cups,    c: '#C9956A', s: '' },
+            { ic: '☕', l: 'أكواب',  v: cups,    c: '#7A3B18', s: '' },
             { ic: '⭐', l: 'نقاط',  v: 4260,    c: '#6C3483', s: 'ن' },
           ].map((k, i) => (
             <div key={i} className="bg-white rounded-[12px] p-3 border border-black/[0.04]">
@@ -538,7 +538,7 @@ export function MobileOwnerSummary() {
             {[820,1040,760,1180,940,1380,1620].map((v,i) => (
               <div key={i} className="flex-1 rounded-t-[3px]"
                 style={{
-                  background: i === 6 ? 'linear-gradient(180deg,#C9956A,#C4783A)' : 'rgba(160,82,45,0.15)',
+                  background: i === 6 ? 'linear-gradient(180deg,#7A3B18,#6B3210)' : 'rgba(160,82,45,0.15)',
                   height: `${Math.round((v/1620)*44)}px`,
                 }} />
             ))}
@@ -548,9 +548,9 @@ export function MobileOwnerSummary() {
         <div className="bg-white rounded-[12px] p-3 border border-black/[0.04]">
           <p className="text-[9px] font-bold text-[#111] mb-2">آخر الأعضاء</p>
           {[
-            { n: 'عبدالإله علي',  l: 'كلاسيك', p: 480,  c: '#C4783A' },
+            { n: 'عبدالإله علي',  l: 'كلاسيك', p: 480,  c: '#6B3210' },
             { n: 'سارة الغامدي', l: 'فضي',    p: 920,  c: '#6B7A8D' },
-            { n: 'محمد العمري',  l: 'ذهبي',   p: 1840, c: '#C9956A' },
+            { n: 'محمد العمري',  l: 'ذهبي',   p: 1840, c: '#7A3B18' },
           ].map((m,i) => (
             <div key={i} className="flex items-center gap-2 py-1.5 border-b last:border-0 border-black/[0.04]">
               <div className="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold shrink-0"
@@ -564,8 +564,8 @@ export function MobileOwnerSummary() {
 
         <div className="grid grid-cols-3 gap-1.5">
           {[
-            { ic: '📣', l: 'إشعار', c: '#C4783A' },
-            { ic: '🎁', l: 'عرض',   c: '#C9956A' },
+            { ic: '📣', l: 'إشعار', c: '#6B3210' },
+            { ic: '🎁', l: 'عرض',   c: '#7A3B18' },
             { ic: '📊', l: 'تقرير', c: '#2D7D46' },
           ].map((a,i) => (
             <button key={i} className="flex flex-col items-center gap-1 py-2.5 rounded-[10px] border"
@@ -579,7 +579,7 @@ export function MobileOwnerSummary() {
         <div className="rounded-[14px] p-3.5 text-center"
           style={{ background: 'linear-gradient(135deg,#0D0205,#3D0809)' }}>
           <p className="text-white/40 text-[8px] mb-1">إيراد اليوم</p>
-          <p className="text-[#C9956A] text-[28px] font-extrabold font-inter leading-none">١,٦٢٠</p>
+          <p className="text-[#7A3B18] text-[28px] font-extrabold font-inter leading-none">١,٦٢٠</p>
           <p className="text-white/30 text-[9px] mt-0.5">ريال سعودي</p>
         </div>
       </div>

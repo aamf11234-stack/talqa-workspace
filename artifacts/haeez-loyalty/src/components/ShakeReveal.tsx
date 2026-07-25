@@ -78,7 +78,7 @@ function FlashDealModal({ onClose }: { onClose: () => void }) {
             >{DEAL.emoji}</motion.div>
 
             <div className="text-center">
-              <p className="text-[#C9956A] text-[11px] font-bold tracking-widest mb-2">عرض حصري · الآن فقط</p>
+              <p className="text-[#7A3B18] text-[11px] font-bold tracking-widest mb-2">عرض حصري · الآن فقط</p>
               <p className="text-white text-[30px] font-black leading-tight">{DEAL.title}</p>
               <p className="text-white/50 text-[13px] font-light mt-2">{DEAL.desc}</p>
             </div>
@@ -86,7 +86,7 @@ function FlashDealModal({ onClose }: { onClose: () => void }) {
             {/* Countdown */}
             <div className="flex items-center gap-1 px-6 py-3 rounded-[18px]"
               style={{ background: expired ? 'rgba(255,59,48,0.12)' : 'rgba(201,149,106,0.1)', border: `1px solid ${expired ? 'rgba(255,59,48,0.3)' : 'rgba(201,149,106,0.25)'}` }}>
-              <Zap size={14} style={{ color: expired ? '#FF3B30' : '#C9956A' }} />
+              <Zap size={14} style={{ color: expired ? '#FF3B30' : '#7A3B18' }} />
               {expired ? (
                 <span className="text-[#FF3B30] text-[13px] font-bold">انتهى العرض</span>
               ) : (
@@ -113,7 +113,7 @@ function FlashDealModal({ onClose }: { onClose: () => void }) {
                   </motion.div>
                 ) : (
                   <motion.div key="n" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }}
-                    className="shrink-0 px-3 py-1.5 rounded-full text-[10px] font-bold text-[#C9956A]"
+                    className="shrink-0 px-3 py-1.5 rounded-full text-[10px] font-bold text-[#7A3B18]"
                     style={{ background: 'rgba(201,149,106,0.1)', border: '1px solid rgba(201,149,106,0.3)' }}>
                     انسخ
                   </motion.div>
@@ -163,8 +163,8 @@ export function ShakeHintBar({ onReveal }: { onReveal: () => void }) {
             animate={{ rotate: [0, -18, 18, -12, 12, 0] }}
             transition={{ duration: 0.7, repeat: Infinity, repeatDelay: 1.8 }}
             className="text-[16px] leading-none">📱</motion.span>
-          <span className="text-[#C9956A] text-[11px] font-bold">هزّ جوالك للمفاجأة</span>
-          <Zap size={11} className="text-[#C9956A]" fill="rgba(201,149,106,0.4)" />
+          <span className="text-[#7A3B18] text-[11px] font-bold">هزّ جوالك للمفاجأة</span>
+          <Zap size={11} className="text-[#7A3B18]" fill="rgba(201,149,106,0.4)" />
         </motion.button>
       )}
     </AnimatePresence>
