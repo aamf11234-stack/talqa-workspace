@@ -72,7 +72,7 @@ export const RESTAURANT_BRAND: BrandConfig = {
   accentColor: '#7B1618',
 };
 
-/* ── Cafe ───────────────────────────────────────────────────────── */
+/* ── Cafe (generic) ─────────────────────────────────────────────── */
 export const CAFE_BRAND: BrandConfig = {
   type: 'cafe',
   name: 'كوفيك',
@@ -114,6 +114,48 @@ export const CAFE_BRAND: BrandConfig = {
   accentColor: '#7B1618',
 };
 
+/* ── Brown Dose ─────────────────────────────────────────────────── */
+export const BROWNDOSE_BRAND: BrandConfig = {
+  type: 'cafe',
+  name: 'Brown Dose',
+  tagline: 'قهوة مختصة · جيزان',
+  logoImg: `${BASE}hyz-logo.jpeg`,
+  heroImg: `${BASE}cafe-1.jpeg`,
+  quickOrderMsg: 'أريد طلب',
+  todaySpecial: {
+    badge: 'الأشهر اليوم',
+    name: 'أفقاتو براون',
+    desc: 'شوت إسبريسو فوق الآيس كريم — الطعم اللي يميزنا',
+    price: '٢٥',
+    emoji: '🍫',
+    img: `${BASE}food-latte.jpg`,
+    popImg: `${BASE}food-cheesecake.jpg`,
+    popName: 'ايس ستفتشر براون',
+    popPrice: '١٩ر',
+  },
+  moods: [
+    { id: 'hot',    emoji: '☕', label: 'حار',    items: ['لاتيه', 'كراميل لاتيه'],       prices: ['١٧ ر', '٢٠ ر'] },
+    { id: 'cold',   emoji: '🧊', label: 'بارد',   items: ['ايس لاتيه', 'موهيتو روز'],     prices: ['١٨ ر', '١٧ ر'] },
+    { id: 'brown',  emoji: '🍫', label: 'براون',  items: ['أفقاتو براون', 'ستفتشر براون'], prices: ['٢٥ ر', '١٩ ر'] },
+    { id: 'filter', emoji: '🫘', label: 'مقطرة',  items: ['أثيوبي هنيبلا', 'بن يمني'],    prices: ['١٧ ر', '١٩ ر'] },
+    { id: 'quick',  emoji: '⚡', label: 'سريع',   items: ['اسبريسو', 'امريكانو'],          prices: ['١٠ ر', '١٢ ر'] },
+  ],
+  recentOrders: [
+    { item: 'أفقاتو براون',       time: 'اليوم، ٩:١٥ص',  pts: '+١٥', emoji: '🍫', color: '#8B3252' },
+    { item: 'كراميل لاتيه بارد',  time: 'أمس، ٥:٣٠م',    pts: '+١٢', emoji: '☕', color: '#7A3B28' },
+    { item: 'موهيتو روز يري',     time: 'السبت، ٣:٠٠م',  pts: '+١٠', emoji: '🌹', color: '#A0495C' },
+  ],
+  challenge: { title: 'تحدي الأسبوع: ٧ كوبات', desc: '٥ من ٧ — كوبان للفوز بقهوة مجانية', progress: 5, total: 7 },
+  stats: [
+    { val: '٢٨', label: 'كوب',        icon: '☕' },
+    { val: '١١', label: 'هذا الشهر', icon: '📅' },
+    { val: '٧٠', label: 'ريال توفير', icon: '💰' },
+  ],
+  streak: { count: '٩', label: '٩ أيام متواصلة' },
+  memberCard: { label: 'Brown Dose', sub: 'عضوية براون' },
+  accentColor: '#8B3252',
+};
+
 /* ── Context ────────────────────────────────────────────────────── */
 interface BrandCtx {
   brand: BrandConfig;
@@ -123,7 +165,7 @@ interface BrandCtx {
 const Ctx = createContext<BrandCtx>({ brand: RESTAURANT_BRAND, setBrand: () => {} });
 
 export function BrandProvider({ children }: { children: React.ReactNode }) {
-  const [brand, setBrand] = useState<BrandConfig>(RESTAURANT_BRAND);
+  const [brand, setBrand] = useState<BrandConfig>(BROWNDOSE_BRAND);
   return <Ctx.Provider value={{ brand, setBrand }}>{children}</Ctx.Provider>;
 }
 

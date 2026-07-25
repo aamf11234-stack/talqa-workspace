@@ -13,7 +13,7 @@ import { ScreenMenu }          from './components/ScreenMenu';
 import { AppleWatchHyz }       from './components/AppleWatch';
 import { OwnerDashboard, MobileOwnerSummary } from './components/OwnerDashboard';
 import { useShakeDetect, FlashDealModal } from './components/ShakeReveal';
-import { BrandProvider, useBrand, RESTAURANT_BRAND, CAFE_BRAND } from './BrandContext';
+import { BrandProvider, useBrand, RESTAURANT_BRAND, BROWNDOSE_BRAND } from './BrandContext';
 import { OrdersProvider } from './OrdersContext';
 
 /* ── Brand toggle (inside BrandProvider) ──────────────────────── */
@@ -43,7 +43,7 @@ function BrandToggle() {
             background: 'linear-gradient(135deg,#0C0002,#280407)',
             boxShadow: '0 2px 12px rgba(123,22,24,0.35)',
           }}
-          animate={{ right: isRest ? '50%' : '4px', left: isRest ? '4px' : '50%' }}
+          animate={{ right: isRest ? '4px' : '50%', left: isRest ? '50%' : '4px' }}
           transition={{ type: 'spring', damping: 28, stiffness: 320 }}
         />
 
@@ -57,14 +57,14 @@ function BrandToggle() {
           مطعم
         </button>
 
-        {/* Cafe */}
+        {/* Cafe — Brown Dose */}
         <button
-          onClick={() => setBrand(CAFE_BRAND)}
+          onClick={() => setBrand(BROWNDOSE_BRAND)}
           className="relative z-10 flex items-center gap-2 px-5 py-2.5 rounded-full text-[12px] font-bold transition-colors"
-          style={{ color: !isRest ? '#C9956A' : '#999' }}
+          style={{ color: !isRest ? '#8B3252' : '#999' }}
         >
           <span className="text-[15px] leading-none">☕</span>
-          كوفي
+          Brown Dose
         </button>
       </div>
     </motion.div>

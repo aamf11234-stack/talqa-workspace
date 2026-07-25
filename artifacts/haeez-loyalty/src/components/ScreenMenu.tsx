@@ -33,97 +33,55 @@ interface MenuCategory {
 
 const menu: MenuCategory[] = [
   {
-    id: 'espresso', name: 'إسبريسو', nameEn: 'ESPRESSO', color: '#7B1618',
+    id: 'hot', name: 'المشروبات الحارة', nameEn: 'HOT DRINKS', color: '#8B3252',
     items: [
-      { name: 'إسبريسو أثيوبي',   desc: 'تفاح مجفف · برتقال · كرز · ورد',         origin: 'إثيوبيا',  originFlag: '🇪🇹', price: 12, badge: 'تجفيف مطول', badgeColor: '#7B1618', featured: true },
-      { name: 'إسبريسو يمني',     desc: 'بطيخ · توت · برتقال',                      origin: 'اليمن',    originFlag: '🇾🇪', price: 15 },
-      { name: 'إسبريسو كولومبي',  desc: 'جوز الهند · برتقال · شوكولاتة · أزهار',  origin: 'كولومبيا', originFlag: '🇨🇴', price: 17 },
-      { name: 'إسبريسو الجمعة',   desc: 'فواكه استوائية · توت · لوز · أزهار',      origin: 'السعودية', originFlag: '🇸🇦', price: 14, badge: 'الجمعة فقط', badgeColor: '#C9956A' },
+      { name: 'قهوة اليوم',      desc: 'بلند يومي مختار بعناية', price: 9,  badge: 'اليوم', badgeColor: '#8B3252', liveLabel: true } as any,
+      { name: 'اسبريسو',                                           price: 10 },
+      { name: 'امريكانو',                                          price: 12 },
+      { name: 'ميكاتو',                                            price: 12 },
+      { name: 'بلاك كوفي',                                         price: 12 },
+      { name: 'كورنادو',                                           price: 14 },
+      { name: 'فلات وايت',                                         price: 16 },
+      { name: 'كابتشينو',                                          price: 16 },
+      { name: 'لاتيه',                                             price: 17, featured: true },
+      { name: 'اسبانيش لاتيه',                                     price: 17 },
+      { name: 'بستاشيو لاتيه',                                     price: 20 },
+      { name: 'كراميل لاتيه',                                      price: 20 },
+      { name: 'ماتشا لاتيه',                                       price: 20 },
     ],
   },
   {
-    id: 'filter', name: 'قهوة اليوم', nameEn: 'FILTER', color: '#2D7D46', liveLabel: true,
+    id: 'cold', name: 'المشروبات الباردة', nameEn: 'COLD DRINKS', color: '#3A6EA8',
     items: [
-      { name: 'نيكاراغوا',           desc: 'كراميل ناعم · مكسرات',          origin: 'نيكاراغوا', originFlag: '🇳🇮', priceHot: 10, priceCold: 11 },
-      { name: 'إثيوبيا يرقاشيفي',   desc: 'زهري · توت · برتقال', origin: 'إثيوبيا',   originFlag: '🇪🇹', priceHot: 11, priceCold: 12, featured: true },
-      { name: 'الصين',               desc: 'أرضي · جوز',                    origin: 'الصين',     originFlag: '🇨🇳', priceHot: 13, priceCold: 14 },
+      { name: 'قهوة اليوم بارده صغير',  price: 9  },
+      { name: 'قهوة اليوم بارده كبير',  price: 10 },
+      { name: 'ايس امريكانو',           price: 15 },
+      { name: 'موهيتو روز يري',         price: 17, badge: 'الأشهر', badgeColor: '#8B3252', featured: true },
+      { name: 'موهيتو يريز ليمون',      price: 17 },
+      { name: 'موهيتو بلو اوشن',        price: 17 },
+      { name: 'موهيتو مكس',             price: 17 },
+      { name: 'موهيتو باشن فروت',       price: 18 },
+      { name: 'كركديه',                 price: 18 },
+      { name: 'ايس لاتيه',              price: 18 },
+      { name: 'ايس ستفتشر براون',       desc: 'التوقيع الخاص بنا', price: 19, badge: 'براون', badgeColor: '#7A3B28', featured: true },
+      { name: 'اسبانيش لاتيه بارد',     price: 19 },
+      { name: 'ايس كراميل',             price: 20 },
+      { name: 'بستاشيو لاتيه بارد',     price: 20 },
+      { name: 'اسبرسو خوذ',             price: 20 },
+      { name: 'ايس يري',                price: 19 },
+      { name: 'ماتشا',                  price: 20 },
+      { name: 'افقاتو براون',           desc: 'إسبريسو فوق الآيس كريم', price: 25, badge: 'الأحلى', badgeColor: '#8B3252', featured: true },
     ],
   },
   {
-    id: 'milk', name: 'بالحليب', nameEn: 'MILK BASED', color: '#B5651D',
-    note: 'تكهة للبارد: كراميل · موكا · بستاشيو',
+    id: 'filter', name: 'قهوة مقطرة', nameEn: 'POUR OVER', color: '#7A3B28',
+    note: 'تُحضَّر بالطلب · ١٠-١٥ دقيقة',
     items: [
-      { name: 'بيكولو',     price: 14 },
-      { name: 'كورتادو',    priceHot: 14, priceCold: 15 },
-      { name: 'فلات وايت', priceHot: 15, priceCold: 17 },
-      { name: 'لاتيه',     priceHot: 17, priceCold: 19 },
-      { name: 'قهوة المطعم',  desc: 'خلطة المطعم الحصرية', priceHot: 19, priceCold: 21, badge: 'الأشهر', badgeColor: '#7B1618', featured: true },
-    ],
-  },
-  {
-    id: 'pour', name: 'مقطرة', nameEn: 'POUR OVER', color: '#1A5276',
-    note: 'حجم كوب أكبر بريالين إضافية',
-    items: [
-      { name: 'مقطرة يمني في ٦٠',    desc: 'معالجة عميقة · ٦٠ دقيقة', origin: 'اليمن',    originFlag: '🇾🇪', priceHot: 18, priceCold: 19 },
-      { name: 'مقطرة كولومبي في ٦٠', desc: 'معالجة عميقة · ٦٠ دقيقة', origin: 'كولومبيا', originFlag: '🇨🇴', priceHot: 20, priceCold: 21, featured: true },
-    ],
-  },
-  {
-    id: 'cold', name: 'مشروبات باردة', nameEn: 'COLD DRINKS', color: '#0E6B8A',
-    items: [
-      { name: 'كوكدية حبحب',            price: 18 },
-      { name: 'ماتشا حلوه',             price: 18, featured: true },
-      { name: 'باشن فروت بالشاي المثلج', price: 16 },
-      { name: 'عصير برتقال',            price: 15 },
-    ],
-  },
-  {
-    id: 'winter', name: 'مشروبات الشتاء', nameEn: 'WINTER', color: '#4A6274',
-    items: [
-      { name: 'شوكولاتة ساخنة',        desc: 'سعة كوب واحد', price: 22 },
-      { name: 'شوكولاتة ساخنة مشتركة', desc: 'سعة كوبين',    price: 39, featured: true },
-    ],
-  },
-  {
-    id: 'other', name: 'أخرى', nameEn: 'OTHERS', color: '#6C3483',
-    items: [
-      { name: 'شاي أنجليزي',   price: 5  },
-      { name: 'أفوقاتو',        price: 17 },
-      { name: 'تصبيرة سعودية', desc: 'تمر وقشطة', price: 7 },
-    ],
-  },
-  {
-    id: 'croissant', name: 'كرواسون', nameEn: 'CROISSANT', color: '#C9956A', allergyNote: true,
-    items: [
-      { name: 'سينابون',              price: 15, featured: true },
-      { name: 'لوز بالشوكولاتة الداكن', price: 12 },
-      { name: 'كاسترد فراولة',         price: 10 },
-      { name: 'فيونكة التشيز توت',      price: 15 },
-    ],
-  },
-  {
-    id: 'danish', name: 'دانيش', nameEn: 'DANISH', color: '#C8930A', allergyNote: true,
-    items: [
-      { name: 'موز مكرمل',          price: 14 },
-      { name: 'لافندر وتوت أزرق',   price: 15, featured: true },
-      { name: 'حلوي بحشوة البيتزا', price: 15 },
-    ],
-  },
-  {
-    id: 'cake', name: 'كيك', nameEn: 'CAKE', color: '#922B21', allergyNote: true,
-    items: [
-      { name: 'كيكة شوكولاتة فاخرة', price: 23 },
-      { name: 'كيكة بيكان',    price: 25, badge: 'الأشهر', badgeColor: '#C9956A', featured: true },
-      { name: 'تيراميسو براونيز',      price: 16 },
-      { name: 'حلى الأسبوع',          desc: 'اسأل الكاشير', price: 14, badge: 'متغير', badgeColor: '#30D158' },
-    ],
-  },
-  {
-    id: 'breakfast', name: 'الفطور', nameEn: 'BREAKFAST', color: '#117A65',
-    items: [
-      { name: 'بوراتا زعتر', desc: 'مع خبز الفوكاتشيا الإيطالي', price: 22, featured: true },
-      { name: 'حلوي ترافل',  price: 19 },
-      { name: 'ساوردو',      desc: 'خبز خمر طبيعي بقشرة مقرمشة', price: 22 },
+      { name: 'أثيوبي هنيبلا',     origin: 'إثيوبيا', originFlag: '🇪🇹', priceHot: 17, priceCold: 17, featured: true },
+      { name: 'أثيوبي اوراقا فاخر', origin: 'إثيوبيا', originFlag: '🇪🇹', priceHot: 18, priceCold: 18, badge: 'فاخر', badgeColor: '#7A3B28' },
+      { name: 'أثيوبي شلشلي فاخر', origin: 'إثيوبيا', originFlag: '🇪🇹', priceHot: 20, priceCold: 20, badge: 'فاخر', badgeColor: '#7A3B28' },
+      { name: 'كولومبي الندو فاخر', origin: 'كولومبيا', originFlag: '🇨🇴', priceHot: 17, priceCold: 18, badge: 'فاخر', badgeColor: '#7A3B28' },
+      { name: 'بن يمني',           origin: 'اليمن',    originFlag: '🇾🇪', price: 19 },
     ],
   },
 ];
@@ -148,7 +106,7 @@ function Price({ item }: { item: MenuItem }) {
   }
   return (
     <div className="shrink-0 text-left">
-      <span className="text-[15px] font-black font-inter tabular-nums" style={{ color: '#7B1618' }}>{item.price}</span>
+      <span className="text-[15px] font-black font-inter tabular-nums" style={{ color: '#8B3252' }}>{item.price}</span>
       <span className="text-[9px] text-[#BBA890] mr-0.5">ر</span>
     </div>
   );
