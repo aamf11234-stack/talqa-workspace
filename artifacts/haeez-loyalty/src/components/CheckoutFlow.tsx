@@ -85,6 +85,26 @@ function fmtDist(km: number) {
   return km < 1 ? `${Math.round(km * 1000)} م` : `${km.toFixed(1)} كم`;
 }
 
+/* ── Table deposit localStorage ─────────────────────────────────── */
+const DEPOSIT_LS_KEY = 'bd_table_deposit';
+const DEPOSIT_AMOUNT = 25;
+
+function getDeposit(): { amount: number; bookingId: string; bookingDate: string } | null {
+  try {
+    const d = JSON.parse(localStorage.getItem(DEPOSIT_LS_KEY) ?? 'null');
+    return d && !d.usedAt ? d : null;
+  } catch { return null; }
+}
+function markDepositUsed() {
+  try {
+    const raw = localStorage.getItem(DEPOSIT_LS_KEY);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    d.usedAt = new Date().toISOString();
+    localStorage.setItem(DEPOSIT_LS_KEY, JSON.stringify(d));
+  } catch {}
+}
+
 /* ── Saved locations localStorage ───────────────────────────────── */
 const LS_KEY = 'bd_saved_locs';
 type SavedLoc = { name: string; coords: [number, number] };
@@ -660,17 +680,18 @@ function MapPickerSheet({ onConfirm, onBack }: { onConfirm: (addr: string) => vo
 /* ══════════════════════════════════════════════════════════════════
    PAYMENT SHEET — premium dark + Face ID CTA
 ════════════════════════════════════════════════════════════════════ */
-function PaymentSheet({ item, orderType, onPay, phase }: {
+function PaymentSheet({ item, orderType, onPay, phase, depositAmt }: {
   item: CheckoutItem;
   orderType: OrderType;
   onPay: (method: PayMethod) => void;
   phase: Phase;
+  depositAmt: number;
 }) {
   const [method, setMethod] = useState<PayMethod>('apple');
   const [card, setCard]     = useState({ num: '', exp: '', cvv: '' });
   const base  = toInt(item.price);
   const vat   = Math.round(base * 0.15);
-  const total = base + vat;
+  const total = Math.max(0, base + vat - depositAmt);
   const orderLabel = orderType === 'dine' ? 'استلام' : 'توصيل مجاني';
 
   function handleCard(field: keyof typeof card, val: string) {
@@ -750,6 +771,13 @@ function PaymentSheet({ item, orderType, onPay, phase }: {
             <span className="text-[11px] text-[#AAA]">ضريبة القيمة المضافة ١٥٪</span>
             <span className="text-[12px] font-semibold text-[#111] font-inter">{toAr(vat)} ر</span>
           </div>
+          {depositAmt > 0 && (
+            <div className="flex items-center justify-between rounded-[10px] px-2.5 py-1.5"
+              style={{ background: 'rgba(48,209,88,0.07)', border: '1px solid rgba(48,209,88,0.15)' }}>
+              <span className="text-[11px] text-[#30D158] font-semibold">رسوم حجز الطاولة</span>
+              <span className="text-[12px] font-bold text-[#30D158]">-{toAr(depositAmt)} ر</span>
+            </div>
+          )}
           <div className="h-px bg-[rgba(196,181,159,0.18)]" />
           <div className="flex items-center justify-between">
             <span className="text-[14px] font-bold text-[#111]">الإجمالي</span>
@@ -1032,15 +1060,15 @@ const CONFETTI = Array.from({ length: 18 }, (_, i) => ({
   size: 4 + Math.random() * 6,
 }));
 
-function InvoiceSheet({ item, orderType, payMethod, brandName, logoImg, onClose }: {
+function InvoiceSheet({ item, orderType, payMethod, brandName, logoImg, depositAmt, onClose }: {
   item: CheckoutItem; orderType: OrderType; payMethod: PayMethod;
-  brandName: string; logoImg: string; onClose: () => void;
+  brandName: string; logoImg: string; depositAmt: number; onClose: () => void;
 }) {
   const inv  = React.useMemo(() => invNum(), []);
   const now  = React.useMemo(() => nowAr(), []);
   const base = toInt(item.price);
   const vat  = Math.round(base * 0.15);
-  const total = base + vat;
+  const total = Math.max(0, base + vat - depositAmt);
   const pts   = Math.round(total / 4);
   const ptsCounter = useCounter(pts, 1200, 600);
   const methodLabel = payMethod === 'apple' ? 'Apple Pay' : payMethod === 'stc' ? 'STC Pay' : 'بطاقة بنكية';
@@ -1184,6 +1212,13 @@ function InvoiceSheet({ item, orderType, payMethod, brandName, logoImg, onClose 
             <span className="text-[#AAA]">ضريبة القيمة المضافة ١٥٪</span>
             <span className="font-semibold text-[#111] font-inter">{toAr(vat)} ر</span>
           </div>
+          {depositAmt > 0 && (
+            <div className="flex justify-between text-[11px] rounded-[8px] px-2 py-1.5"
+              style={{ background: 'rgba(48,209,88,0.06)', border: '1px solid rgba(48,209,88,0.15)' }}>
+              <span className="text-[#30D158] font-semibold">رسوم حجز الطاولة</span>
+              <span className="font-bold text-[#30D158]">-{toAr(depositAmt)} ر</span>
+            </div>
+          )}
           <div className="h-px bg-[rgba(196,181,159,0.18)]" />
           <div className="flex justify-between">
             <span className="text-[14px] font-bold text-[#111]">الإجمالي</span>
@@ -1244,6 +1279,9 @@ export function CheckoutModal({ item, brandName, brandType, logoImg, onClose, on
   const [orderType,  setOrderType]  = useState<OrderType>('dine');
   const [payMethod,  setPayMethod]  = useState<PayMethod>('apple');
 
+  // Read deposit once on mount
+  const depositAmt = React.useMemo(() => getDeposit()?.amount ?? 0, []);
+
   function handleTypeSelect(t: OrderType) {
     setOrderType(t);
     setPhase(t === 'delivery' ? 'address' : 'branch');
@@ -1256,10 +1294,12 @@ export function CheckoutModal({ item, brandName, brandType, logoImg, onClose, on
     setTimeout(() => setPhase('invoice'), 1800);
   }
   function handleInvoiceClose() {
+    // Mark deposit as used before completing
+    if (depositAmt > 0) markDepositUsed();
     if (onOrderComplete) {
       const base  = toInt(item.price);
       const vat   = Math.round(base * 0.15);
-      const total = base + vat;
+      const total = Math.max(0, base + vat - depositAmt);
       onOrderComplete({ itemName: item.name, itemEmoji: item.emoji, totalPrice: total, basePrice: base, orderType, payMethod, pts: Math.round(total / 4), timestamp: new Date() });
     }
     onClose();
@@ -1289,12 +1329,12 @@ export function CheckoutModal({ item, brandName, brandType, logoImg, onClose, on
           <MapPickerSheet key="address" onConfirm={handleAddressConfirm} onBack={() => setPhase('type')} />
         )}
         {phase === 'payment' && (
-          <PaymentSheet key="payment" item={item} orderType={orderType} onPay={handlePay} phase={phase} />
+          <PaymentSheet key="payment" item={item} orderType={orderType} onPay={handlePay} phase={phase} depositAmt={depositAmt} />
         )}
         {phase === 'paying' && <PayingSheet key="paying" payMethod={payMethod} />}
         {phase === 'invoice' && (
           <InvoiceSheet key="invoice" item={item} orderType={orderType} payMethod={payMethod}
-            brandName={brandName} logoImg={logoImg} onClose={handleInvoiceClose} />
+            brandName={brandName} logoImg={logoImg} depositAmt={depositAmt} onClose={handleInvoiceClose} />
         )}
       </AnimatePresence>
     </>

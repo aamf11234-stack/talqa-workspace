@@ -90,6 +90,169 @@ interface Booking {
 
 function genId() { return `BK-${Math.floor(10000 + Math.random() * 90000)}`; }
 
+/* ── Deposit helpers ──────────────────────────────────────────── */
+const DEPOSIT_AMOUNT = 25;
+const DEPOSIT_LS_KEY = 'bd_table_deposit';
+
+function saveDeposit(bookingId: string, bookingDate: string) {
+  localStorage.setItem(DEPOSIT_LS_KEY, JSON.stringify({
+    amount: DEPOSIT_AMOUNT, bookingId, bookingDate, usedAt: null,
+  }));
+}
+
+/* ── Table Deposit Sheet ─────────────────────────────────────── */
+type DepositPayMethod = 'apple' | 'stc' | 'card';
+
+function TableDepositSheet({
+  booking, onClose, onPaid,
+}: {
+  booking: Booking;
+  onClose: () => void;
+  onPaid: () => void;
+}) {
+  const [method, setMethod] = useState<DepositPayMethod | null>(null);
+  const [phase, setPhase]   = useState<'pick' | 'paying' | 'done'>('pick');
+
+  function pay() {
+    if (!method) return;
+    setPhase('paying');
+    setTimeout(() => {
+      setPhase('done');
+      saveDeposit(booking.id, booking.date);
+      setTimeout(onPaid, 900);
+    }, 2000);
+  }
+
+  const PAY_OPTS: { id: DepositPayMethod; label: string; icon: string; bg: string; fg: string }[] = [
+    { id: 'apple', label: 'Apple Pay',   icon: '', bg: '#000',    fg: '#fff' },
+    { id: 'stc',   label: 'STC Pay',     icon: '', bg: '#6B21A8', fg: '#fff' },
+    { id: 'card',  label: 'بطاقة بنكية', icon: '', bg: '#F5F3F0', fg: '#111' },
+  ];
+
+  return (
+    <>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        onClick={phase === 'pick' ? onClose : undefined}
+        className="absolute inset-0 bg-black/65 backdrop-blur-sm z-40 rounded-[48px]" />
+
+      <motion.div
+        initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '110%' }}
+        transition={{ type: 'spring', damping: 28, stiffness: 280 }}
+        className="absolute bottom-0 left-0 right-0 z-50 rounded-t-[28px] overflow-hidden"
+        style={{ background: '#0D0200' }}>
+
+        <div className="w-9 h-1 rounded-full bg-white/10 mx-auto mt-3 mb-1" />
+
+        <AnimatePresence mode="wait">
+          {phase === 'paying' && (
+            <motion.div key="paying" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+              className="flex flex-col items-center gap-5 py-12 px-6">
+              <motion.div animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                className="w-14 h-14 rounded-full border-4 border-transparent border-t-[#6B3210]" />
+              <p className="text-white text-[16px] font-black">جاري تأكيد الحجز…</p>
+            </motion.div>
+          )}
+
+          {phase === 'done' && (
+            <motion.div key="done" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+              className="flex flex-col items-center gap-4 py-10 px-6">
+              <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 18 }}
+                className="w-18 h-18 rounded-full flex items-center justify-center w-20 h-20"
+                style={{ background: 'linear-gradient(135deg,#30D158,#25A349)', boxShadow: '0 12px 36px rgba(48,209,88,0.4)' }}>
+                <Check size={34} className="text-white" strokeWidth={3} />
+              </motion.div>
+              <div className="text-center">
+                <p className="text-white text-[20px] font-black">تم الدفع ✅</p>
+                <p className="text-white/40 text-[11px] mt-1">رسوم الحجز تُطرح من فاتورتك</p>
+              </div>
+            </motion.div>
+          )}
+
+          {phase === 'pick' && (
+            <motion.div key="pick" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+              className="px-5 pt-4 pb-8">
+
+              {/* Header */}
+              <div className="flex items-center justify-between mb-5">
+                <div>
+                  <p className="text-[9px] font-black text-[#C4783A]"
+                    style={{ fontFamily: 'ui-monospace,monospace' }}>رسوم الحجز · TABLE BOOKING FEE</p>
+                  <p className="text-white text-[20px] font-black mt-0.5">أكمل الحجز</p>
+                </div>
+                <button onClick={onClose}
+                  className="w-9 h-9 rounded-full flex items-center justify-center"
+                  style={{ background: 'rgba(255,255,255,0.07)' }}>
+                  <X size={15} className="text-white/50" />
+                </button>
+              </div>
+
+              {/* Deposit info card */}
+              <div className="rounded-[18px] p-4 mb-5"
+                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <div className="flex items-center justify-between mb-3 pb-3"
+                  style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div>
+                    <p className="text-white text-[14px] font-bold">حجز طاولة</p>
+                    <p className="text-white/40 text-[10px]">{booking.date} · {booking.time} · {booking.guests} أشخاص</p>
+                  </div>
+                  <span className="text-[9px] text-[#30D158] font-black bg-[#30D158]/10 px-2 py-0.5 rounded-full">{booking.id}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="text-white/50 text-[10px]">رسوم حجز الطاولة</p>
+                    <p className="text-white/30 text-[9px] mt-0.5">تُطرح كاملاً من فاتورتك عند الطلب</p>
+                  </div>
+                  <div className="text-left">
+                    <span className="text-[28px] font-black text-[#C4783A] font-inter">{DEPOSIT_AMOUNT}</span>
+                    <span className="text-[#C4783A] text-[13px] font-bold"> ر</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Payment methods */}
+              <div className="flex flex-col gap-2.5 mb-5">
+                {PAY_OPTS.map(opt => (
+                  <motion.button key={opt.id} whileTap={{ scale: 0.97 }}
+                    onClick={() => setMethod(opt.id)}
+                    className="flex items-center gap-3.5 px-4 py-3.5 rounded-[18px] transition-all"
+                    style={{
+                      background: method === opt.id ? opt.bg : 'rgba(255,255,255,0.05)',
+                      border: method === opt.id ? 'none' : '1px solid rgba(255,255,255,0.08)',
+                      boxShadow: method === opt.id ? '0 6px 20px rgba(0,0,0,0.4)' : 'none',
+                    }}>
+                    <span className="text-[22px]">{opt.icon}</span>
+                    <span className="font-bold text-[14px]"
+                      style={{ color: method === opt.id ? opt.fg : 'rgba(255,255,255,0.7)' }}>
+                      {opt.label}
+                    </span>
+                    {method === opt.id && (
+                      <div className="mr-auto w-5 h-5 rounded-full flex items-center justify-center bg-white/20">
+                        <Check size={11} strokeWidth={3} style={{ color: opt.fg }} />
+                      </div>
+                    )}
+                  </motion.button>
+                ))}
+              </div>
+
+              <motion.button whileTap={{ scale: 0.97 }} onClick={pay}
+                className="w-full py-4 rounded-[18px] font-bold text-[15px] transition-all"
+                style={{
+                  background: method ? 'linear-gradient(135deg,#6B3210,#8B4515)' : 'rgba(255,255,255,0.06)',
+                  color: method ? 'white' : 'rgba(255,255,255,0.25)',
+                  boxShadow: method ? '0 8px 28px rgba(107,50,16,0.5)' : 'none',
+                }}>
+                {method ? `أكمل الحجز — ${DEPOSIT_AMOUNT} ريال` : 'اختر طريقة الدفع'}
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </>
+  );
+}
+
 /* ── Payment Sheet ───────────────────────────────────────────── */
 type PayMethod = 'apple' | 'stc' | 'card';
 
@@ -114,9 +277,9 @@ function PaymentSheet({
   }
 
   const PAY_OPTS: { id: PayMethod; label: string; icon: string; bg: string; fg: string }[] = [
-    { id: 'apple', label: 'Apple Pay', icon: '🍎', bg: '#000',     fg: '#fff' },
-    { id: 'stc',   label: 'STC Pay',   icon: '📱', bg: '#6B21A8',  fg: '#fff' },
-    { id: 'card',  label: 'بطاقة بنكية',icon:'💳', bg: '#F5F3F0',  fg: '#111' },
+    { id: 'apple', label: 'Apple Pay',   icon: '', bg: '#000',    fg: '#fff' },
+    { id: 'stc',   label: 'STC Pay',     icon: '', bg: '#6B21A8', fg: '#fff' },
+    { id: 'card',  label: 'بطاقة بنكية', icon: '', bg: '#F5F3F0', fg: '#111' },
   ];
 
   return (
@@ -296,11 +459,11 @@ function BookingCard({ b, onClose }: { b: Booking; onClose: () => void }) {
           </div>
 
           <p className="text-white text-[24px] font-black mb-1">
-            {b.type === 'table' ? 'تم الحجز! ☕' : 'تم الحجز والدفع! 🎉'}
+            {b.type === 'table' ? 'تم الحجز ✓' : 'تم الحجز والدفع! 🎉'}
           </p>
           <p className="text-white/40 text-[12px] font-light">
             {b.type === 'table'
-              ? 'طاولتك محجوزة — نراك قريباً'
+              ? 'طاولتك محجوزة — الرسوم تُخصم من طلبك'
               : `${pkg?.name} — ${b.date} · ${b.time}`}
           </p>
         </div>
@@ -326,7 +489,7 @@ function BookingCard({ b, onClose }: { b: Booking; onClose: () => void }) {
               { l: 'الفرع',         v: 'براون دوز — صبيا' },
               ...(b.type === 'celebration' && ct ? [{ l: 'المناسبة', v: `${ct.emoji} ${ct.label}` }] : []),
               ...(b.type === 'celebration' && pkg ? [{ l: 'الباقة', v: pkg.name }] : []),
-              ...(b.pkgPrice ? [{ l: 'طريقة الدفع', v: b.payMethod === 'apple' ? '🍎 Apple Pay' : b.payMethod === 'stc' ? '📱 STC Pay' : '💳 بطاقة بنكية' }] : []),
+              ...(b.pkgPrice ? [{ l: 'طريقة الدفع', v: b.payMethod === 'apple' ? 'Apple Pay' : b.payMethod === 'stc' ? 'STC Pay' : 'بطاقة بنكية' }] : []),
             ].map((r, i, arr) => (
               <div key={i} className={`flex justify-between pb-3 ${i < arr.length - 1 ? 'border-b border-white/5' : ''}`}>
                 <span className="text-white/35 text-[11px]">{r.l}</span>
@@ -359,6 +522,25 @@ function BookingCard({ b, onClose }: { b: Booking; onClose: () => void }) {
             ) : null}
           </div>
         </div>
+
+        {/* Deposit badge for table bookings */}
+        {b.type === 'table' && (
+          <motion.div
+            initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            className="rounded-[18px] p-4 mb-4 flex items-center gap-3"
+            style={{ background: 'rgba(48,209,88,0.08)', border: '1px solid rgba(48,209,88,0.2)' }}>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
+              style={{ background: 'rgba(48,209,88,0.15)' }}>
+              <span className="text-[16px] font-black text-[#30D158]">٢٥</span>
+            </div>
+            <div className="flex-1">
+              <p className="text-[#30D158] text-[12px] font-black">رسوم الحجز مدفوعة ✓</p>
+              <p className="text-white/40 text-[10px] mt-0.5">
+                <span className="font-bold text-white/60">{DEPOSIT_AMOUNT} ريال</span> تُخصم تلقائياً من فاتورة طلبك القادم
+              </p>
+            </div>
+          </motion.div>
+        )}
 
         <p className="text-white/20 text-[10px] text-center mb-6">
           الحجز محفوظ في التطبيق · يمكنك الاطلاع عليه في أي وقت
@@ -422,7 +604,7 @@ function MyBookings({ bookings, onClose }: { bookings: Booking[]; onClose: () =>
                 <div className="flex items-center justify-between px-4 pt-3.5 pb-2"
                   style={{ borderBottom: '1px solid rgba(196,181,159,0.1)' }}>
                   <div className="flex items-center gap-2">
-                    <span className="text-[16px]">{b.type === 'celebration' ? (ct?.emoji ?? '🎊') : '🪑'}</span>
+                    <span className="text-[16px]">{b.type === 'celebration' ? (ct?.emoji ?? '🎊') : '🗓'}</span>
                     <span className="text-[12px] font-black text-[#111]">
                       {b.type === 'table' ? 'حجز طاولة' : (ct?.label ?? 'احتفالية')}
                     </span>
@@ -468,9 +650,11 @@ export function ScreenReservations() {
   const [note,         setNote]         = useState('');
   const [celebType,    setCelebType]    = useState<string | null>(null);
   const [selectedPkg,  setSelectedPkg]  = useState<string | null>(null);
-  const [showPayment,  setShowPayment]  = useState(false);
-  const [showConfirm,  setShowConfirm]  = useState<Booking | null>(null);
-  const [showMyBooks,  setShowMyBooks]  = useState(false);
+  const [showPayment,   setShowPayment]  = useState(false);
+  const [showDeposit,   setShowDeposit]  = useState(false);
+  const [pendingBook,   setPendingBook]  = useState<Booking | null>(null);
+  const [showConfirm,   setShowConfirm]  = useState<Booking | null>(null);
+  const [showMyBooks,   setShowMyBooks]  = useState(false);
 
   const times    = bookType === 'table' ? TABLE_TIMES   : CELEB_TIMES;
   const unavail  = bookType === 'table' ? TABLE_UNAVAIL : CELEB_UNAVAIL;
@@ -492,9 +676,17 @@ export function ScreenReservations() {
       time: TABLE_TIMES[timeIdx!],
       guests, note, status: 'confirmed', createdAt: new Date(),
     };
-    setBookings(prev => [b, ...prev]);
-    setShowConfirm(b);
+    setPendingBook(b);
+    setShowDeposit(true);
     resetForm();
+  }
+
+  function handleDepositPaid() {
+    if (!pendingBook) return;
+    setBookings(prev => [pendingBook, ...prev]);
+    setShowDeposit(false);
+    setShowConfirm(pendingBook);
+    setPendingBook(null);
   }
 
   function handleCelebPaid(method: PayMethod) {
@@ -524,6 +716,17 @@ export function ScreenReservations() {
       {/* ── Booking Confirmation ── */}
       <AnimatePresence>
         {showConfirm && <BookingCard b={showConfirm} onClose={() => setShowConfirm(null)} />}
+      </AnimatePresence>
+
+      {/* ── Table Deposit Sheet ── */}
+      <AnimatePresence>
+        {showDeposit && pendingBook && (
+          <TableDepositSheet
+            booking={pendingBook}
+            onClose={() => { setShowDeposit(false); setPendingBook(null); }}
+            onPaid={handleDepositPaid}
+          />
+        )}
       </AnimatePresence>
 
       {/* ── Payment Sheet ── */}
@@ -581,7 +784,7 @@ export function ScreenReservations() {
           <div className="flex bg-white rounded-[18px] p-1.5 gap-1.5"
             style={{ border: '1px solid #EBEBEB', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
             {([
-              { id: 'table',       emoji: '🪑', label: 'حجز طاولة' },
+              { id: 'table',       emoji: '🗓', label: 'حجز طاولة' },
               { id: 'celebration', emoji: '🎊', label: 'احتفالية'   },
             ] as { id: BookType; emoji: string; label: string }[]).map(opt => (
               <motion.button key={opt.id} whileTap={{ scale: 0.96 }}
@@ -789,7 +992,7 @@ export function ScreenReservations() {
                     ? { background: 'linear-gradient(135deg,#6B3210,#8B4515)', color: 'white', boxShadow: '0 8px 28px rgba(107,50,16,0.5)' }
                     : { background: '#EBEBEB', color: '#BBB', cursor: 'not-allowed' }}>
                   {canConfirmCeleb
-                    ? `💳 ادفع الآن — ${pkg ? pkg.price + Math.round(pkg.price * 0.15) : ''} ريال`
+                    ? `ادفع الآن — ${pkg ? pkg.price + Math.round(pkg.price * 0.15) : ''} ريال`
                     : !celebType ? 'اختر نوع المناسبة أولاً'
                     : !selectedPkg ? 'اختر الباقة أولاً'
                     : 'اختر الوقت أولاً'}
