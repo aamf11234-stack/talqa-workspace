@@ -1,3 +1,16 @@
-<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="180" height="180" rx="36" fill="#FF3C00"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5A2808"/>
+      <stop offset="100%" stop-color="#7A3B18"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square background -->
+  <rect width="180" height="180" rx="40" fill="url(#bg)"/>
+  <!-- "B" -->
+  <text x="22" y="122" font-family="Georgia, 'Times New Roman', serif" font-size="88" font-weight="700" fill="#F5ECD7" letter-spacing="-2">B</text>
+  <!-- "D" -->
+  <text x="96" y="122" font-family="Georgia, 'Times New Roman', serif" font-size="88" font-weight="700" fill="#C9956A" letter-spacing="-2">D</text>
+  <!-- Bottom line accent -->
+  <rect x="22" y="134" width="136" height="3" rx="1.5" fill="#C9956A" opacity="0.5"/>
 </svg>
