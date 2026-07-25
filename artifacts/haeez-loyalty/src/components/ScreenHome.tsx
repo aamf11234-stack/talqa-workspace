@@ -1197,8 +1197,11 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
               {/* Top row */}
               <div className="flex items-start justify-between mb-5">
                 <div>
-                  <p className="text-[8px] font-black tracking-[0.3em] mb-2"
-                    style={{ color: 'rgba(201,149,106,0.5)', fontFamily: 'ui-monospace,monospace' }}>LOYALTY · براون دوز</p>
+                  <p className="text-[8px] font-black mb-2"
+                    style={{ color: 'rgba(201,149,106,0.5)', fontFamily: 'ui-monospace,monospace' }}>
+                    <span className="tracking-[0.3em]">LOYALTY</span>
+                    <span className="tracking-normal"> · براون دوز</span>
+                  </p>
                   <div className="flex items-baseline gap-2">
                     <span className="font-black leading-none tabular-nums"
                       style={{
