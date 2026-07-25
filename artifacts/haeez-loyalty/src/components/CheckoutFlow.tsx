@@ -166,7 +166,7 @@ function PaymentSheet({
           <div className="h-px bg-[rgba(196,181,159,0.2)] my-1" />
           <div className="flex items-center justify-between">
             <span className="text-[14px] font-bold text-[#111]">الإجمالي</span>
-            <span className="text-[18px] font-black text-[#7B1618] font-inter">{toAr(total)} ر</span>
+            <span className="text-[18px] font-black text-[#B06070] font-inter">{toAr(total)} ر</span>
           </div>
         </div>
 
@@ -240,7 +240,7 @@ function PaymentSheet({
               ? 'linear-gradient(135deg,#1C1C1E,#3A3A3C)'
               : method === 'stc'
               ? 'linear-gradient(135deg,#006239,#00813D)'
-              : 'linear-gradient(135deg,#7B1618,#4A0D0F)',
+              : 'linear-gradient(135deg,#B06070,#7A3050)',
             boxShadow: '0 6px 24px rgba(0,0,0,0.18)',
           }}>
           {method === 'apple' && (
@@ -274,7 +274,7 @@ function PayingSheet() {
       <motion.div
         animate={{ rotate: 360 }}
         transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-        className="w-14 h-14 rounded-full border-4 border-[rgba(123,22,24,0.12)] border-t-[#7B1618] mb-5"
+        className="w-14 h-14 rounded-full border-4 border-[rgba(123,22,24,0.12)] border-t-[#B06070] mb-5"
       />
       <p className="text-[16px] font-bold text-[#111]">جاري المعالجة...</p>
       <p className="text-[11px] text-[#AAA] font-light mt-1">لا تغلق الشاشة</p>
@@ -392,7 +392,7 @@ function InvoiceSheet({
           <div className="h-px bg-[rgba(196,181,159,0.2)] my-1" />
           <div className="flex justify-between">
             <span className="text-[14px] font-bold text-[#111]">الإجمالي</span>
-            <span className="text-[18px] font-black text-[#7B1618] font-inter">{toAr(total)} ر</span>
+            <span className="text-[18px] font-black text-[#B06070] font-inter">{toAr(total)} ر</span>
           </div>
         </div>
 
@@ -438,7 +438,7 @@ function InvoiceSheet({
         <motion.button whileTap={{ scale: 0.95 }}
           className="w-14 rounded-[18px] flex items-center justify-center shrink-0"
           style={{ background: 'white', border: '1.5px solid rgba(196,181,159,0.25)', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
-          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-[#7B1618]" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+          <svg viewBox="0 0 24 24" className="w-5 h-5 fill-none stroke-[#B06070]" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
             <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
             <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
           </svg>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const logoImg = `${import.meta.env.BASE_URL}restaurant-logo.png`;
+const logoImg = `${import.meta.env.BASE_URL}browndose-logo.svg`;
 
 /* Animated progress arc */
 function WatchRing({ progress = 0.57 }: { progress?: number }) {

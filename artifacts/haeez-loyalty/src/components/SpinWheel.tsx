@@ -4,11 +4,11 @@ import { X, RotateCcw } from 'lucide-react';
 
 /* ── Prize data ──────────────────────────────────────────────────── */
 const PRIZES = [
-  { label: 'خصم ١٠٪',      emoji: '🏷️', color1: '#6B1215', color2: '#4A0D0F', highlight: false },
+  { label: 'خصم ١٠٪',      emoji: '🏷️', color1: '#6B1215', color2: '#7A3050', highlight: false },
   { label: 'مشروب مجاني',  emoji: '🥤', color1: '#B8860B', color2: '#8B6914', highlight: true  },
   { label: 'نقاط مضاعفة', emoji: '⭐', color1: '#1A6B3A', color2: '#0F4828', highlight: false },
   { label: 'حاول ثانية',   emoji: '🔄', color1: '#2A2A2A', color2: '#1A1A1A', highlight: false },
-  { label: 'وجبة مجانية', emoji: '🍽️', color1: '#7B1618', color2: '#520E10', highlight: true  },
+  { label: 'وجبة مجانية', emoji: '🍽️', color1: '#B06070', color2: '#520E10', highlight: true  },
   { label: 'خصم ١٥٪',      emoji: '💰', color1: '#7D3C15', color2: '#5C2C0F', highlight: false },
   { label: 'كوبون ٢٥ ريال',emoji: '🎟️', color1: '#1B4F72', color2: '#123558', highlight: false },
   { label: 'هدية مفاجأة',  emoji: '🎁', color1: '#6B2D8B', color2: '#4A2060', highlight: true  },
@@ -23,7 +23,7 @@ function polar(cx: number, cy: number, r: number, deg: number) {
 }
 
 /* ── Confetti burst ──────────────────────────────────────────────── */
-const CONFETTI_COLORS = ['#F0D060','#C9956A','#7B1618','#30D158','#007AFF','#FF3B30','#FF9500','#AF52DE'];
+const CONFETTI_COLORS = ['#F0D060','#C9956A','#B06070','#30D158','#007AFF','#FF3B30','#FF9500','#AF52DE'];
 function Confetti() {
   const particles = Array.from({ length: 50 }, (_, i) => ({
     id: i,
@@ -197,7 +197,7 @@ function PrizeModal({ prize, onClose, onSpin }: { prize: typeof PRIZES[0]; onClo
             {isRetry ? (
               <motion.button whileTap={{ scale: 0.95 }} onClick={onSpin}
                 className="flex-1 py-3.5 rounded-[14px] text-white font-bold text-[14px] flex items-center justify-center gap-2"
-                style={{ background: 'linear-gradient(135deg,#7B1618,#4A0D0F)' }}>
+                style={{ background: 'linear-gradient(135deg,#B06070,#7A3050)' }}>
                 <RotateCcw size={15} /> دوّر مرة ثانية
               </motion.button>
             ) : (

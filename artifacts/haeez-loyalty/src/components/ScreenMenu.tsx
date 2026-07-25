@@ -248,7 +248,7 @@ const shelfItems = [
     title: 'محاصيل الرف',
     desc: 'اقتنِ محاصيلنا المميزة من الرف الحصري وجرّبها بنفسك',
     tag: 'محدود',
-    color: '#7B1618',
+    color: '#B06070',
   },
 ];
 
@@ -327,17 +327,17 @@ function SearchResults({ results, query, onClear }: {
 }) {
   if (results.length === 0) return (
     <div className="flex flex-col items-center justify-center py-20 px-8 text-center">
-      <div className="mb-4 opacity-30"><IEspresso size={52} color="#7B1618" sw={1.2} /></div>
+      <div className="mb-4 opacity-30"><IEspresso size={52} color="#B06070" sw={1.2} /></div>
       <p className="text-[14px] font-bold text-[#888]">لا نتائج لـ "{query}"</p>
       <p className="text-[11px] text-[#CCC] mt-1.5">جرّب اسماً آخر</p>
-      <button onClick={onClear} className="mt-4 text-[11px] font-bold" style={{ color: '#7B1618' }}>تصفح الكل</button>
+      <button onClick={onClear} className="mt-4 text-[11px] font-bold" style={{ color: '#B06070' }}>تصفح الكل</button>
     </div>
   );
 
   return (
     <div className="px-5 pt-3">
       <p className="text-[10px] text-[#AAA] mb-4">
-        {results.length} نتيجة لـ "<span className="font-bold" style={{ color: '#7B1618' }}>{query}</span>"
+        {results.length} نتيجة لـ "<span className="font-bold" style={{ color: '#B06070' }}>{query}</span>"
       </p>
       {results.map(({ cat, item }, i) => (
         <div key={i} className="flex items-start gap-3 py-3.5"
@@ -555,7 +555,7 @@ export function ScreenMenu() {
           <motion.button whileTap={{ scale: 0.91 }} onClick={() => handleCat(null)}
             className="shrink-0 px-3 py-1.5 rounded-full text-[10px] font-black transition-all duration-200"
             style={activeId === null
-              ? { background: 'linear-gradient(135deg,#3D0809,#7B1618)', color: '#fff', boxShadow: '0 3px 12px rgba(123,22,24,0.3)' }
+              ? { background: 'linear-gradient(135deg,#3D0809,#B06070)', color: '#fff', boxShadow: '0 3px 12px rgba(123,22,24,0.3)' }
               : { background: 'rgba(196,181,159,0.15)', color: '#999' }
             }>
             الكل

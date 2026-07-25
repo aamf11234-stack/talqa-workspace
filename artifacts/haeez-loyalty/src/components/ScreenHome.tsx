@@ -39,7 +39,7 @@ function ProgressRings({ progress = 4 / 7 }: { progress?: number }) {
   const size = 140; const cx = size / 2; const cy = size / 2;
   const rings = [
     { r: 58, sw: 4.5, progress, id: 'gold', c1: '#C9956A', c2: '#F0D4A8' },
-    { r: 46, sw: 3,   progress: 0.82, id: 'red',  c1: '#7B1618', c2: '#C44' },
+    { r: 46, sw: 3,   progress: 0.82, id: 'red',  c1: '#B06070', c2: '#C44' },
     { r: 35, sw: 2.5, progress: 0.55, id: 'dim',  c1: 'rgba(255,255,255,0.2)', c2: 'rgba(255,255,255,0.05)' },
   ];
   return (
@@ -166,7 +166,7 @@ function MoodPicker({ onOrder }: { onOrder: (item: CheckoutItem) => void }) {
                         <p className="text-[#C9956A] text-[9px] font-bold">{result.prices[i]}</p>
                         <div className="flex items-center gap-1 mt-0.5">
                           <div className="w-3 h-3 rounded-full flex items-center justify-center shrink-0"
-                            style={{ background: 'linear-gradient(135deg,#7B1618,#4A0D0F)' }}>
+                            style={{ background: 'linear-gradient(135deg,#B06070,#7A3050)' }}>
                             <span className="text-white text-[5px] font-black">✓</span>
                           </div>
                           <span className="text-[#C9956A] text-[8px] font-bold">اطلب</span>
@@ -235,7 +235,7 @@ function TodaySpecial({ onOrder }: { onOrder: (item: CheckoutItem) => void }) {
                 onClick={() => onOrder({ name: t.name, price: t.price, emoji: t.emoji })}
                 whileTap={{ scale: 0.94 }}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold text-white"
-                style={{ background: 'linear-gradient(135deg,#7B1618,#4A0D0F)' }}>
+                style={{ background: 'linear-gradient(135deg,#B06070,#7A3050)' }}>
                 <svg viewBox="0 0 24 24" className="w-3 h-3 fill-none stroke-white shrink-0" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
                   <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
@@ -275,7 +275,7 @@ const haizEvents: HaizEvent[] = [
   { id: 'school',   title: 'بداية الدراسة',    subtitle: '٧ سبتمبر ٢٠٢٦',          date: '2026-09-07', color: '#2980B9', benefit: 'وجبة ترحيبية بعد أول يوم دراسة' },
   { id: 'winter',   title: 'إجازة الشتاء',     subtitle: 'ديسمبر ٢٠٢٦',            date: '2026-12-19', color: '#5D6D7E', benefit: 'منيو شتوي حصري + حساء مجاني' },
   { id: 'midyear',  title: 'إجازة النصف',      subtitle: 'يناير ٢٠٢٧',              date: '2027-01-15', color: '#8E44AD', benefit: 'خصم ٢٠٪ على الوجبات الجماعية' },
-  { id: 'founding', title: 'يوم التأسيس',      subtitle: '٢٢ فبراير ٢٠٢٧',         date: '2027-02-22', color: '#7B1618', benefit: 'وجبة مجانية للأعضاء' },
+  { id: 'founding', title: 'يوم التأسيس',      subtitle: '٢٢ فبراير ٢٠٢٧',         date: '2027-02-22', color: '#B06070', benefit: 'وجبة مجانية للأعضاء' },
   { id: 'eid',      title: 'عيد الفطر',         subtitle: 'مارس ٢٠٢٧ (تقريباً)',    date: '2027-03-20', color: '#C9956A', benefit: 'هدية عيد خاصة + مضاعفة النقاط' },
 ];
 
@@ -540,11 +540,11 @@ function QuickBookSheet({ onClose }: { onClose: () => void }) {
               <p className="text-[10px] text-[#CCC] font-light">ستصلك رسالة تأكيد على الجوال</p>
               <motion.button whileTap={{ scale: 0.97 }} onClick={onClose}
                 className="mt-2 w-full py-3.5 rounded-[16px] font-semibold text-[14px] text-white"
-                style={{ background: 'linear-gradient(135deg,#7B1618,#4A0D0F)' }}>تمام</motion.button>
+                style={{ background: 'linear-gradient(135deg,#B06070,#7A3050)' }}>تمام</motion.button>
             </motion.div>
           ) : (
             <>
-              <p className="text-[10px] text-[#7B1618] font-bold tracking-widest mb-0.5">احجز طاولة</p>
+              <p className="text-[10px] text-[#B06070] font-bold tracking-widest mb-0.5">احجز طاولة</p>
               <h3 className="text-[19px] font-bold text-[#111] mb-4">اختر الموعد</h3>
               <div className="flex items-center justify-between mb-4 bg-white rounded-[16px] p-3 border border-[rgba(196,181,159,0.2)]">
                 <p className="text-[13px] font-semibold text-[#111]">عدد الأشخاص</p>
@@ -552,13 +552,13 @@ function QuickBookSheet({ onClose }: { onClose: () => void }) {
                   <button onClick={() => setPax(p => Math.max(1, p - 1))}
                     className="w-8 h-8 rounded-full flex items-center justify-center"
                     style={{ background: 'rgba(123,22,24,0.08)' }}>
-                    <span className="text-[18px] font-bold text-[#7B1618] leading-none">−</span>
+                    <span className="text-[18px] font-bold text-[#B06070] leading-none">−</span>
                   </button>
                   <span className="text-[15px] font-bold text-[#111] w-4 text-center">{pax}</span>
                   <button onClick={() => setPax(p => Math.min(10, p + 1))}
                     className="w-8 h-8 rounded-full flex items-center justify-center"
                     style={{ background: 'rgba(123,22,24,0.08)' }}>
-                    <span className="text-[18px] font-bold text-[#7B1618] leading-none">+</span>
+                    <span className="text-[18px] font-bold text-[#B06070] leading-none">+</span>
                   </button>
                 </div>
               </div>
@@ -568,7 +568,7 @@ function QuickBookSheet({ onClose }: { onClose: () => void }) {
                   <button key={slot} onClick={() => setSelectedSlot(slot)}
                     className="py-2.5 rounded-[12px] text-[11px] font-bold transition-all"
                     style={{
-                      background: selectedSlot === slot ? 'linear-gradient(135deg,#7B1618,#4A0D0F)' : 'white',
+                      background: selectedSlot === slot ? 'linear-gradient(135deg,#B06070,#7A3050)' : 'white',
                       color: selectedSlot === slot ? 'white' : '#555',
                       border: selectedSlot === slot ? 'none' : '1px solid rgba(196,181,159,0.25)',
                     }}>{slot}</button>
@@ -578,7 +578,7 @@ function QuickBookSheet({ onClose }: { onClose: () => void }) {
                 onClick={() => selectedSlot && setDone(true)}
                 className="w-full py-4 rounded-[16px] font-semibold text-[14px] transition-all"
                 style={{
-                  background: selectedSlot ? 'linear-gradient(135deg,#7B1618,#4A0D0F)' : 'rgba(196,181,159,0.2)',
+                  background: selectedSlot ? 'linear-gradient(135deg,#B06070,#7A3050)' : 'rgba(196,181,159,0.2)',
                   color: selectedSlot ? 'white' : '#AAA',
                 }}>
                 {selectedSlot ? `احجز لـ${pax} أشخاص — ${selectedSlot}` : 'اختر موعداً أولاً'}
@@ -593,7 +593,7 @@ function QuickBookSheet({ onClose }: { onClose: () => void }) {
 
 /* ── Offers Sheet ───────────────────────────────────────────────── */
 const OFFERS = [
-  { emoji: '🍔', title: 'برجر + مشروب بـ٤٩ ريال', sub: 'وفر ٢٢٪ — ينتهي الليلة', color: '#7B1618', tag: 'الأشهر' },
+  { emoji: '🍔', title: 'برجر + مشروب بـ٤٩ ريال', sub: 'وفر ٢٢٪ — ينتهي الليلة', color: '#B06070', tag: 'الأشهر' },
   { emoji: '☕', title: 'قهوتان للسعر الواحد', sub: 'صالح للأعضاء فقط · حتى ١٢م', color: '#C9956A', tag: 'عضوية' },
   { emoji: '🎂', title: 'حلى مجاناً مع أي طلب', sub: 'لأعياد الميلاد هذا الشهر', color: '#2D7D46', tag: 'مناسبة' },
 ];
@@ -610,7 +610,7 @@ function OffersSheet({ onClose }: { onClose: () => void }) {
         style={{ maxHeight: '78%' }}>
         <div className="w-10 h-1 bg-[rgba(196,181,159,0.4)] rounded-full mx-auto mt-3 mb-4" />
         <div className="px-5">
-          <p className="text-[10px] text-[#7B1618] font-bold tracking-widest mb-0.5">حصري للأعضاء</p>
+          <p className="text-[10px] text-[#B06070] font-bold tracking-widest mb-0.5">حصري للأعضاء</p>
           <h3 className="text-[19px] font-bold text-[#111] mb-4">عروضك الحالية</h3>
           <div className="space-y-3">
             {OFFERS.map((o, i) => (
@@ -797,8 +797,8 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
         {/* Quick actions */}
         <div className="grid grid-cols-3 gap-2.5 mb-5 px-4">
           {[
-            { icon: ShoppingBag, label: 'اطلب',  color: '#7B1618', bg: '#7B161812', href: null, onTap: () => setPendingOrder({ name: brand.todaySpecial.name, price: brand.todaySpecial.price, emoji: brand.todaySpecial.emoji }) },
-            { icon: Calendar,    label: 'احجز',  color: '#7B1618', bg: '#7B161812', href: null, onTap: () => setShowBookSheet(true) },
+            { icon: ShoppingBag, label: 'اطلب',  color: '#B06070', bg: '#B0607012', href: null, onTap: () => setPendingOrder({ name: brand.todaySpecial.name, price: brand.todaySpecial.price, emoji: brand.todaySpecial.emoji }) },
+            { icon: Calendar,    label: 'احجز',  color: '#B06070', bg: '#B0607012', href: null, onTap: () => setShowBookSheet(true) },
             { icon: Tag,         label: 'عروضي', color: '#B5651D', bg: '#C9956A12', href: null, onTap: () => setShowOffersSheet(true) },
           ].map((a, i) => {
             const inner = (
@@ -897,7 +897,7 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
           <div className="relative shrink-0" style={{ width: 56, height: 56 }}>
             <motion.div animate={{ rotate: 360 }} transition={{ duration: 8, repeat: Infinity, ease: 'linear' }}
               className="w-full h-full rounded-full"
-              style={{ background: 'conic-gradient(#7B1618 0deg 45deg,#B8860B 45deg 90deg,#1A6B3A 90deg 135deg,#2D2D2D 135deg 180deg,#7B1618 180deg 225deg,#7D3C15 225deg 270deg,#1B4F72 270deg 315deg,#6B2D8B 315deg 360deg)', border: '2px solid rgba(201,149,106,0.4)' }} />
+              style={{ background: 'conic-gradient(#B06070 0deg 45deg,#B8860B 45deg 90deg,#1A6B3A 90deg 135deg,#2D2D2D 135deg 180deg,#B06070 180deg 225deg,#7D3C15 225deg 270deg,#1B4F72 270deg 315deg,#6B2D8B 315deg 360deg)', border: '2px solid rgba(201,149,106,0.4)' }} />
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-5 h-5 rounded-full bg-[#0D0205] border border-[rgba(201,149,106,0.4)] flex items-center justify-center text-[10px]">🎰</div>
             </div>

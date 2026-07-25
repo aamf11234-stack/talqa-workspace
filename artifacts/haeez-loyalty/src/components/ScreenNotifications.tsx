@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, Check, ChevronLeft, MapPin, Gift, Star, Zap, Coffee, Crown, Calendar } from 'lucide-react';
-const logoImg = `${import.meta.env.BASE_URL}restaurant-logo.png`;
+const logoImg = `${import.meta.env.BASE_URL}browndose-logo.svg`;
 
 interface Notif {
   id: number;
@@ -94,7 +94,7 @@ const typeIcon: Record<Notif['type'], React.ReactNode> = {
   points:    <Star size={16} className="text-[#C9956A]" fill="#C9956A" />,
   geo:       <MapPin size={16} className="text-[#2980B9]" />,
   level:     <Crown size={16} className="text-[#C9956A]" />,
-  event:     <Coffee size={16} className="text-[#7B1618]" />,
+  event:     <Coffee size={16} className="text-[#B06070]" />,
   challenge: <Zap size={16} className="text-[#8E44AD]" />,
   birthday:  <Bell size={16} className="text-[#FF6B81]" />,
 };
@@ -132,7 +132,7 @@ export function ScreenNotifications() {
                 <motion.div
                   initial={{ scale: 0 }} animate={{ scale: 1 }}
                   className="w-5 h-5 rounded-full flex items-center justify-center"
-                  style={{ background: 'linear-gradient(135deg,#7B1618,#C44)' }}>
+                  style={{ background: 'linear-gradient(135deg,#B06070,#C44)' }}>
                   <span className="text-white text-[9px] font-black">{unreadCount}</span>
                 </motion.div>
               )}
@@ -145,7 +145,7 @@ export function ScreenNotifications() {
             <motion.button whileTap={{ scale: 0.92 }}
               onClick={() => setAllRead(true)}
               className="px-3 py-1.5 rounded-full text-[10px] font-bold"
-              style={{ background: 'rgba(123,22,24,0.07)', color: '#7B1618', border: '1px solid rgba(123,22,24,0.12)' }}>
+              style={{ background: 'rgba(123,22,24,0.07)', color: '#B06070', border: '1px solid rgba(123,22,24,0.12)' }}>
               قراءة الكل
             </motion.button>
           )}
@@ -197,7 +197,7 @@ export function ScreenNotifications() {
                   {/* Unread glow line */}
                   {isUnread && (
                     <div className="absolute right-0 top-4 bottom-4 w-[3px] rounded-l-full"
-                      style={{ background: 'linear-gradient(180deg,#7B1618,#C9956A)' }} />
+                      style={{ background: 'linear-gradient(180deg,#B06070,#C9956A)' }} />
                   )}
 
                   <div className="flex gap-3">
@@ -214,7 +214,7 @@ export function ScreenNotifications() {
                           <p className="text-[12.5px] font-bold text-[#111] leading-snug">{n.title}</p>
                           {n.badge && (
                             <span className="text-[7px] font-black px-1.5 py-0.5 rounded-full text-white"
-                              style={{ background: n.badgeColor ?? '#7B1618' }}>
+                              style={{ background: n.badgeColor ?? '#B06070' }}>
                               {n.badge}
                             </span>
                           )}
@@ -222,7 +222,7 @@ export function ScreenNotifications() {
                         <div className="flex flex-col items-end shrink-0 gap-1">
                           <span className="text-[9px] text-[#C4B5A8] whitespace-nowrap font-inter">{n.time}</span>
                           {isUnread && (
-                            <div className="w-2 h-2 rounded-full bg-[#7B1618]" />
+                            <div className="w-2 h-2 rounded-full bg-[#B06070]" />
                           )}
                         </div>
                       </div>
@@ -233,7 +233,7 @@ export function ScreenNotifications() {
                         <motion.button
                           whileTap={{ scale: 0.92 }}
                           className="flex items-center gap-1 text-[10px] font-bold"
-                          style={{ color: '#7B1618' }}>
+                          style={{ color: '#B06070' }}>
                           {n.actionLabel}
                           <ChevronLeft size={10} />
                         </motion.button>
@@ -269,7 +269,7 @@ export function ScreenNotifications() {
           <div className="flex flex-col items-center justify-center h-64 gap-3 opacity-60">
             <div className="w-14 h-14 rounded-[18px] flex items-center justify-center"
               style={{ background: 'rgba(123,22,24,0.06)' }}>
-              <Check size={24} className="text-[#7B1618]" />
+              <Check size={24} className="text-[#B06070]" />
             </div>
             <p className="text-[13px] font-semibold text-[#AAA]">لا إشعارات جديدة</p>
           </div>

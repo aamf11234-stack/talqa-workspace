@@ -67,7 +67,7 @@ const tiers = [
 ];
 
 const weeklyOffers = [
-  { emoji: '☕', title: 'لاتيه إثيوبي', sub: 'خصم ١٥٪ اليوم فقط', badge: '١٥٪', badgeColor: '#7B1618' },
+  { emoji: '☕', title: 'لاتيه إثيوبي', sub: 'خصم ١٥٪ اليوم فقط', badge: '١٥٪', badgeColor: '#B06070' },
   { emoji: '🥐', title: 'كرواسون + مشروب', sub: 'تحدي الاثنين — ٢٠ ر', badge: 'جديد', badgeColor: '#30D158' },
   { emoji: '🫖', title: 'محصول كينيا AA', sub: 'وصل حديثاً — كمية محدودة', badge: 'محدود', badgeColor: '#C9956A' },
 ];

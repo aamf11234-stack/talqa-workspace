@@ -11,7 +11,7 @@ const ORDER_STEPS = [
   { id: 'confirmed', label: 'تم الاستلام', icon: Check,   color: '#30D158' },
   { id: 'preparing', label: 'يُحضَّر',     icon: ChefHat, color: '#C9956A' },
   { id: 'ready',     label: 'جاهز',        icon: Clock,   color: '#007AFF' },
-  { id: 'delivered', label: 'تم التوصيل', icon: Bike,    color: '#7B1618' },
+  { id: 'delivered', label: 'تم التوصيل', icon: Bike,    color: '#B06070' },
 ];
 
 function OrderTracker({ step }: { step: number }) {
@@ -152,7 +152,7 @@ function PastOrderCard({ order, onReorder }: { order: PastOrder; onReorder: (ite
           <p className="text-[10px] text-[#AAA] font-light mt-0.5">{order.date}</p>
         </div>
         <div className="text-right">
-          <p className="text-[13px] font-black text-[#7B1618] font-inter">{order.total}</p>
+          <p className="text-[13px] font-black text-[#B06070] font-inter">{order.total}</p>
           <p className="text-[9px] text-[#30D158] font-bold mt-0.5">{order.pts}</p>
         </div>
       </div>
@@ -168,7 +168,7 @@ function PastOrderCard({ order, onReorder }: { order: PastOrder; onReorder: (ite
           whileTap={{ scale: 0.95 }}
           onClick={() => onReorder({ name: order.items, price: String(order.basePrice), emoji: order.emoji })}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-semibold"
-          style={{ background: 'rgba(123,22,24,0.07)', color: '#7B1618' }}>
+          style={{ background: 'rgba(123,22,24,0.07)', color: '#B06070' }}>
           <RotateCcw size={10} />
           اعد الطلب
         </motion.button>
@@ -243,7 +243,7 @@ export function ScreenOrders() {
 
         {/* Header */}
         <div className="px-5 pt-5 pb-4">
-          <p className="text-[10px] text-[#7B1618] font-bold tracking-widest mb-0.5">الطلبات</p>
+          <p className="text-[10px] text-[#B06070] font-bold tracking-widest mb-0.5">الطلبات</p>
           <h1 className="text-[22px] font-bold text-[#111]">طلباتي</h1>
         </div>
 

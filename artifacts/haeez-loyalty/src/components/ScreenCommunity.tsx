@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, MessageCircle, Share2, Trophy, MapPin, X, Send, Camera, Plus, Check } from 'lucide-react';
 
-const logoImg = `${import.meta.env.BASE_URL}restaurant-logo.png`;
+const logoImg = `${import.meta.env.BASE_URL}browndose-logo.svg`;
 
 /* ─── Social platform icons ─────────────────────────────────────── */
 const platforms = [
@@ -17,11 +17,11 @@ const platforms = [
 const stories = [
   {
     id: 0, user: 'قصتي', isMe: true, seen: false,
-    gradient: 'linear-gradient(145deg,#7B1618,#C9956A)',
+    gradient: 'linear-gradient(145deg,#B06070,#C9956A)',
   },
   {
     id: 1, user: 'مطعمك', isOfficial: true, seen: false,
-    gradient: 'linear-gradient(145deg,#0D0205,#7B1618)',
+    gradient: 'linear-gradient(145deg,#0D0205,#B06070)',
     content: '☕ محصول اليوم: إثيوبيا يرقاشيفي — حموضة ناعمة ورائحة زهرية',
     type: 'official',
   },
@@ -45,7 +45,7 @@ const stories = [
   },
   {
     id: 5, user: 'ن. الزهراني', avatar: 'ن', seen: true,
-    gradient: 'linear-gradient(145deg,#4A1A1A,#7B1618)',
+    gradient: 'linear-gradient(145deg,#4A1A1A,#B06070)',
     content: 'أجواء الشتاء المميزة ❄️',
     type: 'vibe',
   },
@@ -55,8 +55,8 @@ const stories = [
 const feedPosts = [
   {
     id: 0,
-    user: 'م. العتيبي', avatar: 'م', avatarColor: '#7B1618',
-    time: 'الآن', tag: 'تسجيل وصول', tagColor: '#7B1618',
+    user: 'م. العتيبي', avatar: 'م', avatarColor: '#B06070',
+    time: 'الآن', tag: 'تسجيل وصول', tagColor: '#B06070',
     content: 'وصلت للتو ☕ بدأت أسبوعي بكوب الإثيوبي المعتاد. جو مثالي للعمل!',
     postGradient: 'linear-gradient(145deg,#0D0205,#3D0809)',
     postEmoji: '☕', likes: 12, comments: 3,
@@ -94,7 +94,7 @@ const feedPosts = [
   {
     id: 4,
     user: 'ن. الزهراني', avatar: 'ن', avatarColor: '#6C3483',
-    time: 'أمس', tag: 'تسجيل وصول', tagColor: '#7B1618',
+    time: 'أمس', tag: 'تسجيل وصول', tagColor: '#B06070',
     content: 'جلسة شتائية رائعة ❄️ الشوكولاتة الساخنة المشتركة مع صديقتي — أفضل قرار اليوم!',
     postGradient: 'linear-gradient(145deg,#1A0A3A,#3D1B7B)',
     postEmoji: '❄️', likes: 19, comments: 2,
@@ -306,12 +306,12 @@ function CheckInSheet({ onClose, onPosted }: { onClose: () => void; onPosted: ()
                   className="w-10 h-10 rounded-full flex items-center justify-center"
                   style={{ background: 'rgba(123,22,24,0.08)' }}
                 >
-                  <MapPin size={18} className="text-[#7B1618]" />
+                  <MapPin size={18} className="text-[#B06070]" />
                 </motion.div>
                 <motion.div
                   animate={{ scale: [1, 2, 1], opacity: [0.4, 0, 0.4] }}
                   transition={{ duration: 1.5, repeat: Infinity }}
-                  className="absolute inset-0 rounded-full border border-[#7B1618]/30"
+                  className="absolute inset-0 rounded-full border border-[#B06070]/30"
                 />
               </div>
               <div>
@@ -372,7 +372,7 @@ function CheckInSheet({ onClose, onPosted }: { onClose: () => void; onPosted: ()
               whileTap={{ scale: 0.97 }}
               onClick={handlePost}
               className="w-full py-3.5 rounded-[16px] font-bold text-[14px] text-white flex items-center justify-center gap-2"
-              style={{ background: 'linear-gradient(135deg,#7B1618,#4A0D0F)', boxShadow: '0 6px 20px rgba(123,22,24,0.35)' }}
+              style={{ background: 'linear-gradient(135deg,#B06070,#7A3050)', boxShadow: '0 6px 20px rgba(123,22,24,0.35)' }}
             >
               <MapPin size={15} className="opacity-80" />
               سجّل وصولك الآن
@@ -456,10 +456,10 @@ function PostCard({ post, index }: { post: typeof feedPosts[0]; index: number })
           <div className="mb-3 bg-[#F5EFE8] rounded-[12px] px-3 py-2.5">
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-[10px] font-semibold text-[#111]">المشاركون</span>
-              <span className="text-[10px] font-bold text-[#7B1618] font-inter">{post.participants}/{post.maxPart}</span>
+              <span className="text-[10px] font-bold text-[#B06070] font-inter">{post.participants}/{post.maxPart}</span>
             </div>
             <div className="h-1.5 bg-white rounded-full overflow-hidden">
-              <motion.div className="h-full rounded-full bg-gradient-to-r from-[#7B1618] to-[#C9956A]"
+              <motion.div className="h-full rounded-full bg-gradient-to-r from-[#B06070] to-[#C9956A]"
                 initial={{ width: 0 }} animate={{ width: `${(post.participants! / post.maxPart!) * 100}%` }}
                 transition={{ delay: 0.3 + 0.08 * index, duration: 0.7 }} />
             </div>
@@ -469,7 +469,7 @@ function PostCard({ post, index }: { post: typeof feedPosts[0]; index: number })
               className="mt-2 w-full py-1.5 rounded-[10px] text-[11px] font-bold transition-all"
               style={joined
                 ? { background: 'rgba(48,209,88,0.12)', color: '#30D158' }
-                : { background: 'linear-gradient(135deg,#7B1618,#4A0D0F)', color: '#fff' }
+                : { background: 'linear-gradient(135deg,#B06070,#7A3050)', color: '#fff' }
               }
             >
               {joined ? '✓ أنت مشارك' : 'انضم للتحدي 🏆'}
@@ -575,7 +575,7 @@ export function ScreenCommunity() {
             whileTap={{ scale: 0.92 }}
             onClick={() => setShowCheckin(true)}
             className="flex items-center gap-1.5 px-3 py-2 rounded-full text-white text-[11px] font-bold shadow-[0_4px_16px_rgba(123,22,24,0.35)]"
-            style={{ background: 'linear-gradient(135deg,#7B1618,#4A0D0F)' }}
+            style={{ background: 'linear-gradient(135deg,#B06070,#7A3050)' }}
           >
             <MapPin size={12} />
             {checkedIn ? 'وصلت ✓' : 'سجّل'}
@@ -605,8 +605,8 @@ export function ScreenCommunity() {
                         background: seen
                           ? 'rgba(196,181,159,0.2)'
                           : story.isOfficial
-                            ? 'linear-gradient(135deg,#C9956A,#7B1618)'
-                            : 'linear-gradient(135deg,#7B1618,#FF6B6B,#C9956A)',
+                            ? 'linear-gradient(135deg,#C9956A,#B06070)'
+                            : 'linear-gradient(135deg,#B06070,#FF6B6B,#C9956A)',
                       }}
                     >
                       <div className="w-full h-full rounded-full overflow-hidden border-2 border-white"
@@ -647,7 +647,7 @@ export function ScreenCommunity() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="rounded-[18px] p-4 relative overflow-hidden"
-            style={{ background: 'linear-gradient(135deg,#7B1618,#9B2020)' }}
+            style={{ background: 'linear-gradient(135deg,#B06070,#9B2020)' }}
           >
             <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 80% 30%,rgba(201,149,106,0.25) 0%,transparent 60%)' }} />
             <div className="relative flex items-center justify-between">
@@ -679,7 +679,7 @@ export function ScreenCommunity() {
               onClick={() => setFilter(id)}
               className="px-3.5 py-1.5 rounded-full text-[11px] font-semibold transition-all"
               style={filter === id
-                ? { background: 'linear-gradient(135deg,#7B1618,#4A0D0F)', color: '#fff' }
+                ? { background: 'linear-gradient(135deg,#B06070,#7A3050)', color: '#fff' }
                 : { background: 'rgba(196,181,159,0.15)', color: '#888' }
               }
             >
