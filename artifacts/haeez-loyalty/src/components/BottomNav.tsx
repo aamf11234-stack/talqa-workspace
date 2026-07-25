@@ -1,9 +1,9 @@
 import React from 'react';
-import { Home, CreditCard, BookOpen, ShoppingBag } from 'lucide-react';
+import { Home, CreditCard, BookOpen, ShoppingBag, CalendarDays } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
-type Tab = 'home' | 'menu' | 'card' | 'orders';
+type Tab = 'home' | 'menu' | 'card' | 'orders' | 'reservations';
 
 interface BottomNavProps {
   activeTab: Tab;
@@ -12,15 +12,16 @@ interface BottomNavProps {
 }
 
 const tabs: { id: Tab; icon: React.ElementType; label: string }[] = [
-  { id: 'home',   icon: Home,        label: 'الرئيسية' },
-  { id: 'menu',   icon: BookOpen,    label: 'المنيو'   },
-  { id: 'card',   icon: CreditCard,  label: 'بطاقتي'  },
-  { id: 'orders', icon: ShoppingBag, label: 'طلباتي'  },
+  { id: 'home',         icon: Home,          label: 'الرئيسية' },
+  { id: 'menu',         icon: BookOpen,       label: 'المنيو'   },
+  { id: 'reservations', icon: CalendarDays,   label: 'احجز'     },
+  { id: 'card',         icon: CreditCard,     label: 'بطاقتي'  },
+  { id: 'orders',       icon: ShoppingBag,    label: 'طلباتي'  },
 ];
 
 export function BottomNav({ activeTab, onChangeTab, notifCount = 1 }: BottomNavProps) {
   return (
-    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-32px)] h-[58px] bg-white/80 backdrop-blur-2xl rounded-full border border-[rgba(196,181,159,0.2)] flex items-center justify-around px-1 shadow-[0_8px_32px_rgba(0,0,0,0.10)] z-40">
+    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-[calc(100%-24px)] h-[58px] bg-white/85 backdrop-blur-2xl rounded-full border border-[rgba(196,181,159,0.2)] flex items-center justify-around px-1 shadow-[0_8px_32px_rgba(0,0,0,0.10)] z-40">
       {tabs.map((tab) => {
         const isActive = activeTab === tab.id;
         const Icon = tab.icon;
@@ -38,7 +39,7 @@ export function BottomNav({ activeTab, onChangeTab, notifCount = 1 }: BottomNavP
               />
             )}
             <Icon
-              size={18}
+              size={17}
               className={cn(
                 'relative z-10 transition-colors duration-200',
                 isActive ? 'text-white' : 'text-[#AAA]'

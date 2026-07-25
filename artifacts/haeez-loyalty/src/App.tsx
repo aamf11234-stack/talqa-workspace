@@ -9,6 +9,7 @@ import { ScreenNotifications } from './components/ScreenNotifications';
 import { ScreenHome }          from './components/ScreenHome';
 import { ScreenOrders }        from './components/ScreenOrders';
 import { ScreenMenu }          from './components/ScreenMenu';
+import { ScreenReservations }  from './components/ScreenReservations';
 import { AppleWatchHyz }       from './components/AppleWatch';
 import { OwnerDashboard, MobileOwnerSummary } from './components/OwnerDashboard';
 import { useShakeDetect, FlashDealModal } from './components/ShakeReveal';
@@ -699,7 +700,8 @@ export default function App() {
                     {activeTab === 'home'      && <ScreenHome onShakeTrigger={() => setShowShakeDeal(true)} />}
                     {activeTab === 'menu'      && <ScreenMenu />}
                     {activeTab === 'card'      && <ScreenMembership />}
-                    {activeTab === 'orders'    && <ScreenOrders />}
+                    {activeTab === 'orders'        && <ScreenOrders />}
+                    {activeTab === 'reservations'  && <ScreenReservations />}
                   </motion.div>
                 </AnimatePresence>
               </div>

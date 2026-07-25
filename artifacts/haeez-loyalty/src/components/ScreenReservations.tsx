@@ -1,251 +1,435 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Check } from 'lucide-react';
+import { Users, Check, ChevronLeft, ChevronRight, Sparkles, Camera, Music, Cake, Gift } from 'lucide-react';
 
-const logoImg = `${import.meta.env.BASE_URL}browndose-logo.svg`;
+const logoImg = `${import.meta.env.BASE_URL}bd-logo.svg`;
 
-const today = new Date();
-const dates = Array.from({ length: 7 }, (_, i) => {
-  const d = new Date(today);
-  d.setDate(today.getDate() + i);
-  return d;
-});
-const dayNames = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
-const monthNames = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+/* ── Date helpers ─────────────────────────────────────────────── */
+const today     = new Date();
+const dates     = Array.from({ length: 7 }, (_, i) => { const d = new Date(today); d.setDate(today.getDate() + i); return d; });
+const dayNames  = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+const monthNames= ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
 
-const times = ['٨:٠٠ ص','٩:٠٠ ص','١٠:٠٠ ص','١١:٠٠ ص','١٢:٠٠ م','١:٠٠ م','٢:٠٠ م','٣:٠٠ م','٤:٠٠ م','٥:٠٠ م'];
+const times = ['٨:٠٠ ص','٩:٠٠ ص','١٠:٠٠ ص','١١:٠٠ ص','١٢:٠٠ م','١:٠٠ م','٢:٠٠ م','٣:٠٠ م','٤:٠٠ م','٥:٠٠ م','٦:٠٠ م'];
 const unavailable = [1, 5, 8];
 
-const upcomingBookings = [
-  { date: 'الخميس، ١٧ يوليو', time: '٤:٠٠ م', guests: 2, ref: '#H-4412', status: 'مؤكد' },
+/* ── Celebration types ────────────────────────────────────────── */
+const celebTypes = [
+  { id: 'bday',   emoji: '🎂', label: 'عيد ميلاد'   },
+  { id: 'grad',   emoji: '🎓', label: 'تخرج'         },
+  { id: 'engage', emoji: '💍', label: 'خطوبة'         },
+  { id: 'baby',   emoji: '👶', label: 'بيبي شاور'    },
+  { id: 'work',   emoji: '💼', label: 'مناسبة عمل'   },
+  { id: 'other',  emoji: '🎉', label: 'مناسبة أخرى'  },
 ];
 
+/* ── Packages ─────────────────────────────────────────────────── */
+const packages = [
+  {
+    id: 'bronze',
+    name: 'باقة النجمة',
+    nameEn: 'STAR',
+    price: 250,
+    color: '#B87333',
+    gradient: 'linear-gradient(135deg,#3D2000,#7A4500)',
+    emoji: '⭐',
+    perks: [
+      { icon: '🎀', text: 'تزيين طاولة بسيط' },
+      { icon: '🎂', text: 'كيكة صغيرة مخصصة' },
+      { icon: '☕', text: 'مشروب مجاني لكل شخص' },
+      { icon: '🪄', text: 'بالون ترحيبي' },
+    ],
+    guests: 'مناسبة لـ ٢-٦ أشخاص',
+  },
+  {
+    id: 'silver',
+    name: 'باقة الفضية',
+    nameEn: 'SILVER',
+    price: 450,
+    color: '#9E9E9E',
+    gradient: 'linear-gradient(135deg,#1A1A2E,#2D2D44)',
+    emoji: '🥈',
+    badge: 'الأشهر',
+    perks: [
+      { icon: '🎊', text: 'تزيين طاولة كامل بالورد' },
+      { icon: '🎂', text: 'كيكة متوسطة مزخرفة' },
+      { icon: '☕', text: 'مشروبات لكل الضيوف' },
+      { icon: '🍰', text: 'طبق حلويات مشكّلة' },
+      { icon: '📸', text: 'تصوير ٣٠ دقيقة' },
+    ],
+    guests: 'مناسبة لـ ٤-١٠ أشخاص',
+  },
+  {
+    id: 'gold',
+    name: 'باقة الذهبية',
+    nameEn: 'GOLD VIP',
+    price: 750,
+    color: '#D4AF37',
+    gradient: 'linear-gradient(135deg,#1C0800,#4A1C08)',
+    emoji: '🥇',
+    perks: [
+      { icon: '✨', text: 'تزيين VIP كامل + باقة ورد' },
+      { icon: '🎂', text: 'كيكة كبيرة + قدح احتفالي' },
+      { icon: '☕', text: 'مشروبات + حلويات + تمر' },
+      { icon: '📸', text: 'تصوير احترافي ساعة كاملة' },
+      { icon: '🎵', text: 'موسيقى خلفية خاصة' },
+      { icon: '🎁', text: 'هدية مفاجأة من براون دوز' },
+    ],
+    guests: 'مناسبة لـ ٦-٢٠ شخص',
+  },
+];
+
+/* ═══════════════════════════════════════════════════════════════ */
 export function ScreenReservations() {
+  type BookType = 'table' | 'celebration';
+  const [bookType,     setBookType]     = useState<BookType>('table');
   const [selectedDate, setSelectedDate] = useState(0);
   const [selectedTime, setSelectedTime] = useState<number | null>(null);
-  const [guests, setGuests] = useState(2);
-  const [note, setNote] = useState('');
-  const [confirmed, setConfirmed] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [guests,       setGuests]       = useState(2);
+  const [note,         setNote]         = useState('');
+  const [celebType,    setCelebType]    = useState<string | null>(null);
+  const [selectedPkg,  setSelectedPkg]  = useState<string | null>(null);
+  const [showSuccess,  setShowSuccess]  = useState(false);
+  const [confirmed,    setConfirmed]    = useState(false);
 
-  const handleConfirm = () => {
-    if (selectedTime === null) return;
+  const canConfirm = selectedTime !== null && (bookType === 'table' || (celebType && selectedPkg));
+
+  function handleConfirm() {
+    if (!canConfirm) return;
     setShowSuccess(true);
     setTimeout(() => { setShowSuccess(false); setConfirmed(true); setSelectedTime(null); }, 2800);
-  };
+  }
+
+  const activePkg = packages.find(p => p.id === selectedPkg);
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto scrollbar-none pb-24" style={{ background: '#FAF7F3' }}>
+    <div className="flex flex-col h-full overflow-y-auto scrollbar-none pb-28" style={{ background: '#F8F7F5' }}>
 
-      {/* ── Dark premium header ─────────────────────────────────── */}
+      {/* ── Header ──────────────────────────────────────────────── */}
       <div className="relative overflow-hidden shrink-0"
-        style={{ background: 'linear-gradient(170deg,#080002 0%,#200407 40%,#3D0809 70%,#0D0205 100%)' }}>
-
-        {/* Ambient glow */}
+        style={{ background: 'linear-gradient(170deg,#0A0002 0%,#1C0408 45%,#3D0810 70%,#0D0205 100%)' }}>
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 50% 90%,rgba(201,149,106,0.15) 0%,transparent 65%)' }} />
-        <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
-          style={{ backgroundImage: 'radial-gradient(circle,#fff 1px,transparent 1px)', backgroundSize: '10px 10px' }} />
+          style={{ background: 'radial-gradient(ellipse at 50% 110%,rgba(107,50,16,0.4) 0%,transparent 65%)' }} />
         <div className="absolute top-0 left-0 right-0 h-px"
-          style={{ background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.4),transparent)' }} />
-
-        <div className="relative z-10 flex flex-col items-center pt-6 pb-5 px-5">
-          {/* Logo */}
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
-            className="relative mb-3"
-          >
+          style={{ background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.5),transparent)' }} />
+        <div className="relative z-10 flex flex-col items-center pt-6 pb-6 px-5">
+          <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: 'spring', stiffness: 200, damping: 20 }} className="relative mb-3">
             <div className="absolute inset-0 rounded-[18px] blur-xl"
-              style={{ background: 'rgba(201,149,106,0.3)', transform: 'scale(1.3)' }} />
-            <img src={logoImg} alt="مطعمك"
+              style={{ background: 'rgba(201,149,106,0.35)', transform: 'scale(1.4)' }} />
+            <img src={logoImg} alt="براون دوز"
               className="relative w-14 h-14 rounded-[18px] object-cover"
-              style={{ border: '2px solid rgba(201,149,106,0.45)', boxShadow: '0 0 0 1px rgba(201,149,106,0.12), 0 8px 28px rgba(0,0,0,0.5)' }}
-              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-            />
+              style={{ border: '2px solid rgba(201,149,106,0.5)', boxShadow: '0 8px 28px rgba(0,0,0,0.5)' }} />
           </motion.div>
-
           <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="text-center">
-            <p className="text-[9px] font-black tracking-[0.32em] text-[#7A3B18] mb-1"
-              style={{ fontFamily: 'ui-monospace,monospace' }}>مطعمك</p>
-            <h1 className="text-[24px] font-black text-white leading-none tracking-tight">احجز طاولتك</h1>
-            <p className="text-white/30 text-[10px] mt-1.5 font-light">شارع لبنان · من ٦ص حتى ٦:٣٠م</p>
+            <p className="text-[8px] font-black tracking-[0.35em] text-[#C4783A] mb-1.5 uppercase">براون دوز · جيزان</p>
+            <h1 className="text-[24px] font-black text-white leading-none">احجز مكانك</h1>
+            <p className="text-white/35 text-[10px] mt-1.5 font-light">الفروع: صبيا · جيزان · ضمد</p>
           </motion.div>
-
           {/* Stats */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
             className="flex items-center gap-5 mt-4 pt-4 w-full justify-center"
-            style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}>
             {[
               { v: '٧', l: 'أيام متاحة' },
-              { v: '١٠', l: 'أوقات يومياً' },
+              { v: '١١', l: 'وقت يومياً' },
               { v: 'فوري', l: 'تأكيد واتساب' },
             ].map((s, i) => (
               <div key={i} className="text-center">
-                <p className="text-white text-[13px] font-black font-inter leading-none">{s.v}</p>
+                <p className="text-white text-[14px] font-black leading-none">{s.v}</p>
                 <p className="text-white/30 text-[8px] mt-0.5">{s.l}</p>
               </div>
             ))}
           </motion.div>
         </div>
-
-        <div className="absolute bottom-0 left-0 right-0 h-4 pointer-events-none"
-          style={{ background: 'linear-gradient(to bottom,transparent,#FAF7F3)' }} />
+        <div className="absolute bottom-0 left-0 right-0 h-5 pointer-events-none"
+          style={{ background: 'linear-gradient(to bottom,transparent,#F8F7F5)' }} />
       </div>
 
-      {/* Success toast */}
+      {/* ── Success toast ────────────────────────────────────────── */}
       <AnimatePresence>
         {showSuccess && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="mx-5 mb-3 bg-[#1C1C1E] text-white rounded-2xl p-4 flex items-center gap-3"
-          >
-            <div className="w-8 h-8 bg-[#30D158] rounded-full flex items-center justify-center shrink-0">
-              <Check size={16} className="text-white" strokeWidth={3} />
+          <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+            className="mx-5 mb-3 bg-[#111] text-white rounded-2xl p-4 flex items-center gap-3"
+            style={{ boxShadow: '0 8px 28px rgba(0,0,0,0.2)' }}>
+            <div className="w-9 h-9 bg-[#30D158] rounded-full flex items-center justify-center shrink-0">
+              <Check size={18} className="text-white" strokeWidth={3} />
             </div>
             <div>
-              <p className="text-[13px] font-semibold">تم الحجز بنجاح! 🎉</p>
-              <p className="text-[11px] text-white/60 font-light">سيصلك تأكيد على واتساب</p>
+              <p className="text-[13px] font-bold">
+                {bookType === 'table' ? 'تم حجز طاولتك!' : `تم حجز الاحتفالية! 🎉`}
+              </p>
+              <p className="text-[10px] text-white/50 font-light mt-0.5">سيصلك تأكيد على واتساب قريباً</p>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Upcoming bookings */}
-      {upcomingBookings.length > 0 && (
-        <div className="px-5 mb-4">
-          <p className="text-[11px] text-[#AAA] font-medium tracking-wider mb-2">حجوزاتك القادمة</p>
-          {upcomingBookings.map((b, i) => (
-            <div key={i} className="bg-[#6B3210]/8 border border-[#6B3210]/20 rounded-2xl p-3.5 flex items-center justify-between">
-              <div>
-                <p className="text-[12px] font-semibold text-[#111]">{b.date} · {b.time}</p>
-                <p className="text-[11px] text-[#888] font-light mt-0.5">{b.guests} أشخاص · {b.ref}</p>
-              </div>
-              <span className="text-[10px] font-semibold text-[#30D158] bg-[#30D158]/10 px-2.5 py-1 rounded-full">{b.status}</span>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Date selector */}
-      <div className="px-5 mb-4">
-        <p className="text-[12px] font-semibold text-[#111] mb-3">اختر التاريخ</p>
-        <div className="flex gap-2 overflow-x-auto scrollbar-none pb-1">
-          {dates.map((d, i) => {
-            const isActive = selectedDate === i;
-            return (
-              <motion.button
-                key={i}
-                whileTap={{ scale: 0.94 }}
-                onClick={() => { setSelectedDate(i); setSelectedTime(null); }}
-                className={`shrink-0 flex flex-col items-center py-2.5 px-3.5 rounded-2xl transition-all duration-200 border ${
-                  isActive
-                    ? 'bg-[#6B3210] border-[#6B3210] text-white shadow-[0_4px_16px_rgba(160,82,45,0.3)]'
-                    : 'bg-white border-[rgba(196,181,159,0.2)] text-[#111]'
-                }`}
-              >
-                <span className={`text-[10px] font-medium mb-1 ${isActive ? 'text-white/70' : 'text-[#888]'}`}>
-                  {i === 0 ? 'اليوم' : dayNames[d.getDay()].slice(0, 3)}
-                </span>
-                <span className={`text-[18px] font-bold leading-tight ${isActive ? 'text-white' : 'text-[#111]'}`}>
-                  {d.getDate()}
-                </span>
-                <span className={`text-[9px] mt-0.5 ${isActive ? 'text-white/60' : 'text-[#AAA]'}`}>
-                  {monthNames[d.getMonth()].slice(0, 3)}
-                </span>
-              </motion.button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Time slots */}
-      <div className="px-5 mb-4">
-        <p className="text-[12px] font-semibold text-[#111] mb-3">اختر الوقت</p>
-        <div className="grid grid-cols-4 gap-2">
-          {times.map((t, i) => {
-            const isUnavail = unavailable.includes(i);
-            const isSelected = selectedTime === i;
-            return (
-              <motion.button
-                key={i}
-                whileTap={isUnavail ? {} : { scale: 0.92 }}
-                onClick={() => !isUnavail && setSelectedTime(i)}
-                className={`py-2 rounded-xl text-[11px] font-medium transition-all duration-200 border ${
-                  isSelected
-                    ? 'bg-[#6B3210] border-[#6B3210] text-white shadow-[0_4px_12px_rgba(160,82,45,0.25)]'
-                    : isUnavail
-                    ? 'bg-[#F0EBE4] border-transparent text-[#CCC] cursor-not-allowed line-through'
-                    : 'bg-white border-[rgba(196,181,159,0.2)] text-[#111] hover:border-[#C4B59F]'
-                }`}
-              >
-                {t}
-              </motion.button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Guests selector */}
-      <div className="px-5 mb-4">
-        <p className="text-[12px] font-semibold text-[#111] mb-3">عدد الأشخاص</p>
-        <div className="flex gap-2">
-          {[1,2,3,4,5,6].map(n => (
-            <motion.button
-              key={n}
-              whileTap={{ scale: 0.88 }}
-              onClick={() => setGuests(n)}
-              className={`w-11 h-11 rounded-xl text-[13px] font-bold transition-all duration-200 border ${
-                guests === n
-                  ? 'bg-[#111] border-[#111] text-white'
-                  : 'bg-white border-[rgba(196,181,159,0.25)] text-[#111]'
-              }`}
-            >
-              {n}
+      {/* ── Book type toggle ─────────────────────────────────────── */}
+      <div className="px-5 pt-4 mb-5">
+        <div className="flex bg-white rounded-[18px] p-1.5 gap-1.5"
+          style={{ border: '1px solid #EBEBEB', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
+          {([
+            { id: 'table',       emoji: '🪑', label: 'حجز طاولة'   },
+            { id: 'celebration', emoji: '🎊', label: 'احتفالية'     },
+          ] as { id: BookType; emoji: string; label: string }[]).map(opt => (
+            <motion.button key={opt.id} whileTap={{ scale: 0.96 }}
+              onClick={() => setBookType(opt.id)}
+              className="flex-1 flex items-center justify-center gap-2 py-3 rounded-[14px] transition-all font-bold text-[13px]"
+              style={bookType === opt.id
+                ? { background: '#6B3210', color: '#fff', boxShadow: '0 4px 14px rgba(107,50,16,0.35)' }
+                : { color: '#888' }}>
+              <span className="text-[16px]">{opt.emoji}</span>
+              {opt.label}
             </motion.button>
           ))}
-          <div className="flex-1 flex items-center gap-1 text-[#888] text-[11px]">
-            <Users size={14} />
-            <span>{guests > 1 ? 'أشخاص' : 'شخص'}</span>
-          </div>
         </div>
       </div>
 
-      {/* Special note */}
-      <div className="px-5 mb-5">
-        <p className="text-[12px] font-semibold text-[#111] mb-2">ملاحظة خاصة</p>
-        <textarea
-          value={note}
-          onChange={e => setNote(e.target.value)}
-          placeholder="مثال: أحتاج كرسي أطفال، أو أحتفل بمناسبة..."
-          rows={2}
-          className="w-full bg-white border border-[rgba(196,181,159,0.25)] rounded-2xl p-3 text-[12px] text-[#111] placeholder:text-[#CCC] font-light resize-none outline-none focus:border-[#C4B59F] transition-colors"
-        />
-      </div>
+      <AnimatePresence mode="wait">
+        <motion.div key={bookType} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}>
 
-      {/* Confirm button */}
-      <div className="px-5">
-        <motion.button
-          whileTap={{ scale: 0.97 }}
-          onClick={handleConfirm}
-          disabled={selectedTime === null}
-          className={`w-full py-4 rounded-2xl text-[15px] font-semibold transition-all duration-300 ${
-            selectedTime !== null
-              ? 'bg-[#6B3210] text-white shadow-[0_8px_24px_rgba(160,82,45,0.3)]'
-              : 'bg-[#E5DDD4] text-[#AAA] cursor-not-allowed'
-          }`}
-        >
-          {selectedTime !== null
-            ? `تأكيد الحجز — ${times[selectedTime]}`
-            : 'اختر الوقت أولاً'}
-        </motion.button>
-        <p className="text-center text-[11px] text-[#AAA] mt-2.5 font-light">
-          لا يُشترط الحجز لشخص واحد · تيك آواي بدون حجز
-        </p>
-      </div>
+          {/* ══════════ CELEBRATION EXTRAS ══════════ */}
+          {bookType === 'celebration' && (
+            <>
+              {/* Celebration type */}
+              <div className="px-5 mb-5">
+                <p className="text-[11px] font-black text-[#111] tracking-wide mb-3">نوع المناسبة</p>
+                <div className="grid grid-cols-3 gap-2">
+                  {celebTypes.map(ct => (
+                    <motion.button key={ct.id} whileTap={{ scale: 0.93 }}
+                      onClick={() => setCelebType(ct.id)}
+                      className="flex flex-col items-center gap-1.5 py-3.5 rounded-[16px] border transition-all"
+                      style={celebType === ct.id
+                        ? { background: '#6B3210', borderColor: '#6B3210', boxShadow: '0 4px 14px rgba(107,50,16,0.3)' }
+                        : { background: 'white', borderColor: '#EBEBEB' }}>
+                      <span className="text-[24px]">{ct.emoji}</span>
+                      <span className="text-[10px] font-bold" style={{ color: celebType === ct.id ? '#fff' : '#555' }}>
+                        {ct.label}
+                      </span>
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Packages */}
+              <div className="px-5 mb-5">
+                <div className="flex items-baseline justify-between mb-3">
+                  <p className="text-[11px] font-black text-[#111] tracking-wide">الباقات</p>
+                  <span className="text-[9px] text-[#BBB]">اختر الباقة المناسبة</span>
+                </div>
+                <div className="flex flex-col gap-3">
+                  {packages.map((pkg) => {
+                    const isSelected = selectedPkg === pkg.id;
+                    return (
+                      <motion.button key={pkg.id} whileTap={{ scale: 0.98 }}
+                        onClick={() => setSelectedPkg(pkg.id)}
+                        className="relative rounded-[22px] overflow-hidden text-right transition-all"
+                        style={{
+                          border: isSelected ? `2px solid ${pkg.color}` : '2px solid transparent',
+                          boxShadow: isSelected ? `0 6px 24px rgba(0,0,0,0.2)` : '0 2px 10px rgba(0,0,0,0.07)',
+                        }}>
+                        {/* Header gradient */}
+                        <div className="px-4 py-3.5 flex items-center justify-between"
+                          style={{ background: pkg.gradient }}>
+                          <div className="flex items-center gap-2">
+                            <span className="text-[28px]">{pkg.emoji}</span>
+                            <div>
+                              <p className="text-[7px] font-black tracking-[0.3em] text-white/40 uppercase">{pkg.nameEn}</p>
+                              <p className="text-[16px] font-black text-white leading-tight">{pkg.name}</p>
+                            </div>
+                          </div>
+                          <div className="text-left">
+                            {pkg.badge && (
+                              <div className="text-[7px] font-black px-2 py-0.5 rounded-full mb-1 text-white"
+                                style={{ background: 'rgba(255,255,255,0.15)' }}>{pkg.badge}</div>
+                            )}
+                            <p className="text-white text-[20px] font-black leading-none tabular-nums">{pkg.price}</p>
+                            <p className="text-white/40 text-[9px]">ريال</p>
+                          </div>
+                        </div>
+                        {/* Perks */}
+                        <div className="bg-white px-4 py-3 flex flex-col gap-1.5">
+                          <p className="text-[9px] text-[#BBB] mb-0.5">{pkg.guests}</p>
+                          <div className="grid grid-cols-2 gap-1.5">
+                            {pkg.perks.map((perk, pi) => (
+                              <div key={pi} className="flex items-center gap-1.5">
+                                <span className="text-[12px] shrink-0">{perk.icon}</span>
+                                <span className="text-[10px] text-[#555]">{perk.text}</span>
+                              </div>
+                            ))}
+                          </div>
+                          {/* Selection indicator */}
+                          <div className="flex items-center justify-end mt-1.5">
+                            {isSelected ? (
+                              <div className="flex items-center gap-1.5 text-[#6B3210]">
+                                <Check size={12} strokeWidth={2.5} />
+                                <span className="text-[10px] font-bold">تم الاختيار</span>
+                              </div>
+                            ) : (
+                              <span className="text-[10px] text-[#CCC]">اضغط للاختيار</span>
+                            )}
+                          </div>
+                        </div>
+                      </motion.button>
+                    );
+                  })}
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* ══════════ DATE ══════════ */}
+          <div className="px-5 mb-4">
+            <p className="text-[11px] font-black text-[#111] tracking-wide mb-3">اختر التاريخ</p>
+            <div className="flex gap-2 overflow-x-auto scrollbar-none pb-1">
+              {dates.map((d, i) => {
+                const isActive = selectedDate === i;
+                return (
+                  <motion.button key={i} whileTap={{ scale: 0.94 }}
+                    onClick={() => { setSelectedDate(i); setSelectedTime(null); }}
+                    className="shrink-0 flex flex-col items-center py-2.5 px-3.5 rounded-[18px] transition-all border"
+                    style={isActive
+                      ? { background: '#6B3210', borderColor: '#6B3210', color: 'white', boxShadow: '0 4px 16px rgba(107,50,16,0.35)' }
+                      : { background: 'white', borderColor: '#EBEBEB', color: '#111' }}>
+                    <span className="text-[9px] font-medium mb-1" style={{ color: isActive ? 'rgba(255,255,255,0.65)' : '#AAA' }}>
+                      {i === 0 ? 'اليوم' : dayNames[d.getDay()].slice(0, 3)}
+                    </span>
+                    <span className="text-[18px] font-bold leading-tight">{d.getDate()}</span>
+                    <span className="text-[9px] mt-0.5" style={{ color: isActive ? 'rgba(255,255,255,0.55)' : '#CCC' }}>
+                      {monthNames[d.getMonth()].slice(0, 3)}
+                    </span>
+                  </motion.button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* ══════════ TIME ══════════ */}
+          <div className="px-5 mb-4">
+            <p className="text-[11px] font-black text-[#111] tracking-wide mb-3">اختر الوقت</p>
+            <div className="grid grid-cols-4 gap-2">
+              {times.map((t, i) => {
+                const isUnavail = unavailable.includes(i);
+                const isSelected = selectedTime === i;
+                return (
+                  <motion.button key={i} whileTap={isUnavail ? {} : { scale: 0.92 }}
+                    onClick={() => !isUnavail && setSelectedTime(i)}
+                    className="py-2.5 rounded-[14px] text-[11px] font-semibold transition-all border"
+                    style={isSelected
+                      ? { background: '#6B3210', borderColor: '#6B3210', color: 'white', boxShadow: '0 4px 12px rgba(107,50,16,0.3)' }
+                      : isUnavail
+                      ? { background: '#F5F3F1', borderColor: 'transparent', color: '#CCC', textDecoration: 'line-through', cursor: 'not-allowed' }
+                      : { background: 'white', borderColor: '#EBEBEB', color: '#111' }}>
+                    {t}
+                  </motion.button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* ══════════ GUESTS ══════════ */}
+          <div className="px-5 mb-4">
+            <p className="text-[11px] font-black text-[#111] tracking-wide mb-3">عدد الأشخاص</p>
+            <div className="flex gap-2 items-center">
+              {[1,2,3,4,5,6,7,8].map(n => (
+                <motion.button key={n} whileTap={{ scale: 0.88 }}
+                  onClick={() => setGuests(n)}
+                  className="w-10 h-10 rounded-[12px] text-[13px] font-bold transition-all border"
+                  style={guests === n
+                    ? { background: '#111', borderColor: '#111', color: 'white' }
+                    : { background: 'white', borderColor: '#EBEBEB', color: '#555' }}>
+                  {n}
+                </motion.button>
+              ))}
+              <span className="text-[10px] text-[#BBB] shrink-0">+</span>
+            </div>
+            <p className="text-[9px] text-[#BBB] mt-1.5">
+              {guests > 6 ? 'للمجموعات الكبيرة اتصل بنا مباشرة' : `${guests} ${guests === 1 ? 'شخص' : 'أشخاص'}`}
+            </p>
+          </div>
+
+          {/* ══════════ NOTE ══════════ */}
+          <div className="px-5 mb-5">
+            <p className="text-[11px] font-black text-[#111] tracking-wide mb-2">ملاحظة خاصة</p>
+            <textarea
+              value={note}
+              onChange={e => setNote(e.target.value)}
+              placeholder={bookType === 'table'
+                ? 'مثال: طاولة هادئة، كرسي أطفال...'
+                : 'مثال: اسم صاحب المناسبة، لون معين للتزيين...'}
+              rows={2}
+              className="w-full bg-white rounded-[16px] p-3.5 text-[12px] text-[#111] placeholder:text-[#CCC] font-light resize-none outline-none transition-colors"
+              style={{ border: '1px solid #EBEBEB' }}
+              onFocus={e => (e.target.style.borderColor = '#6B3210')}
+              onBlur={e => (e.target.style.borderColor = '#EBEBEB')}
+            />
+          </div>
+
+          {/* ══════════ SUMMARY CARD (celebration) ══════════ */}
+          {bookType === 'celebration' && selectedPkg && (
+            <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+              className="mx-5 mb-4 rounded-[18px] overflow-hidden"
+              style={{ border: '1px solid #EBEBEB', background: 'white', boxShadow: '0 2px 12px rgba(0,0,0,0.05)' }}>
+              <div className="px-4 py-3 flex items-center justify-between"
+                style={{ background: 'linear-gradient(135deg,#1C0800,#4A1C08)', borderBottom: '1px solid #EBEBEB' }}>
+                <p className="text-white text-[12px] font-bold">ملخص الحجز</p>
+                <Sparkles size={14} className="text-[#C4783A]" />
+              </div>
+              <div className="px-4 py-3 space-y-2">
+                {celebType && (
+                  <div className="flex justify-between text-[11px]">
+                    <span className="text-[#888]">المناسبة</span>
+                    <span className="font-semibold text-[#111]">
+                      {celebTypes.find(c => c.id === celebType)?.emoji} {celebTypes.find(c => c.id === celebType)?.label}
+                    </span>
+                  </div>
+                )}
+                <div className="flex justify-between text-[11px]">
+                  <span className="text-[#888]">الباقة</span>
+                  <span className="font-semibold text-[#111]">{activePkg?.name}</span>
+                </div>
+                <div className="flex justify-between text-[11px]">
+                  <span className="text-[#888]">الأشخاص</span>
+                  <span className="font-semibold text-[#111]">{guests} شخص</span>
+                </div>
+                <div className="h-px bg-[#F5F3F1] my-1" />
+                <div className="flex justify-between">
+                  <span className="text-[12px] font-bold text-[#111]">الإجمالي</span>
+                  <span className="text-[18px] font-black text-[#6B3210] tabular-nums">{activePkg?.price} <span className="text-[10px] font-normal text-[#BBB]">ريال</span></span>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* ══════════ CONFIRM ══════════ */}
+          <div className="px-5">
+            <motion.button whileTap={{ scale: 0.97 }} onClick={handleConfirm}
+              disabled={!canConfirm}
+              className="w-full py-4 rounded-[18px] text-[15px] font-bold transition-all flex items-center justify-center gap-2"
+              style={canConfirm
+                ? { background: '#6B3210', color: 'white', boxShadow: '0 8px 24px rgba(107,50,16,0.35)' }
+                : { background: '#EBEBEB', color: '#BBB', cursor: 'not-allowed' }}>
+              {canConfirm
+                ? bookType === 'table'
+                  ? `✓ تأكيد الحجز — ${times[selectedTime!]}`
+                  : `✓ احجز الاحتفالية — ${activePkg?.price} ريال`
+                : bookType === 'table'
+                  ? 'اختر الوقت أولاً'
+                  : !celebType ? 'اختر نوع المناسبة'
+                  : !selectedPkg ? 'اختر الباقة'
+                  : 'اختر الوقت'}
+            </motion.button>
+            <p className="text-center text-[9px] text-[#CCC] mt-2 font-light">
+              {bookType === 'table'
+                ? 'تيك آواي بدون حجز · الحجز للجلسات فقط'
+                : 'يتواصل معك الفريق خلال ٣٠ دقيقة لتأكيد التفاصيل'}
+            </p>
+          </div>
+
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }
