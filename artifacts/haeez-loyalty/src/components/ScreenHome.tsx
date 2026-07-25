@@ -798,7 +798,7 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
         <div className="grid grid-cols-3 gap-2.5 mb-5 px-4">
           {[
             { icon: ShoppingBag, label: 'اطلب',   color: '#B06070', bg: '#B0607012', href: null, onTap: () => setPendingOrder({ name: brand.todaySpecial.name, price: brand.todaySpecial.price, emoji: brand.todaySpecial.emoji }) },
-            { icon: Truck,       label: 'توصيل',  color: '#B06070', bg: '#B0607012', href: null, onTap: () => setPendingOrder({ name: brand.todaySpecial.name, price: brand.todaySpecial.price, emoji: brand.todaySpecial.emoji }) },
+            { icon: Calendar,    label: 'احجز',   color: '#B06070', bg: '#B0607012', href: null, onTap: () => setShowBookSheet(true) },
             { icon: Tag,         label: 'عروضي',  color: '#B5651D', bg: '#C9956A12', href: null, onTap: () => setShowOffersSheet(true) },
           ].map((a, i) => {
             const inner = (

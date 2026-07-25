@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Clock, ChefHat, Bike, Star, ShoppingBag, RotateCcw } from 'lucide-react';
+import { Check, Clock, ChefHat, Bike, Star, ShoppingBag, RotateCcw, Truck, Package } from 'lucide-react';
 import { CheckoutModal } from './CheckoutFlow';
 import type { CheckoutItem, CompletedOrderData } from './CheckoutFlow';
 import { useOrders } from '../OrdersContext';
@@ -247,33 +247,39 @@ export function ScreenOrders() {
           <h1 className="text-[22px] font-bold text-[#111]">طلباتي</h1>
         </div>
 
-        {/* New order CTA */}
-        <div className="mx-4 mb-5">
+        {/* New order CTAs — استلام + توصيل */}
+        <div className="mx-4 mb-5 flex gap-2.5">
+          {/* استلام */}
           <motion.button
             onClick={() => setPendingOrder({ name: brand.todaySpecial.name, price: brand.todaySpecial.price, emoji: brand.todaySpecial.emoji })}
-            whileTap={{ scale: 0.97 }}
-            className="w-full flex items-center gap-4 px-5 py-4 rounded-[22px] relative overflow-hidden"
-            style={{
-              background: 'linear-gradient(135deg,#0C0002,#3D0809)',
-              boxShadow: '0 8px 30px rgba(123,22,24,0.4)',
-            }}
+            whileTap={{ scale: 0.96 }}
+            className="flex-1 flex flex-col items-center gap-2 py-4 rounded-[20px] relative overflow-hidden"
+            style={{ background: 'linear-gradient(145deg,#0C0002,#280610)', border: '1px solid rgba(176,96,112,0.2)', boxShadow: '0 6px 20px rgba(0,0,0,0.2)' }}
           >
-            <div className="absolute inset-0 pointer-events-none"
-              style={{ background: 'radial-gradient(ellipse at 90% 10%,rgba(201,149,106,0.15) 0%,transparent 60%)' }} />
-            <div className="w-14 h-14 rounded-[18px] flex items-center justify-center shrink-0"
-              style={{ background: 'rgba(201,149,106,0.12)', border: '1px solid rgba(201,149,106,0.2)' }}>
-              <ShoppingBag size={24} className="text-[#C9956A]" />
+            <div className="w-10 h-10 rounded-[13px] flex items-center justify-center"
+              style={{ background: 'rgba(176,96,112,0.15)' }}>
+              <Package size={20} className="text-[#B06070]" />
             </div>
-            <div className="flex-1 text-right">
-              <p className="text-[8px] text-white/40 font-medium tracking-widest mb-0.5">اطلب الآن</p>
-              <p className="text-white text-[16px] font-bold leading-tight">اطلب طلباً جديداً</p>
-              <p className="text-white/50 text-[10px] font-light mt-0.5">دفع سريع · فاتورة فورية</p>
+            <div className="text-center">
+              <p className="text-white text-[13px] font-bold">استلام</p>
+              <p className="text-white/40 text-[9px] mt-0.5">خذها معك</p>
             </div>
-            <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
-              style={{ background: 'rgba(201,149,106,0.15)' }}>
-              <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-[#C9956A]" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19 12H5M12 5l7 7-7 7" />
-              </svg>
+          </motion.button>
+
+          {/* توصيل */}
+          <motion.button
+            onClick={() => setPendingOrder({ name: brand.todaySpecial.name, price: brand.todaySpecial.price, emoji: brand.todaySpecial.emoji })}
+            whileTap={{ scale: 0.96 }}
+            className="flex-1 flex flex-col items-center gap-2 py-4 rounded-[20px] relative overflow-hidden"
+            style={{ background: 'linear-gradient(145deg,#B06070,#7A3050)', boxShadow: '0 6px 20px rgba(176,96,112,0.4)' }}
+          >
+            <div className="w-10 h-10 rounded-[13px] flex items-center justify-center"
+              style={{ background: 'rgba(255,255,255,0.15)' }}>
+              <Truck size={20} className="text-white" />
+            </div>
+            <div className="text-center">
+              <p className="text-white text-[13px] font-bold">توصيل</p>
+              <p className="text-white/65 text-[9px] mt-0.5">لحين موقعك</p>
             </div>
           </motion.button>
         </div>

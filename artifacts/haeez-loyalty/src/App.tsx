@@ -7,7 +7,6 @@ import { ScreenMembership }    from './components/ScreenMembership';
 import { ScreenPerks }         from './components/ScreenPerks';
 import { ScreenNotifications } from './components/ScreenNotifications';
 import { ScreenHome }          from './components/ScreenHome';
-import { ScreenDelivery }      from './components/ScreenDelivery';
 import { ScreenOrders }        from './components/ScreenOrders';
 import { ScreenMenu }          from './components/ScreenMenu';
 import { AppleWatchHyz }       from './components/AppleWatch';
@@ -503,29 +502,6 @@ const screens: { tab: Tab; label: string; color: string; bg: string; preview: Re
     ),
   },
   {
-    tab: 'delivery', label: 'توصيل', color: '#1A5276',
-    bg: '#FAF7F3',
-    preview: (
-      <div className="absolute inset-0 flex flex-col px-2 pt-3 gap-1.5">
-        <div className="w-12 h-2 bg-[#111]/20 rounded-full" />
-        <div className="flex gap-1">
-          {[0,1,2,3].map(i=>(
-            <div key={i} className={`flex-1 h-7 rounded-[5px] flex flex-col items-center justify-center gap-0.5 ${i===1?'bg-[#B06070]':'bg-white border border-[rgba(196,181,159,0.3)]'}`}>
-              <div className={`w-2 h-1 rounded-full ${i===1?'bg-white/50':'bg-[#888]/30'}`} />
-              <div className={`w-2.5 h-2 rounded-sm font-bold ${i===1?'bg-white/80':'bg-[#111]/20'}`} />
-            </div>
-          ))}
-        </div>
-        <div className="grid grid-cols-3 gap-1">
-          {[0,1,2,3,4,5].map(i=>(
-            <div key={i} className={`h-4 rounded-[4px] ${i===4?'bg-[#B06070]/80':'bg-white border border-[rgba(196,181,159,0.25)]'}`} />
-          ))}
-        </div>
-        <div className="w-full h-6 rounded-[6px] bg-[#B06070]/80" />
-      </div>
-    ),
-  },
-  {
     tab: 'orders', label: 'طلباتي', color: '#128C7E',
     bg: '#F0FAF8',
     preview: (
@@ -730,7 +706,6 @@ export default function App() {
                     {activeTab === 'home'      && <ScreenHome onShakeTrigger={() => setShowShakeDeal(true)} />}
                     {activeTab === 'menu'      && <ScreenMenu />}
                     {activeTab === 'card'      && <ScreenMembership />}
-                    {activeTab === 'delivery'  && <ScreenDelivery />}
                     {activeTab === 'orders'    && <ScreenOrders />}
                   </motion.div>
                 </AnimatePresence>
