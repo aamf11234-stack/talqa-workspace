@@ -232,183 +232,159 @@ function CustomizeSheet({ target, onConfirm, onClose }: {
   );
 }
 
-/* ══════════════════════════════════════════ SECTION ══ */
-function Section({ cat, index, onOrder, onCustomize }: {
-  cat: MenuCategory;
-  index: number;
-  onOrder?: (item: CheckoutItem) => void;
-  onCustomize?: (target: CustomizeTarget) => void;
-}) {
+/* ══════════════════════════════════════════ SECTION COVERS ══ */
+const BASE_URL = import.meta.env.BASE_URL;
+const sectionCovers: Record<string, string> = {
+  hot:    `${BASE_URL}bd-affogato.jpg`,
+  cold:   `${BASE_URL}bd-mohito.jpg`,
+  filter: `${BASE_URL}bd-filter.jpg`,
+};
+
+/* ══════════════════════════════════════════ CART TYPES ══ */
+interface CartItem { name: string; price: number; qty: number; catColor: string; }
+
+/* ══════════════════════════════════════════ CART BAR ══ */
+function CartBar({ cart, onCheckout }: { cart: CartItem[]; onCheckout: () => void }) {
+  const count = cart.reduce((s, c) => s + c.qty, 0);
+  const total = cart.reduce((s, c) => s + c.price * c.qty, 0);
   return (
     <motion.div
-      id={`cat-${cat.id}`}
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.04, duration: 0.3 }}
+      initial={{ y: 80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 80, opacity: 0 }}
+      transition={{ type: 'spring', damping: 28, stiffness: 320 }}
+      className="absolute bottom-0 left-0 right-0 z-30 px-4 pb-5 pt-8"
+      style={{ background: 'linear-gradient(to top, #FAF7F3 70%, transparent)', pointerEvents: 'none' }}
     >
-      {/* Category header */}
-      <div className="px-5 pt-6 pb-3 flex items-end justify-between">
-        <div>
-          {/* English label */}
-          <p className="text-[9px] font-black tracking-[0.22em] mb-1"
-            style={{ color: cat.color, fontFamily: 'ui-monospace, monospace' }}>
-            {cat.nameEn}
-          </p>
-          {/* Arabic name */}
-          <div className="flex items-center gap-2.5 mt-0.5">
-            {(() => { const Icon = CategoryIconMap[cat.id]; return Icon ? <Icon size={22} color={cat.color} sw={1.4} /> : null; })()}
-            <h2 className="text-[22px] font-black text-[#111] leading-none tracking-tight">{cat.name}</h2>
+      {/* Item chips */}
+      <div className="flex gap-1.5 mb-2.5 overflow-x-auto scrollbar-none" style={{ pointerEvents: 'auto' }}>
+        {cart.map((c, i) => (
+          <div key={i} className="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-full text-[9px] font-bold whitespace-nowrap"
+            style={{ background: `${c.catColor}18`, color: c.catColor, border: `1px solid ${c.catColor}28` }}>
+            {c.qty > 1 && <span className="font-black">{c.qty}×</span>}
+            {c.name.split(' ').slice(0, 2).join(' ')}
           </div>
-        </div>
-        <div className="flex flex-col items-end gap-1 pb-0.5">
-          {cat.liveLabel && (
-            <div className="flex items-center gap-1 px-2 py-0.5 rounded-full"
-              style={{ background: '#2D7D4612', border: '1px solid #2D7D4625' }}>
-              <div className="w-1.5 h-1.5 rounded-full bg-[#30D158] animate-pulse" />
-              <span className="text-[8px] font-bold text-[#2D7D46]">يتغير يومياً</span>
-            </div>
-          )}
-          <span className="text-[10px] text-[#C4B5A8]">{cat.items.length} أصناف</span>
-        </div>
-      </div>
-
-      {/* Divider */}
-      <div className="mx-5 h-px" style={{ background: `linear-gradient(90deg, ${cat.color}40, ${cat.color}10, transparent)` }} />
-
-      {/* Items */}
-      <div className="px-5">
-        {cat.items.map((item, i) => item.featured && item.img ? (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.04 + i * 0.04, duration: 0.28 }}
-              className="my-2 rounded-[18px] overflow-hidden relative"
-              style={{
-                borderBottom: i < cat.items.length - 1 ? '1px solid rgba(196,181,159,0.1)' : 'none',
-                background: `${cat.color}08`,
-                border: `1px solid ${cat.color}20`,
-              }}
-            >
-              {/* Photo */}
-              <div className="relative h-[110px]">
-                <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%, transparent 100%)' }} />
-                {item.badge && (
-                  <div className="absolute top-2.5 right-3 px-2 py-0.5 rounded-full text-[8px] font-black text-white"
-                    style={{ background: item.badgeColor ?? cat.color, boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
-                    {item.badge}
-                  </div>
-                )}
-                <div className="absolute bottom-2.5 right-3 left-3 flex items-end justify-between">
-                  <div>
-                    <p className="text-white text-[14px] font-black leading-snug drop-shadow-sm">{item.name}</p>
-                    {item.desc && <p className="text-white/70 text-[10px] font-light">{item.desc}</p>}
-                    {item.origin && (
-                      <div className="flex items-center gap-1 mt-0.5">
-                        <IOriginPin size={9} color="#fff" sw={1.5} />
-                        <span className="text-white/60 text-[9px]">{item.origin}</span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex flex-col items-end gap-1.5 shrink-0">
-                    <div>
-                      {item.priceHot !== undefined ? (
-                        <div className="flex flex-col items-end gap-0.5">
-                          <span className="text-white text-[13px] font-black font-inter drop-shadow-sm">{item.priceHot}<span className="text-[9px] opacity-70"> ر</span></span>
-                        </div>
-                      ) : (
-                        <span className="text-white text-[15px] font-black font-inter drop-shadow-sm">{item.price}<span className="text-[9px] opacity-70"> ر</span></span>
-                      )}
-                    </div>
-                    {(onOrder || onCustomize) && (
-                      <motion.button whileTap={{ scale: 0.88 }}
-                        onClick={() => onCustomize
-                          ? onCustomize({ name: item.name, basePrice: item.price ?? item.priceHot ?? 0, emoji: '☕', catColor: cat.color })
-                          : onOrder?.({ name: item.name, price: String(item.price ?? item.priceHot ?? 0), emoji: '☕' })
-                        }
-                        className="text-[9px] font-black px-3 py-1.5 rounded-full text-white"
-                        style={{ background: cat.color, boxShadow: `0 3px 10px ${cat.color}66` }}>
-                        اطلب
-                      </motion.button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ) : (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, x: 6 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.04 + i * 0.04, duration: 0.25 }}
-            className="flex items-start gap-3 py-3.5"
-            style={{ borderBottom: i < cat.items.length - 1 ? '1px solid rgba(196,181,159,0.18)' : 'none' }}
-          >
-            {/* Featured star */}
-            {item.featured && (
-              <div className="mt-[2px] shrink-0" style={{ color: cat.color }}>
-                <svg width="7" height="7" viewBox="0 0 7 7" fill="currentColor">
-                  <polygon points="3.5,0 4.3,2.5 7,2.5 4.9,4 5.7,6.5 3.5,5 1.3,6.5 2.1,4 0,2.5 2.7,2.5" />
-                </svg>
-              </div>
-            )}
-            {!item.featured && <div className="w-[7px] shrink-0 mt-[4px]">
-              <div className="w-1 h-1 rounded-full" style={{ background: `${cat.color}50` }} />
-            </div>}
-
-            {/* Info */}
-            <div className="flex-1 min-w-0">
-              <div className="flex flex-wrap items-center gap-1.5 mb-0.5">
-                <span className="text-[13px] font-bold text-[#111] leading-snug">{item.name}</span>
-                {item.badge && (
-                  <span className="text-[7px] font-black text-white px-1.5 py-[2px] rounded-full"
-                    style={{ background: item.badgeColor ?? cat.color }}>
-                    {item.badge}
-                  </span>
-                )}
-              </div>
-              {(item.desc || item.origin) && (
-                <div className="flex flex-wrap items-center gap-2">
-                  {item.desc && (
-                    <p className="text-[10px] text-[#AAA] font-light leading-snug">{item.desc}</p>
-                  )}
-                  {item.origin && (
-                    <div className="flex items-center gap-1">
-                      <IOriginPin size={10} color={cat.color} sw={1.5} />
-                      <span className="text-[9px] font-medium" style={{ color: `${cat.color}90` }}>{item.origin}</span>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Price + Order */}
-            <div className="flex flex-col items-end gap-1.5 shrink-0">
-              <Price item={item} />
-              {(onOrder || onCustomize) && (
-                <motion.button whileTap={{ scale: 0.88 }}
-                  onClick={() => onCustomize
-                    ? onCustomize({ name: item.name, basePrice: item.price ?? item.priceHot ?? 0, emoji: '☕', catColor: cat.color })
-                    : onOrder?.({ name: item.name, price: String(item.price ?? item.priceHot ?? 0), emoji: '☕' })
-                  }
-                  className="text-[9px] font-black px-2.5 py-1 rounded-full text-white"
-                  style={{ background: cat.color, boxShadow: `0 3px 10px ${cat.color}55` }}>
-                  اطلب
-                </motion.button>
-              )}
-            </div>
-          </motion.div>
         ))}
       </div>
+      {/* Order button */}
+      <motion.button whileTap={{ scale: 0.97 }} onClick={onCheckout}
+        className="w-full py-4 rounded-[20px] text-white flex items-center justify-between px-5"
+        style={{ background: 'linear-gradient(135deg,#8B3252,#B06070)', boxShadow: '0 8px 24px rgba(139,50,82,0.4)', pointerEvents: 'auto' }}>
+        <span className="text-[12px] font-medium opacity-80">{count} {count === 1 ? 'صنف' : 'أصناف'}</span>
+        <span className="text-[14px] font-black">اطلب الآن</span>
+        <span className="text-[14px] font-black">{total} <span className="text-[10px] font-normal opacity-70">ر</span></span>
+      </motion.button>
+    </motion.div>
+  );
+}
 
-      {/* Note footer */}
-      {(cat.note || cat.allergyNote) && (
-        <div className="mx-5 mt-1 mb-2 px-3 py-2 rounded-[10px]"
-          style={{ background: `${cat.color}08`, border: `1px solid ${cat.color}12` }}>
-          {cat.note && <p className="text-[9px] text-[#AAA] leading-snug">ℹ {cat.note}</p>}
-          {cat.allergyNote && <p className="text-[9px] text-[#C4B5A8] leading-snug mt-0.5">⚠ قد تحتوي على مسببات حساسية</p>}
+/* ══════════════════════════════════════════ SECTION ══ */
+const INITIAL_SHOW = 999;
+
+function Section({ cat, index, cart = [], onAdd, onRemove, onCustomize }: {
+  cat: MenuCategory;
+  index: number;
+  cart?: CartItem[];
+  onAdd: (item: MenuItem) => void;
+  onRemove: (name: string) => void;
+  onCustomize: (target: CustomizeTarget) => void;
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const shown = expanded ? cat.items : cat.items.slice(0, INITIAL_SHOW);
+  const hidden = cat.items.length - INITIAL_SHOW;
+  const cover = sectionCovers[cat.id];
+
+  return (
+    <motion.div id={`cat-${cat.id}`}
+      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.05, duration: 0.3 }}
+      className="mb-4">
+
+      {/* ── Section cover ── */}
+      {cover && (
+        <div className="relative overflow-hidden" style={{ height: 120 }}>
+          <img src={cover} alt={cat.name} className="w-full h-full object-cover" />
+          <div className="absolute inset-0"
+            style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.3) 55%, transparent 100%)' }} />
+          <div className="absolute bottom-0 right-0 left-0 px-4 py-3 flex items-end justify-between">
+            <div>
+              <h2 className="text-white text-[20px] font-black leading-tight">{cat.name}</h2>
+              <p className="text-white/45 text-[9px] mt-0.5">{cat.items.length} أصناف</p>
+            </div>
+            <p className="text-[7px] font-black tracking-[0.28em] pb-0.5"
+              style={{ color: 'rgba(201,149,106,0.75)', fontFamily: 'ui-monospace,monospace' }}>{cat.nameEn}</p>
+          </div>
         </div>
+      )}
+
+      {/* ── Items list ── */}
+      <div className="mx-3 rounded-b-[18px] overflow-hidden"
+        style={{ background: '#fff', border: '1px solid rgba(196,181,159,0.18)', borderTop: 'none' }}>
+        {shown.map((item, i) => {
+          const inCart = cart.find(c => c.name === item.name);
+          const qty = inCart?.qty ?? 0;
+          const priceVal = item.price ?? item.priceHot ?? 0;
+          return (
+            <div key={i} className="flex items-center gap-3 px-4 py-3.5"
+              style={{ borderBottom: i < shown.length - 1 || hidden > 0 ? '1px solid rgba(196,181,159,0.12)' : 'none' }}>
+              {/* Info */}
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-wrap items-center gap-1.5 mb-0.5">
+                  <p className="text-[13px] font-semibold leading-snug" style={{ color: '#2C2825' }}>{item.name}</p>
+                  {item.badge && (
+                    <span className="text-[7px] font-black text-white px-1.5 py-[2px] rounded-full"
+                      style={{ background: item.badgeColor ?? cat.color }}>{item.badge}</span>
+                  )}
+                </div>
+                {item.desc && <p className="text-[10px] text-[#AAA] font-light leading-snug">{item.desc}</p>}
+                {item.origin && <p className="text-[9px] mt-0.5" style={{ color: `${cat.color}90` }}>{item.originFlag} {item.origin}</p>}
+                <div className="mt-1.5">
+                  {item.priceHot !== undefined && item.priceCold !== undefined ? (
+                    <span className="text-[12px] font-black" style={{ color: cat.color }}>
+                      {item.priceHot}<span className="text-[9px] font-normal text-[#C4B5A8] mr-0.5">ر</span>
+                    </span>
+                  ) : (
+                    <span className="text-[13px] font-black" style={{ color: cat.color }}>
+                      {item.price}<span className="text-[9px] font-normal text-[#C4B5A8] mr-0.5">ر</span>
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* ± control */}
+              <div className="shrink-0 flex items-center gap-1.5">
+                {qty > 0 && (
+                  <motion.button whileTap={{ scale: 0.82 }} onClick={() => onRemove(item.name)}
+                    className="w-7 h-7 rounded-full flex items-center justify-center font-bold text-[18px] leading-none"
+                    style={{ background: `${cat.color}15`, color: cat.color }}>
+                    −
+                  </motion.button>
+                )}
+                {qty > 0 && (
+                  <span className="text-[13px] font-black w-4 text-center" style={{ color: cat.color }}>{qty}</span>
+                )}
+                <motion.button whileTap={{ scale: 0.82 }}
+                  onClick={() => onCustomize({ name: item.name, basePrice: priceVal, emoji: '☕', catColor: cat.color })}
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-[18px] leading-none"
+                  style={{ background: cat.color, boxShadow: `0 3px 10px ${cat.color}50` }}>
+                  +
+                </motion.button>
+              </div>
+            </div>
+          );
+        })}
+
+        {/* عرض الكل */}
+        {cat.items.length > INITIAL_SHOW && (
+          <button onClick={() => setExpanded(v => !v)}
+            className="w-full py-3 text-[11px] font-bold text-center transition-colors"
+            style={{ color: cat.color, background: `${cat.color}07` }}>
+            {expanded ? 'عرض أقل' : `عرض الكل — ${hidden} أصناف أخرى`}
+          </button>
+        )}
+      </div>
+
+      {/* Note */}
+      {cat.note && (
+        <p className="mx-4 mt-2 text-[9px] text-[#AAA] font-light">ℹ {cat.note}</p>
       )}
     </motion.div>
   );
@@ -558,24 +534,36 @@ export function ScreenMenu() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
-  const [heroScrolled, setHeroScrolled] = useState(false);
-  const [pendingOrder, setPendingOrder] = useState<CheckoutItem | null>(null);
+  const [cart, setCart] = useState<CartItem[]>([]);
   const [customizeTarget, setCustomizeTarget] = useState<CustomizeTarget | null>(null);
+  const [showCheckout, setShowCheckout] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
 
-  function handleOrderComplete(data: CompletedOrderData) {
-    addOrder({
-      itemName: data.itemName,
-      itemEmoji: data.itemEmoji,
-      totalPrice: data.totalPrice,
-      basePrice: data.basePrice,
-      orderType: data.orderType,
-      payMethod: data.payMethod,
-      pts: data.pts,
-      timestamp: data.timestamp,
+  const cartCount = cart.reduce((s, c) => s + c.qty, 0);
+  const cartTotal = cart.reduce((s, c) => s + c.price * c.qty, 0);
+
+  function addToCart(item: CheckoutItem) {
+    const price = Number(item.price) || 0;
+    setCart(prev => {
+      const ex = prev.find(c => c.name === item.name);
+      if (ex) return prev.map(c => c.name === item.name ? { ...c, qty: c.qty + 1 } : c);
+      return [...prev, { name: item.name, price, qty: 1, catColor: '#8B3252' }];
     });
   }
+
+  function removeFromCart(name: string) {
+    setCart(prev => {
+      const ex = prev.find(c => c.name === name);
+      if (!ex) return prev;
+      if (ex.qty <= 1) return prev.filter(c => c.name !== name);
+      return prev.map(c => c.name === name ? { ...c, qty: c.qty - 1 } : c);
+    });
+  }
+
+  const checkoutItem: CheckoutItem | null = showCheckout && cart.length > 0
+    ? { name: cart.map(c => `${c.qty > 1 ? c.qty + '× ' : ''}${c.name}`).join('، '), price: String(cartTotal), emoji: '☕' }
+    : null;
 
   const searchResults = useMemo(() => {
     if (!searchQuery.trim()) return null;
@@ -589,10 +577,7 @@ export function ScreenMenu() {
   }, [searchQuery]);
 
   const displayed = activeId ? menu.filter(c => c.id === activeId) : menu;
-
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    setHeroScrolled(e.currentTarget.scrollTop > 60);
-  };
+  const totalItems = menu.reduce((a, c) => a + c.items.length, 0);
 
   const handleCat = (id: string | null) => {
     setActiveId(id);
@@ -600,29 +585,35 @@ export function ScreenMenu() {
     scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const totalItems = menu.reduce((a, c) => a + c.items.length, 0);
-
   return (
     <div className="flex flex-col h-full overflow-hidden relative" style={{ background: '#FAF7F3' }}>
+
+      {/* ── Checkout modal ── */}
       <AnimatePresence>
-        {pendingOrder && (
+        {showCheckout && checkoutItem && (
           <div className="absolute inset-0 z-50">
             <CheckoutModal
-              item={pendingOrder}
+              item={checkoutItem}
               brandName={brand.name}
               brandType={brand.type}
               logoImg={brand.logoImg}
-              onClose={() => setPendingOrder(null)}
-              onOrderComplete={handleOrderComplete}
+              onClose={() => setShowCheckout(false)}
+              onOrderComplete={(data: CompletedOrderData) => {
+                addOrder({ itemName: data.itemName, itemEmoji: data.itemEmoji, totalPrice: data.totalPrice, basePrice: data.basePrice, orderType: data.orderType, payMethod: data.payMethod, pts: data.pts, timestamp: data.timestamp });
+                setCart([]);
+                setShowCheckout(false);
+              }}
             />
           </div>
         )}
       </AnimatePresence>
+
+      {/* ── Customize sheet ── */}
       <AnimatePresence>
         {customizeTarget && (
           <CustomizeSheet
             target={customizeTarget}
-            onConfirm={(item) => { setPendingOrder(item); }}
+            onConfirm={(item) => { addToCart(item); setCustomizeTarget(null); }}
             onClose={() => setCustomizeTarget(null)}
           />
         )}
@@ -631,117 +622,58 @@ export function ScreenMenu() {
       {/* ══ HERO HEADER ══ */}
       <div className="shrink-0 relative overflow-hidden"
         style={{ background: 'linear-gradient(170deg,#080002 0%,#200407 40%,#3D0809 70%,#0D0205 100%)' }}>
-
-        {/* Radial glow */}
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 50% 80%,rgba(201,149,106,0.18) 0%,transparent 65%)' }} />
+          style={{ background: 'radial-gradient(ellipse at 50% 75%,rgba(201,149,106,0.16) 0%,transparent 65%)' }} />
 
-        {/* Dot texture */}
-        <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
-          style={{ backgroundImage: 'radial-gradient(circle,#fff 1px,transparent 1px)', backgroundSize: '10px 10px' }} />
-
-        {/* Horizontal rule top */}
-        <div className="absolute top-0 left-0 right-0 h-px"
-          style={{ background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.4),transparent)' }} />
-
-        {/* Main brand block */}
-        <div className="relative z-10 flex flex-col items-center pt-6 pb-5 px-5">
-
-          {/* Logo — large centered */}
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.5, ease: [0.34, 1.56, 0.64, 1] }}
-            className="relative mb-3"
-          >
-            {/* Glow ring behind logo */}
-            <div className="absolute inset-0 rounded-[22px] blur-xl"
-              style={{ background: 'rgba(201,149,106,0.35)', transform: 'scale(1.3)' }} />
-            <img
-              src={brand.logoImg}
-              alt={brand.name}
-              className="relative w-16 h-16 rounded-[22px] object-cover"
-              style={{
-                border: '2px solid rgba(201,149,106,0.5)',
-                boxShadow: '0 0 0 1px rgba(201,149,106,0.15), 0 8px 32px rgba(0,0,0,0.5)',
-              }}
-            />
-            {/* Live dot */}
-            <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#0D0205] flex items-center justify-center">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#30D158] animate-pulse" />
+        <div className="relative z-10 flex flex-col items-center pt-5 pb-4 px-5">
+          {/* Logo */}
+          <motion.div initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.4, ease: [0.34, 1.56, 0.64, 1] }}
+            className="relative mb-2.5">
+            <img src={brand.logoImg} alt={brand.name}
+              className="w-14 h-14 rounded-[18px] object-cover"
+              style={{ border: '2px solid rgba(201,149,106,0.45)', boxShadow: '0 0 0 4px rgba(201,149,106,0.08), 0 8px 28px rgba(0,0,0,0.5)' }} />
+            <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full bg-[#0D0205] flex items-center justify-center">
+              <div className="w-2 h-2 rounded-full bg-[#30D158] animate-pulse" />
             </div>
           </motion.div>
 
-          {/* Brand name */}
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15, duration: 0.4 }}
-            className="text-center"
-          >
-            <p className="text-[9px] font-black tracking-[0.35em] text-[#C9956A] mb-1"
-              style={{ fontFamily: 'ui-monospace, monospace' }}>{brand.name}</p>
-            <h1 className="text-[28px] font-black text-white leading-none tracking-tight">قائمتنا</h1>
-            <p className="text-white/25 text-[10px] mt-1.5 font-light">
-              {totalItems} صنف · مفتوح من ٦ص حتى ٦:٣٠م
-            </p>
+          <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 }}
+            className="text-center">
+            <p className="text-[8px] font-black tracking-[0.35em] text-[#C9956A] mb-0.5"
+              style={{ fontFamily: 'ui-monospace,monospace' }}>BROWN DOSE</p>
+            <h1 className="text-[26px] font-black text-white leading-none tracking-tight">قائمتنا</h1>
+            <p className="text-white/25 text-[9px] mt-1 font-light">{totalItems} صنف · مفتوح من ٦ص حتى ٦:٣٠م</p>
           </motion.div>
 
-          {/* Stats strip */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="flex items-center gap-4 mt-4 pt-4"
-            style={{ borderTop: '1px solid rgba(255,255,255,0.06)', width: '100%', justifyContent: 'center' }}
-          >
-            {[
-              { v: '٦', l: 'مشروبات' },
-              { v: '٤', l: 'حلويات' },
-              { v: '١', l: 'فطور' },
-            ].map((s, i) => (
+          {/* Stats */}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
+            className="flex items-center gap-6 mt-3.5 pt-3.5"
+            style={{ borderTop: '1px solid rgba(255,255,255,0.06)', width: '100%', justifyContent: 'center' }}>
+            {menu.map((cat, i) => (
               <div key={i} className="text-center">
-                <p className="text-white text-[14px] font-black font-inter leading-none">{s.v}</p>
-                <p className="text-white/30 text-[8px] mt-0.5">{s.l}</p>
+                <p className="text-white text-[15px] font-black font-inter leading-none">{cat.items.length}</p>
+                <p className="text-white/30 text-[8px] mt-0.5">{cat.name}</p>
               </div>
             ))}
           </motion.div>
         </div>
 
-        {/* Search bar */}
+        {/* Search */}
         <div className="relative z-10 px-4 pb-4">
-          <motion.div
-            animate={{ borderColor: searchFocused ? 'rgba(201,149,106,0.55)' : 'rgba(255,255,255,0.07)' }}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 10,
-              background: searchFocused ? 'rgba(255,255,255,0.10)' : 'rgba(255,255,255,0.055)',
-              border: '1px solid rgba(255,255,255,0.07)',
-              borderRadius: 14, padding: '10px 14px',
-            }}
-          >
+          <motion.div animate={{ borderColor: searchFocused ? 'rgba(201,149,106,0.55)' : 'rgba(255,255,255,0.07)' }}
+            style={{ display:'flex', alignItems:'center', gap:10, background: searchFocused ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.055)', border:'1px solid rgba(255,255,255,0.07)', borderRadius:14, padding:'10px 14px' }}>
             <Search size={13} className="text-white/30 shrink-0" />
-            <input
-              ref={searchRef}
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              onFocus={() => setSearchFocused(true)}
-              onBlur={() => setSearchFocused(false)}
-              placeholder="ابحث في القائمة..."
-              className="flex-1 bg-transparent text-white text-[12px] outline-none placeholder:text-white/20"
-              dir="rtl"
-            />
-            {searchQuery ? (
-              <button onClick={() => { setSearchQuery(''); searchRef.current?.blur(); }}
-                className="w-5 h-5 rounded-full bg-white/15 flex items-center justify-center shrink-0">
-                <X size={9} className="text-white/60" />
-              </button>
-            ) : (
-              <span className="text-white/15 text-[8px] font-inter shrink-0">{totalItems} صنف</span>
-            )}
+            <input ref={searchRef} value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
+              onFocus={() => setSearchFocused(true)} onBlur={() => setSearchFocused(false)}
+              placeholder="ابحث في القائمة..." className="flex-1 bg-transparent text-white text-[12px] outline-none placeholder:text-white/20" dir="rtl" />
+            {searchQuery
+              ? <button onClick={() => { setSearchQuery(''); searchRef.current?.blur(); }}
+                  className="w-5 h-5 rounded-full bg-white/15 flex items-center justify-center shrink-0"><X size={9} className="text-white/60" /></button>
+              : <span className="text-white/15 text-[8px] font-inter shrink-0">{totalItems} صنف</span>
+            }
           </motion.div>
         </div>
-
-        {/* Bottom fade */}
         <div className="absolute bottom-0 left-0 right-0 h-4 pointer-events-none"
           style={{ background: 'linear-gradient(to bottom, transparent, #FAF7F3)' }} />
       </div>
@@ -749,61 +681,54 @@ export function ScreenMenu() {
       {/* ══ CATEGORY PILLS ══ */}
       <div className="shrink-0 bg-[#FAF7F3] border-b border-[rgba(196,181,159,0.2)]">
         <div className="flex gap-2 overflow-x-auto scrollbar-none px-4 py-2.5">
-          <motion.button whileTap={{ scale: 0.91 }} onClick={() => handleCat(null)}
-            className="shrink-0 px-3 py-1.5 rounded-full text-[10px] font-black transition-all duration-200"
-            style={activeId === null
-              ? { background: 'linear-gradient(135deg,#3D0809,#B06070)', color: '#fff', boxShadow: '0 3px 12px rgba(123,22,24,0.3)' }
-              : { background: 'rgba(196,181,159,0.15)', color: '#999' }
-            }>
+          <motion.button whileTap={{ scale:0.91 }} onClick={() => handleCat(null)}
+            className="shrink-0 px-3 py-1.5 rounded-full text-[10px] font-black transition-all"
+            style={activeId===null ? { background:'linear-gradient(135deg,#3D0809,#B06070)', color:'#fff', boxShadow:'0 3px 12px rgba(123,22,24,0.3)' } : { background:'rgba(196,181,159,0.15)', color:'#999' }}>
             الكل
           </motion.button>
           {menu.map(cat => (
-            <motion.button key={cat.id} whileTap={{ scale: 0.91 }} onClick={() => handleCat(cat.id)}
-              className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black whitespace-nowrap transition-all duration-200"
-              style={activeId === cat.id
-                ? { background: cat.color, color: '#fff', boxShadow: `0 3px 12px ${cat.color}45` }
-                : { background: 'rgba(196,181,159,0.12)', color: '#888' }
-              }>
-              {(() => { const I = CategoryIconMap[cat.id]; return I ? <I size={12} color={activeId === cat.id ? '#fff' : '#888'} sw={1.5} /> : null; })()}
+            <motion.button key={cat.id} whileTap={{ scale:0.91 }} onClick={() => handleCat(cat.id)}
+              className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black whitespace-nowrap transition-all"
+              style={activeId===cat.id ? { background:cat.color, color:'#fff', boxShadow:`0 3px 12px ${cat.color}45` } : { background:'rgba(196,181,159,0.12)', color:'#888' }}>
+              {(() => { const I = CategoryIconMap[cat.id]; return I ? <I size={12} color={activeId===cat.id ? '#fff' : '#888'} sw={1.5} /> : null; })()}
               {cat.name}
-              {cat.liveLabel && <span className="w-1.5 h-1.5 rounded-full bg-[#30D158]" />}
             </motion.button>
           ))}
         </div>
       </div>
 
       {/* ══ BODY ══ */}
-      <div ref={scrollRef} onScroll={handleScroll}
-        className="flex-1 overflow-y-auto scrollbar-none pb-24">
+      <div ref={scrollRef} className="flex-1 overflow-y-auto scrollbar-none pb-32">
         <AnimatePresence mode="wait" initial={false}>
-
-          {/* Search */}
           {searchQuery && searchResults !== null ? (
-            <motion.div key="search"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <SearchResults
-                results={searchResults}
-                query={searchQuery}
-                onClear={() => setSearchQuery('')}
-              />
+            <motion.div key="search" initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}>
+              <SearchResults results={searchResults} query={searchQuery} onClear={() => setSearchQuery('')} />
             </motion.div>
           ) : (
-            <motion.div key={activeId ?? 'all'}
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+            <motion.div key={activeId ?? 'all'} initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}>
               {activeId === null && <Shelf />}
               {displayed.map((cat, i) => (
-                <Section key={cat.id} cat={cat} index={i} onCustomize={setCustomizeTarget} />
+                <Section
+                  key={cat.id} cat={cat} index={i} cart={cart}
+                  onAdd={(item) => addToCart({ name: item.name, price: String(item.price ?? item.priceHot ?? 0), emoji: '☕' })}
+                  onRemove={removeFromCart}
+                  onCustomize={setCustomizeTarget}
+                />
               ))}
             </motion.div>
           )}
-
         </AnimatePresence>
-
-        {/* Footer note */}
         <p className="text-center text-[8px] text-[#D4C9BE] px-8 pb-3 pt-1">
           يحتاج البالغون تقريباً ألفي سعرة حرارية يومياً
         </p>
       </div>
+
+      {/* ══ CART BAR ══ */}
+      <AnimatePresence>
+        {cartCount > 0 && (
+          <CartBar cart={cart} onCheckout={() => setShowCheckout(true)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
