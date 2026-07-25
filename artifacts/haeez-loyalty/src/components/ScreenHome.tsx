@@ -755,13 +755,21 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
 
       {/* ── Dark hero ── */}
       <div className="relative overflow-hidden" style={{
-        background: 'linear-gradient(160deg,#0D0205 0%,#1A0812 30%,#3A1530 55%,#0D0205 80%,#080002 100%)',
-        paddingBottom: '52px',
+        background: 'linear-gradient(175deg,#060001 0%,#120105 25%,#220208 50%,#0E0103 75%,#040001 100%)',
+        paddingBottom: '56px',
       }}>
+        {/* Noise texture overlay */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.028]"
+          style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.75\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'200\' height=\'200\' filter=\'url(%23n)\' opacity=\'1\'/%3E%3C/svg%3E")', backgroundSize: '200px 200px' }} />
+        {/* Warm amber glow — top right */}
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 75% 25%,rgba(196,120,58,0.65) 0%,transparent 55%)' }} />
+          style={{ background: 'radial-gradient(ellipse at 80% 10%,rgba(180,90,20,0.55) 0%,rgba(140,60,10,0.18) 35%,transparent 60%)' }} />
+        {/* Deep crimson pulse — center */}
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 15% 85%,rgba(201,149,106,0.12) 0%,transparent 50%)' }} />
+          style={{ background: 'radial-gradient(ellipse at 40% 60%,rgba(90,10,15,0.5) 0%,transparent 55%)' }} />
+        {/* Cool bottom fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
+          style={{ background: 'linear-gradient(to bottom,transparent,rgba(4,0,1,0.6))' }} />
 
         {/* Top row */}
         <div className="flex items-start justify-between px-5 pt-5 mb-6">
@@ -794,55 +802,86 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
           </div>
         </div>
 
-        {/* Points card — linear, no rings */}
+        {/* Points card — luxury glassmorphism */}
         <div className="px-5 mb-4">
-          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28 }}
-            className="rounded-[24px] p-5"
-            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <div className="flex items-end justify-between mb-4">
-              <div>
-                <p className="text-white/30 text-[10px] tracking-[0.18em] font-light mb-1.5">رصيد النقاط</p>
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-white font-bold leading-none font-inter" style={{ fontSize: 46 }}>{points}</span>
-                  <span className="text-white/35 text-[13px] font-light">نقطة</span>
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.28 }}
+            className="rounded-[26px] overflow-hidden relative"
+            style={{
+              background: 'linear-gradient(145deg,rgba(255,255,255,0.07) 0%,rgba(255,255,255,0.03) 100%)',
+              border: '1px solid rgba(255,255,255,0.10)',
+              boxShadow: '0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.10)',
+            }}>
+            {/* Warm shimmer top-right */}
+            <div className="absolute top-0 right-0 w-32 h-32 pointer-events-none"
+              style={{ background: 'radial-gradient(circle at 80% 20%,rgba(201,149,106,0.18) 0%,transparent 65%)' }} />
+            {/* Horizontal gold line at top */}
+            <div className="absolute top-0 left-8 right-8 h-px pointer-events-none"
+              style={{ background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.4),transparent)' }} />
+
+            <div className="relative p-5">
+              {/* Top row */}
+              <div className="flex items-start justify-between mb-5">
+                <div>
+                  <p className="text-[8px] font-black tracking-[0.3em] mb-2"
+                    style={{ color: 'rgba(201,149,106,0.5)', fontFamily: 'ui-monospace,monospace' }}>LOYALTY · براون دوز</p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-black leading-none tabular-nums"
+                      style={{
+                        fontSize: 52, letterSpacing: '-0.04em',
+                        background: 'linear-gradient(175deg,#FAECD0 0%,#C4783A 45%,#7A3B18 100%)',
+                        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                        filter: 'drop-shadow(0 2px 12px rgba(201,149,106,0.3))',
+                      }}>{points}</span>
+                    <span className="text-[13px] font-light" style={{ color: 'rgba(255,255,255,0.3)' }}>نقطة</span>
+                  </div>
+                </div>
+                <div className="flex flex-col items-end gap-2 pt-1">
+                  {/* Tier badge */}
+                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-[10px]"
+                    style={{ background: 'rgba(201,149,106,0.12)', border: '1px solid rgba(201,149,106,0.2)' }}>
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#C4783A', boxShadow: '0 0 5px rgba(196,120,58,0.8)' }} />
+                    <span className="text-[11px] font-bold" style={{ color: '#C4783A' }}>كلاسيك</span>
+                  </div>
+                  <p className="text-[9px] font-light" style={{ color: 'rgba(255,255,255,0.2)' }}>٣ طلبات للفضي</p>
                 </div>
               </div>
-              <div className="text-left pb-1">
-                <div className="inline-flex px-3 py-1.5 rounded-[10px] mb-1.5"
-                  style={{ background: 'rgba(201,149,106,0.14)', border: '1px solid rgba(201,149,106,0.2)' }}>
-                  <span className="text-[#7A3B18] text-[11px] font-bold">كلاسيك</span>
+
+              {/* Progress bar — luxury */}
+              <div className="mb-1.5">
+                <div className="rounded-full overflow-hidden relative" style={{ height: 4, background: 'rgba(255,255,255,0.06)' }}>
+                  <motion.div
+                    initial={{ width: 0 }} animate={{ width: '57%' }}
+                    transition={{ duration: 1.6, delay: 0.6, ease: [0.4, 0, 0.2, 1] }}
+                    className="h-full rounded-full relative overflow-hidden"
+                    style={{ background: 'linear-gradient(90deg,#4A1C08,#C4783A,#F0D4A8)' }}>
+                    {/* Shimmer sweep */}
+                    <motion.div className="absolute inset-y-0 w-8"
+                      initial={{ left: '-2rem' }} animate={{ left: '120%' }}
+                      transition={{ duration: 1.2, delay: 1.2, ease: 'easeInOut' }}
+                      style={{ background: 'linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent)' }} />
+                  </motion.div>
                 </div>
-                <p className="text-white/25 text-[9px] text-right font-light">٣ طلبات للفضي</p>
+                <div className="flex justify-between mt-1">
+                  <span className="text-[8px]" style={{ color: 'rgba(255,255,255,0.15)' }}>فضي</span>
+                  <span className="text-[8px]" style={{ color: 'rgba(255,255,255,0.15)' }}>كلاسيك</span>
+                </div>
               </div>
             </div>
-            {/* Linear progress bar */}
-            <div className="rounded-full overflow-hidden" style={{ height: 3, background: 'rgba(255,255,255,0.08)' }}>
-              <motion.div
-                initial={{ width: 0 }} animate={{ width: '57%' }}
-                transition={{ duration: 1.4, delay: 0.55, ease: [0.4, 0, 0.2, 1] }}
-                className="h-full rounded-full"
-                style={{ background: 'linear-gradient(90deg,#7A3B18,#F0D4A8)' }}
-              />
-            </div>
-            <div className="flex justify-between mt-1.5">
-              <span className="text-white/18 text-[8px] font-light">فضي</span>
-              <span className="text-white/18 text-[8px] font-light">كلاسيك</span>
+
+            {/* Bottom strip */}
+            <div className="flex items-center gap-4 px-5 py-3 relative"
+              style={{ borderTop: '1px solid rgba(255,255,255,0.06)', background: 'rgba(0,0,0,0.2)' }}>
+              {brand.stats.map((s, i) => (
+                <React.Fragment key={s.label}>
+                  {i > 0 && <div className="w-px h-6 shrink-0" style={{ background: 'rgba(255,255,255,0.07)' }} />}
+                  <div className="flex-1 text-center">
+                    <p className="text-white text-[16px] font-bold leading-none font-inter">{s.val}</p>
+                    <p className="text-[8px] font-light mt-0.5" style={{ color: 'rgba(255,255,255,0.28)' }}>{s.label}</p>
+                  </div>
+                </React.Fragment>
+              ))}
             </div>
           </motion.div>
-        </div>
-
-        {/* Stats — بدون إيموجي */}
-        <div className="flex px-5 mb-4 gap-2">
-          {brand.stats.map((s, i) => (
-            <motion.div key={s.label}
-              className="flex-1 rounded-[18px] px-3 py-3 flex flex-col items-center gap-0.5"
-              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.06)' }}
-              initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.38 + i * 0.07 }}>
-              <p className="text-white text-[20px] font-bold leading-none font-inter">{s.val}</p>
-              <p className="text-white/30 text-[9px] mt-1 font-light text-center">{s.label}</p>
-            </motion.div>
-          ))}
         </div>
 
         {/* Shake hint + Spin button */}
@@ -860,33 +899,37 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
       </div>
 
       {/* ── Cream content ── */}
-      <div className="bg-[#FDFBF7] rounded-t-[30px] -mt-7 relative z-10 pt-5 pb-6">
+      <div className="rounded-t-[32px] -mt-8 relative z-10 pt-5 pb-6"
+        style={{ background: 'linear-gradient(180deg,#F5F2EC 0%,#FDFBF7 60%)' }}>
 
-        {/* Quick actions */}
-        <div className="grid grid-cols-3 gap-2.5 mb-5 px-4">
+        {/* Quick actions — pill row */}
+        <div className="flex gap-2.5 mb-5 px-4">
           {[
-            { icon: ShoppingBag, label: 'اطلب',   color: '#6B3210', bg: '#6B321012', href: null, onTap: () => setPendingOrder({ name: brand.todaySpecial.name, price: brand.todaySpecial.price, emoji: brand.todaySpecial.emoji }) },
-            { icon: Calendar,    label: 'احجز',   color: '#6B3210', bg: '#6B321012', href: null, onTap: () => setShowBookSheet(true) },
-            { icon: Tag,         label: 'عروضي',  color: '#B5651D', bg: '#7A3B1812', href: null, onTap: () => setShowOffersSheet(true) },
-          ].map((a, i) => {
-            const inner = (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + i * 0.06 }}
-                className="flex flex-col items-center py-4 rounded-2xl gap-2 relative overflow-hidden w-full"
-                style={{ background: a.bg, border: `1px solid ${a.color}22` }}>
-                <div className="w-9 h-9 rounded-[12px] flex items-center justify-center" style={{ background: `${a.color}18` }}>
-                  <a.icon size={17} style={{ color: a.color }} />
-                </div>
-                <span className="text-[11px] font-bold" style={{ color: a.color }}>{a.label}</span>
-              </motion.div>
-            );
-            return a.href ? (
-              <motion.a key={a.label} href={a.href} target="_blank" rel="noopener noreferrer" whileTap={{ scale: 0.88 }}>{inner}</motion.a>
-            ) : (
-              <motion.button key={a.label} whileTap={{ scale: 0.88 }} onClick={(a as typeof a & { onTap?: () => void }).onTap}>{inner}</motion.button>
-            );
-          })}
+            { icon: ShoppingBag, label: 'اطلب',  onTap: () => setPendingOrder({ name: brand.todaySpecial.name, price: brand.todaySpecial.price, emoji: brand.todaySpecial.emoji }) },
+            { icon: Calendar,    label: 'احجز',  onTap: () => setShowBookSheet(true) },
+            { icon: Tag,         label: 'عروضي', onTap: () => setShowOffersSheet(true) },
+          ].map((a, i) => (
+            <motion.button key={a.label}
+              whileTap={{ scale: 0.88 }}
+              onClick={a.onTap}
+              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 + i * 0.06 }}
+              className="flex-1 flex flex-col items-center py-4 rounded-[22px] gap-2 relative overflow-hidden"
+              style={{
+                background: 'white',
+                border: '1px solid rgba(196,181,159,0.18)',
+                boxShadow: '0 4px 18px rgba(0,0,0,0.06), 0 1px 0 rgba(255,255,255,0.8) inset',
+              }}>
+              {/* Top shimmer */}
+              <div className="absolute top-0 left-0 right-0 h-px pointer-events-none"
+                style={{ background: 'linear-gradient(90deg,transparent,rgba(255,255,255,0.9),transparent)' }} />
+              <div className="w-10 h-10 rounded-[14px] flex items-center justify-center"
+                style={{ background: 'linear-gradient(145deg,#F5EDE4,#EDE0D2)', boxShadow: '0 2px 8px rgba(107,50,16,0.12)' }}>
+                <a.icon size={17} style={{ color: '#6B3210' }} />
+              </div>
+              <span className="text-[11px] font-bold" style={{ color: '#6B3210' }}>{a.label}</span>
+            </motion.button>
+          ))}
         </div>
 
         {/* مؤشر الازدحام */}
