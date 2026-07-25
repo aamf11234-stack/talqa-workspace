@@ -261,7 +261,7 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
       {!inline && (
         <div className="px-7 pt-7 pb-5 border-b border-[rgba(160,82,45,0.08)]">
           <div className="inline-flex items-center gap-2 bg-[#6B3210]/8 border border-[rgba(160,82,45,0.15)] px-3.5 py-1.5 rounded-full mb-3">
-            <span className="text-[10px] font-black tracking-[0.2em] text-[#6B3210]">حاسبة العائد على الاستثمار</span>
+            <span className="text-[10px] font-black text-[#6B3210]">حاسبة العائد على الاستثمار</span>
           </div>
           <h2 className="text-[24px] font-bold text-[#111] leading-tight mb-2">
             الـ ٣,٠٠٠ ريال تسترجعها <span className="text-[#6B3210]">في أسابيع</span>
@@ -760,7 +760,7 @@ export default function App() {
             <span className="absolute inset-0 rounded-full bg-[#6B3210] animate-glow-ring" />
             <span className="relative w-1.5 h-1.5 rounded-full bg-[#6B3210] animate-pulse" />
           </span>
-          <span className="text-[#6B3210] text-[11px] font-bold tracking-[0.14em]">عرض حصري · براون دوز · جيزان</span>
+          <span className="text-[#6B3210] text-[11px] font-bold">عرض حصري · براون دوز · جيزان</span>
         </motion.div>
 
         {/* Cinematic headline */}
@@ -950,7 +950,7 @@ export default function App() {
       {/* ── Product Gallery ───────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="text-center mb-5">
-          <p className="text-[11px] text-[#6B3210] font-bold tracking-[0.22em] uppercase mb-1.5">منيو براون دوز</p>
+          <p className="text-[11px] text-[#6B3210] font-bold mb-1.5">منيو براون دوز</p>
           <h2 className="text-[26px] font-bold leading-tight" style={{ color: '#2C2825' }}>كل كوب له حكايته</h2>
           <p className="text-[13px] font-light mt-1.5" style={{ color: '#9A948C' }}>الأصناف الحقيقية — بالصور والأسعار</p>
         </div>
@@ -1374,7 +1374,7 @@ export default function App() {
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
             className="flex items-center gap-3 mb-10 justify-center">
             <div className="h-px flex-1 max-w-[60px]" style={{ background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.4))' }} />
-            <span className="text-[#7A3B18]/50 text-[8px] font-black tracking-[0.32em]" style={{ fontFamily: 'ui-monospace,monospace' }}>روح المكان</span>
+            <span className="text-[#7A3B18]/50 text-[8px] font-black" style={{ fontFamily: 'ui-monospace,monospace' }}>روح المكان</span>
             <div className="h-px flex-1 max-w-[60px]" style={{ background: 'linear-gradient(90deg,rgba(201,149,106,0.4),transparent)' }} />
           </motion.div>
 
@@ -1488,10 +1488,10 @@ export default function App() {
             {/* Exclusive badge */}
             <div className="inline-flex items-center gap-2 border border-[rgba(201,149,106,0.3)] bg-[rgba(201,149,106,0.08)] px-4 py-1.5 rounded-full mb-4">
               <div className="w-1.5 h-1.5 bg-[#7A3B18] rounded-full animate-pulse" />
-              <span className="text-[#7A3B18] text-[10px] font-black tracking-[0.2em]">عرض الإطلاق الحصري · محدود</span>
+              <span className="text-[#7A3B18] text-[10px] font-black">عرض الإطلاق الحصري · محدود</span>
             </div>
 
-            <p className="text-[#7A3B18] text-[11px] font-semibold tracking-widest uppercase mb-3">عرض الإطلاق الحصري</p>
+            <p className="text-[#7A3B18] text-[11px] font-semibold mb-3">عرض الإطلاق الحصري</p>
             {/* Price */}
             <div className="flex items-end justify-center gap-2 mb-1">
               <span className="text-white text-[52px] font-bold leading-none font-inter">2,000</span>

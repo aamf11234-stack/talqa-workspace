@@ -653,8 +653,11 @@ function QuickBookSheet({ onClose }: { onClose: () => void }) {
             /* ── Booking form ── */
             <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="px-5 pt-4 pb-8">
 
-              <p className="text-[9px] font-black tracking-[0.28em] text-[#C4783A] mb-1"
-                style={{ fontFamily: 'ui-monospace,monospace' }}>RESERVE · احجز طاولة</p>
+              <p className="text-[9px] font-black text-[#C4783A] mb-1"
+                style={{ fontFamily: 'ui-monospace,monospace' }}>
+                <span className="tracking-[0.28em]">RESERVE</span>
+                <span className="tracking-normal"> · احجز طاولة</span>
+              </p>
               <p className="text-white text-[21px] font-black mb-5">اختر الموعد</p>
 
               {/* Pax selector */}
@@ -752,8 +755,11 @@ function OffersSheet({ onClose, onOrder, deals, products }: {
 
         {/* Header */}
         <div className="px-5 pt-2 pb-3">
-          <p className="text-[9px] font-black tracking-[0.28em] text-[#C4783A] mb-1"
-            style={{ fontFamily: 'ui-monospace,monospace' }}>EXCLUSIVE · حصري للأعضاء</p>
+          <p className="text-[9px] font-black text-[#C4783A] mb-1"
+            style={{ fontFamily: 'ui-monospace,monospace' }}>
+            <span className="tracking-[0.28em]">EXCLUSIVE</span>
+            <span className="tracking-normal"> · حصري للأعضاء</span>
+          </p>
           <p className="text-white text-[20px] font-black mb-3">عروضك الحالية</p>
 
           {/* Tabs */}

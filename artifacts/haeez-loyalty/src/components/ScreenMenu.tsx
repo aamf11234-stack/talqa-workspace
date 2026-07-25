@@ -190,7 +190,7 @@ function CustomizeSheet({ target, onConfirm, onClose }: {
           <>
             {/* Size */}
             <div className="px-5 mb-4">
-              <p className="text-[9px] font-black text-[#BBB] tracking-[0.22em] uppercase mb-2.5">الحجم</p>
+              <p className="text-[9px] font-black text-[#BBB] mb-2.5">الحجم</p>
               <div className="flex gap-2">
                 {sizes.map(s => (
                   <motion.button key={s.id} whileTap={{ scale: 0.94 }} onClick={() => setSize(s.id)}
@@ -203,7 +203,7 @@ function CustomizeSheet({ target, onConfirm, onClose }: {
             </div>
             {/* Sweetness */}
             <div className="px-5 mb-4">
-              <p className="text-[9px] font-black text-[#BBB] tracking-[0.22em] uppercase mb-2.5">الحلاوة</p>
+              <p className="text-[9px] font-black text-[#BBB] mb-2.5">الحلاوة</p>
               <div className="flex gap-1.5">
                 {sweets.map(s => (
                   <motion.button key={s.id} whileTap={{ scale: 0.94 }} onClick={() => setSweet(s.id)}
@@ -216,7 +216,7 @@ function CustomizeSheet({ target, onConfirm, onClose }: {
             </div>
             {/* Milk */}
             <div className="px-5 mb-6">
-              <p className="text-[9px] font-black text-[#BBB] tracking-[0.22em] uppercase mb-2.5">نوع الحليب</p>
+              <p className="text-[9px] font-black text-[#BBB] mb-2.5">نوع الحليب</p>
               <div className="flex gap-2">
                 {milkOpts.map(m => (
                   <motion.button key={m.id} whileTap={{ scale: 0.94 }} onClick={() => setMilk(m.id)}
@@ -231,7 +231,7 @@ function CustomizeSheet({ target, onConfirm, onClose }: {
         ) : (
           /* Quantity only for sweets/boxes */
           <div className="px-5 mb-6">
-            <p className="text-[9px] font-black text-[#BBB] tracking-[0.22em] uppercase mb-3">الكمية</p>
+            <p className="text-[9px] font-black text-[#BBB] mb-3">الكمية</p>
             <div className="flex items-center justify-center gap-5">
               <motion.button whileTap={{ scale: 0.85 }} onClick={() => setQty(q => Math.max(1, q - 1))}
                 className="w-11 h-11 rounded-full border-2 border-[#E5E2DC] flex items-center justify-center text-[20px] font-bold text-[#111]">−</motion.button>
@@ -344,7 +344,7 @@ function BestsellersRail({ cart, onCustomize }: {
       {/* Divider */}
       <div className="flex items-center gap-3 mx-4 mt-5">
         <div className="flex-1 h-px bg-[#EBEBEB]" />
-        <span className="text-[8px] text-[#DDD] tracking-[0.2em] font-bold">القائمة الكاملة</span>
+        <span className="text-[8px] text-[#DDD] font-bold">القائمة الكاملة</span>
         <div className="flex-1 h-px bg-[#EBEBEB]" />
       </div>
     </div>

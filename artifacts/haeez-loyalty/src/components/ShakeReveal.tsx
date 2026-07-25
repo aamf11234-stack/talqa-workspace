@@ -102,7 +102,7 @@ function FlashDealModal({ onClose }: { onClose: () => void }) {
               className="w-full py-4 rounded-[18px] flex items-center justify-center gap-3 relative overflow-hidden"
               style={{ background: 'rgba(255,255,255,0.06)', border: '1.5px dashed rgba(201,149,106,0.4)' }}>
               <div className="text-center flex-1">
-                <p className="text-white/30 text-[9px] tracking-[0.3em] mb-1" style={{ fontFamily: 'ui-monospace,monospace' }}>كود الخصم</p>
+                <p className="text-white/30 text-[9px] mb-1" style={{ fontFamily: 'ui-monospace,monospace' }}>كود الخصم</p>
                 <p className="text-white text-[26px] font-black tracking-[0.15em]" style={{ fontFamily: 'ui-monospace,monospace' }}>{DEAL.code}</p>
               </div>
               <AnimatePresence mode="wait">

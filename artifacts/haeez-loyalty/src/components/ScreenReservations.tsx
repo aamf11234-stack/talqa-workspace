@@ -559,7 +559,7 @@ export function ScreenReservations() {
                 className="relative w-14 h-14 rounded-[18px] object-cover"
                 style={{ border: '2px solid rgba(201,149,106,0.5)', boxShadow: '0 8px 28px rgba(0,0,0,0.5)' }} />
             </motion.div>
-            <p className="text-[8px] font-black tracking-[0.35em] text-[#C4783A] mb-1.5 uppercase">براون دوز · جيزان</p>
+            <p className="text-[8px] font-black text-[#C4783A] mb-1.5">براون دوز · جيزان</p>
             <h1 className="text-[24px] font-black text-white leading-none mb-4">احجز مكانك</h1>
 
             {/* My bookings chip */}
