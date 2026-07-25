@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
 import { PhoneFrame } from './components/PhoneFrame';
 import { BottomNav } from './components/BottomNav';
 import type { Tab } from './components/BottomNav';
@@ -15,6 +15,89 @@ import { OwnerDashboard, MobileOwnerSummary } from './components/OwnerDashboard'
 import { useShakeDetect, FlashDealModal } from './components/ShakeReveal';
 import { BrandProvider, useBrand, RESTAURANT_BRAND, BROWNDOSE_BRAND } from './BrandContext';
 import { OrdersProvider } from './OrdersContext';
+
+/* ══════════════════════════════════════════════════════════════════
+   Aurora Background — animated gradient orbs
+════════════════════════════════════════════════════════════════════ */
+function AuroraBackground() {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
+      {/* Orb 1 — warm amber top-right */}
+      <div className="absolute animate-aurora-1"
+        style={{ top: '-8%', right: '-5%', width: 520, height: 520, borderRadius: '50%',
+          background: 'radial-gradient(circle,rgba(180,90,20,0.38) 0%,rgba(140,60,10,0.12) 45%,transparent 70%)',
+          filter: 'blur(60px)' }} />
+      {/* Orb 2 — deep crimson bottom-left */}
+      <div className="absolute animate-aurora-2"
+        style={{ bottom: '10%', left: '-8%', width: 480, height: 480, borderRadius: '50%',
+          background: 'radial-gradient(circle,rgba(100,12,20,0.55) 0%,rgba(60,5,10,0.18) 50%,transparent 70%)',
+          filter: 'blur(55px)' }} />
+      {/* Orb 3 — golden accent center */}
+      <div className="absolute animate-aurora-3"
+        style={{ top: '30%', left: '40%', width: 360, height: 360, borderRadius: '50%',
+          background: 'radial-gradient(circle,rgba(196,149,60,0.22) 0%,rgba(160,100,30,0.06) 55%,transparent 75%)',
+          filter: 'blur(45px)' }} />
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Coffee Particles — floating coffee beans/drops
+════════════════════════════════════════════════════════════════════ */
+const PARTICLE_DATA = [
+  { emoji:'☕', x:12, delay:0,    dur:5.5, size:16 },
+  { emoji:'✦',  x:28, delay:1.2,  dur:7,   size:10 },
+  { emoji:'☕', x:55, delay:2.1,  dur:6.2, size:13 },
+  { emoji:'·',  x:70, delay:0.5,  dur:4.8, size:18 },
+  { emoji:'✦',  x:82, delay:3.3,  dur:6.8, size:9  },
+  { emoji:'☕', x:40, delay:4,    dur:5.2, size:11 },
+  { emoji:'·',  x:93, delay:1.8,  dur:7.4, size:20 },
+  { emoji:'✦',  x:7,  delay:2.7,  dur:6,   size:8  },
+];
+
+function CoffeeParticles() {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 1 }}>
+      {PARTICLE_DATA.map((p, i) => (
+        <div
+          key={i}
+          className="absolute bottom-0 select-none"
+          style={{
+            left: `${p.x}%`,
+            fontSize: p.size,
+            opacity: 0.45,
+            animation: `coffee-rise ${p.dur}s ease-in ${p.delay}s infinite`,
+            color: p.emoji === '☕' ? 'rgba(180,100,30,0.7)' : 'rgba(200,150,80,0.5)',
+          }}
+        >
+          {p.emoji}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── Word-by-word headline reveal ─────────────────────────────── */
+function RevealHeadline({ children, className, style }: { children: string; className?: string; style?: React.CSSProperties }) {
+  const words = children.split(' ');
+  return (
+    <span className={className} style={{ ...style, unicodeBidi: 'embed' }} dir="rtl" aria-label={children}>
+      {words.map((word, i) => (
+        <React.Fragment key={i}>
+          <motion.span
+            className="inline-block"
+            initial={{ opacity: 0, y: 22, skewY: 3 }}
+            animate={{ opacity: 1, y: 0, skewY: 0 }}
+            transition={{ duration: 0.55, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {word}
+          </motion.span>
+          {i < words.length - 1 && <span className="inline-block" style={{ width: '0.3em' }} />}
+        </React.Fragment>
+      ))}
+    </span>
+  );
+}
 
 /* ── Brand toggle (inside BrandProvider) ──────────────────────── */
 function BrandToggle() {
@@ -589,64 +672,165 @@ export default function App() {
   return (
     <OrdersProvider>
     <BrandProvider>
-    <div className="min-h-screen w-full" style={{ background: '#FDFBF7', fontFamily: "'Readex Pro', 'SF Pro Display', sans-serif", color: '#2C2825' }} dir="rtl">
+    <div className="min-h-screen w-full relative" style={{ background: '#FDFBF7', fontFamily: "'Readex Pro', 'SF Pro Display', sans-serif", color: '#2C2825' }} dir="rtl">
+
+      {/* ── Global aurora (subtle, behind everything) ──────── */}
+      <AuroraBackground />
 
       {/* ── Agency top bar ─────────────────────────────────── */}
-      <div className="sticky top-0 z-50" style={{ background: 'rgba(253,251,247,0.85)', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(220,215,205,0.5)' }}>
+      <div className="sticky top-0 z-50" style={{ background: 'rgba(253,251,247,0.85)', backdropFilter: 'blur(20px) saturate(160%)', borderBottom: '1px solid rgba(220,215,205,0.5)' }}>
         <div className="max-w-5xl mx-auto px-6 py-3.5 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#6B3210,#6B3A1F)' }}>
+          <motion.div
+            className="flex items-center gap-2"
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center shadow-[0_2px_8px_rgba(107,50,16,0.35)]"
+              style={{ background: 'linear-gradient(135deg,#6B3210,#8B4515)' }}>
               <span className="text-white text-[10px] font-bold">ت</span>
             </div>
             <span className="text-[14px] font-bold" style={{ color: '#2C2825' }}>تلقا تك</span>
-          </div>
+          </motion.div>
           <span className="text-[11px] font-light hidden sm:block" style={{ color: '#9A948C' }}>Brown Dose · نظام الولاء والطلب · جيزان</span>
-          <a href="https://wa.me/966" target="_blank" rel="noopener noreferrer"
-            className="text-[11px] font-semibold text-[#6B3210] px-3.5 py-1.5 rounded-full hover:bg-[#6B3210]/5 transition-colors"
-            style={{ border: '1px solid rgba(196,120,58,0.25)' }}>
+          <motion.a
+            href="https://wa.me/966" target="_blank" rel="noopener noreferrer"
+            className="text-[11px] font-semibold text-[#6B3210] px-3.5 py-1.5 rounded-full transition-all duration-150"
+            style={{ border: '1px solid rgba(196,120,58,0.3)', background: 'rgba(107,50,16,0.04)' }}
+            whileHover={{ scale: 1.03, background: 'rgba(107,50,16,0.08)' }}
+            whileTap={{ scale: 0.97 }}
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+          >
             تواصل الآن
-          </a>
+          </motion.a>
         </div>
       </div>
 
       {/* ── Hero ───────────────────────────────────────────── */}
-      <div className="max-w-5xl mx-auto px-6 pt-12 pb-8 text-center">
-        <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <span className="inline-flex items-center gap-2 border border-[rgba(196,120,58,0.35)] text-[#6B3210] text-[11px] font-semibold px-4 py-1.5 rounded-full mb-6 tracking-widest">
-            <span className="w-1.5 h-1.5 bg-[#6B3210] rounded-full animate-pulse" />
-            عرض حصري · براون دوز · جيزان
+      <div className="relative max-w-5xl mx-auto px-6 pt-14 pb-8 text-center overflow-hidden">
+        {/* Coffee particles floating up in hero */}
+        <CoffeeParticles />
+
+        {/* Live badge */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.85, y: -8 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22,1,0.36,1] }}
+          className="relative z-10 inline-flex items-center gap-2.5 mb-7"
+          style={{
+            background: 'rgba(107,50,16,0.07)',
+            border: '1px solid rgba(196,120,58,0.3)',
+            borderRadius: 999, padding: '6px 18px',
+            backdropFilter: 'blur(10px)',
+          }}
+        >
+          {/* Pulsing dot with glow ring */}
+          <span className="relative flex items-center justify-center w-3 h-3">
+            <span className="absolute inset-0 rounded-full bg-[#6B3210] animate-glow-ring" />
+            <span className="relative w-1.5 h-1.5 rounded-full bg-[#6B3210] animate-pulse" />
           </span>
-          <h1 className="text-[36px] md:text-[52px] font-bold leading-[1.15] mb-4 tracking-tight" style={{ color: '#2C2825' }}>
-            <span className="text-[#6B3210]">Brown Dose</span>
-            <br />يستحق تجربة رقمية مختلفة
-          </h1>
-          <p className="text-[15px] md:text-[17px] font-light max-w-md mx-auto leading-relaxed mb-2" style={{ color: '#6B6560' }}>
-            تطبيق ويب بهوية براون دوز — زبائنك يطلبون، يدفعون، ويكسبون نقاطاً تلقائياً
-          </p>
-          <p className="mt-6 text-[12px]" style={{ color: '#9A948C', letterSpacing: '0.04em' }}>
-            طلب وتوصيل · نقاط الولاء · Apple Pay · صبيا وضمد
-          </p>
+          <span className="text-[#6B3210] text-[11px] font-bold tracking-[0.14em]">عرض حصري · براون دوز · جيزان</span>
         </motion.div>
+
+        {/* Cinematic headline */}
+        <div className="relative z-10 mb-5">
+          <h1 className="text-[38px] md:text-[56px] font-extrabold leading-[1.12] tracking-tight" style={{ color: '#1A1210' }}>
+
+            {/* "Brown Dose" — Latin, animate as one unit with gradient shimmer */}
+            <motion.span
+              className="block"
+              dir="ltr"
+              initial={{ opacity: 0, y: 24, skewY: 2 }}
+              animate={{ opacity: 1, y: 0, skewY: 0 }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                background: 'linear-gradient(135deg,#3D1508 0%,#8B3A10 35%,#C47830 60%,#8B3A10 100%)',
+                backgroundSize: '200% auto',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                animation: 'text-shimmer 4s ease-in-out infinite',
+              }}
+            >
+              Brown Dose
+            </motion.span>
+
+            {/* Arabic words — RTL, word by word */}
+            <span className="block mt-1" dir="rtl">
+              {['يستحق','تجربة','رقمية','مختلفة'].map((word, i) => (
+                <React.Fragment key={word}>
+                  <motion.span
+                    className="inline-block"
+                    initial={{ opacity: 0, y: 20, skewY: 2 }}
+                    animate={{ opacity: 1, y: 0, skewY: 0 }}
+                    transition={{ duration: 0.55, delay: 0.1 + i * 0.09, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ color: '#1A1210' }}
+                  >{word}</motion.span>
+                  {i < 3 && <span className="inline-block" style={{ width: '0.28em' }} />}
+                </React.Fragment>
+              ))}
+            </span>
+          </h1>
+        </div>
+
+        <motion.p
+          className="relative z-10 text-[15px] md:text-[17px] font-light max-w-md mx-auto leading-relaxed mb-2"
+          style={{ color: '#6B6560' }}
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, delay: 0.55 }}
+        >
+          تطبيق ويب بهوية براون دوز — زبائنك يطلبون، يدفعون، ويكسبون نقاطاً تلقائياً
+        </motion.p>
+
+        <motion.p
+          className="relative z-10 mt-6 text-[11px]"
+          style={{ color: '#B0A89C', letterSpacing: '0.06em' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.8 }}
+        >
+          طلب وتوصيل · نقاط الولاء · Apple Pay · صبيا وضمد
+        </motion.p>
       </div>
 
       {/* ── Pillars ────────────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {pillars.map((p, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
-              className="rounded-[20px] relative overflow-hidden group" style={{ minHeight: 180 }}>
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.09, ease: [0.22,1,0.36,1] }}
+              whileHover={{ y: -6, scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              className="rounded-[20px] relative overflow-hidden group cursor-pointer"
+              style={{ minHeight: 190, boxShadow: '0 4px 24px rgba(0,0,0,0.12)' }}
+            >
               {/* Background photo */}
-              <img src={p.img} alt={p.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <img src={p.img} alt={p.title}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-108"
+                style={{ transition: 'transform 0.7s cubic-bezier(0.22,1,0.36,1)' }} />
               {/* Dark overlay */}
-              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.25) 100%)' }} />
+              <div className="absolute inset-0 transition-opacity duration-500"
+                style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.2) 100%)' }} />
               {/* Tint */}
               <div className="absolute inset-0" style={{ background: p.bg, opacity: 0.45, mixBlendMode: 'multiply' }} />
+              {/* Glow on hover */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{ background: 'radial-gradient(ellipse at 50% 100%,rgba(196,120,58,0.18) 0%,transparent 70%)' }} />
+              {/* Top border shimmer */}
+              <div className="absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{ background: 'linear-gradient(90deg,transparent,rgba(200,140,60,0.6),transparent)' }} />
               {/* Content */}
-              <div className="relative z-10 p-5 flex flex-col justify-end h-full" style={{ minHeight: 180 }}>
-                <p className="text-white/40 text-[9px] font-semibold tracking-[0.22em] mb-2" style={{ fontFamily: 'ui-monospace,monospace' }}>
-                  {String(pillars.indexOf(p) + 1).padStart(2, '0')}
+              <div className="relative z-10 p-5 flex flex-col justify-end h-full" style={{ minHeight: 190 }}>
+                <p className="text-white/35 text-[9px] font-semibold tracking-[0.22em] mb-2"
+                  style={{ fontFamily: 'ui-monospace,monospace' }}>
+                  {String(i + 1).padStart(2, '0')}
                 </p>
-                <p className="text-white text-[15px] font-bold mb-0.5 leading-snug">{p.title}</p>
+                <p className="text-white text-[15px] font-bold mb-0.5 leading-snug"
+                  style={{ textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>{p.title}</p>
                 <p className="text-white/55 text-[11px] font-light leading-snug">{p.desc}</p>
               </div>
             </motion.div>

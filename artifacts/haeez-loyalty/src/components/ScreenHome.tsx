@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bell, ChevronLeft, Calendar, ShoppingBag, Tag, Zap, Flame, ArrowLeft, Sparkles, Truck } from 'lucide-react';
+import { Bell, ChevronLeft, Calendar, ShoppingBag, Tag, Zap, Flame, ArrowLeft, Sparkles, Truck, Check } from 'lucide-react';
 import { EventIconMap, ICalendarIcon, IGift } from './HaizIcons';
 import { SpinWheelOverlay } from './SpinWheel';
 import { ShakeHintBar } from './ShakeReveal';
@@ -854,15 +854,24 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
         background: 'linear-gradient(175deg,#060001 0%,#120105 25%,#220208 50%,#0E0103 75%,#040001 100%)',
         paddingBottom: '56px',
       }}>
+        {/* Aurora orb 1 — amber */}
+        <div className="absolute pointer-events-none animate-aurora-1"
+          style={{ top:'-20%', right:'-10%', width:220, height:220, borderRadius:'50%',
+            background:'radial-gradient(circle,rgba(200,100,20,0.55) 0%,rgba(160,60,10,0.2) 50%,transparent 70%)',
+            filter:'blur(32px)' }} />
+        {/* Aurora orb 2 — crimson */}
+        <div className="absolute pointer-events-none animate-aurora-2"
+          style={{ bottom:'-10%', left:'-5%', width:180, height:180, borderRadius:'50%',
+            background:'radial-gradient(circle,rgba(120,15,25,0.7) 0%,rgba(80,5,15,0.3) 50%,transparent 70%)',
+            filter:'blur(28px)' }} />
+        {/* Aurora orb 3 — gold */}
+        <div className="absolute pointer-events-none animate-aurora-3"
+          style={{ top:'40%', left:'35%', width:140, height:140, borderRadius:'50%',
+            background:'radial-gradient(circle,rgba(180,120,40,0.3) 0%,transparent 70%)',
+            filter:'blur(20px)' }} />
         {/* Noise texture overlay */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.028]"
           style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.75\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'200\' height=\'200\' filter=\'url(%23n)\' opacity=\'1\'/%3E%3C/svg%3E")', backgroundSize: '200px 200px' }} />
-        {/* Warm amber glow — top right */}
-        <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 80% 10%,rgba(180,90,20,0.55) 0%,rgba(140,60,10,0.18) 35%,transparent 60%)' }} />
-        {/* Deep crimson pulse — center */}
-        <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 40% 60%,rgba(90,10,15,0.5) 0%,transparent 55%)' }} />
         {/* Cool bottom fade */}
         <div className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
           style={{ background: 'linear-gradient(to bottom,transparent,rgba(4,0,1,0.6))' }} />
@@ -870,29 +879,71 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
         {/* Top row */}
         <div className="flex items-start justify-between px-5 pt-5 mb-6">
           <div>
-            <p className="text-white/35 text-[11px] font-light tracking-wide">{greeting}</p>
-            <p className="text-white text-[22px] font-bold mt-0.5 tracking-tight">عبدالإله علي</p>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.15 }}
+            <motion.p
+              initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4 }}
+              className="text-[11px] font-light tracking-wide"
+              style={{ color: 'rgba(255,255,255,0.38)' }}
+            >{greeting}</motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, delay: 0.06 }}
+              className="text-[23px] font-extrabold mt-0.5 tracking-tight"
+              style={{
+                background: 'linear-gradient(135deg,#FFFFFF 30%,rgba(200,150,100,0.9) 100%)',
+                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                filter: 'drop-shadow(0 2px 8px rgba(200,140,80,0.25))',
+              }}
+            >عبدالإله علي</motion.p>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.88 }} animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.18, type: 'spring', stiffness: 400, damping: 25 }}
               key={brand.type}
-              className="mt-2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-orange-400/30 w-fit"
-              style={{ background: 'rgba(255,140,0,0.12)' }}>
+              className="mt-2 flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-orange-400/25 w-fit"
+              style={{ background: 'rgba(255,140,0,0.10)', backdropFilter: 'blur(8px)' }}
+            >
               <Flame size={11} className="text-orange-400" fill="rgba(255,140,0,0.7)" />
               <span className="text-orange-300 text-[10px] font-bold font-inter">{brand.streak.label}</span>
             </motion.div>
           </div>
           <div className="flex items-center gap-2 mt-1">
-            <motion.button whileTap={{ scale: 0.88 }} onClick={() => setShowNotifs(v => !v)}
-              className="relative w-9 h-9 rounded-full flex items-center justify-center border border-white/8"
-              style={{ background: showNotifs ? 'rgba(255,255,255,0.12)' : 'rgba(255,255,255,0.06)' }}>
+            <motion.button
+              whileTap={{ scale: 0.84 }}
+              transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+              onClick={() => setShowNotifs(v => !v)}
+              className="relative w-9 h-9 rounded-full flex items-center justify-center"
+              style={{
+                background: showNotifs ? 'rgba(255,255,255,0.14)' : 'rgba(255,255,255,0.07)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                boxShadow: showNotifs ? '0 0 12px rgba(255,255,255,0.1)' : 'none',
+              }}
+            >
               <Bell size={15} className={showNotifs ? 'text-white' : 'text-white/50'} />
-              {!showNotifs && <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#FF3B30] rounded-full border border-[#0D0205]" />}
+              {!showNotifs && (
+                <motion.span
+                  animate={{ scale: [1, 1.25, 1] }}
+                  transition={{ duration: 1.6, repeat: Infinity, repeatDelay: 3 }}
+                  className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#FF3B30] rounded-full border border-[#0D0205]"
+                  style={{ boxShadow: '0 0 6px rgba(255,59,48,0.8)' }}
+                />
+              )}
             </motion.button>
             <AnimatePresence mode="wait">
-              <motion.div key={brand.logoImg} initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.25 }} className="relative">
+              <motion.div key={brand.logoImg}
+                initial={{ scale: 0.75, opacity: 0, rotate: -5 }}
+                animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                exit={{ scale: 0.75, opacity: 0, rotate: 5 }}
+                transition={{ duration: 0.3, type: 'spring', stiffness: 380, damping: 22 }}
+                className="relative"
+              >
                 <img src={brand.logoImg} alt="" className="w-10 h-10 rounded-[12px] object-cover"
-                  style={{ boxShadow: '0 2px 10px rgba(0,0,0,0.4)' }} />
-                <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-[#30D158] rounded-full border-2 border-[#0D0205]" />
+                  style={{ boxShadow: '0 4px 14px rgba(0,0,0,0.5), 0 0 0 1.5px rgba(255,255,255,0.1)' }} />
+                <motion.div
+                  animate={{ scale: [1, 1.3, 1], opacity: [1, 0.7, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-[#30D158] rounded-full border-2 border-[#0D0205]"
+                  style={{ boxShadow: '0 0 8px rgba(48,209,88,0.7)' }}
+                />
               </motion.div>
             </AnimatePresence>
           </div>
