@@ -114,25 +114,25 @@ function PlayBadge() {
 
 /* ── Pillars ──────────────────────────────────────────────────────── */
 const pillars = [
-  { icon: '📱', title: 'تطبيق موبايل',        sub: 'iOS + Android',        desc: 'تجربة زبون كاملة في جيبه',             bg: 'linear-gradient(145deg,#0D0205,#3D0809,#0D0205)' },
-  { icon: '💬', title: 'طلب عبر واتساب',      sub: 'بدون تحميل أي شيء',   desc: 'قائمة تفاعلية مباشرة على واتساب',       bg: 'linear-gradient(145deg,#0A0A0A,#1A2E1A,#0A0A0A)' },
+  { icon: '☕', title: 'منيو براون دوز',       sub: 'حار · بارد · مقطرة',   desc: 'كل الأصناف بالأسعار الحقيقية',          bg: 'linear-gradient(145deg,#0D0205,#3D0809,#0D0205)' },
+  { icon: '🛵', title: 'توصيل واستلام',        sub: 'صبيا وضمد',            desc: 'الزبون يختار كيف يستلم طلبه',           bg: 'linear-gradient(145deg,#0A0A0A,#1A2E1A,#0A0A0A)' },
   { icon: '💳', title: 'Apple & Google Wallet', sub: 'بطاقة رقمية دائمة',  desc: 'تظهر على شاشة القفل تلقائياً',          bg: 'linear-gradient(145deg,#0A0800,#2E2000,#0A0800)' },
-  { icon: '📊', title: 'تقرير أسبوعي',        sub: 'كل أحد على واتساب',   desc: 'أعداد الزبائن والأطباق والإيراد',        bg: 'linear-gradient(145deg,#040D08,#0D2814,#040D08)' },
+  { icon: '🏆', title: 'نقاط الولاء',          sub: 'كل طلب = نقاط',       desc: 'زبائن راجعين وعروض مخصصة',              bg: 'linear-gradient(145deg,#040D08,#0D2814,#040D08)' },
 ];
 
 const allFeatures = [
-  { icon: '💬', title: 'طلب عبر واتساب',         desc: 'بدون تطبيق — قائمة تفاعلية مباشرة'  },
-  { icon: '💳', title: 'Apple & Google Wallet',   desc: 'بطاقة النقاط على شاشة القفل تلقائياً' },
-  { icon: '📍', title: 'زبون راح ولا رجع؟',      desc: 'لوحة تحليل الزبائن الغائبين +٣٠ يوم' },
-  { icon: '⚡', title: 'حجز طاولة بـ١٠ ثواني',  desc: 'من إنستقرام مباشرة · تأكيد فوري'      },
-  { icon: '✏️', title: 'قائمة تتغير بضغطة',      desc: 'غيّر الأسعار والصور بدون مبرمج'       },
-  { icon: '🔗', title: 'زبون يجيب زبون',          desc: 'كود إحالة خاص لكل زبون — نقاط تلقائية' },
-  { icon: '📩', title: 'تقرير أسبوعي واتساب',    desc: 'كل أحد: زبائن جدد، عودة، أكثر طبق'   },
-  { icon: '🌙', title: 'دعم عربي ٢٤/٧',          desc: 'رد بالعربي في أي وقت — مش بكرة'       },
+  { icon: '☕', title: 'منيو براون دوز الحقيقي',  desc: 'حار وبارد ومقطرة — بالأسعار الفعلية'  },
+  { icon: '🛵', title: 'طلب توصيل',               desc: 'لحين موقعك — صبيا وضمد'               },
+  { icon: '🧳', title: 'طلب استلام',              desc: 'خذها معك بعد دقيقتين'                 },
+  { icon: '💳', title: 'Apple Pay & STC Pay',     desc: 'دفع في ثانية — بدون كاش'              },
+  { icon: '🏆', title: 'نقاط الولاء',             desc: 'كل طلب يكسب نقاطاً قابلة للاستبدال'   },
+  { icon: '🃏', title: 'Apple & Google Wallet',   desc: 'بطاقة العضوية على شاشة القفل تلقائياً' },
+  { icon: '📍', title: 'فرعان',                   desc: 'صبيا وضمد في نظام واحد متكامل'         },
+  { icon: '🔔', title: 'إشعارات وعروض',           desc: 'خصومات وعروض براون دوز بزر واحد'       },
+  { icon: '📊', title: 'إحصائيات المبيعات',      desc: 'أكثر صنف وأكثر وقت وأرباحك اليومية'    },
+  { icon: '🎨', title: 'هوية براون دوز كاملة',    desc: 'ألوانك واسمك ومنيوك — مش قالب جاهز'   },
+  { icon: '🌙', title: 'دعم مباشر',              desc: 'على واتساب — رد فوري بالعربي'           },
   { icon: '🚀', title: 'إطلاق في ٧ أيام',        desc: 'مضمون أو ترجع فلوسك كاملة'            },
-  { icon: '🔒', title: 'سعر ثابت للأبد',          desc: '٤٩٩ ريال للأوائل — لا يرتفع أبداً'   },
-  { icon: '🏆', title: 'نظام نقاط ومستويات',     desc: 'كلاسيك · فضي · ذهبي'                 },
-  { icon: '📱', title: 'تطبيق iOS + Android',    desc: 'نشر على المتجرين الرسميين'             },
 ];
 
 /* ── ROI Calculator ───────────────────────────────────────────────── */
@@ -148,11 +148,11 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
       {/* Header — hidden in inline mode */}
       {!inline && (
         <div className="px-7 pt-7 pb-5 border-b border-[rgba(123,22,24,0.08)]">
-          <div className="inline-flex items-center gap-2 bg-[#7B1618]/8 border border-[rgba(123,22,24,0.15)] px-3.5 py-1.5 rounded-full mb-3">
-            <span className="text-[10px] font-black tracking-[0.2em] text-[#7B1618]">حاسبة العائد على الاستثمار</span>
+          <div className="inline-flex items-center gap-2 bg-[#B06070]/8 border border-[rgba(123,22,24,0.15)] px-3.5 py-1.5 rounded-full mb-3">
+            <span className="text-[10px] font-black tracking-[0.2em] text-[#B06070]">حاسبة العائد على الاستثمار</span>
           </div>
           <h2 className="text-[24px] font-bold text-[#111] leading-tight mb-2">
-            الـ ٣,٠٠٠ ريال تسترجعها <span className="text-[#7B1618]">في أسابيع</span>
+            الـ ٣,٠٠٠ ريال تسترجعها <span className="text-[#B06070]">في أسابيع</span>
           </h2>
           <p className="text-[13px] text-[#555] leading-relaxed mb-4">
             المنظومة تخلي زبائنك يرجعون أكثر — حتى لو بنسبة <strong>١٥٪ فقط</strong> زيادة في الزيارات، الأرقام تتكلم وحدها.
@@ -164,7 +164,7 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
               { n: '٣', text: 'احسب متى يرجع الاستثمار' },
             ].map(s => (
               <div key={s.n} className="flex-1 flex items-center gap-2 bg-[rgba(123,22,24,0.05)] rounded-[12px] px-3 py-2.5">
-                <div className="w-5 h-5 rounded-full bg-[#7B1618] flex items-center justify-center shrink-0">
+                <div className="w-5 h-5 rounded-full bg-[#B06070] flex items-center justify-center shrink-0">
                   <span className="text-white text-[9px] font-black">{s.n}</span>
                 </div>
                 <span className="text-[10px] font-semibold text-[#444] leading-tight">{s.text}</span>
@@ -186,20 +186,20 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
         <div>
           <div className="flex justify-between mb-2">
             <span className={`${inline ? 'text-[11px] text-white/60' : 'text-[13px] text-[#333]'} font-semibold`}>زوار اليوم</span>
-            <span className={`${inline ? 'text-[16px] text-[#C9956A]' : 'text-[18px] text-[#7B1618]'} font-black font-inter`}>{customers}</span>
+            <span className={`${inline ? 'text-[16px] text-[#C9956A]' : 'text-[18px] text-[#B06070]'} font-black font-inter`}>{customers}</span>
           </div>
           <input type="range" min={20} max={300} step={10} value={customers}
             onChange={e => setCustomers(Number(e.target.value))}
-            className="w-full h-1.5 rounded-full" style={{ accentColor: inline ? '#C9956A' : '#7B1618' }} />
+            className="w-full h-1.5 rounded-full" style={{ accentColor: inline ? '#C9956A' : '#B06070' }} />
         </div>
         <div>
           <div className="flex justify-between mb-2">
             <span className={`${inline ? 'text-[11px] text-white/60' : 'text-[13px] text-[#333]'} font-semibold`}>الفاتورة</span>
-            <span className={`${inline ? 'text-[16px] text-[#C9956A]' : 'text-[18px] text-[#7B1618]'} font-black font-inter`}>{spend}ر</span>
+            <span className={`${inline ? 'text-[16px] text-[#C9956A]' : 'text-[18px] text-[#B06070]'} font-black font-inter`}>{spend}ر</span>
           </div>
           <input type="range" min={20} max={150} step={5} value={spend}
             onChange={e => setSpend(Number(e.target.value))}
-            className="w-full h-1.5 rounded-full" style={{ accentColor: inline ? '#C9956A' : '#7B1618' }} />
+            className="w-full h-1.5 rounded-full" style={{ accentColor: inline ? '#C9956A' : '#B06070' }} />
         </div>
       </div>
 
@@ -251,7 +251,7 @@ const notifs = [
     id: 1,
     app: 'مطعمك',
     icon: '🎂',
-    iconBg: 'linear-gradient(135deg,#7B1618,#C9956A)',
+    iconBg: 'linear-gradient(135deg,#B06070,#C9956A)',
     time: 'الآن',
     title: 'عيد ميلادك اليوم! 🎉',
     body: 'وجبة مجانية في انتظارك — هدية من مطعمك في يومك الخاص',
@@ -291,11 +291,11 @@ const notifs = [
     id: 5,
     app: 'مطعمك',
     icon: '🍽️',
-    iconBg: 'linear-gradient(135deg,#3D0809,#7B1618)',
+    iconBg: 'linear-gradient(135deg,#3D0809,#B06070)',
     time: 'منذ ٢٠ دقيقة',
     title: 'طبق اليوم: كبسة الجمبري 🦐',
     body: 'طُبخت للتو — احجز طاولة قبل ما تنتهي',
-    accent: '#7B1618',
+    accent: '#B06070',
   },
   {
     id: 6,
@@ -440,7 +440,7 @@ const screens: { tab: Tab; label: string; color: string; bg: string; preview: Re
         </div>
         <div className="flex justify-center">
           <div className="w-10 h-10 rounded-full border-2 border-[#C9956A]/50 flex items-center justify-center">
-            <div className="w-6 h-6 rounded-full border border-[#7B1618]/60" />
+            <div className="w-6 h-6 rounded-full border border-[#B06070]/60" />
           </div>
         </div>
         <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
@@ -463,13 +463,13 @@ const screens: { tab: Tab; label: string; color: string; bg: string; preview: Re
         </div>
         <div className="w-full h-2 bg-white/10 rounded-full" />
         <div className="flex gap-1">
-          {['#7B1618','#2D7D46','#B5651D'].map(c=><div key={c} className="h-4 flex-1 rounded-full" style={{background:`${c}50`}}/>)}
+          {['#B06070','#2D7D46','#B5651D'].map(c=><div key={c} className="h-4 flex-1 rounded-full" style={{background:`${c}50`}}/>)}
         </div>
         {[0.9,0.7,0.85].map((o,i)=>(
           <div key={i} className="flex items-center gap-1.5 py-1 border-b border-white/5">
             <div className="w-1.5 h-1.5 rounded-full bg-[#C9956A]/60 shrink-0" />
             <div className="flex-1 h-1.5 rounded-full bg-white/15" style={{opacity:o}} />
-            <div className="w-4 h-1.5 rounded-full bg-[#7B1618]/60" />
+            <div className="w-4 h-1.5 rounded-full bg-[#B06070]/60" />
           </div>
         ))}
       </div>
@@ -510,7 +510,7 @@ const screens: { tab: Tab; label: string; color: string; bg: string; preview: Re
         <div className="w-12 h-2 bg-[#111]/20 rounded-full" />
         <div className="flex gap-1">
           {[0,1,2,3].map(i=>(
-            <div key={i} className={`flex-1 h-7 rounded-[5px] flex flex-col items-center justify-center gap-0.5 ${i===1?'bg-[#7B1618]':'bg-white border border-[rgba(196,181,159,0.3)]'}`}>
+            <div key={i} className={`flex-1 h-7 rounded-[5px] flex flex-col items-center justify-center gap-0.5 ${i===1?'bg-[#B06070]':'bg-white border border-[rgba(196,181,159,0.3)]'}`}>
               <div className={`w-2 h-1 rounded-full ${i===1?'bg-white/50':'bg-[#888]/30'}`} />
               <div className={`w-2.5 h-2 rounded-sm font-bold ${i===1?'bg-white/80':'bg-[#111]/20'}`} />
             </div>
@@ -518,10 +518,10 @@ const screens: { tab: Tab; label: string; color: string; bg: string; preview: Re
         </div>
         <div className="grid grid-cols-3 gap-1">
           {[0,1,2,3,4,5].map(i=>(
-            <div key={i} className={`h-4 rounded-[4px] ${i===4?'bg-[#7B1618]/80':'bg-white border border-[rgba(196,181,159,0.25)]'}`} />
+            <div key={i} className={`h-4 rounded-[4px] ${i===4?'bg-[#B06070]/80':'bg-white border border-[rgba(196,181,159,0.25)]'}`} />
           ))}
         </div>
-        <div className="w-full h-6 rounded-[6px] bg-[#7B1618]/80" />
+        <div className="w-full h-6 rounded-[6px] bg-[#B06070]/80" />
       </div>
     ),
   },
@@ -618,14 +618,14 @@ export default function App() {
       <div className="sticky top-0 z-50 border-b border-[rgba(123,22,24,0.1)] bg-[#FDFBF7]/85 backdrop-blur-xl">
         <div className="max-w-5xl mx-auto px-6 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#7B1618,#4A0D0F)' }}>
+            <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#B06070,#7A3050)' }}>
               <span className="text-white text-[10px] font-bold">ت</span>
             </div>
             <span className="text-[14px] font-bold text-[#111]">تلقا تك</span>
           </div>
-          <span className="text-[11px] text-[#AAA] font-light hidden sm:block">منظومة رقمية للمطاعم والكافيهات · المملكة</span>
+          <span className="text-[11px] text-[#AAA] font-light hidden sm:block">Brown Dose · نظام الولاء والطلب · جيزان</span>
           <a href="https://wa.me/966" target="_blank" rel="noopener noreferrer"
-            className="text-[11px] font-semibold text-[#7B1618] border border-[rgba(123,22,24,0.2)] px-3.5 py-1.5 rounded-full hover:bg-[#7B1618]/5 transition-colors">
+            className="text-[11px] font-semibold text-[#B06070] border border-[rgba(123,22,24,0.2)] px-3.5 py-1.5 rounded-full hover:bg-[#B06070]/5 transition-colors">
             تواصل الآن
           </a>
         </div>
@@ -652,18 +652,18 @@ export default function App() {
           />
         ))}
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <span className="inline-flex items-center gap-2 bg-[#7B1618] text-[#C9956A] text-[11px] font-semibold px-4 py-1.5 rounded-full mb-4 tracking-widest shadow-[0_4px_20px_rgba(123,22,24,0.35)]">
+          <span className="inline-flex items-center gap-2 bg-[#B06070] text-[#C9956A] text-[11px] font-semibold px-4 py-1.5 rounded-full mb-4 tracking-widest shadow-[0_4px_20px_rgba(123,22,24,0.35)]">
             <span className="w-1.5 h-1.5 bg-[#C9956A] rounded-full animate-pulse" />
-            عرض حصري · مطاعم وكافيهات · المملكة
+            عرض حصري · براون دوز · جيزان
           </span>
           <h1 className="text-[34px] md:text-[44px] font-bold text-[#111] leading-tight mb-3 tracking-tight">
-            <span className="text-[#7B1618]">مطعمك</span> يستحق منظومة رقمية كاملة
+            <span className="text-[#B06070]">Brown Dose</span> يستحق تجربة رقمية مختلفة
           </h1>
           <p className="text-[22px] md:text-[28px] font-light text-[#666] mb-4 leading-relaxed">
-            تطبيق · واتساب · محفظة · حجوزات · تقارير
+            طلب · توصيل · نقاط ولاء · Apple Pay
           </p>
           <p className="text-[13px] text-[#888] font-light max-w-sm mx-auto leading-relaxed">
-            منظومة رقمية متكاملة تخلي زبائنك يرجعون أكثر وتجيب لك زبائن جدد تلقائياً
+            تطبيق ويب بهوية براون دوز الكاملة — زبائنك يطلبون، يدفعون، ويكسبون نقاطاً تلقائياً
           </p>
         </motion.div>
       </div>
@@ -684,8 +684,7 @@ export default function App() {
         </div>
       </div>
 
-      {/* ── Brand toggle ───────────────────────────────────── */}
-      <BrandToggle />
+      {/* Brand toggle hidden — Brown Dose only */}
 
       {/* ── Phone mockup + Watch ───────────────────────────── */}
       <div className="flex flex-col items-center px-4 mb-4">
@@ -748,7 +747,7 @@ export default function App() {
             className="hidden md:flex flex-col gap-3 pb-8 w-[130px]"
           >
             {[
-              { label: '١,٥٠٠+', sub: 'عضو نشط', color: '#7B1618' },
+              { label: '١,٥٠٠+', sub: 'عضو نشط', color: '#B06070' },
               { label: '٤.٩ ★', sub: 'تقييم المتجر', color: '#C9956A' },
               { label: '٦٠ يوم', sub: 'وقت التسليم', color: '#2D7D46' },
             ].map((s, i) => (
@@ -810,12 +809,12 @@ export default function App() {
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(8,0,3,0.92) 0%,rgba(8,0,3,0.55) 45%,rgba(8,0,3,0.15) 100%)' }} />
           {/* Content */}
           <div className="absolute inset-0 flex flex-col justify-end p-8">
-            <p className="text-[#C9956A] text-[10px] font-semibold tracking-widest uppercase mb-2">YOUR RESTAURANT · KSA · تلقا تك</p>
+            <p className="text-[#C9956A] text-[10px] font-semibold tracking-widest uppercase mb-2">BROWN DOSE · جيزان · صبيا وضمد</p>
             <h3 className="text-white text-[26px] font-bold mb-2 leading-tight">
-              مطعمك يستحق<br />أفضل تجربة رقمية
+              براون دوز يستحق<br />هوية رقمية حقيقية
             </h3>
             <p className="text-white/50 text-[13px] font-light mb-4 max-w-sm">
-              من أول زيارة يكسب زبونك نقاطاً، وبكل طلب يقترب من الوجبة المجانية
+              من أول طلب يكسب زبونك نقاطاً، وبكل كوب يقترب من مكافأته القادمة
             </p>
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm border border-white/15 px-3 py-1.5 rounded-full">
@@ -834,8 +833,8 @@ export default function App() {
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="text-center mb-5">
           <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1">مثال حي</p>
-          <h2 className="text-[22px] font-bold text-[#111]">تطبيق مطعمك — كيف يبدو للزبون</h2>
-          <p className="text-[12px] text-[#AAA] font-light mt-1">منيو رقمي · نقاط ولاء · حجز طاولة · كل شيء في مكان واحد</p>
+          <h2 className="text-[22px] font-bold text-[#111]">تطبيق براون دوز — كيف يبدو للزبون</h2>
+          <p className="text-[12px] text-[#AAA] font-light mt-1">منيو رقمي · نقاط ولاء · توصيل واستلام · كل شيء في مكان واحد</p>
         </div>
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -895,7 +894,7 @@ export default function App() {
             <div className="flex flex-col items-center">
               <AppleWatchHyz />
               <div className="flex gap-1.5 mt-4">
-                {['#7B1618', '#C9956A', '#30D158'].map((c, i) => (
+                {['#B06070', '#C9956A', '#30D158'].map((c, i) => (
                   <div key={i} className="w-2.5 h-2.5 rounded-full opacity-60" style={{ background: c }} />
                 ))}
               </div>
@@ -1086,8 +1085,8 @@ export default function App() {
       {/* ── Full Features Grid ────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="text-center mb-6">
-          <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1.5">كل ما يحصل عليه مطعمك</p>
-          <h2 className="text-[24px] font-bold text-[#111]">١٢ مزايا في منظومة واحدة</h2>
+          <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1.5">كل ما يحصل عليه براون دوز</p>
+          <h2 className="text-[24px] font-bold text-[#111]">مزايا النظام في منظومة واحدة</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
           {allFeatures.map((f, i) => (
@@ -1138,8 +1137,8 @@ export default function App() {
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-[#C9956A] font-bold text-[16px] leading-tight">مطعمك</p>
-                    <p className="text-white/25 text-[8px] font-inter tracking-wider">YOUR RESTAURANT · KSA</p>
+                    <p className="text-[#C9956A] font-bold text-[16px] leading-tight">Brown Dose</p>
+                    <p className="text-white/25 text-[8px] font-inter tracking-wider">BROWN DOSE · KSA</p>
                   </div>
                   <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white/15">
                     <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
@@ -1212,7 +1211,7 @@ export default function App() {
                 label: 'ساعة هدوء',
                 text: 'جلسة عمل بعيداً عن الضجيج، كرواسون اللوز والشوكولاتة والكمبيوتر المفتوح',
                 icon: '💻',
-                color: '#7B1618',
+                color: '#B06070',
               },
               {
                 time: '٦:٠٠ م',
@@ -1250,7 +1249,7 @@ export default function App() {
         <div className="bg-white/75 rounded-[28px] p-6 border border-[rgba(123,22,24,0.07)] shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
           <div className="flex items-start justify-between mb-5">
             <div>
-              <p className="text-[10px] text-[#7B1618] font-semibold tracking-widest uppercase mb-1">مجتمع مطعمك</p>
+              <p className="text-[10px] text-[#B06070] font-semibold tracking-widest uppercase mb-1">مجتمع مطعمك</p>
               <h3 className="text-[22px] font-bold text-[#111]">١,٥٠٠+ عضو نشط</h3>
               <p className="text-[12px] text-[#888] font-light mt-1">منصة اجتماعية داخل التطبيق</p>
             </div>
@@ -1296,17 +1295,24 @@ export default function App() {
             </div>
 
             <p className="text-[#C9956A] text-[11px] font-semibold tracking-widest uppercase mb-3">عرض الإطلاق الحصري</p>
-            <div className="flex items-center justify-center gap-3 mb-1">
-              <span className="text-white/30 text-[28px] font-bold leading-none font-inter line-through">18,000</span>
-              <span className="text-white text-[52px] font-bold leading-none font-inter">3,000</span>
+            {/* Price */}
+            <div className="flex items-end justify-center gap-2 mb-1">
+              <span className="text-white text-[52px] font-bold leading-none font-inter">2,000</span>
+              <span className="text-white/40 text-[18px] mb-2">ريال</span>
             </div>
-            <p className="text-[#C9956A] text-[18px] font-light mb-1">ريال تأسيس</p>
-            <p className="text-white/50 text-[14px] font-light mb-1.5">+ <span className="text-white font-semibold">٤٩٩ ريال</span> شهرياً — ثابت للأبد</p>
-            <p className="text-white/30 text-[12px] font-light mb-6">
-              iOS + Android · واتساب · Wallet · حجوزات · تقارير · دعم عربي ٢٤/٧
+            <p className="text-[#C9956A] text-[14px] font-light mb-3">تأسيس · الموقع مجاناً</p>
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <span className="text-white/70 text-[28px] font-bold font-inter">499</span>
+              <div className="text-right leading-tight">
+                <p className="text-white/40 text-[10px]">ريال / شهرياً</p>
+                <p className="text-[#C9956A] text-[10px] font-semibold">استضافة · حماية · دعم فني</p>
+              </div>
+            </div>
+            <p className="text-white/30 text-[12px] font-light mt-2 mb-6">
+              طلب توصيل واستلام · Apple Pay · نقاط ولاء · منيو رقمي · فروع صبيا وضمد
             </p>
             <div className="grid grid-cols-2 gap-2.5 mb-7 text-right">
-              {['تسليم خلال ٦٠ يوم','نشر على المتجرين الرسميين','سنة دعم مجاني كامل','تدريب الفريق وتأهيله'].map((item) => (
+              {['تسليم خلال ٧ أيام','هوية براون دوز الكاملة','دعم مباشر على واتساب','فرعَي صبيا وضمد'].map((item) => (
                 <div key={item} className="flex items-center gap-2 text-white/55 text-[11px]">
                   <div className="w-1.5 h-1.5 bg-[#30D158] rounded-full shrink-0" />
                   {item}
@@ -1315,7 +1321,7 @@ export default function App() {
             </div>
 
             {/* WhatsApp CTA */}
-            <a href="https://wa.me/966551378531?text=السلام عليكم، أريد الاستفسار عن منظومة مطعمي الرقمية" target="_blank" rel="noopener noreferrer"
+            <a href="https://wa.me/966551378531?text=السلام عليكم، أريد الاستفسار عن نظام براون دوز الرقمي" target="_blank" rel="noopener noreferrer"
               className="flex items-center justify-center gap-3 w-full py-4 rounded-[16px] active:scale-95 transition-all duration-200 shadow-[0_8px_28px_rgba(0,0,0,0.3)] mb-3"
               style={{ background: 'linear-gradient(135deg,#25D366,#128C7E)' }}>
               <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white shrink-0">
@@ -1332,7 +1338,7 @@ export default function App() {
       {/* ── Footer ────────────────────────────────────────── */}
       <div className="text-center pb-8 px-6">
         <div className="flex items-center justify-center gap-2 mb-2">
-          <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#7B1618,#4A0D0F)' }}>
+          <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#B06070,#7A3050)' }}>
             <span className="text-white text-[9px] font-bold">ت</span>
           </div>
           <span className="text-[13px] font-bold text-[#111]">تلقا تك</span>
@@ -1341,11 +1347,11 @@ export default function App() {
 
         {/* Commercial Registration Badge */}
         <div className="inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-full border border-[#F5E6E6] bg-[#FFF8F8]">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7B1618" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B06070" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
             <polyline points="22 4 12 14.01 9 11.01"/>
           </svg>
-          <span className="text-[11px] text-[#7B1618] font-semibold">مؤسسة تلقا · سجل تجاري: 7054835322</span>
+          <span className="text-[11px] text-[#B06070] font-semibold">مؤسسة تلقا · سجل تجاري: 7054835322</span>
         </div>
       </div>
     </div>
