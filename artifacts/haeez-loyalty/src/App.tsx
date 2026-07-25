@@ -289,7 +289,7 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
       {/* Inline mini header */}
       {inline && (
         <div className="px-5 pt-4 pb-2">
-          <p className="text-white/50 text-[10px] font-semibold tracking-widest mb-1">حاسبة العائد — غيّر أرقام الكافي</p>
+          <p className="text-white/50 text-[10px] font-semibold mb-1">حاسبة العائد — غيّر أرقام الكافي</p>
         </div>
       )}
 
@@ -321,17 +321,17 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
         <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 80% 20%,rgba(201,149,106,0.14) 0%,transparent 55%)' }} />
         <div className="relative z-10 grid grid-cols-3 gap-3 text-center">
           <div>
-            <p className="text-white/30 text-[8px] font-semibold tracking-widest mb-1">إيراد إضافي/شهر</p>
+            <p className="text-white/30 text-[8px] font-semibold mb-1">إيراد إضافي/شهر</p>
             <p className="text-[#7A3B18] text-[18px] font-black font-inter leading-none">{monthly.toLocaleString('ar')}</p>
             <p className="text-white/25 text-[8px] mt-0.5">ريال</p>
           </div>
           <div className="border-x border-white/[0.07]">
-            <p className="text-white/30 text-[8px] font-semibold tracking-widest mb-1">يرجع الاستثمار</p>
+            <p className="text-white/30 text-[8px] font-semibold mb-1">يرجع الاستثمار</p>
             <p className="text-[#30D158] text-[18px] font-black font-inter leading-none">{weeks}</p>
             <p className="text-white/25 text-[8px] mt-0.5">أسبوع فقط</p>
           </div>
           <div>
-            <p className="text-white/30 text-[8px] font-semibold tracking-widest mb-1">نمو العودة</p>
+            <p className="text-white/30 text-[8px] font-semibold mb-1">نمو العودة</p>
             <p className="text-white text-[18px] font-black font-inter leading-none">١٥٪</p>
             <p className="text-white/25 text-[8px] mt-0.5">الحد الأدنى</p>
           </div>
@@ -446,7 +446,7 @@ function NotificationsShowcase() {
     <div id="notif-showcase" className="max-w-5xl mx-auto px-6 mb-10">
       {/* Header */}
       <div className="text-center mb-8">
-        <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1.5">إشعارات ذكية</p>
+        <p className="text-[11px] text-[#AAA] font-semibold mb-1.5">إشعارات ذكية</p>
         <h2 className="text-[24px] font-bold text-[#111]">تطبيقك يعرف متى يتكلم</h2>
         <p className="text-[13px] text-[#AAA] font-light mt-2">إشعارات تصل في اللحظة الصح — مش مجرد رسائل عشوائية</p>
       </div>
@@ -723,7 +723,7 @@ export default function App() {
           </motion.div>
           <span className="text-[11px] font-light hidden sm:block" style={{ color: '#9A948C' }}>Brown Dose · نظام الولاء والطلب · جيزان</span>
           <motion.a
-            href="https://wa.me/966" target="_blank" rel="noopener noreferrer"
+            href="https://wa.me/966551378531" target="_blank" rel="noopener noreferrer"
             className="text-[11px] font-semibold text-[#6B3210] px-3.5 py-1.5 rounded-full transition-all duration-150"
             style={{ border: '1px solid rgba(196,120,58,0.3)', background: 'rgba(107,50,16,0.04)' }}
             whileHover={{ scale: 1.03, background: 'rgba(107,50,16,0.08)' }}
@@ -990,7 +990,7 @@ export default function App() {
       {/* ── App Screens Strip ─────────────────────────────── */}
       <div className="max-w-5xl mx-auto mb-10">
         <div className="text-center mb-4 px-6">
-          <p className="text-[11px] font-semibold tracking-widest uppercase mb-1" style={{ color: '#9A948C' }}>شاشات التطبيق</p>
+          <p className="text-[11px] font-semibold mb-1" style={{ color: '#9A948C' }}>شاشات التطبيق</p>
           <h2 className="text-[22px] font-bold" style={{ color: '#2C2825' }}>٥ شاشات مصممة بالكامل</h2>
         </div>
         <AppScreensStrip onTabSelect={(t) => { setActiveTab(t); document.querySelector('[data-phone]')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); }} />
@@ -1016,7 +1016,7 @@ export default function App() {
           <div className="absolute inset-0" style={{ background: 'linear-gradient(to top,rgba(8,0,3,0.92) 0%,rgba(8,0,3,0.55) 45%,rgba(8,0,3,0.15) 100%)' }} />
           {/* Content */}
           <div className="absolute inset-0 flex flex-col justify-end p-8">
-            <p className="text-[#7A3B18] text-[10px] font-semibold tracking-widest uppercase mb-2">BROWN DOSE · جيزان · صبيا وضمد</p>
+            <p className="text-[#7A3B18] text-[10px] font-semibold mb-2"><span className="tracking-widest">BROWN DOSE</span> · جيزان · صبيا وضمد</p>
             <h3 className="text-white text-[26px] font-bold mb-2 leading-tight">
               براون دوز يستحق<br />هوية رقمية حقيقية
             </h3>
@@ -1039,7 +1039,7 @@ export default function App() {
       {/* ── Video Section ────────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="text-center mb-5">
-          <p className="text-[11px] font-semibold tracking-widest uppercase mb-1" style={{ color: '#9A948C' }}>مثال حي</p>
+          <p className="text-[11px] font-semibold mb-1" style={{ color: '#9A948C' }}>مثال حي</p>
           <h2 className="text-[22px] font-bold" style={{ color: '#2C2825' }}>تطبيق براون دوز — كيف يبدو للزبون</h2>
           <p className="text-[12px] font-light mt-1" style={{ color: '#9A948C' }}>منيو رقمي · نقاط ولاء · توصيل واستلام · كل شيء في مكان واحد</p>
         </div>
@@ -1053,7 +1053,7 @@ export default function App() {
           <div className="absolute inset-0 flex flex-col">
             {/* Header */}
             <div className="px-6 pt-6 pb-4 text-center">
-              <p className="text-[#7A3B18] text-[10px] font-semibold tracking-widest mb-1">منيو رقمي تفاعلي</p>
+              <p className="text-[#7A3B18] text-[10px] font-semibold mb-1">منيو رقمي تفاعلي</p>
               <p className="text-white text-[16px] font-bold">يتغير بضغطة — بدون مبرمج</p>
             </div>
             {/* Food grid */}
@@ -1101,7 +1101,7 @@ export default function App() {
 
             {/* Copy */}
             <div className="flex-1 text-right">
-              <p className="text-[#7A3B18] text-[10px] font-semibold tracking-widest uppercase mb-2">Apple Watch · مطعمك</p>
+              <p className="text-[#7A3B18] text-[10px] font-semibold mb-2"><span className="tracking-widest">Apple Watch</span> · مطعمك</p>
               <h3 className="text-white text-[22px] md:text-[26px] font-bold mb-3 leading-tight">
                 نقاطك ومستواك<br /><span className="text-[#7A3B18]">على معصمك دائماً</span>
               </h3>
@@ -1283,7 +1283,7 @@ export default function App() {
       {/* ── Full Features Grid ────────────────────────────── */}
       <div className="max-w-5xl mx-auto px-6 mb-10">
         <div className="text-center mb-6">
-          <p className="text-[11px] font-semibold tracking-widest uppercase mb-1.5" style={{ color: '#9A948C' }}>كل ما يحصل عليه براون دوز</p>
+          <p className="text-[11px] font-semibold mb-1.5" style={{ color: '#9A948C' }}>كل ما يحصل عليه براون دوز</p>
           <h2 className="text-[24px] font-bold" style={{ color: '#2C2825' }}>مزايا النظام في منظومة واحدة</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
@@ -1381,7 +1381,7 @@ export default function App() {
           {/* Main editorial text */}
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.18 }}
             className="text-center mb-14">
-            <p className="text-white/20 text-[12px] font-light mb-5 tracking-widest">يقول أحد زبائن مطعم يستخدم المنظومة</p>
+            <p className="text-white/20 text-[12px] font-light mb-5">يقول أحد زبائن مطعم يستخدم المنظومة</p>
             <blockquote className="text-white text-[26px] md:text-[32px] font-bold leading-relaxed mb-6 tracking-tight">
               "ما أروح مطعم ثاني<br />
               <span style={{ background: 'linear-gradient(90deg,#7A3B18,#E8C4A0)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
@@ -1434,7 +1434,7 @@ export default function App() {
 
           {/* Bottom tagline */}
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
-            className="text-center text-white/20 text-[11px] font-light mt-10 tracking-widest">
+            className="text-center text-white/20 text-[11px] font-light mt-10">
             التطبيق يحفظ هذه اللحظات ويجعلها جزءاً من قصة كل عضو
           </motion.p>
 
@@ -1446,7 +1446,7 @@ export default function App() {
         <div className="bg-white/75 rounded-[28px] p-6 border border-[rgba(160,82,45,0.07)] shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
           <div className="flex items-start justify-between mb-5">
             <div>
-              <p className="text-[10px] text-[#6B3210] font-semibold tracking-widest uppercase mb-1">مجتمع مطعمك</p>
+              <p className="text-[10px] text-[#6B3210] font-semibold mb-1">مجتمع مطعمك</p>
               <h3 className="text-[22px] font-bold text-[#111]">١,٥٠٠+ عضو نشط</h3>
               <p className="text-[12px] text-[#888] font-light mt-1">منصة اجتماعية داخل التطبيق</p>
             </div>

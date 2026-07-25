@@ -130,7 +130,7 @@ function ActiveOrder({ items, orderId }: { items: string; orderId: string }) {
       <div className="relative p-5">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <p className="text-[9px] text-[#7A3B18] font-bold tracking-widest mb-0.5">طلب نشط</p>
+            <p className="text-[9px] text-[#7A3B18] font-bold mb-0.5">طلب نشط</p>
             <p className="text-white text-[15px] font-bold">{orderId}</p>
           </div>
           <div className="text-center px-3 py-1.5 rounded-[12px]"
@@ -208,7 +208,7 @@ function relLabel(d: Date): string {
   if (hrs < 48)  return 'أمس';
   return fmtDate(d);
 }
-function invNum(id: string) { return id.replace('#','').replace('INV-','INV-'); }
+function invNum(id: string) { return id.replace('#',''); }
 
 /* ── Past order card ────────────────────────────────────────────── */
 interface PastOrder {
@@ -263,10 +263,12 @@ function InvoiceDetailSheet({ order, onClose }: { order: PastOrder; onClose: () 
               <X size={14} className="text-[#888]" />
             </button>
             <p className="text-[13px] font-black text-[#111]">تفاصيل الفاتورة</p>
-            <button className="w-8 h-8 rounded-full flex items-center justify-center"
+            <motion.button whileTap={{ scale: 0.88 }}
+              onClick={() => window.print()}
+              className="w-8 h-8 rounded-full flex items-center justify-center"
               style={{ background: 'rgba(107,50,16,0.08)' }}>
               <Download size={13} className="text-[#6B3210]" />
-            </button>
+            </motion.button>
           </div>
         </div>
 
@@ -276,8 +278,8 @@ function InvoiceDetailSheet({ order, onClose }: { order: PastOrder; onClose: () 
           {/* Brand + invoice no */}
           <div className="flex items-center justify-between py-4 border-b border-[rgba(196,181,159,0.15)] mb-4">
             <div>
-              <p className="text-[10px] font-black tracking-widest text-[#6B3210]"
-                style={{ fontFamily: 'ui-monospace,monospace' }}>فاتورة ضريبية · ZATCA</p>
+              <p className="text-[10px] font-black text-[#6B3210]"
+                style={{ fontFamily: 'ui-monospace,monospace' }}>فاتورة ضريبية · <span className="tracking-widest">ZATCA</span></p>
               <p className="text-[20px] font-black text-[#111] mt-0.5">براون دوز</p>
             </div>
             <div className="text-left">
@@ -307,7 +309,7 @@ function InvoiceDetailSheet({ order, onClose }: { order: PastOrder; onClose: () 
             style={{ border: '1px solid rgba(196,181,159,0.15)' }}>
             <div className="px-4 py-3 border-b border-[rgba(196,181,159,0.1)]"
               style={{ background: 'rgba(196,181,159,0.06)' }}>
-              <p className="text-[9px] font-black text-[#AAA] tracking-widest">الأصناف</p>
+              <p className="text-[9px] font-black text-[#AAA]">الأصناف</p>
             </div>
             <div className="px-4 py-4 flex items-center gap-3 bg-white">
               <div className="w-10 h-10 rounded-[12px] flex items-center justify-center text-[20px] shrink-0"

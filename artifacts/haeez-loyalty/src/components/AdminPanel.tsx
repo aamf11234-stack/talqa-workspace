@@ -39,8 +39,8 @@ function PinScreen({ onSuccess, onClose }: { onSuccess: () => void; onClose: () 
         <X size={15} className="text-white/50" />
       </button>
 
-      <p className="text-[10px] font-black tracking-widest text-[#C4783A] mb-2"
-        style={{ fontFamily: 'ui-monospace,monospace' }}>OWNER · لوحة التحكم</p>
+      <p className="text-[10px] font-black text-[#C4783A] mb-2"
+        style={{ fontFamily: 'ui-monospace,monospace' }}><span className="tracking-widest">OWNER</span> · لوحة التحكم</p>
       <p className="text-white text-[22px] font-black mb-8">أدخل الرمز</p>
 
       {/* Dots */}

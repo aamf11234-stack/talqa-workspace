@@ -692,7 +692,7 @@ function GiftModal({ gift, onClose, onSend }: { gift: { title: string; pts: numb
             <span className="text-[#7A3B18] text-[11px] font-bold font-inter">{gift.pts}</span>
           </div>
         </div>
-        <p className="text-[11px] font-semibold text-[#888] mb-2.5 tracking-wide">اختر صديقاً من الأعضاء</p>
+        <p className="text-[11px] font-semibold text-[#888] mb-2.5">اختر صديقاً من الأعضاء</p>
         <div className="space-y-2 mb-4 overflow-y-auto">
           {friends.map(f => (
             <button key={f} onClick={() => setSelected(f)}
@@ -933,7 +933,7 @@ function RedeemInvoiceSheet({
 
         {/* Item detail */}
         <div className="px-5 py-4 border-b border-[rgba(196,181,159,0.12)]">
-          <p className="text-[8.5px] font-black text-[#AAA] tracking-widest mb-3" style={{ fontFamily: 'ui-monospace' }}>المكافأة المستبدلة</p>
+          <p className="text-[8.5px] font-black text-[#AAA] mb-3" style={{ fontFamily: 'ui-monospace' }}>المكافأة المستبدلة</p>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-[12px] flex items-center justify-center text-[20px] shrink-0"
               style={{ background: `${item.color}10` }}>{item.emoji}</div>

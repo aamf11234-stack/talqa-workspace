@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, Check, ChevronLeft, MapPin, Gift, Star, Zap, Coffee, Crown, Calendar } from 'lucide-react';
+
+function ActionButton({ label }: { label: string }) {
+  const [done, setDone] = useState(false);
+  return (
+    <motion.button
+      whileTap={{ scale: 0.88 }}
+      onClick={() => { setDone(true); setTimeout(() => setDone(false), 1800); }}
+      className="flex items-center gap-1 text-[10px] font-bold transition-colors"
+      style={{ color: done ? '#30D158' : '#6B3210' }}>
+      {done ? <><Check size={9} strokeWidth={3} /> تم</> : <>{label}<ChevronLeft size={10} /></>}
+    </motion.button>
+  );
+}
 const logoImg = `${import.meta.env.BASE_URL}browndose-logo.svg`;
 
 interface Notif {
@@ -230,13 +243,7 @@ export function ScreenNotifications() {
                       <p className="text-[10.5px] text-[#888] font-light leading-relaxed mb-2">{n.body}</p>
 
                       {n.actionLabel && (
-                        <motion.button
-                          whileTap={{ scale: 0.92 }}
-                          className="flex items-center gap-1 text-[10px] font-bold"
-                          style={{ color: '#6B3210' }}>
-                          {n.actionLabel}
-                          <ChevronLeft size={10} />
-                        </motion.button>
+                        <ActionButton label={n.actionLabel} />
                       )}
                     </div>
                   </div>

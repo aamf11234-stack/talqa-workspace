@@ -11,6 +11,7 @@ import type { CheckoutItem, CompletedOrderData } from './CheckoutFlow';
 import { useOrders } from '../OrdersContext';
 import { useOffersStore } from '../hooks/useOffersStore';
 import type { Deal, Product } from '../hooks/useOffersStore';
+import { AdminPanel } from './AdminPanel';
 
 /* ── Counter hook ─────────────────────────────────────────────────── */
 function useCounter(target: number, duration = 1400, delay = 200) {
@@ -152,8 +153,8 @@ function MoodPicker({ onOrder }: { onOrder: (item: CheckoutItem) => void }) {
                 </div>
               ) : result ? (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                  <p className="text-[8px] font-black tracking-widest text-[#AF52DE] mb-2"
-                    style={{ fontFamily: 'ui-monospace,monospace' }}>AI RECOMMENDS · بناءً على مزاجك وزياراتك</p>
+                  <p className="text-[8px] font-black text-[#AF52DE] mb-2"
+                    style={{ fontFamily: 'ui-monospace,monospace' }}><span className="tracking-widest">AI RECOMMENDS</span> · بناءً على مزاجك وزياراتك</p>
                   <div className="flex gap-2">
                     {result.items.map((item, i) => (
                       <motion.button key={i}
@@ -229,9 +230,9 @@ function TodaySpecial({ onOrder }: { onOrder: (item: CheckoutItem) => void }) {
               <div className="flex items-center gap-1 px-2 py-0.5 rounded-full"
                 style={{ background: 'rgba(230,126,34,0.9)', backdropFilter: 'blur(8px)' }}>
                 <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                <span className="text-white text-[7px] font-bold tracking-wider">جارٍ الآن</span>
+                <span className="text-white text-[7px] font-bold">جارٍ الآن</span>
               </div>
-              <span className="text-white/40 text-[7px] font-inter tracking-widest">{t.badge}</span>
+              <span className="text-white/40 text-[7px] font-inter">{t.badge}</span>
             </div>
             <p className="text-white text-[20px] font-black leading-tight"
               style={{ textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>{t.name}</p>
@@ -474,7 +475,7 @@ function HaizCalendar() {
                       style={{ background: `${ev.color}12`, border: `1px solid ${ev.color}25` }}>
                       <div className="shrink-0 mt-0.5"><IGift size={16} color={ev.color} sw={1.4} /></div>
                       <div>
-                        <p className="text-[7.5px] font-black tracking-widest mb-1"
+                        <p className="text-[7.5px] font-black mb-1"
                           style={{ color: ev.color, fontFamily: 'ui-monospace,monospace' }}>عرض المحل الحصري</p>
                         <p className="text-white/70 text-[11px] leading-relaxed">{ev.benefit}</p>
                       </div>
@@ -681,7 +682,7 @@ function QuickBookSheet({ onClose }: { onClose: () => void }) {
               </div>
 
               {/* Slots */}
-              <p className="text-white/30 text-[10px] font-bold tracking-widest mb-3">المواعيد المتاحة اليوم</p>
+              <p className="text-white/30 text-[10px] font-bold mb-3">المواعيد المتاحة اليوم</p>
               <div className="grid grid-cols-3 gap-2 mb-5">
                 {SLOTS.map(s => {
                   const active = selectedSlot === s.time;
@@ -1016,13 +1017,18 @@ function BusyMeter() {
 export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) {
   const { brand } = useBrand();
   const { addOrder } = useOrders();
-  const { deals, products } = useOffersStore();
+  const offersStore = useOffersStore();
+  const { deals, products } = offersStore;
   const points = useCounter(480, 1400, 200);
   const [showSpin, setShowSpin] = useState(false);
   const [pendingOrder, setPendingOrder] = useState<CheckoutItem | null>(null);
   const [showNotifs, setShowNotifs] = useState(false);
   const [showBookSheet, setShowBookSheet] = useState(false);
   const [showOffersSheet, setShowOffersSheet] = useState(false);
+  const [showAdmin, setShowAdmin] = useState(false);
+  const longPressTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const onLogoPress = () => { longPressTimer.current = setTimeout(() => setShowAdmin(true), 1500); };
+  const onLogoRelease = () => { if (longPressTimer.current) clearTimeout(longPressTimer.current); };
 
   function handleOrderComplete(data: CompletedOrderData) {
     addOrder({
@@ -1045,6 +1051,22 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
 
   return (
     <div className="h-full relative overflow-hidden">
+      {/* Admin panel overlay */}
+      <AnimatePresence>
+        {showAdmin && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="absolute inset-0 z-[100] overflow-y-auto">
+            <AdminPanel
+              deals={deals} products={products}
+              onAddDeal={offersStore.addDeal}       onUpdateDeal={offersStore.updateDeal}   onDeleteDeal={offersStore.deleteDeal}
+              onAddProduct={offersStore.addProduct} onUpdateProduct={offersStore.updateProduct} onDeleteProduct={offersStore.deleteProduct}
+              onReset={offersStore.resetToDefaults}
+              onClose={() => setShowAdmin(false)}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Overlays — clipped inside phone frame */}
       <AnimatePresence>
         {showSpin && <SpinWheelOverlay onClose={() => setShowSpin(false)} />}
@@ -1116,7 +1138,7 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
             <motion.p
               initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.4 }}
-              className="text-[11px] font-light tracking-wide"
+              className="text-[11px] font-light"
               style={{ color: 'rgba(255,255,255,0.38)' }}
             >{greeting}</motion.p>
             <motion.p
@@ -1169,6 +1191,8 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
                 exit={{ scale: 0.75, opacity: 0, rotate: 5 }}
                 transition={{ duration: 0.3, type: 'spring', stiffness: 380, damping: 22 }}
                 className="relative"
+                onMouseDown={onLogoPress} onMouseUp={onLogoRelease} onMouseLeave={onLogoRelease}
+                onTouchStart={onLogoPress} onTouchEnd={onLogoRelease}
               >
                 <img src={brand.logoImg} alt="" className="w-10 h-10 rounded-[12px] object-cover"
                   style={{ boxShadow: '0 4px 14px rgba(0,0,0,0.5), 0 0 0 1.5px rgba(255,255,255,0.1)' }} />
@@ -1357,9 +1381,10 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
         <div className="px-4 mb-5">
           <div className="flex items-center justify-between mb-3">
             <p className="text-[13px] font-bold text-[#111]">آخر الطلبات</p>
-            <button className="text-[11px] text-[#C4B59F] flex items-center gap-0.5">
+            <motion.button whileTap={{ scale: 0.9 }} onClick={() => setShowOffersSheet(true)}
+              className="text-[11px] text-[#C4B59F] flex items-center gap-0.5">
               عرض الكل <ChevronLeft size={11} />
-            </button>
+            </motion.button>
           </div>
           <div className="space-y-1.5">
             {brand.recentOrders.map((r, i) => (

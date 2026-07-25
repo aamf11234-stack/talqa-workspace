@@ -334,16 +334,16 @@ function CheckInSheet({ onClose, onPosted }: { onClose: () => void; onPosted: ()
                 rows={2}
               />
               <div className="flex items-center gap-2 mt-2 pt-2 border-t border-[rgba(196,181,159,0.1)]">
-                <button className="flex items-center gap-1.5 text-[10px] text-[#AAA]">
+                <motion.button whileTap={{ scale: 0.88 }} className="flex items-center gap-1.5 text-[10px] text-[#AAA]">
                   <Camera size={13} /> أضف صورة
-                </button>
+                </motion.button>
                 <span className="text-[#E0D8D0]">·</span>
                 <span className="text-[9px] text-[#CCC]">{caption.length}/١٥٠</span>
               </div>
             </div>
 
             {/* Share to platforms */}
-            <p className="text-[10px] font-bold text-[#888] mb-2.5 tracking-wide">شارك على</p>
+            <p className="text-[10px] font-bold text-[#888] mb-2.5">شارك على</p>
             <div className="flex gap-2 mb-5 flex-wrap">
               {platforms.map(p => {
                 const on = selected.includes(p.id);
@@ -501,10 +501,10 @@ function PostCard({ post, index }: { post: typeof feedPosts[0]; index: number })
               className={liked ? 'fill-[#FF3B30] stroke-[#FF3B30]' : 'stroke-[#CCC]'} />
             <span className={`text-[11px] font-inter tabular-nums ${liked ? 'text-[#FF3B30]' : 'text-[#CCC]'}`}>{likes}</span>
           </motion.button>
-          <button className="flex items-center gap-1.5">
+          <motion.button whileTap={{ scale: 0.85 }} className="flex items-center gap-1.5">
             <MessageCircle size={15} className="stroke-[#CCC]" />
             <span className="text-[11px] text-[#CCC] font-inter">{post.comments}</span>
-          </button>
+          </motion.button>
           <button className="flex items-center gap-1.5 mr-auto">
             <Share2 size={13} className="stroke-[#CCC]" />
           </button>
@@ -654,7 +654,7 @@ export function ScreenCommunity() {
               <div>
                 <div className="flex items-center gap-1.5 mb-1">
                   <Trophy size={11} className="text-[#7A3B18]" />
-                  <span className="text-[9px] text-[#7A3B18] font-bold tracking-widest">التحدي الأسبوعي</span>
+                  <span className="text-[9px] text-[#7A3B18] font-bold">التحدي الأسبوعي</span>
                 </div>
                 <p className="text-white text-[13px] font-bold">٥ أكواب في ٧ أيام</p>
                 <p className="text-white/55 text-[10px] mt-0.5">٦٧ مشارك · ٤ أيام متبقية</p>

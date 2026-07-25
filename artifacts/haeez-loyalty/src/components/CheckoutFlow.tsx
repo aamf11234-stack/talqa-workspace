@@ -758,7 +758,7 @@ function PaymentSheet({ item, orderType, onPay, phase }: {
         </motion.div>
 
         {/* Payment method selector */}
-        <p className="text-[11px] font-bold text-[#666] mb-2.5 tracking-wide">طريقة الدفع</p>
+        <p className="text-[11px] font-bold text-[#666] mb-2.5">طريقة الدفع</p>
         <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
           className="flex gap-2 mb-4">
           {([
@@ -1156,7 +1156,7 @@ function InvoiceSheet({ item, orderType, payMethod, brandName, logoImg, onClose 
 
         {/* Item */}
         <div className="px-5 py-4 border-b border-[rgba(196,181,159,0.12)]">
-          <p className="text-[8.5px] font-black text-[#AAA] tracking-widest mb-3" style={{ fontFamily: 'ui-monospace' }}>الأصناف المطلوبة</p>
+          <p className="text-[8.5px] font-black text-[#AAA] mb-3" style={{ fontFamily: 'ui-monospace' }}>الأصناف المطلوبة</p>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-[12px] flex items-center justify-center text-[20px] shrink-0"
               style={{ background: 'rgba(160,82,45,0.06)' }}>{item.emoji}</div>
