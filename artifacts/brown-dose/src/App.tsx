@@ -7,6 +7,7 @@ import { HomeScreen } from './screens/Home';
 import { MenuScreen } from './screens/Menu';
 import { OrdersScreen } from './screens/Orders';
 import { CardScreen } from './screens/Card';
+import { AdminScreen } from './screens/Admin';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Coffee, Smartphone, CreditCard, Store, Bell, BarChart3, ShieldCheck, CheckCircle2, Navigation, MessageCircle, ArrowLeft } from 'lucide-react';
 
@@ -343,6 +344,12 @@ function LandingPage() {
         <p className="text-white/40 text-sm font-medium tracking-wide">
           BROWN DOSE × تلقا تك · ٢٠٢٥ · جيزان
         </p>
+        <button
+          onClick={() => (window as any).__bdAdmin?.()}
+          className="mt-3 text-white/10 hover:text-white/25 text-xs transition-colors select-none"
+        >
+          ⚙
+        </button>
       </footer>
       
     </div>
@@ -350,9 +357,19 @@ function LandingPage() {
 }
 
 function App() {
+  const [showAdmin, setShowAdmin] = useState(false);
+
+  // expose opener so the footer ⚙ button can call it
+  useEffect(() => {
+    (window as any).__bdAdmin = () => setShowAdmin(true);
+    return () => { delete (window as any).__bdAdmin; };
+  }, []);
+
   return (
     <div dir="rtl">
-      <LandingPage />
+      {showAdmin
+        ? <AdminScreen onClose={() => setShowAdmin(false)} />
+        : <LandingPage />}
     </div>
   );
 }

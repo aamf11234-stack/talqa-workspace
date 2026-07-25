@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, ChevronLeft, Calendar, ShoppingBag, Tag, Zap, Flame, ArrowLeft, Sparkles, Truck, Check } from 'lucide-react';
 import { EventIconMap, ICalendarIcon, IGift } from './HaizIcons';
@@ -9,6 +9,8 @@ import type { BrandConfig } from '../BrandContext';
 import { CheckoutModal } from './CheckoutFlow';
 import type { CheckoutItem, CompletedOrderData } from './CheckoutFlow';
 import { useOrders } from '../OrdersContext';
+import { useOffersStore } from '../hooks/useOffersStore';
+import type { Deal, Product } from '../hooks/useOffersStore';
 
 /* ── Counter hook ─────────────────────────────────────────────────── */
 function useCounter(target: number, duration = 1400, delay = 200) {
@@ -724,23 +726,11 @@ function QuickBookSheet({ onClose }: { onClose: () => void }) {
 }
 
 /* ── Offers Sheet ───────────────────────────────────────────────── */
-/* ── Offers data ────────────────────────────────────────────────── */
-const OFFER_DEALS = [
-  { emoji: '☕', title: 'قهوتان للسعر الواحد',    sub: 'صالح للأعضاء فقط · حتى ١٢م',   color: '#7A3B18', grad: 'linear-gradient(135deg,#1A0804,#3A1408)', tag: 'عضوية',  timer: '٢:١٨:٤٥' },
-  { emoji: '🍔', title: 'برجر + مشروب بـ٤٩ ريال', sub: 'وفر ٢٢٪ — ينتهي الليلة',        color: '#C4783A', grad: 'linear-gradient(135deg,#1A0E00,#3A2208)', tag: 'الأشهر', timer: '٩:٤٢:٠٠' },
-  { emoji: '🎂', title: 'حلى مجاناً مع أي طلب',   sub: 'لأعياد الميلاد هذا الشهر',      color: '#2D7D46', grad: 'linear-gradient(135deg,#001A0A,#023818)', tag: 'مناسبة', timer: null },
-];
-
-const OFFER_PRODUCTS = [
-  { emoji: '☕', name: 'قهوة تخصص براون دوز',  desc: 'سبيشيالتي مقطّرة على الحجر',   price: '٢٢', orig: '٢٨', color: '#7A3B18' },
-  { emoji: '🥤', name: 'كومبو المساء',          desc: 'قهوة مثلجة + قطعة كيك شوكولاتة', price: '٣٨', orig: '٥٢', color: '#C4783A' },
-  { emoji: '🍰', name: 'كيك الشوكولاتة',        desc: 'طازج يومياً من مطبخنا',          price: '١٢', orig: null,  color: '#6B3210' },
-  { emoji: '🧋', name: 'ماتشا لاتيه مثلج',      desc: 'ماتشا يابانية أصلية',            price: '١٨', orig: '٢٣', color: '#2D7D46' },
-];
-
-function OffersSheet({ onClose, onOrder }: {
-  onClose: () => void;
-  onOrder: (item: CheckoutItem) => void;
+function OffersSheet({ onClose, onOrder, deals, products }: {
+  onClose:  () => void;
+  onOrder:  (item: CheckoutItem) => void;
+  deals:    Deal[];
+  products: Product[];
 }) {
   const [claimed, setClaimed] = useState<number | null>(null);
   const [tab, setTab]         = useState<'deals' | 'shop'>('deals');
@@ -752,8 +742,8 @@ function OffersSheet({ onClose, onOrder }: {
       <motion.div
         initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '110%' }}
         transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-        className="absolute bottom-0 left-0 right-0 z-50 rounded-t-[28px] overflow-hidden"
-        style={{ background: '#0D0200', maxHeight: '88%' }}>
+        className="absolute bottom-0 left-0 right-0 z-50 rounded-t-[28px] overflow-hidden flex flex-col"
+        style={{ background: '#0D0200', height: '94%' }}>
 
         {/* Handle */}
         <div className="flex justify-center pt-3 pb-1">
@@ -783,7 +773,7 @@ function OffersSheet({ onClose, onOrder }: {
         </div>
 
         {/* Content — scrollable */}
-        <div className="overflow-y-auto scrollbar-none" style={{ maxHeight: 'calc(88vh - 160px)' }}>
+        <div className="flex-1 overflow-y-auto scrollbar-none">
           <AnimatePresence mode="wait">
 
             {/* ── Deals tab ── */}
@@ -792,7 +782,7 @@ function OffersSheet({ onClose, onOrder }: {
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.18 }}
                 className="flex flex-col gap-2.5 px-4 pb-6">
-                {OFFER_DEALS.map((o, i) => (
+                {deals.map((o, i) => (
                   <motion.button key={i}
                     initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.07 }}
@@ -849,7 +839,7 @@ function OffersSheet({ onClose, onOrder }: {
                 </div>
 
                 <div className="flex flex-col gap-2.5">
-                  {OFFER_PRODUCTS.map((p, i) => (
+                  {products.map((p, i) => (
                     <motion.div key={i}
                       initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.06 }}
@@ -874,7 +864,7 @@ function OffersSheet({ onClose, onOrder }: {
                           {p.orig && (
                             <span className="text-[8px] font-black px-1.5 py-0.5 rounded-full"
                               style={{ background: 'rgba(48,209,88,0.15)', color: '#30D158' }}>
-                              وفّر {parseInt(p.orig.replace(/[٠-٩]/g, d => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)))) - parseInt(p.price.replace(/[٠-٩]/g, d => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))))} ر
+                              وفّر {p.orig - p.price} ر
                             </span>
                           )}
                         </div>
@@ -883,7 +873,7 @@ function OffersSheet({ onClose, onOrder }: {
                       {/* Buy CTA */}
                       <motion.button
                         whileTap={{ scale: 0.9 }}
-                        onClick={() => { onOrder({ name: p.name, price: p.price, emoji: p.emoji }); onClose(); }}
+                        onClick={() => { onOrder({ name: p.name, price: String(p.price), emoji: p.emoji }); onClose(); }}
                         className="shrink-0 px-3 py-2 rounded-[13px] font-bold text-[12px] text-white"
                         style={{
                           background: `linear-gradient(135deg,${p.color},${p.color}AA)`,
@@ -1020,6 +1010,7 @@ function BusyMeter() {
 export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) {
   const { brand } = useBrand();
   const { addOrder } = useOrders();
+  const { deals, products } = useOffersStore();
   const points = useCounter(480, 1400, 200);
   const [showSpin, setShowSpin] = useState(false);
   const [pendingOrder, setPendingOrder] = useState<CheckoutItem | null>(null);
@@ -1077,6 +1068,8 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
           <OffersSheet
             onClose={() => setShowOffersSheet(false)}
             onOrder={(item) => { setShowOffersSheet(false); setPendingOrder(item); }}
+            deals={deals}
+            products={products}
           />
         )}
       </AnimatePresence>
