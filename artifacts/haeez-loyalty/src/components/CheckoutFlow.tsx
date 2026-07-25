@@ -72,6 +72,30 @@ export const BRANCHES = [
   },
 ];
 
+/* ── Haversine distance (km) ─────────────────────────────────────── */
+function haversine([lat1, lon1]: [number, number], [lat2, lon2]: [number, number]) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+function fmtDist(km: number) {
+  return km < 1 ? `${Math.round(km * 1000)} م` : `${km.toFixed(1)} كم`;
+}
+
+/* ── Saved locations localStorage ───────────────────────────────── */
+const LS_KEY = 'bd_saved_locs';
+type SavedLoc = { name: string; coords: [number, number] };
+function getSavedLocs(): SavedLoc[] {
+  try { return JSON.parse(localStorage.getItem(LS_KEY) ?? '[]'); } catch { return []; }
+}
+function saveLoc(loc: SavedLoc) {
+  const list = getSavedLocs().filter(l => l.name !== loc.name);
+  localStorage.setItem(LS_KEY, JSON.stringify([loc, ...list].slice(0, 5)));
+}
+
 /* ── Helpers ────────────────────────────────────────────────────── */
 function pad(n: number) { return n.toString().padStart(2, '0'); }
 function nowAr() {
@@ -225,7 +249,7 @@ function OrderTypeSheet({ brandType, item, onSelect, onClose }: {
       animate={{ y: 0 }}
       exit={{ y: '110%' }}
       transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-      className="absolute inset-x-0 bottom-0 z-10"
+      className="absolute inset-x-0 bottom-0 z-20"
       style={{ background: '#FDFBF7', borderRadius: '30px 30px 0 0', maxHeight: '88%' }}
     >
       {/* Handle */}
@@ -314,15 +338,30 @@ function BranchPickerSheet({ onSelect, onBack, orderType }: {
   onBack: () => void;
   orderType: OrderType;
 }) {
+  const [userCoords, setUserCoords] = useState<[number, number] | null>(null);
+
+  useEffect(() => {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      p => setUserCoords([p.coords.latitude, p.coords.longitude]),
+      () => {},
+      { enableHighAccuracy: true, timeout: 6000 }
+    );
+  }, []);
+
+  const sorted = userCoords
+    ? [...BRANCHES].sort((a, b) => haversine(userCoords, a.coords) - haversine(userCoords, b.coords))
+    : BRANCHES;
+
   return (
     <motion.div
       initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
       transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-      className="absolute inset-0 z-10 overflow-y-auto scrollbar-none"
+      className="absolute inset-0 z-30 overflow-y-auto scrollbar-none"
       style={{ background: '#FDFBF7' }}
     >
       {/* Top bar */}
-      <div className="sticky top-0 z-10"
+      <div className="sticky top-0 z-30"
         style={{ background: 'rgba(253,251,247,0.92)', backdropFilter: 'blur(12px)', borderBottom: '1px solid rgba(196,181,159,0.15)' }}>
         <StepIndicator phase="branch" orderType={orderType} />
         <div className="flex items-center gap-3 px-4 pb-4">
@@ -333,14 +372,18 @@ function BranchPickerSheet({ onSelect, onBack, orderType }: {
           </motion.button>
           <div>
             <p className="text-[15px] font-black text-[#111]">اختر فرعك</p>
-            <p className="text-[10px] text-[#AAA] font-light">٣ فروع · صبيا · جيزان · ضمد</p>
+            <p className="text-[10px] text-[#AAA] font-light">
+              {userCoords ? 'مرتّب حسب الأقرب إليك' : '٣ فروع · صبيا · جيزان · ضمد'}
+            </p>
           </div>
         </div>
       </div>
 
       <div className="flex flex-col gap-3 px-4 py-4 pb-10">
-        {BRANCHES.map((b, i) => {
+        {sorted.map((b, i) => {
           const isBusy = b.status === 'busy';
+          const dist   = userCoords ? haversine(userCoords, b.coords) : null;
+          const isNearest = userCoords && i === 0;
           return (
             <motion.button
               key={b.id}
@@ -351,10 +394,16 @@ function BranchPickerSheet({ onSelect, onBack, orderType }: {
               className="text-right rounded-[20px] p-4 relative overflow-hidden"
               style={{
                 background: 'white',
-                border: '1px solid rgba(196,181,159,0.2)',
-                boxShadow: '0 2px 14px rgba(0,0,0,0.05)',
+                border: isNearest ? '1.5px solid rgba(107,50,16,0.25)' : '1px solid rgba(196,181,159,0.2)',
+                boxShadow: isNearest ? '0 4px 20px rgba(107,50,16,0.1)' : '0 2px 14px rgba(0,0,0,0.05)',
               }}
             >
+              {isNearest && (
+                <div className="absolute top-3 left-3 flex items-center gap-1 px-2 py-0.5 rounded-full"
+                  style={{ background: 'rgba(107,50,16,0.08)', border: '1px solid rgba(107,50,16,0.15)' }}>
+                  <span className="text-[8px] font-black text-[#6B3210]">📍 الأقرب إليك</span>
+                </div>
+              )}
               <div className="flex items-center gap-3">
                 {/* Emoji avatar */}
                 <div className="w-12 h-12 rounded-[15px] flex items-center justify-center text-[24px] shrink-0"
@@ -364,13 +413,19 @@ function BranchPickerSheet({ onSelect, onBack, orderType }: {
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-0.5">
-                    {/* Status badge */}
-                    <div className="flex items-center gap-1">
-                      <div className="w-1.5 h-1.5 rounded-full"
-                        style={{ background: isBusy ? '#FF9F0A' : '#30D158', boxShadow: `0 0 4px ${isBusy ? '#FF9F0A' : '#30D158'}` }} />
-                      <span className="text-[9px] font-bold" style={{ color: isBusy ? '#FF9F0A' : '#30D158' }}>
-                        {isBusy ? 'مزدحم' : 'هادي'}
-                      </span>
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1">
+                        <div className="w-1.5 h-1.5 rounded-full"
+                          style={{ background: isBusy ? '#FF9F0A' : '#30D158', boxShadow: `0 0 4px ${isBusy ? '#FF9F0A' : '#30D158'}` }} />
+                        <span className="text-[9px] font-bold" style={{ color: isBusy ? '#FF9F0A' : '#30D158' }}>
+                          {isBusy ? 'مزدحم' : 'هادي'}
+                        </span>
+                      </div>
+                      {dist !== null && (
+                        <span className="text-[9px] font-black text-[#6B3210] bg-[rgba(107,50,16,0.07)] px-1.5 py-0.5 rounded-full">
+                          {fmtDist(dist)}
+                        </span>
+                      )}
                     </div>
                     <p className="text-[15px] font-black text-[#111]">{b.name}</p>
                   </div>
@@ -380,8 +435,7 @@ function BranchPickerSheet({ onSelect, onBack, orderType }: {
                   <div className="flex items-center justify-between">
                     <a href={b.mapsUrl} target="_blank" rel="noreferrer"
                       onClick={e => e.stopPropagation()}
-                      className="flex items-center gap-1 text-[9px] font-semibold text-[#007AFF]"
-                    >
+                      className="flex items-center gap-1 text-[9px] font-semibold text-[#007AFF]">
                       <MapPin size={9} />
                       <span>الموقع</span>
                     </a>
@@ -408,6 +462,8 @@ function BranchPickerSheet({ onSelect, onBack, orderType }: {
 ════════════════════════════════════════════════════════════════════ */
 const SABYA_CENTER: [number, number] = [17.1508, 42.6275];
 
+const QUICK_NAMES = ['🏠 البيت', '💼 العمل', '☕ المقهى', '🏋️ الجيم'];
+
 function MapPickerSheet({ onConfirm, onBack }: { onConfirm: (addr: string) => void; onBack: () => void }) {
   const [pin,        setPin]        = useState<[number, number] | null>(null);
   const [userLoc,    setUserLoc]    = useState<[number, number] | null>(null);
@@ -415,6 +471,9 @@ function MapPickerSheet({ onConfirm, onBack }: { onConfirm: (addr: string) => vo
   const [gpsLoading, setGpsLoading] = useState(false);
   const [gpsError,   setGpsError]   = useState('');
   const [notes,      setNotes]      = useState('');
+  const [locName,    setLocName]    = useState('');
+  const [savedLocs,  setSavedLocs]  = useState<SavedLoc[]>(() => getSavedLocs());
+  const [justSaved,  setJustSaved]  = useState(false);
 
   useEffect(() => { requestGPS(); }, []); // eslint-disable-line
 
@@ -434,11 +493,24 @@ function MapPickerSheet({ onConfirm, onBack }: { onConfirm: (addr: string) => vo
     );
   }
 
+  function handleConfirm() {
+    if (!pin) return;
+    // Save location if name given
+    if (locName.trim()) {
+      const entry: SavedLoc = { name: locName.trim(), coords: pin };
+      saveLoc(entry);
+      setSavedLocs(getSavedLocs());
+      setJustSaved(true);
+      setTimeout(() => setJustSaved(false), 1800);
+    }
+    onConfirm(`${pin[0].toFixed(5)},${pin[1].toFixed(5)}${notes ? ' · ' + notes : ''}`);
+  }
+
   return (
     <motion.div
       initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
       transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-      className="absolute inset-0 z-10 flex flex-col"
+      className="absolute inset-0 z-20 flex flex-col"
       style={{ background: '#FDFBF7' }}
     >
       <div className="flex items-center gap-3 px-4 pt-4 pb-3 shrink-0"
@@ -489,10 +561,29 @@ function MapPickerSheet({ onConfirm, onBack }: { onConfirm: (addr: string) => vo
             <span className="text-white text-[11px] font-medium">تم تثبيت الموقع</span>
           </motion.div>
         )}
+
+        {/* Saved locations chips — floating over map */}
+        {savedLocs.length > 0 && (
+          <div className="absolute bottom-3 left-0 right-0 z-[500] flex gap-2 px-3 overflow-x-auto scrollbar-none">
+            {savedLocs.map((s, i) => (
+              <motion.button key={i}
+                initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.06 }}
+                whileTap={{ scale: 0.93 }}
+                onClick={() => { setPin(s.coords); setFlyTo(s.coords); setLocName(s.name); }}
+                className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full"
+                style={{ background: 'rgba(255,255,255,0.95)', boxShadow: '0 2px 10px rgba(0,0,0,0.15)', border: '1px solid rgba(196,181,159,0.3)' }}>
+                <span className="text-[11px] font-bold text-[#6B3210]">{s.name}</span>
+              </motion.button>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="shrink-0 px-4 pt-3 pb-6"
         style={{ background: 'white', borderTop: '1px solid rgba(196,181,159,0.2)', boxShadow: '0 -4px 20px rgba(0,0,0,0.06)' }}>
+
+        {/* Stats row */}
         <div className="flex gap-2 mb-3">
           {[
             { icon: '🛵', v: 'مجاني', l: 'التوصيل' },
@@ -507,21 +598,59 @@ function MapPickerSheet({ onConfirm, onBack }: { onConfirm: (addr: string) => vo
             </div>
           ))}
         </div>
+
+        {/* Save location name */}
+        <div className="mb-2">
+          <p className="text-[10px] text-[#AAA] font-semibold mb-1.5 text-right">احفظ هذا الموقع باسم (اختياري)</p>
+          <div className="flex gap-1.5 mb-2 flex-wrap">
+            {QUICK_NAMES.map(n => (
+              <button key={n} onClick={() => setLocName(n)}
+                className="px-2.5 py-1 rounded-full text-[10px] font-bold transition-all"
+                style={{
+                  background: locName === n ? 'rgba(107,50,16,0.1)' : 'rgba(196,181,159,0.12)',
+                  color: locName === n ? '#6B3210' : '#888',
+                  border: locName === n ? '1px solid rgba(107,50,16,0.2)' : '1px solid transparent',
+                }}>{n}</button>
+            ))}
+          </div>
+          <input value={locName} onChange={e => setLocName(e.target.value)}
+            placeholder="اسم مخصص…"
+            className="w-full px-3 py-2 rounded-[12px] text-[12px] text-[#111] placeholder-[#CCC] outline-none"
+            style={{ background: '#FDFBF7', border: '1.5px solid rgba(196,181,159,0.3)', direction: 'rtl' }}
+            onFocus={e => (e.target.style.borderColor = '#6B3210')}
+            onBlur={e => (e.target.style.borderColor = 'rgba(196,181,159,0.3)')} />
+        </div>
+
+        {/* Notes */}
         <input value={notes} onChange={e => setNotes(e.target.value)}
           placeholder="ملاحظة للمندوب (اختياري)"
           className="w-full px-3 py-2.5 rounded-[12px] text-[12px] text-[#111] placeholder-[#CCC] outline-none border mb-3"
           style={{ background: '#FDFBF7', border: '1.5px solid rgba(196,181,159,0.3)', direction: 'rtl' }}
           onFocus={e => (e.target.style.borderColor = '#6B3210')}
           onBlur={e => (e.target.style.borderColor = 'rgba(196,181,159,0.3)')} />
+
         <motion.button whileTap={{ scale: 0.97 }}
-          onClick={() => pin && onConfirm(`${pin[0].toFixed(5)},${pin[1].toFixed(5)}${notes ? ' · ' + notes : ''}`)}
+          onClick={handleConfirm}
           className="w-full py-3.5 rounded-[16px] font-bold text-[14px] flex items-center justify-center gap-2"
           style={{
             background: pin ? 'linear-gradient(135deg,#6B3210,#7A3B18)' : 'rgba(196,181,159,0.3)',
             color: pin ? 'white' : '#AAA',
             boxShadow: pin ? '0 6px 20px rgba(196,120,58,0.35)' : 'none',
           }}>
-          {pin ? <><Check size={16} strokeWidth={2.5} />تأكيد الموقع</> : 'حدد موقعك على الخريطة أولاً'}
+          <AnimatePresence mode="wait">
+            {justSaved ? (
+              <motion.span key="saved" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+                ✓ تم الحفظ والتأكيد
+              </motion.span>
+            ) : pin ? (
+              <motion.span key="confirm" className="flex items-center gap-2">
+                <Check size={16} strokeWidth={2.5} />
+                {locName.trim() ? `تأكيد وحفظ "${locName.trim()}"` : 'تأكيد الموقع'}
+              </motion.span>
+            ) : (
+              <motion.span key="idle">حدد موقعك على الخريطة أولاً</motion.span>
+            )}
+          </AnimatePresence>
         </motion.button>
       </div>
     </motion.div>
@@ -564,7 +693,7 @@ function PaymentSheet({ item, orderType, onPay, phase }: {
     <motion.div
       initial={{ x: '100%' }} animate={{ x: 0 }} exit={{ x: '100%' }}
       transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-      className="absolute inset-0 overflow-y-auto scrollbar-none z-10"
+      className="absolute inset-0 overflow-y-auto scrollbar-none z-20"
       style={{ background: '#FDFBF7' }}
     >
       {/* Header */}

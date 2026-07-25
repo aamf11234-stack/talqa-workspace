@@ -724,14 +724,27 @@ function QuickBookSheet({ onClose }: { onClose: () => void }) {
 }
 
 /* ── Offers Sheet ───────────────────────────────────────────────── */
-const OFFERS = [
-  { emoji: '☕', title: 'قهوتان للسعر الواحد',    sub: 'صالح للأعضاء فقط · حتى ١٢م',   color: '#7A3B18', grad: 'linear-gradient(135deg,#1A0804,#3A1408)', tag: 'عضوية',   timer: '٢:١٨:٤٥' },
-  { emoji: '🍔', title: 'برجر + مشروب بـ٤٩ ريال', sub: 'وفر ٢٢٪ — ينتهي الليلة',        color: '#C4783A', grad: 'linear-gradient(135deg,#1A0E00,#3A2208)', tag: 'الأشهر',  timer: '٩:٤٢:٠٠' },
-  { emoji: '🎂', title: 'حلى مجاناً مع أي طلب',   sub: 'لأعياد الميلاد هذا الشهر',      color: '#2D7D46', grad: 'linear-gradient(135deg,#001A0A,#023818)', tag: 'مناسبة',  timer: null },
+/* ── Offers data ────────────────────────────────────────────────── */
+const OFFER_DEALS = [
+  { emoji: '☕', title: 'قهوتان للسعر الواحد',    sub: 'صالح للأعضاء فقط · حتى ١٢م',   color: '#7A3B18', grad: 'linear-gradient(135deg,#1A0804,#3A1408)', tag: 'عضوية',  timer: '٢:١٨:٤٥' },
+  { emoji: '🍔', title: 'برجر + مشروب بـ٤٩ ريال', sub: 'وفر ٢٢٪ — ينتهي الليلة',        color: '#C4783A', grad: 'linear-gradient(135deg,#1A0E00,#3A2208)', tag: 'الأشهر', timer: '٩:٤٢:٠٠' },
+  { emoji: '🎂', title: 'حلى مجاناً مع أي طلب',   sub: 'لأعياد الميلاد هذا الشهر',      color: '#2D7D46', grad: 'linear-gradient(135deg,#001A0A,#023818)', tag: 'مناسبة', timer: null },
 ];
 
-function OffersSheet({ onClose }: { onClose: () => void }) {
+const OFFER_PRODUCTS = [
+  { emoji: '☕', name: 'قهوة تخصص براون دوز',  desc: 'سبيشيالتي مقطّرة على الحجر',   price: '٢٢', orig: '٢٨', color: '#7A3B18' },
+  { emoji: '🥤', name: 'كومبو المساء',          desc: 'قهوة مثلجة + قطعة كيك شوكولاتة', price: '٣٨', orig: '٥٢', color: '#C4783A' },
+  { emoji: '🍰', name: 'كيك الشوكولاتة',        desc: 'طازج يومياً من مطبخنا',          price: '١٢', orig: null,  color: '#6B3210' },
+  { emoji: '🧋', name: 'ماتشا لاتيه مثلج',      desc: 'ماتشا يابانية أصلية',            price: '١٨', orig: '٢٣', color: '#2D7D46' },
+];
+
+function OffersSheet({ onClose, onOrder }: {
+  onClose: () => void;
+  onOrder: (item: CheckoutItem) => void;
+}) {
   const [claimed, setClaimed] = useState<number | null>(null);
+  const [tab, setTab]         = useState<'deals' | 'shop'>('deals');
+
   return (
     <>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -740,7 +753,7 @@ function OffersSheet({ onClose }: { onClose: () => void }) {
         initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '110%' }}
         transition={{ type: 'spring', damping: 28, stiffness: 300 }}
         className="absolute bottom-0 left-0 right-0 z-50 rounded-t-[28px] overflow-hidden"
-        style={{ background: '#0D0200' }}>
+        style={{ background: '#0D0200', maxHeight: '88%' }}>
 
         {/* Handle */}
         <div className="flex justify-center pt-3 pb-1">
@@ -748,61 +761,150 @@ function OffersSheet({ onClose }: { onClose: () => void }) {
         </div>
 
         {/* Header */}
-        <div className="px-5 pt-3 pb-5">
+        <div className="px-5 pt-2 pb-3">
           <p className="text-[9px] font-black tracking-[0.28em] text-[#C4783A] mb-1"
             style={{ fontFamily: 'ui-monospace,monospace' }}>EXCLUSIVE · حصري للأعضاء</p>
-          <p className="text-white text-[21px] font-black">عروضك الحالية</p>
+          <p className="text-white text-[20px] font-black mb-3">عروضك الحالية</p>
+
+          {/* Tabs */}
+          <div className="flex gap-2">
+            {([['deals','🎁 العروض'], ['shop','🛍️ اشتري الآن']] as const).map(([key, label]) => (
+              <button key={key} onClick={() => setTab(key)}
+                className="flex-1 py-2 rounded-[12px] text-[12px] font-bold transition-all"
+                style={{
+                  background: tab === key ? '#6B3210' : 'rgba(255,255,255,0.05)',
+                  color:      tab === key ? 'white'   : 'rgba(255,255,255,0.35)',
+                  boxShadow:  tab === key ? '0 4px 14px rgba(107,50,16,0.5)' : 'none',
+                }}>
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Offers */}
-        <div className="flex flex-col gap-2.5 px-4 pb-6">
-          {OFFERS.map((o, i) => (
-            <motion.button key={i}
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.07 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => setClaimed(i)}
-              className="relative overflow-hidden rounded-[20px] p-4 flex items-center gap-3.5 text-right w-full"
-              style={{ background: claimed === i ? 'rgba(48,209,88,0.15)' : o.grad, border: `1px solid ${claimed === i ? '#30D158' : o.color}30` }}>
+        {/* Content — scrollable */}
+        <div className="overflow-y-auto scrollbar-none" style={{ maxHeight: 'calc(88vh - 160px)' }}>
+          <AnimatePresence mode="wait">
 
-              <div className="absolute inset-0 pointer-events-none"
-                style={{ background: 'linear-gradient(135deg,rgba(255,255,255,0.04) 0%,transparent 55%)' }} />
+            {/* ── Deals tab ── */}
+            {tab === 'deals' && (
+              <motion.div key="deals"
+                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.18 }}
+                className="flex flex-col gap-2.5 px-4 pb-6">
+                {OFFER_DEALS.map((o, i) => (
+                  <motion.button key={i}
+                    initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.07 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => setClaimed(i)}
+                    className="relative overflow-hidden rounded-[20px] p-4 flex items-center gap-3.5 text-right w-full"
+                    style={{ background: claimed === i ? 'rgba(48,209,88,0.15)' : o.grad, border: `1px solid ${claimed === i ? '#30D158' : o.color}30` }}>
 
-              {/* Emoji */}
-              <div className="w-[50px] h-[50px] rounded-[15px] flex items-center justify-center text-[24px] shrink-0"
-                style={{ background: 'rgba(255,255,255,0.07)', border: `1px solid ${o.color}35` }}>
-                {claimed === i ? '✅' : o.emoji}
-              </div>
+                    <div className="absolute inset-0 pointer-events-none"
+                      style={{ background: 'linear-gradient(135deg,rgba(255,255,255,0.04) 0%,transparent 55%)' }} />
 
-              {/* Text */}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-0.5">
-                  <p className="text-white text-[13px] font-bold leading-tight">{o.title}</p>
-                </div>
-                <p className="text-white/40 text-[10px] font-light">{o.sub}</p>
-                {o.timer && claimed !== i && (
-                  <div className="flex items-center gap-1 mt-1.5">
-                    <span className="text-[8px]">⏱</span>
-                    <span className="text-[9px] font-black font-inter" style={{ color: o.color }}>{o.timer}</span>
-                    <span className="text-white/30 text-[8px]">متبقي</span>
+                    <div className="w-[50px] h-[50px] rounded-[15px] flex items-center justify-center text-[24px] shrink-0"
+                      style={{ background: 'rgba(255,255,255,0.07)', border: `1px solid ${o.color}35` }}>
+                      {claimed === i ? '✅' : o.emoji}
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <p className="text-white text-[13px] font-bold leading-tight mb-0.5">{o.title}</p>
+                      <p className="text-white/40 text-[10px] font-light">{o.sub}</p>
+                      {o.timer && claimed !== i && (
+                        <div className="flex items-center gap-1 mt-1.5">
+                          <span className="text-[8px]">⏱</span>
+                          <span className="text-[9px] font-black font-inter" style={{ color: o.color }}>{o.timer}</span>
+                          <span className="text-white/30 text-[8px]">متبقي</span>
+                        </div>
+                      )}
+                      {claimed === i && <p className="text-[#30D158] text-[10px] font-bold mt-1">✓ تم تفعيل العرض</p>}
+                    </div>
+
+                    <span className="shrink-0 text-[8px] font-black px-2 py-1 rounded-full"
+                      style={{ background: `${o.color}25`, color: o.color, border: `1px solid ${o.color}35` }}>
+                      {claimed === i ? 'مفعّل' : o.tag}
+                    </span>
+                  </motion.button>
+                ))}
+              </motion.div>
+            )}
+
+            {/* ── Shop tab ── */}
+            {tab === 'shop' && (
+              <motion.div key="shop"
+                initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.18 }}
+                className="px-4 pb-6">
+
+                {/* Banner */}
+                <div className="rounded-[18px] p-3.5 mb-3 flex items-center gap-3"
+                  style={{ background: 'linear-gradient(135deg,rgba(107,50,16,0.4),rgba(196,120,58,0.15))', border: '1px solid rgba(196,120,58,0.2)' }}>
+                  <span className="text-[22px]">⚡</span>
+                  <div>
+                    <p className="text-white text-[12px] font-bold">أسعار حصرية للأعضاء</p>
+                    <p className="text-white/40 text-[10px]">اطلب الآن واستلم أو نوصّله لك</p>
                   </div>
-                )}
-                {claimed === i && (
-                  <p className="text-[#30D158] text-[10px] font-bold mt-1">✓ تم تفعيل العرض</p>
-                )}
-              </div>
+                </div>
 
-              {/* Tag */}
-              <span className="shrink-0 text-[8px] font-black px-2 py-1 rounded-full"
-                style={{ background: `${o.color}25`, color: o.color, border: `1px solid ${o.color}35` }}>
-                {claimed === i ? 'مفعّل' : o.tag}
-              </span>
-            </motion.button>
-          ))}
+                <div className="flex flex-col gap-2.5">
+                  {OFFER_PRODUCTS.map((p, i) => (
+                    <motion.div key={i}
+                      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.06 }}
+                      className="rounded-[20px] p-4 flex items-center gap-3.5"
+                      style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
 
+                      {/* Emoji */}
+                      <div className="w-[50px] h-[50px] rounded-[15px] flex items-center justify-center text-[26px] shrink-0"
+                        style={{ background: `${p.color}18`, border: `1px solid ${p.color}30` }}>
+                        {p.emoji}
+                      </div>
+
+                      {/* Info */}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white text-[13px] font-bold leading-tight">{p.name}</p>
+                        <p className="text-white/35 text-[10px] font-light mt-0.5">{p.desc}</p>
+                        <div className="flex items-center gap-2 mt-1.5">
+                          <span className="text-[14px] font-black font-inter" style={{ color: p.color }}>{p.price} ر</span>
+                          {p.orig && (
+                            <span className="text-white/25 text-[10px] font-inter line-through">{p.orig} ر</span>
+                          )}
+                          {p.orig && (
+                            <span className="text-[8px] font-black px-1.5 py-0.5 rounded-full"
+                              style={{ background: 'rgba(48,209,88,0.15)', color: '#30D158' }}>
+                              وفّر {parseInt(p.orig.replace(/[٠-٩]/g, d => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)))) - parseInt(p.price.replace(/[٠-٩]/g, d => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))))} ر
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Buy CTA */}
+                      <motion.button
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => { onOrder({ name: p.name, price: p.price, emoji: p.emoji }); onClose(); }}
+                        className="shrink-0 px-3 py-2 rounded-[13px] font-bold text-[12px] text-white"
+                        style={{
+                          background: `linear-gradient(135deg,${p.color},${p.color}AA)`,
+                          boxShadow: `0 4px 14px ${p.color}40`,
+                        }}>
+                        اطلب
+                      </motion.button>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+
+          </AnimatePresence>
+        </div>
+
+        {/* Close */}
+        <div className="px-4 pb-5 pt-2" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
           <motion.button whileTap={{ scale: 0.97 }} onClick={onClose}
-            className="mt-1 w-full py-3.5 rounded-[18px] font-semibold text-[13px] text-white/40"
-            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }}>
+            className="w-full py-3 rounded-[18px] font-semibold text-[13px] text-white/30"
+            style={{ background: 'rgba(255,255,255,0.04)' }}>
             إغلاق
           </motion.button>
         </div>
@@ -952,7 +1054,7 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
       </AnimatePresence>
       <AnimatePresence>
         {pendingOrder && (
-          <div className="absolute inset-0 z-50">
+          <div className="absolute inset-0 z-50 overflow-hidden">
             <CheckoutModal
               item={pendingOrder}
               brandName={brand.name}
@@ -971,7 +1073,12 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
         {showBookSheet && <QuickBookSheet onClose={() => setShowBookSheet(false)} />}
       </AnimatePresence>
       <AnimatePresence>
-        {showOffersSheet && <OffersSheet onClose={() => setShowOffersSheet(false)} />}
+        {showOffersSheet && (
+          <OffersSheet
+            onClose={() => setShowOffersSheet(false)}
+            onOrder={(item) => { setShowOffersSheet(false); setPendingOrder(item); }}
+          />
+        )}
       </AnimatePresence>
 
       {/* Scrollable content */}
