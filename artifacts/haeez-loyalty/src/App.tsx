@@ -120,18 +120,18 @@ const pillars = [
 ];
 
 const allFeatures = [
-  { icon: '☕', title: 'منيو براون دوز الحقيقي',  desc: 'حار وبارد ومقطرة — بالأسعار الفعلية'  },
-  { icon: '🛵', title: 'طلب توصيل',               desc: 'لحين موقعك — صبيا وضمد'               },
-  { icon: '🧳', title: 'طلب استلام',              desc: 'خذها معك بعد دقيقتين'                 },
-  { icon: '💳', title: 'Apple Pay & STC Pay',     desc: 'دفع في ثانية — بدون كاش'              },
-  { icon: '🏆', title: 'نقاط الولاء',             desc: 'كل طلب يكسب نقاطاً قابلة للاستبدال'   },
-  { icon: '🃏', title: 'Apple & Google Wallet',   desc: 'بطاقة العضوية على شاشة القفل تلقائياً' },
-  { icon: '📍', title: 'فرعان',                   desc: 'صبيا وضمد في نظام واحد متكامل'         },
-  { icon: '🔔', title: 'إشعارات وعروض',           desc: 'خصومات وعروض براون دوز بزر واحد'       },
-  { icon: '📊', title: 'إحصائيات المبيعات',      desc: 'أكثر صنف وأكثر وقت وأرباحك اليومية'    },
-  { icon: '🎨', title: 'هوية براون دوز كاملة',    desc: 'ألوانك واسمك ومنيوك — مش قالب جاهز'   },
-  { icon: '🌙', title: 'دعم مباشر',              desc: 'على واتساب — رد فوري بالعربي'           },
-  { icon: '🚀', title: 'إطلاق في ٧ أيام',        desc: 'مضمون أو ترجع فلوسك كاملة'            },
+  { title: 'منيو براون دوز الحقيقي',  desc: 'حار وبارد ومقطرة — بالأسعار الفعلية'  },
+  { title: 'طلب توصيل',               desc: 'لحين موقعك — صبيا وضمد'               },
+  { title: 'طلب استلام',              desc: 'خذها معك بعد دقيقتين'                 },
+  { title: 'Apple Pay & STC Pay',     desc: 'دفع في ثانية — بدون كاش'              },
+  { title: 'نقاط الولاء',             desc: 'كل طلب يكسب نقاطاً قابلة للاستبدال'   },
+  { title: 'Apple & Google Wallet',   desc: 'بطاقة العضوية على شاشة القفل تلقائياً' },
+  { title: 'فرعان',                   desc: 'صبيا وضمد في نظام واحد متكامل'         },
+  { title: 'إشعارات وعروض',           desc: 'خصومات وعروض براون دوز بزر واحد'       },
+  { title: 'إحصائيات المبيعات',      desc: 'أكثر صنف وأكثر وقت وأرباحك اليومية'    },
+  { title: 'هوية براون دوز كاملة',    desc: 'ألوانك واسمك ومنيوك — مش قالب جاهز'   },
+  { title: 'دعم مباشر على واتساب',    desc: 'رد فوري بالعربي — طوال أيام الأسبوع'   },
+  { title: 'إطلاق في ٧ أيام مضمون',  desc: 'أو ترجع فلوسك كاملة بدون شروط'        },
 ];
 
 /* ── ROI Calculator ───────────────────────────────────────────────── */
@@ -608,39 +608,28 @@ export default function App() {
       </div>
 
       {/* ── Hero ───────────────────────────────────────────── */}
-      <div className="max-w-5xl mx-auto px-6 pt-10 pb-6 text-center relative">
-        {/* Floating particles */}
-        {[
-          { x: '8%',  y: '20%', size: 3,   delay: 0,    dur: 4.2 },
-          { x: '90%', y: '15%', size: 2,   delay: 0.8,  dur: 3.5 },
-          { x: '15%', y: '70%', size: 2.5, delay: 1.5,  dur: 5   },
-          { x: '82%', y: '65%', size: 2,   delay: 0.4,  dur: 4.8 },
-          { x: '50%', y: '5%',  size: 1.5, delay: 2,    dur: 3.8 },
-          { x: '35%', y: '85%', size: 2,   delay: 1.1,  dur: 4.5 },
-          { x: '70%', y: '80%', size: 1.5, delay: 2.5,  dur: 3.2 },
-        ].map((p, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full pointer-events-none"
-            style={{ left: p.x, top: p.y, width: p.size, height: p.size, background: 'rgba(123,22,24,0.35)' }}
-            animate={{ y: [-6, 6, -6], opacity: [0.3, 0.7, 0.3] }}
-            transition={{ duration: p.dur, delay: p.delay, repeat: Infinity, ease: 'easeInOut' }}
-          />
-        ))}
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-          <span className="inline-flex items-center gap-2 bg-[#B06070] text-[#C9956A] text-[11px] font-semibold px-4 py-1.5 rounded-full mb-4 tracking-widest shadow-[0_4px_20px_rgba(123,22,24,0.35)]">
-            <span className="w-1.5 h-1.5 bg-[#C9956A] rounded-full animate-pulse" />
+      <div className="max-w-5xl mx-auto px-6 pt-12 pb-8 text-center">
+        <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <span className="inline-flex items-center gap-2 border border-[rgba(176,96,112,0.35)] text-[#B06070] text-[11px] font-semibold px-4 py-1.5 rounded-full mb-6 tracking-widest">
+            <span className="w-1.5 h-1.5 bg-[#B06070] rounded-full animate-pulse" />
             عرض حصري · براون دوز · جيزان
           </span>
-          <h1 className="text-[34px] md:text-[44px] font-bold text-[#111] leading-tight mb-3 tracking-tight">
-            <span className="text-[#B06070]">Brown Dose</span> يستحق تجربة رقمية مختلفة
+          <h1 className="text-[36px] md:text-[52px] font-bold text-[#111] leading-[1.15] mb-4 tracking-tight">
+            <span className="text-[#B06070]">Brown Dose</span>
+            <br />يستحق تجربة رقمية مختلفة
           </h1>
-          <p className="text-[22px] md:text-[28px] font-light text-[#666] mb-4 leading-relaxed">
-            طلب · توصيل · نقاط ولاء · Apple Pay
+          <p className="text-[15px] md:text-[17px] text-[#777] font-light max-w-md mx-auto leading-relaxed mb-2">
+            تطبيق ويب بهوية براون دوز — زبائنك يطلبون، يدفعون، ويكسبون نقاطاً تلقائياً
           </p>
-          <p className="text-[13px] text-[#888] font-light max-w-sm mx-auto leading-relaxed">
-            تطبيق ويب بهوية براون دوز الكاملة — زبائنك يطلبون، يدفعون، ويكسبون نقاطاً تلقائياً
-          </p>
+          <div className="flex items-center justify-center gap-6 mt-5 text-[12px] text-[#999]">
+            <span>طلب وتوصيل</span>
+            <span className="w-1 h-1 rounded-full bg-[#DDD]" />
+            <span>نقاط الولاء</span>
+            <span className="w-1 h-1 rounded-full bg-[#DDD]" />
+            <span>Apple Pay</span>
+            <span className="w-1 h-1 rounded-full bg-[#DDD]" />
+            <span>صبيا وضمد</span>
+          </div>
         </motion.div>
       </div>
 
@@ -658,10 +647,11 @@ export default function App() {
               <div className="absolute inset-0" style={{ background: p.bg, opacity: 0.45, mixBlendMode: 'multiply' }} />
               {/* Content */}
               <div className="relative z-10 p-5 flex flex-col justify-end h-full" style={{ minHeight: 180 }}>
-                <span className="text-2xl mb-2 block">{p.icon}</span>
-                <p className="text-white text-[14px] font-bold mb-0.5">{p.title}</p>
-                <p className="text-white/50 text-[10px] font-light mb-1">{p.sub}</p>
-                <p className="text-white/70 text-[11px] font-light leading-snug">{p.desc}</p>
+                <p className="text-white/40 text-[9px] font-semibold tracking-[0.22em] mb-2" style={{ fontFamily: 'ui-monospace,monospace' }}>
+                  {String(pillars.indexOf(p) + 1).padStart(2, '0')}
+                </p>
+                <p className="text-white text-[15px] font-bold mb-0.5 leading-snug">{p.title}</p>
+                <p className="text-white/55 text-[11px] font-light leading-snug">{p.desc}</p>
               </div>
             </motion.div>
           ))}
@@ -772,12 +762,12 @@ export default function App() {
         </div>
         <div className="grid grid-cols-3 gap-2.5 md:grid-cols-6">
           {[
-            { img: imgAffogato,  name: 'أفقاتو براون',      price: '٢٥', tag: '🔥 الأشهر' },
-            { img: imgPistachio, name: 'لاتيه بستاشيو',     price: '٢٠', tag: null         },
-            { img: imgMohito,    name: 'موهيتو روز يري',    price: '١٧', tag: '⭐ جديد'    },
-            { img: imgIceStr,    name: 'ستفتشر براون',      price: '١٩', tag: '🧊 توقيعنا' },
-            { img: imgFilter,    name: 'قهوة مقطرة',        price: '١٧', tag: null         },
-            { img: cafeImg1,     name: 'تجربة براون دوز',   price: null,  tag: '📍 صبيا'   },
+            { img: imgAffogato,  name: 'أفقاتو براون',      price: '٢٥', tag: 'الأشهر'   },
+            { img: imgPistachio, name: 'لاتيه بستاشيو',     price: '٢٠', tag: null        },
+            { img: imgMohito,    name: 'موهيتو روز يري',    price: '١٧', tag: 'جديد'      },
+            { img: imgIceStr,    name: 'ستفتشر براون',      price: '١٩', tag: 'التوقيع'   },
+            { img: imgFilter,    name: 'قهوة مقطرة',        price: '١٧', tag: null        },
+            { img: cafeImg1,     name: 'تجربة براون دوز',   price: null,  tag: 'صبيا'     },
           ].map((item, idx) => (
             <motion.div key={idx}
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
@@ -845,7 +835,7 @@ export default function App() {
                 <span className="text-white text-[10px] font-medium">إطلاق في ٧ أيام مضمون</span>
               </div>
               <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm border border-white/15 px-3 py-1.5 rounded-full">
-                <span className="text-white text-[10px] font-medium">⭐ سعر ثابت للأبد</span>
+                <span className="text-white text-[10px] font-medium">سعر ثابت للأبد</span>
               </div>
             </div>
           </div>
@@ -875,10 +865,10 @@ export default function App() {
             {/* Food grid */}
             <div className="grid grid-cols-2 gap-2 px-5 pb-5 flex-1">
               {[
-                { img: imgAffogato,  name: 'أفقاتو براون',      price: '٢٥', badge: '🔥 الأشهر'      },
-                { img: imgPistachio, name: 'لاتيه بستاشيو',     price: '٢٢', badge: '⭐ جديد'         },
-                { img: imgMohito,    name: 'موهيتو روز',         price: '١٧', badge: null              },
-                { img: imgIceStr,    name: 'ايس ستفتشر براون',  price: '١٩', badge: '🧊 بارد'         },
+                { img: imgAffogato,  name: 'أفقاتو براون',      price: '٢٥', badge: 'الأشهر'    },
+                { img: imgPistachio, name: 'لاتيه بستاشيو',     price: '٢٢', badge: null        },
+                { img: imgMohito,    name: 'موهيتو روز',         price: '١٧', badge: null        },
+                { img: imgIceStr,    name: 'ايس ستفتشر براون',  price: '١٩', badge: 'التوقيع'  },
               ].map((item, idx) => (
                 <div key={idx} className="relative rounded-[16px] overflow-hidden flex flex-col" style={{background:'rgba(0,0,0,0.3)',border:'1px solid rgba(255,255,255,0.08)'}}>
                   <div className="relative h-[100px]">
@@ -909,18 +899,10 @@ export default function App() {
         >
           <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 30% 50%,rgba(123,22,24,0.25) 0%,transparent 60%)' }} />
           <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 80% 50%,rgba(201,149,106,0.08) 0%,transparent 55%)' }} />
-          <div className="absolute bottom-0 right-0 w-40 h-40 opacity-[0.04]"
-            style={{ backgroundImage: 'radial-gradient(circle,#C9956A 1.5px,transparent 1.5px)', backgroundSize: '10px 10px' }} />
-
           <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
             {/* Watch */}
             <div className="flex flex-col items-center">
               <AppleWatchHyz />
-              <div className="flex gap-1.5 mt-4">
-                {['#B06070', '#C9956A', '#30D158'].map((c, i) => (
-                  <div key={i} className="w-2.5 h-2.5 rounded-full opacity-60" style={{ background: c }} />
-                ))}
-              </div>
             </div>
 
             {/* Copy */}
@@ -1086,18 +1068,17 @@ export default function App() {
           <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3, duration: 0.4 }}
             className="mt-12 grid grid-cols-4 gap-3">
             {[
-              { ic: '📊', t: 'إيرادات لحظية',   d: 'تابع دخلك ثانية بثانية' },
-              { ic: '👥', t: 'إدارة الأعضاء',    d: 'قائمة كاملة مع المستويات' },
-              { ic: '🏆', t: 'التحديات',          d: 'أطلق وتابع تحديات المجتمع' },
-              { ic: '📣', t: 'إشعارات جماعية',   d: 'أرسل لجميع الأعضاء فوراً' },
+              { n: '01', t: 'إيرادات لحظية',   d: 'تابع دخلك ثانية بثانية' },
+              { n: '02', t: 'إدارة الأعضاء',    d: 'قائمة كاملة مع المستويات' },
+              { n: '03', t: 'التحديات',          d: 'أطلق وتابع تحديات المجتمع' },
+              { n: '04', t: 'إشعارات جماعية',   d: 'أرسل لجميع الأعضاء فوراً' },
             ].map((f, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.32 + i * 0.06 }}
-                className="rounded-[16px] p-4 border border-white/[0.07] backdrop-blur-sm"
-                style={{ background: 'rgba(255,255,255,0.04)' }}>
-                <div className="w-8 h-8 rounded-[10px] flex items-center justify-center text-[16px] mb-3"
-                  style={{ background: 'rgba(201,149,106,0.12)' }}>{f.ic}</div>
-                <p className="text-white text-[11px] font-bold mb-1">{f.t}</p>
-                <p className="text-white/35 text-[9px] leading-snug">{f.d}</p>
+                className="rounded-[16px] p-4 border border-white/[0.06]"
+                style={{ background: 'rgba(255,255,255,0.03)' }}>
+                <p className="text-[#C9956A]/50 text-[9px] font-bold mb-2.5" style={{ fontFamily: 'ui-monospace,monospace' }}>{f.n}</p>
+                <p className="text-white text-[11px] font-semibold mb-1">{f.t}</p>
+                <p className="text-white/30 text-[9px] leading-snug">{f.d}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -1111,11 +1092,13 @@ export default function App() {
           <p className="text-[11px] text-[#AAA] font-semibold tracking-widest uppercase mb-1.5">كل ما يحصل عليه براون دوز</p>
           <h2 className="text-[24px] font-bold text-[#111]">مزايا النظام في منظومة واحدة</h2>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5">
           {allFeatures.map((f, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.04 * i }}
-              className="bg-white/75 rounded-[18px] p-4 border border-[rgba(123,22,24,0.07)] shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:border-[rgba(123,22,24,0.18)] transition-all duration-200 hover:-translate-y-0.5">
-              <span className="text-2xl mb-2 block">{f.icon}</span>
+            <motion.div key={i} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.03 * i }}
+              className="bg-white/80 rounded-[16px] px-4 py-3.5 border border-[rgba(0,0,0,0.06)] hover:border-[rgba(176,96,112,0.2)] transition-all duration-200">
+              <p className="text-[9px] font-bold text-[#B06070] tracking-[0.18em] mb-1.5" style={{ fontFamily: 'ui-monospace,monospace' }}>
+                {String(i + 1).padStart(2,'0')}
+              </p>
               <p className="text-[12px] font-semibold text-[#111] mb-0.5 leading-snug">{f.title}</p>
               <p className="text-[10px] text-[#999] font-light leading-relaxed">{f.desc}</p>
             </motion.div>
@@ -1132,8 +1115,6 @@ export default function App() {
           style={{ background: 'linear-gradient(145deg,#0D0205 0%,#3D0809 45%,#0D0205 80%,#1A0406 100%)' }}>
           <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 85% 20%,rgba(201,149,106,0.12) 0%,transparent 55%)' }} />
           <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 10% 80%,rgba(123,22,24,0.35) 0%,transparent 50%)' }} />
-          <div className="absolute bottom-0 left-0 w-40 h-40 opacity-[0.05]"
-            style={{ backgroundImage: 'radial-gradient(circle,#C9956A 1.5px,transparent 1.5px)', backgroundSize: '10px 10px' }} />
           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-7">
             <div className="flex-1">
               <p className="text-[#C9956A] text-[10px] font-semibold tracking-widest uppercase mb-2">Apple Wallet · Google Wallet</p>
