@@ -622,14 +622,9 @@ export default function App() {
           <p className="text-[15px] md:text-[17px] font-light max-w-md mx-auto leading-relaxed mb-2" style={{ color: '#6B6560' }}>
             تطبيق ويب بهوية براون دوز — زبائنك يطلبون، يدفعون، ويكسبون نقاطاً تلقائياً
           </p>
-          <div className="flex items-center justify-center gap-5 mt-6" style={{ color: '#9A948C', fontSize: 12 }}>
-            {['طلب وتوصيل', 'نقاط الولاء', 'Apple Pay', 'صبيا وضمد'].map((t, i) => (
-              <span key={t} className="flex items-center gap-5">
-                {i > 0 && <span style={{ width: 3, height: 3, borderRadius: '50%', background: '#DCD8D2', display: 'inline-block', flexShrink: 0, marginLeft: '-10px', marginRight: '-10px' }} />}
-                {t}
-              </span>
-            ))}
-          </div>
+          <p className="mt-6 text-[12px]" style={{ color: '#9A948C', letterSpacing: '0.04em' }}>
+            طلب وتوصيل · نقاط الولاء · Apple Pay · صبيا وضمد
+          </p>
         </motion.div>
       </div>
 
