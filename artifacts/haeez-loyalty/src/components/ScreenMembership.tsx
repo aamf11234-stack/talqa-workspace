@@ -1,110 +1,141 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, Check, Gift, Send, Star, ChevronLeft, X, Sparkles } from 'lucide-react';
+import { Calendar, Check, Gift, Send, Star, ChevronLeft, X, Sparkles, Download } from 'lucide-react';
 import { QRCodeSVG } from './QRCodeSVG';
 import { BookingModal } from './BookingModal';
 import { useBrand } from '../BrandContext';
+import { downloadPkpass } from '../utils/generatePkpass';
 
 /* ══════════════════════════════════════════════════════════════════
-   Membership Card — Apple Wallet Style
+   Apple Wallet Pass — exact StoreCard spec
 ══════════════════════════════════════════════════════════════════ */
+const BASE = import.meta.env.BASE_URL;
+const stripImg  = `${BASE}bd-hero.jpg`;
+const logoImg   = `${BASE}bd-logo.svg`;
+
+/** Inline mini QR for the pass */
+function PassQR({ size = 72, dark = '#1A0804', light = 'white' }: { size?: number; dark?: string; light?: string }) {
+  const s = 21;
+  const rng = (seed: number) => { const x = Math.sin(seed + 1) * 10000; return x - Math.floor(x); };
+  const mod = (x: number, y: number) => {
+    if (x < 7 && y < 7) return true;
+    if (x > s - 8 && y < 7) return true;
+    if (x < 7 && y > s - 8) return true;
+    if (x === 6 || y === 6) return (x + y) % 2 === 0;
+    return rng(x * 100 + y) > 0.48;
+  };
+  const finder = (cx: number, cy: number) => (
+    <g key={`f${cx}${cy}`}>
+      <rect x={cx} y={cy} width={7} height={7} fill={dark} />
+      <rect x={cx+1} y={cy+1} width={5} height={5} fill={light} />
+      <rect x={cx+2} y={cy+2} width={3} height={3} fill={dark} />
+    </g>
+  );
+  const dots: React.ReactNode[] = [];
+  for (let y = 0; y < s; y++) for (let x = 0; x < s; x++) {
+    const isFinder = (x<7&&y<7)||(x>s-8&&y<7)||(x<7&&y>s-8);
+    if (!isFinder && mod(x,y)) dots.push(<rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} fill={dark} />);
+  }
+  return (
+    <svg width={size} height={size} viewBox="-1 -1 23 23" shapeRendering="crispEdges" style={{ background: light, borderRadius: 4 }}>
+      {finder(0,0)}{finder(s-7,0)}{finder(0,s-7)}{dots}
+    </svg>
+  );
+}
+
 function MembershipCard() {
-  const { brand } = useBrand();
   return (
     <motion.div
-      whileHover={{ scale: 1.015 }}
-      whileTap={{ scale: 0.985 }}
-      transition={{ type: 'spring', stiffness: 260, damping: 28 }}
+      whileHover={{ rotateY: 2, scale: 1.012 }}
+      whileTap={{ scale: 0.982 }}
+      transition={{ type: 'spring', stiffness: 240, damping: 26 }}
       className="relative w-full select-none"
-      drag="x"
-      dragConstraints={{ left: 0, right: 0 }}
-      dragElastic={0.03}
+      style={{ perspective: 800 }}
     >
-      <div className="relative w-full rounded-[24px] overflow-hidden"
-        style={{
-          aspectRatio: '1.586/1',
-          background: 'linear-gradient(155deg,#0C0002 0%,#2A0407 30%,#4D0C10 55%,#1C0406 78%,#060001 100%)',
-          boxShadow: '0 24px 60px rgba(0,0,0,0.55), 0 8px 20px rgba(160,82,45,0.3)',
-        }}>
-        <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 80% 10%,rgba(201,149,106,0.18) 0%,transparent 52%)' }} />
-        <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 0% 100%,rgba(160,82,45,0.55) 0%,transparent 48%)' }} />
-        <div className="absolute inset-0 pointer-events-none opacity-[0.03]"
-          style={{ backgroundImage: 'radial-gradient(circle,#fff 1px,transparent 1px)', backgroundSize: '12px 12px' }} />
-        <div className="absolute pointer-events-none" style={{ right: '-10%', top: '-25%', width: '58%', aspectRatio: '1/1' }}>
-          <svg viewBox="0 0 200 200" fill="none" className="w-full h-full opacity-[0.06]">
-            <circle cx="100" cy="100" r="90" stroke="#7A3B18" strokeWidth="0.8" />
-            <circle cx="100" cy="100" r="72" stroke="#7A3B18" strokeWidth="0.6" />
-            <circle cx="100" cy="100" r="54" stroke="#7A3B18" strokeWidth="0.5" />
-            {Array.from({ length: 20 }).map((_, i) => {
-              const a = (i / 20) * 360, r = (a * Math.PI) / 180;
-              return <line key={i} x1={100+Math.cos(r)*55} y1={100+Math.sin(r)*55}
-                x2={100+Math.cos(r)*88} y2={100+Math.sin(r)*88}
-                stroke="#7A3B18" strokeWidth="0.35" />;
-            })}
-          </svg>
-        </div>
-        <div className="absolute top-0 bottom-0 w-[50%] pointer-events-none z-10"
-          style={{
-            background: 'linear-gradient(90deg,transparent,rgba(255,255,255,0.035),rgba(201,149,106,0.06),rgba(255,255,255,0.025),transparent)',
-            transform: 'skewX(-18deg)',
-            animation: 'card-shimmer 5s ease-in-out infinite',
-          }} />
-        <div className="absolute inset-0 rounded-[24px] pointer-events-none"
-          style={{ boxShadow: 'inset 0 0 0 1px rgba(201,149,106,0.22)' }} />
+      {/* Glow beneath */}
+      <div className="absolute -inset-3 rounded-[32px] pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at 50% 90%,rgba(160,82,45,0.35) 0%,transparent 70%)', filter: 'blur(14px)' }} />
 
-        <div className="absolute inset-0 flex flex-col justify-between z-20" style={{ padding: '18px 20px 16px' }}>
-          <div className="flex items-start justify-between">
-            <div className="flex flex-col items-start gap-0.5">
-              <svg viewBox="0 0 24 24" className="w-6 h-6" style={{ fill: 'rgba(255,255,255,0.55)' }}>
-                <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-              </svg>
-              <p className="text-white/18 text-[6px] font-inter tracking-[0.18em] uppercase">Wallet</p>
-            </div>
-            <div className="text-right flex flex-col gap-0.5">
-              <p className="text-[#7A3B18] font-black leading-none tracking-tight" style={{ fontSize: 20 }}>{brand.memberCard.label}</p>
-              <p className="text-white/22 font-inter tracking-[0.15em]" style={{ fontSize: 7 }}>{brand.type === 'cafe' ? 'YOUR CAFÉ · KSA' : 'YOUR RESTAURANT · KSA'}</p>
-            </div>
-          </div>
-          <div>
-            <div className="mb-3" style={{ height: 1, background: 'linear-gradient(90deg,rgba(201,149,106,0.08),rgba(201,149,106,0.22),rgba(201,149,106,0.08))' }} />
-            <p className="text-white/22 font-inter tracking-[0.22em] mb-1" style={{ fontSize: 7 }}>CARDHOLDER</p>
-            <p className="text-white font-bold tracking-wide leading-none" style={{ fontSize: 16 }}>عبدالإله علي</p>
-          </div>
-          <div>
-            <div className="flex items-end justify-between">
-              <div>
-                <p className="text-white/22 font-inter tracking-[0.22em] mb-1" style={{ fontSize: 7 }}>POINTS</p>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-white font-black font-inter leading-none" style={{ fontSize: 26 }}>480</span>
-                  <span className="text-white/35 font-inter mb-0.5" style={{ fontSize: 9 }}>PTS</span>
-                </div>
-                <div className="flex items-center gap-[3px] mt-1.5">
-                  {[0,1,2,3,4,5,6].map(i => (
-                    <div key={i} style={{
-                      width: 13, height: 2.5, borderRadius: 99,
-                      background: i < 4 ? 'linear-gradient(90deg,#7A3B18,#E8C48A)' : 'rgba(255,255,255,0.1)',
-                    }} />
-                  ))}
-                </div>
-                <p className="text-white/18 font-inter mt-1" style={{ fontSize: 7 }}>٤ من ٧ للمستوى الفضي</p>
+      <div className="relative w-full rounded-[22px] overflow-hidden"
+        style={{
+          background: '#1A0804',
+          boxShadow: '0 28px 70px rgba(0,0,0,0.65), 0 0 0 0.5px rgba(201,149,106,0.25)',
+        }}>
+
+        {/* ── Strip image (top 38% of card) ── */}
+        <div className="relative overflow-hidden" style={{ height: 110 }}>
+          <img src={stripImg} alt="" className="w-full h-full object-cover"
+            style={{ objectPosition: 'center 55%', filter: 'brightness(0.72) saturate(1.1)' }} />
+          {/* Gradient fade down */}
+          <div className="absolute inset-0 pointer-events-none"
+            style={{ background: 'linear-gradient(to bottom,rgba(26,8,4,0) 0%,rgba(26,8,4,0.1) 60%,rgba(26,8,4,1) 100%)' }} />
+          {/* Top-left logo row */}
+          <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-4 pt-3.5">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-[8px] overflow-hidden bg-[#1A0804] flex items-center justify-center"
+                style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+                <img src={logoImg} alt="BD" className="w-6 h-6 object-contain" />
               </div>
-              <div className="text-right flex flex-col items-end gap-1">
-                <div>
-                  <p className="text-white/22 font-inter tracking-[0.22em] mb-1" style={{ fontSize: 7 }}>LEVEL</p>
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full"
-                    style={{ background: 'rgba(201,149,106,0.12)', border: '1px solid rgba(201,149,106,0.25)' }}>
-                    <Sparkles size={8} className="text-[#7A3B18]" />
-                    <span className="text-[#7A3B18] font-bold" style={{ fontSize: 10 }}>كلاسيك</span>
-                  </div>
-                </div>
-                <p className="text-white/12 font-inter tracking-widest" style={{ fontSize: 7 }}>#MR-2024-8821</p>
-              </div>
+              <span className="text-white text-[11px] font-bold tracking-wide"
+                style={{ textShadow: '0 1px 4px rgba(0,0,0,0.8)' }}>Brown Dose</span>
+            </div>
+            {/* Points header field */}
+            <div className="text-right">
+              <p className="text-white/40 text-[7px] font-inter tracking-[0.22em] uppercase">POINTS</p>
+              <p className="text-white font-black text-[18px] leading-none font-inter"
+                style={{ textShadow: '0 1px 8px rgba(0,0,0,0.7)' }}>480</p>
             </div>
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 right-0 pointer-events-none" style={{ height: 1, background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.28),transparent)' }} />
+
+        {/* ── Pass body ── */}
+        <div className="px-4 pt-3 pb-4">
+          {/* Thin gold divider */}
+          <div className="mb-3" style={{ height: '0.5px', background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.4),transparent)' }} />
+
+          {/* Primary + secondary fields */}
+          <div className="flex items-end justify-between mb-4">
+            <div>
+              <p className="text-white/35 text-[7px] font-inter tracking-[0.24em] uppercase mb-0.5">Cardholder</p>
+              <p className="text-white text-[15px] font-bold leading-none">عبدالإله علي</p>
+            </div>
+            <div className="text-right">
+              <p className="text-white/35 text-[7px] font-inter tracking-[0.24em] uppercase mb-0.5">Level</p>
+              <div className="flex items-center gap-1 px-2 py-0.5 rounded-full"
+                style={{ background: 'rgba(201,149,106,0.15)', border: '0.5px solid rgba(201,149,106,0.3)' }}>
+                <Sparkles size={7} className="text-[#C4783A]" />
+                <span className="text-[#C4783A] text-[9px] font-bold">كلاسيك</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Progress dots */}
+          <div className="flex items-center gap-1 mb-4">
+            {[0,1,2,3,4,5,6].map(i => (
+              <div key={i} style={{
+                flex: 1, height: 3, borderRadius: 99,
+                background: i < 4
+                  ? 'linear-gradient(90deg,#7A3B18,#E8C48A)'
+                  : 'rgba(255,255,255,0.08)',
+              }} />
+            ))}
+          </div>
+
+          {/* Barcode strip */}
+          <div className="flex items-center justify-between rounded-[14px] overflow-hidden"
+            style={{ background: 'white', padding: '10px 14px' }}>
+            <div>
+              <p className="text-[#1A0804] text-[8px] font-black tracking-[0.18em] uppercase mb-0.5">Brown Dose</p>
+              <p className="text-[#888] text-[7px] font-inter">#BD-2024-8821</p>
+              <p className="text-[#555] text-[7px] font-inter mt-0.5">صبيا · جيزان · ضمد</p>
+            </div>
+            <PassQR size={60} dark="#1A0804" light="white" />
+          </div>
+        </div>
+
+        {/* Inset rim */}
+        <div className="absolute inset-0 rounded-[22px] pointer-events-none"
+          style={{ boxShadow: 'inset 0 0 0 0.5px rgba(255,255,255,0.08)' }} />
       </div>
     </motion.div>
   );
@@ -112,156 +143,393 @@ function MembershipCard() {
 
 /* ── QR Modal ────────────────────────────────────────────────────── */
 function QRModal({ onClose }: { onClose: () => void }) {
+  const [tapped, setTapped] = useState(false);
+  const [scanned, setScanned] = useState(false);
+
+  function handleTap() {
+    if (tapped) return;
+    setTapped(true);
+    setTimeout(() => setScanned(true), 1800);
+  }
+
   return (
     <>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}
-        onClick={onClose} className="absolute inset-0 bg-black/70 backdrop-blur-md z-50 rounded-[48px]" />
+        onClick={onClose} className="absolute inset-0 z-50 rounded-[49px] overflow-hidden"
+        style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)' }} />
+
       <motion.div initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '100%' }}
         transition={{ type: 'spring', damping: 30, stiffness: 320 }}
-        className="absolute bottom-0 left-0 right-0 h-[66%] bg-[#FDFBF7] rounded-t-[32px] z-50 flex flex-col items-center px-6 pt-4 pb-6">
-        <div className="w-10 h-1 bg-[rgba(196,181,159,0.35)] rounded-full mb-5" />
-        <h3 className="text-[18px] font-bold text-[#111] mb-1">رمز عضويتك</h3>
-        <p className="text-[12px] text-[#888] font-light mb-5">اضغط رمز QR عند الصندوق · ١٥ نقطة لكل طلب</p>
-        <div className="relative bg-white p-4 rounded-[20px] border border-[rgba(196,181,159,0.2)] shadow-[0_8px_32px_rgba(0,0,0,0.07)]">
-          <QRCodeSVG />
+        className="absolute bottom-0 left-0 right-0 rounded-t-[32px] z-50 flex flex-col items-center px-6 pt-4 pb-8"
+        style={{ background: '#0A0A0A', borderTop: '0.5px solid rgba(255,255,255,0.1)' }}>
+
+        <div className="w-10 h-1 bg-white/10 rounded-full mb-5" />
+
+        {/* Header */}
+        <AnimatePresence mode="wait">
+          {!scanned ? (
+            <motion.div key="scan" className="text-center mb-5">
+              <h3 className="text-[18px] font-bold text-white mb-1">رمز عضويتك</h3>
+              <p className="text-[12px] text-white/35 font-light">
+                {tapped ? 'جاري المسح...' : 'اضغط رمز QR عند الصندوق'}
+              </p>
+            </motion.div>
+          ) : (
+            <motion.div key="done" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+              className="text-center mb-5">
+              <p className="text-[18px] font-bold text-[#30D158] mb-1">✓ تمت النقطة!</p>
+              <p className="text-[12px] text-white/40 font-light">+١٥ نقطة أُضيفت لرصيدك</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* QR + NFC animation */}
+        <motion.button
+          onClick={handleTap}
+          whileTap={{ scale: 0.97 }}
+          className="relative flex items-center justify-center"
+          style={{ width: 200, height: 200 }}>
+
+          {/* NFC ripple waves when tapped */}
+          <AnimatePresence>
+            {tapped && !scanned && [0,1,2].map(i => (
+              <motion.div key={i} className="absolute rounded-full border-2 pointer-events-none"
+                style={{ borderColor: 'rgba(48,209,88,0.6)' }}
+                initial={{ width: 80, height: 80, opacity: 0.8 }}
+                animate={{ width: 200, height: 200, opacity: 0 }}
+                transition={{ duration: 1.4, repeat: Infinity, delay: i * 0.45, ease: 'easeOut' }} />
+            ))}
+          </AnimatePresence>
+
+          {/* QR container */}
           <motion.div
-            className="absolute left-4 right-4 h-0.5 rounded-full pointer-events-none"
-            style={{ background: 'linear-gradient(90deg,transparent,#6B3210,#7A3B18,#6B3210,transparent)', boxShadow: '0 0 8px rgba(160,82,45,0.7)' }}
-            initial={{ top: '16px' }}
-            animate={{ top: ['16px', 'calc(100% - 16px)', '16px'] }}
-            transition={{ duration: 2.2, ease: 'easeInOut', repeat: Infinity, repeatDelay: 0.8 }}
-          />
+            animate={tapped && !scanned ? { scale: [1, 1.03, 1] } : {}}
+            transition={{ duration: 0.6, repeat: 3 }}
+            className="relative rounded-[20px] overflow-hidden"
+            style={{
+              background: 'white',
+              padding: 14,
+              boxShadow: tapped
+                ? '0 0 0 2px rgba(48,209,88,0.6), 0 12px 40px rgba(48,209,88,0.2)'
+                : '0 12px 40px rgba(0,0,0,0.5)',
+              transition: 'box-shadow 0.3s ease',
+            }}>
+            <QRCodeSVG />
+
+            {/* Scan laser line */}
+            {!scanned && (
+              <motion.div
+                className="absolute left-3 right-3 h-0.5 rounded-full pointer-events-none"
+                style={{
+                  background: 'linear-gradient(90deg,transparent,#30D158,rgba(48,209,88,0.8),#30D158,transparent)',
+                  boxShadow: '0 0 10px rgba(48,209,88,0.9)',
+                }}
+                initial={{ top: '12px' }}
+                animate={{ top: ['12px', 'calc(100% - 12px)', '12px'] }}
+                transition={{ duration: 1.8, ease: 'easeInOut', repeat: Infinity, repeatDelay: 0.4 }}
+              />
+            )}
+
+            {/* Success overlay */}
+            <AnimatePresence>
+              {scanned && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                  className="absolute inset-0 flex items-center justify-center rounded-[20px]"
+                  style={{ background: 'rgba(48,209,88,0.15)' }}>
+                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                    className="w-14 h-14 rounded-full flex items-center justify-center"
+                    style={{ background: '#30D158', boxShadow: '0 0 30px rgba(48,209,88,0.7)' }}>
+                    <Check size={24} strokeWidth={3} className="text-white" />
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </motion.button>
+
+        {/* Member ID */}
+        <p className="text-[11px] text-white/20 mt-4 font-inter tracking-[0.22em]">#BD-2024-8821</p>
+
+        {/* Points per scan */}
+        <div className="flex items-center gap-2 mt-2 px-3 py-1.5 rounded-full"
+          style={{ background: 'rgba(48,209,88,0.08)', border: '1px solid rgba(48,209,88,0.15)' }}>
+          <div className="w-1.5 h-1.5 rounded-full bg-[#30D158]" />
+          <p className="text-[#30D158] text-[10px] font-medium">+١٥ نقطة لكل طلب</p>
         </div>
-        <p className="text-[11px] text-[#AAA] mt-4 font-inter tracking-widest">#MR-2024-8821</p>
-        <div className="flex-1" />
-        <button onClick={onClose} className="w-full py-4 rounded-[16px] bg-[#111] text-white font-semibold text-[14px] active:scale-95 transition-transform">إغلاق</button>
+
+        {!tapped && (
+          <p className="text-white/20 text-[10px] mt-3">اضغط الرمز لمحاكاة المسح</p>
+        )}
+
+        <motion.button onClick={onClose}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
+          whileTap={{ scale: 0.97 }}
+          className="w-full mt-5 py-4 rounded-[16px] font-semibold text-[14px] text-white"
+          style={{ background: 'rgba(255,255,255,0.1)', border: '0.5px solid rgba(255,255,255,0.12)' }}>
+          إغلاق
+        </motion.button>
       </motion.div>
     </>
   );
 }
 
-/* ── Apple Wallet Pass modal ─────────────────────────────────────── */
-function AppleWalletModal({ onClose }: { onClose: () => void }) {
-  const { brand } = useBrand();
-  const [phase, setPhase] = useState<'adding' | 'done'>('adding');
+/* ══════════════════════════════════════════════════════════════════
+   Apple Wallet Modal — pixel-perfect iOS "Add Pass" flow
+══════════════════════════════════════════════════════════════════ */
+function WalletPassPreview({ compact = false }: { compact?: boolean }) {
+  const stripH = compact ? 72 : 100;
+  const qrSize = compact ? 52 : 64;
+  return (
+    <div className="w-full rounded-[18px] overflow-hidden"
+      style={{
+        background: '#1A0804',
+        boxShadow: compact
+          ? '0 12px 40px rgba(0,0,0,0.7), 0 0 0 0.5px rgba(201,149,106,0.3)'
+          : '0 24px 60px rgba(0,0,0,0.8), 0 0 0 0.5px rgba(201,149,106,0.3)',
+      }}>
+      {/* Strip */}
+      <div className="relative overflow-hidden" style={{ height: stripH }}>
+        <img src={`${BASE}bd-hero.jpg`} alt="" className="w-full h-full object-cover"
+          style={{ objectPosition: 'center 55%', filter: 'brightness(0.65) saturate(1.1)' }} />
+        <div className="absolute inset-0"
+          style={{ background: 'linear-gradient(to bottom,rgba(26,8,4,0) 0%,rgba(26,8,4,0.85) 100%)' }} />
+        <div className="absolute top-0 left-0 right-0 flex items-center justify-between px-3.5 pt-3">
+          <div className="flex items-center gap-1.5">
+            <div className="w-6 h-6 rounded-[6px] bg-[#1A0804]/80 flex items-center justify-center">
+              <img src={`${BASE}bd-logo.svg`} alt="BD" className="w-5 h-5 object-contain" />
+            </div>
+            <span className="text-white text-[10px] font-bold" style={{ textShadow: '0 1px 4px rgba(0,0,0,0.9)' }}>Brown Dose</span>
+          </div>
+          <div className="text-right">
+            <p className="text-white/40 text-[6px] font-inter tracking-widest">POINTS</p>
+            <p className="text-white font-black text-[15px] leading-none font-inter">480</p>
+          </div>
+        </div>
+      </div>
+      {/* Body */}
+      <div className="px-3.5 pt-2.5 pb-3">
+        <div className="h-px mb-2.5" style={{ background: 'linear-gradient(90deg,transparent,rgba(201,149,106,0.35),transparent)' }} />
+        <div className="flex items-end justify-between mb-3">
+          <div>
+            <p className="text-white/30 text-[6px] font-inter tracking-widest uppercase">Cardholder</p>
+            <p className="text-white text-[12px] font-bold leading-tight">عبدالإله علي</p>
+          </div>
+          <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full"
+            style={{ background: 'rgba(201,149,106,0.15)', border: '0.5px solid rgba(201,149,106,0.3)' }}>
+            <span className="text-[#C4783A] text-[8px] font-bold">كلاسيك</span>
+          </div>
+        </div>
+        <div className="flex items-center justify-between rounded-[10px] overflow-hidden"
+          style={{ background: 'white', padding: '8px 10px' }}>
+          <div>
+            <p className="text-[#1A0804] text-[7px] font-black tracking-wider">BROWN DOSE</p>
+            <p className="text-[#888] text-[6px] font-inter">#BD-2024-8821</p>
+          </div>
+          <PassQR size={qrSize} dark="#1A0804" light="white" />
+        </div>
+      </div>
+      <div className="absolute inset-0 rounded-[18px] pointer-events-none"
+        style={{ boxShadow: 'inset 0 0 0 0.5px rgba(255,255,255,0.07)' }} />
+    </div>
+  );
+}
 
-  useEffect(() => {
-    const t = setTimeout(() => setPhase('done'), 500);
-    return () => clearTimeout(t);
-  }, []);
+function AppleWalletModal({ onClose }: { onClose: () => void }) {
+  const [phase, setPhase] = useState<'preview' | 'adding' | 'done'>('preview');
+
+  async function handleAdd() {
+    setPhase('adding');
+    // trigger real .pkpass download in parallel
+    downloadPkpass(import.meta.env.BASE_URL).catch(() => {});
+    setTimeout(() => setPhase('done'), 1600);
+  }
 
   return (
     <>
+      {/* Blurred dark overlay */}
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        transition={{ duration: 0.25 }}
         onClick={phase === 'done' ? onClose : undefined}
-        className="absolute inset-0 bg-black/80 backdrop-blur-xl z-50 rounded-[48px]" />
+        className="absolute inset-0 z-50 rounded-[49px] overflow-hidden"
+        style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }} />
 
+      {/* Sheet */}
       <motion.div
-        initial={{ y: '110%' }}
+        initial={{ y: '100%' }}
         animate={{ y: 0 }}
         exit={{ y: '110%' }}
-        transition={{ type: 'spring', damping: 28, stiffness: 300 }}
-        className="absolute bottom-0 left-0 right-0 z-50 bg-[#1C1C1E] rounded-t-[36px] overflow-hidden"
-        style={{ maxHeight: '88%' }}
+        transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+        className="absolute bottom-0 left-0 right-0 z-50 rounded-t-[28px] overflow-hidden"
+        style={{ background: '#1C1C1E' }}
       >
-        {/* iOS-style header */}
-        <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-white/8">
-          <button onClick={onClose} className="text-[14px] text-[#007AFF] font-medium">إغلاق</button>
-          <p className="text-white text-[14px] font-semibold">Apple Wallet</p>
+        {/* Handle */}
+        <div className="flex justify-center pt-2.5 pb-1">
+          <div className="w-9 h-[4px] rounded-full bg-white/20" />
+        </div>
+
+        {/* iOS nav bar */}
+        <div className="flex items-center justify-between px-4 py-2.5"
+          style={{ borderBottom: '0.5px solid rgba(255,255,255,0.1)' }}>
+          <button onClick={onClose}
+            className="text-[15px] font-normal"
+            style={{ color: '#007AFF' }}>إلغاء</button>
+          <div className="flex items-center gap-1.5">
+            {/* Apple logo */}
+            <svg viewBox="0 0 24 24" className="w-4 h-4" style={{ fill: 'white' }}>
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+            </svg>
+            <p className="text-white text-[15px] font-semibold">Wallet</p>
+          </div>
           <div className="w-10" />
         </div>
 
-        <div className="px-5 pt-6 pb-8 flex flex-col items-center gap-5">
-          {/* Wallet pass preview */}
-          <motion.div
-            initial={{ scale: 0.85, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2, type: 'spring', stiffness: 200, damping: 22 }}
-            className="w-full rounded-[24px] overflow-hidden relative"
-            style={{
-              background: 'linear-gradient(150deg,#0C0002,#2A0407,#4D0C10,#1C0406)',
-              boxShadow: '0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,149,106,0.2)',
-              aspectRatio: '1.586/1',
-            }}
-          >
-            <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 80% 10%,rgba(201,149,106,0.2) 0%,transparent 52%)' }} />
-            <div className="absolute inset-0 flex flex-col justify-between p-5 z-10">
-              {/* Top */}
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-2">
-                  <svg viewBox="0 0 24 24" className="w-5 h-5" style={{ fill: 'rgba(255,255,255,0.6)' }}>
-                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-                  </svg>
-                  <span className="text-white/30 text-[8px] font-inter tracking-[0.2em]">WALLET</span>
-                </div>
-                <p className="text-[#7A3B18] font-black text-[18px]">{brand.memberCard.label}</p>
+        <AnimatePresence mode="wait">
+          {/* ── PREVIEW phase ── */}
+          {phase === 'preview' && (
+            <motion.div key="preview" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, scale: 0.95 }}
+              className="px-5 pt-5 pb-6 flex flex-col gap-4">
+              <div className="text-center">
+                <p className="text-white text-[17px] font-semibold">إضافة البطاقة؟</p>
+                <p className="text-white/40 text-[12px] mt-1 font-light">Brown Dose · بطاقة الولاء</p>
               </div>
-              {/* Bottom */}
-              <div className="flex items-end justify-between">
-                <div>
-                  <p className="text-white/25 text-[7px] font-inter tracking-widest">POINTS</p>
-                  <p className="text-white font-black font-inter text-[28px] leading-none">480</p>
-                  <div className="flex gap-[3px] mt-1.5">
-                    {[0,1,2,3,4,5,6].map(i => (
-                      <div key={i} className="h-[3px] rounded-full" style={{ width: 14, background: i < 4 ? 'linear-gradient(90deg,#7A3B18,#E8C48A)' : 'rgba(255,255,255,0.12)' }} />
-                    ))}
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-white/25 text-[7px] font-inter tracking-widest">CARDHOLDER</p>
-                  <p className="text-white font-bold text-[13px]">عبدالإله علي</p>
-                  <div className="flex items-center gap-1 mt-1 px-2 py-0.5 rounded-full justify-end" style={{ background: 'rgba(201,149,106,0.15)' }}>
-                    <Sparkles size={8} className="text-[#7A3B18]" />
-                    <span className="text-[#7A3B18] text-[9px] font-bold">كلاسيك</span>
-                  </div>
-                </div>
+
+              {/* Card preview with 3D tilt animation */}
+              <motion.div
+                initial={{ scale: 0.88, rotateX: 8, opacity: 0 }}
+                animate={{ scale: 1, rotateX: 0, opacity: 1 }}
+                transition={{ delay: 0.1, type: 'spring', stiffness: 180, damping: 20 }}
+                style={{ perspective: 600 }}
+              >
+                <WalletPassPreview />
+              </motion.div>
+
+              {/* Info pills */}
+              <div className="flex flex-col gap-2">
+                {[
+                  { icon: '🔒', text: 'تظهر على شاشة القفل عند اقترابك من الفرع' },
+                  { icon: '📴', text: 'تعمل بدون إنترنت' },
+                  { icon: '🔔', text: 'إشعارات فورية عند وصول العروض' },
+                ].map((item, i) => (
+                  <motion.div key={i}
+                    initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.25 + i * 0.07 }}
+                    className="flex items-center gap-2.5 px-3 py-2.5 rounded-[12px]"
+                    style={{ background: 'rgba(255,255,255,0.06)' }}>
+                    <span className="text-[14px]">{item.icon}</span>
+                    <p className="text-white/55 text-[11px] font-light">{item.text}</p>
+                  </motion.div>
+                ))}
               </div>
-            </div>
-          </motion.div>
 
-          {/* Status */}
-          <AnimatePresence mode="wait">
-            {phase === 'adding' ? (
-              <motion.div key="adding" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                className="flex flex-col items-center gap-3">
-                <div className="flex items-center gap-2">
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-                    className="w-5 h-5 rounded-full border-2 border-white/20 border-t-white"
-                  />
-                  <p className="text-white/60 text-[13px]">جاري الإضافة إلى Apple Wallet...</p>
-                </div>
-              </motion.div>
-            ) : (
-              <motion.div key="done" initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }}
-                className="flex flex-col items-center gap-3">
-                <motion.div
-                  initial={{ scale: 0 }} animate={{ scale: 1 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  className="w-14 h-14 bg-[#30D158] rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(48,209,88,0.5)]">
-                  <Check size={24} strokeWidth={3} className="text-white" />
-                </motion.div>
-                <div className="text-center">
-                  <p className="text-white text-[16px] font-semibold">تمت الإضافة!</p>
-                  <p className="text-white/40 text-[12px] font-light mt-1">بطاقتك متاحة على شاشة القفل حتى بدون إنترنت</p>
-                </div>
-                <div className="flex items-center gap-2 mt-1 px-4 py-2 rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }}>
-                  <span className="text-[12px]">🔒</span>
-                  <p className="text-white/50 text-[11px]">تظهر تلقائياً عند اقترابك من المطعم</p>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {phase === 'done' && (
-            <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-              onClick={onClose}
-              className="w-full py-4 rounded-[16px] bg-[#007AFF] text-white font-semibold text-[15px] active:scale-95 transition-transform">
-              تم
-            </motion.button>
+              {/* iOS-style Add button */}
+              <motion.button
+                initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={handleAdd}
+                className="w-full py-[15px] rounded-[14px] text-white text-[17px] font-semibold"
+                style={{ background: '#007AFF' }}>
+                إضافة
+              </motion.button>
+            </motion.div>
           )}
-        </div>
+
+          {/* ── ADDING phase ── */}
+          {phase === 'adding' && (
+            <motion.div key="adding" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              className="px-5 pt-5 pb-8 flex flex-col items-center gap-5">
+              <WalletPassPreview compact />
+              <div className="flex flex-col items-center gap-3 py-2">
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 0.9, repeat: Infinity, ease: 'linear' }}
+                  className="w-8 h-8 rounded-full border-2 border-white/15 border-t-white"
+                />
+                <p className="text-white/50 text-[13px] font-light">يُضاف إلى Apple Wallet...</p>
+              </div>
+            </motion.div>
+          )}
+
+          {/* ── DONE phase — lock screen preview ── */}
+          {phase === 'done' && (
+            <motion.div key="done" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }} className="px-4 pt-4 pb-6 flex flex-col items-center gap-4">
+
+              {/* iOS Lock Screen mockup */}
+              <motion.div initial={{ y: 16, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
+                transition={{ type: 'spring', stiffness: 200, damping: 22 }}
+                className="w-full rounded-[20px] overflow-hidden relative"
+                style={{ background: 'linear-gradient(160deg,#0B1B3A 0%,#162A52 50%,#0B1B3A 100%)', minHeight: 220 }}>
+
+                {/* Wallpaper stars/blur */}
+                <div className="absolute inset-0 pointer-events-none opacity-30"
+                  style={{ backgroundImage: 'radial-gradient(circle,rgba(255,255,255,0.8) 1px,transparent 1px)', backgroundSize: '18px 18px' }} />
+                <div className="absolute inset-0 pointer-events-none"
+                  style={{ background: 'radial-gradient(ellipse at 50% 0%,rgba(120,160,255,0.25) 0%,transparent 60%)' }} />
+
+                {/* Lock screen top */}
+                <div className="relative z-10 flex flex-col items-center pt-5 pb-3">
+                  <span className="text-white/50 text-[10px] font-inter mb-1">الجمعة ٢٥ يوليو</span>
+                  <span className="text-white font-black text-[42px] leading-none font-inter tracking-[-3px]">9:41</span>
+                </div>
+
+                {/* Notification card */}
+                <motion.div
+                  initial={{ y: 20, opacity: 0, scale: 0.94 }}
+                  animate={{ y: 0, opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.25, type: 'spring', stiffness: 260, damping: 24 }}
+                  className="relative z-10 mx-3 rounded-[18px] overflow-hidden"
+                  style={{ background: 'rgba(255,255,255,0.18)', backdropFilter: 'blur(28px)', WebkitBackdropFilter: 'blur(28px)', border: '1px solid rgba(255,255,255,0.25)' }}>
+                  {/* Pass mini-preview header */}
+                  <div className="flex items-center gap-2.5 px-3.5 py-3">
+                    <div className="w-9 h-9 rounded-[10px] overflow-hidden shrink-0"
+                      style={{ background: '#1A0804', border: '1px solid rgba(201,149,106,0.3)' }}>
+                      <img src={`${BASE}bd-logo.svg`} alt="BD" className="w-full h-full object-contain p-1" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-white text-[11px] font-semibold leading-tight">Brown Dose</p>
+                      <p className="text-white/60 text-[10px] font-light">بطاقة الولاء · ٤٨٠ نقطة</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-white/40 text-[9px]">الآن</p>
+                    </div>
+                  </div>
+                  {/* Divider */}
+                  <div className="mx-3 h-px" style={{ background: 'rgba(255,255,255,0.12)' }} />
+                  {/* Pass strip */}
+                  <div className="flex items-center gap-3 px-3.5 py-2.5">
+                    <div className="flex-1">
+                      <p className="text-white/40 text-[7px] font-inter tracking-widest">MEMBER</p>
+                      <p className="text-white text-[12px] font-bold">عبدالإله علي</p>
+                      <p className="text-[#C4783A] text-[9px] font-semibold mt-0.5">كلاسيك · براون دوز</p>
+                    </div>
+                    <PassQR size={44} dark="#1A0804" light="rgba(255,255,255,0.9)" />
+                  </div>
+                </motion.div>
+
+                {/* Bottom hint */}
+                <div className="relative z-10 flex justify-center py-3">
+                  <p className="text-white/30 text-[9px]">← اسحب للفتح</p>
+                </div>
+              </motion.div>
+
+              <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+                className="text-center">
+                <p className="text-white text-[17px] font-semibold">تمت الإضافة! 🎉</p>
+                <p className="text-white/40 text-[11px] font-light mt-1.5 leading-relaxed">
+                  هكذا ستبدو بطاقتك على شاشة القفل<br />تلقائياً عند اقترابك من الفرع بـ ٥٠٠م
+                </p>
+              </motion.div>
+
+              <motion.button initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+                whileTap={{ scale: 0.97 }} onClick={onClose}
+                className="w-full py-[15px] rounded-[14px] text-white text-[17px] font-semibold"
+                style={{ background: '#007AFF' }}>
+                رائع، تم
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     </>
   );
@@ -568,30 +836,40 @@ export function ScreenMembership() {
 
         {/* Wallet Buttons */}
         <div className="flex gap-3 mt-3">
-          {/* Apple Wallet — full experience */}
-          <motion.button whileTap={{ scale: 0.95 }} onClick={() => setShowAppleWallet(true)}
-            className="flex-1 flex items-center justify-center gap-2 bg-[#111] text-white rounded-2xl py-3.5 shadow-[0_4px_18px_rgba(0,0,0,0.25)]">
-            <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white shrink-0">
-              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
-            </svg>
-            <div className="leading-tight text-right">
-              <p className="text-[8px] text-white/40">أضف إلى</p>
-              <p className="text-[12px] font-semibold">Apple Wallet</p>
+          {/* Apple Wallet — official badge style */}
+          <motion.button whileTap={{ scale: 0.94 }} onClick={() => setShowAppleWallet(true)}
+            className="flex-1 relative overflow-hidden rounded-[14px] shadow-[0_6px_24px_rgba(0,0,0,0.35)]"
+            style={{ background: '#000', border: '0.5px solid rgba(255,255,255,0.15)' }}>
+            {/* Shine overlay */}
+            <div className="absolute inset-0 pointer-events-none"
+              style={{ background: 'linear-gradient(160deg,rgba(255,255,255,0.07) 0%,transparent 50%)' }} />
+            <div className="flex items-center justify-center gap-2.5 py-3.5 px-4">
+              {/* Official Apple logo */}
+              <svg viewBox="0 0 814 1000" className="w-5 h-5 shrink-0" style={{ fill: 'white' }}>
+                <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-42.8-155.5-108.4C46.6 790.4 1 665.1 1 541.2c0-195.2 127.4-298.1 252.9-298.1 66.1 0 121.2 43.4 162.7 43.4 39.5 0 101.1-46 176.3-46 28.5 0 130.9 2.6 198.3 99.2zm-234-181.5c31.1-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.5 32.4-55.1 83.6-55.1 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.4 0 102.5-30.4 135.5-71.3z"/>
+              </svg>
+              <div className="leading-none text-right">
+                <p className="text-white/45 text-[8px] font-light tracking-wide">Add to</p>
+                <p className="text-white text-[13px] font-semibold tracking-tight">Apple Wallet</p>
+              </div>
             </div>
           </motion.button>
 
-          {/* Google Wallet */}
-          <motion.button whileTap={{ scale: 0.95 }} onClick={() => setShowGWallet(true)}
-            className="flex-1 flex items-center justify-center gap-2 bg-white border border-[rgba(196,181,159,0.3)] text-[#111] rounded-2xl py-3.5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-            <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0">
-              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-            </svg>
-            <div className="leading-tight text-right">
-              <p className="text-[8px] text-[#888]">أضف إلى</p>
-              <p className="text-[12px] font-semibold text-[#111]">Google Wallet</p>
+          {/* Google Wallet — Material badge style */}
+          <motion.button whileTap={{ scale: 0.94 }} onClick={() => setShowGWallet(true)}
+            className="flex-1 relative overflow-hidden rounded-[14px] shadow-[0_4px_16px_rgba(0,0,0,0.12)]"
+            style={{ background: 'white', border: '1px solid rgba(0,0,0,0.08)' }}>
+            <div className="flex items-center justify-center gap-2.5 py-3.5 px-4">
+              <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+              </svg>
+              <div className="leading-none text-right">
+                <p className="text-[#444] text-[8px] font-light tracking-wide">Add to</p>
+                <p className="text-[#111] text-[13px] font-semibold tracking-tight">Google Wallet</p>
+              </div>
             </div>
           </motion.button>
         </div>
@@ -609,34 +887,131 @@ export function ScreenMembership() {
         {/* Gifts */}
         <GiftsSection currentPoints={points} onGiftSent={(msg, pts) => { setGiftToast(msg); setPoints(p => Math.max(0, p - pts)); }} />
 
-        {/* Progress */}
-        <div className="mt-4 bg-white rounded-[18px] p-4 border border-[rgba(196,181,159,0.15)] shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
-          <div className="flex justify-between items-center mb-1.5">
-            <h2 className="text-[13px] font-semibold text-[#111]">تقدمك نحو الفضي</h2>
-            <span className="text-[11px] font-bold text-[#7A3B18]">٤ / ٧</span>
+        {/* Tier Roadmap */}
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}
+          className="mt-4 rounded-[22px] overflow-hidden"
+          style={{ background: 'linear-gradient(160deg,#0A0002,#1A0404,#120304)', border: '1px solid rgba(201,149,106,0.12)', boxShadow: '0 8px 32px rgba(0,0,0,0.15)' }}>
+          
+          {/* Header */}
+          <div className="flex items-center justify-between px-4 pt-4 pb-3"
+            style={{ borderBottom: '0.5px solid rgba(255,255,255,0.06)' }}>
+            <div>
+              <p className="text-[7px] font-black tracking-[0.28em] text-[#7A3B18] mb-0.5"
+                style={{ fontFamily: 'ui-monospace,monospace' }}>LOYALTY JOURNEY</p>
+              <p className="text-white text-[13px] font-bold">رحلة العضوية</p>
+            </div>
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full"
+              style={{ background: 'rgba(201,149,106,0.1)', border: '1px solid rgba(201,149,106,0.2)' }}>
+              <motion.span key={points} initial={{ scale: 1.2 }} animate={{ scale: 1 }}
+                className="text-[#C4783A] text-[11px] font-black font-inter">{points}</motion.span>
+              <span className="text-[#7A3B18] text-[8px]">نقطة</span>
+            </div>
           </div>
-          <p className="text-[10px] text-[#AAA] mb-3 font-light">٣ طلبات أخرى وتنتقل للمستوى الفضي 🎯</p>
-          <div className="flex items-center gap-1.5 w-full">
-            {Array.from({ length: 7 }).map((_, i) => {
-              const filled = i < 4;
+
+          {/* Tiers */}
+          <div className="p-4">
+            {[
+              { name: 'كلاسيك',  nameEn: 'CLASSIC',  icon: '☕', pts: 0,    color: '#C4783A', active: true,  done: true,  perks: ['نقطة لكل ريال','قهوة مجانية يوم الميلاد'] },
+              { name: 'فضي',     nameEn: 'SILVER',   icon: '🥈', pts: 700,  color: '#8E9BAE', active: false, done: false, perks: ['٢ نقطة/ريال','أولوية الطلب','خصم ١٠٪'] },
+              { name: 'ذهبي',    nameEn: 'GOLD',     icon: '⭐', pts: 1500, color: '#D4AC0D', active: false, done: false, perks: ['٣ نقاط/ريال','توصيل مجاني','هدايا حصرية'] },
+              { name: 'بلاتيني', nameEn: 'PLATINUM', icon: '💎', pts: 3000, color: '#E8E8F0', active: false, done: false, perks: ['٥ نقاط/ريال','VIP مجلس خاص','باريستا شخصي'] },
+            ].map((tier, i) => {
+              const isActive = tier.active;
+              const locked = !tier.done && !isActive;
+              const progress = isActive ? (points / 700) * 100 : 0;
               return (
-                <React.Fragment key={i}>
+                <div key={tier.nameEn} className="relative">
+                  {/* Connector line */}
+                  {i < 3 && (
+                    <div className="absolute right-[22px] top-[52px] w-0.5 h-6 pointer-events-none"
+                      style={{ background: isActive && i === 0
+                        ? `linear-gradient(to bottom,${tier.color},rgba(255,255,255,0.08))`
+                        : 'rgba(255,255,255,0.06)' }} />
+                  )}
+
                   <motion.div
-                    animate={{ scale: filled ? [1, 1.15, 1] : 1 }}
-                    transition={{ delay: i * 0.08, duration: 0.4 }}
-                    className={`relative flex items-center justify-center rounded-full transition-all ${filled ? 'w-7 h-7' : 'w-6 h-6'}`}
-                    style={{ background: filled ? 'linear-gradient(135deg,#6B3210,#6B3A1F)' : 'rgba(196,181,159,0.15)' }}>
-                    <svg viewBox="0 0 24 24" className={`${filled ? 'w-4 h-4' : 'w-3.5 h-3.5'}`} fill="none"
-                      stroke={filled ? 'rgba(201,149,106,0.8)' : 'rgba(196,181,159,0.35)'} strokeWidth={1.5} strokeLinecap="round">
-                      <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0" />
-                    </svg>
+                    initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 + i * 0.09 }}
+                    className={`relative flex items-start gap-3.5 p-3 rounded-[16px] mb-2 ${!locked ? 'cursor-default' : 'opacity-50'}`}
+                    style={{
+                      background: isActive
+                        ? `linear-gradient(135deg,${tier.color}18,${tier.color}08)`
+                        : 'rgba(255,255,255,0.03)',
+                      border: isActive
+                        ? `1px solid ${tier.color}35`
+                        : '1px solid rgba(255,255,255,0.05)',
+                    }}>
+                    {/* Icon badge */}
+                    <div className="w-11 h-11 rounded-[14px] flex items-center justify-center shrink-0 text-[20px]"
+                      style={{
+                        background: isActive ? `${tier.color}20` : 'rgba(255,255,255,0.04)',
+                        border: isActive ? `1.5px solid ${tier.color}40` : '1px solid rgba(255,255,255,0.06)',
+                        boxShadow: isActive ? `0 0 20px ${tier.color}25` : 'none',
+                        filter: locked ? 'grayscale(1)' : 'none',
+                      }}>
+                      {locked ? '🔒' : tier.icon}
+                    </div>
+
+                    {/* Info */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center gap-1.5">
+                          <p className="text-white text-[13px] font-bold leading-none">{tier.name}</p>
+                          {isActive && (
+                            <span className="text-[6px] font-black px-1.5 py-0.5 rounded-full"
+                              style={{ background: `${tier.color}25`, color: tier.color, letterSpacing: '0.15em' }}>
+                              أنت هنا
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-[8px] font-inter"
+                          style={{ color: isActive ? tier.color : 'rgba(255,255,255,0.2)' }}>
+                          {tier.pts === 0 ? 'مفعّل' : `${tier.pts.toLocaleString()} نقطة`}
+                        </p>
+                      </div>
+
+                      {/* Perks */}
+                      <div className="flex flex-wrap gap-1 mb-2">
+                        {tier.perks.map((p, pi) => (
+                          <span key={pi} className="text-[8px] px-1.5 py-0.5 rounded-full"
+                            style={{
+                              background: isActive ? `${tier.color}12` : 'rgba(255,255,255,0.04)',
+                              color: isActive ? tier.color : 'rgba(255,255,255,0.2)',
+                              border: `0.5px solid ${isActive ? tier.color + '25' : 'rgba(255,255,255,0.06)'}`,
+                            }}>
+                            {p}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Progress bar (active tier only) */}
+                      {isActive && (
+                        <div>
+                          <div className="h-1.5 rounded-full overflow-hidden"
+                            style={{ background: 'rgba(255,255,255,0.06)' }}>
+                            <motion.div
+                              initial={{ width: 0 }} animate={{ width: `${Math.min(progress, 100)}%` }}
+                              transition={{ duration: 1.4, delay: 0.8, ease: [0.4,0,0.2,1] }}
+                              className="h-full rounded-full relative overflow-hidden"
+                              style={{ background: `linear-gradient(90deg,${tier.color}88,${tier.color})` }}>
+                              <motion.div className="absolute inset-y-0 w-8"
+                                initial={{ left: '-2rem' }} animate={{ left: '110%' }}
+                                transition={{ duration: 1, delay: 1.5, ease: 'easeInOut' }}
+                                style={{ background: 'linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent)' }} />
+                            </motion.div>
+                          </div>
+                          <p className="text-[7px] mt-1" style={{ color: 'rgba(255,255,255,0.2)' }}>
+                            {points} / 700 نقطة للفضي · {Math.max(0, 700 - points)} باقية
+                          </p>
+                        </div>
+                      )}
+                    </div>
                   </motion.div>
-                  {i < 6 && <div className={`flex-1 h-0.5 rounded-full ${i < 3 ? 'bg-gradient-to-r from-[#6B3210] to-[#7A3B18]' : 'bg-[rgba(196,181,159,0.2)]'}`} />}
-                </React.Fragment>
+                </div>
               );
             })}
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Book CTA */}

@@ -69,6 +69,7 @@ const STRIP_APPT    = readFileSync(join(ASSETS, "strip_appt.png"));
 const STRIP_APPT_2X = readFileSync(join(ASSETS, "strip_appt@2x.png"));
 const BG_APPT       = readFileSync(join(ASSETS, "appt_bg.png"));
 const BG_APPT_2X    = readFileSync(join(ASSETS, "appt_bg@2x.png"));
+const STRIP_BD      = readFileSync(join(ASSETS, "strip_browndose.jpg"));
 
 /* ── Icons ──────────────────────────────────────────────── */
 
@@ -350,6 +351,135 @@ wvS8qSg1xJMZiXEpOXHH6lWD/vTuGL3258NtgtvmGV8mfdKIMl6JqQ==
   <p class="note">بعد التحميل: افتح Apple Developer → Choose File → اختر pass-csr.pem من التنزيلات</p>
 </body></html>`);
 });
+
+/* ══════════════════════════════════════════════════════════
+   Brown Dose Loyalty Pass
+   GET /api/wallet/browndose?name=...&points=...&tier=...
+════════════════════════════════════════════════════════════ */
+router.get("/browndose", async (req, res) => {
+  const certs = getCerts();
+  if (!certs) {
+    /* No Apple cert → serve unsigned pkpass (iOS shows preview) */
+    return serveBrownDoseUnsigned(req.query as Record<string, string>, res);
+  }
+
+  const {
+    name   = "عبدالإله علي",
+    points = "480",
+    tier   = "كلاسيك",
+    serial = `BD-${Date.now()}`,
+  } = req.query as Record<string, string>;
+
+  const passJson = {
+    formatVersion:      1,
+    passTypeIdentifier: "pass.clinic.tlgaads.com",   // reuse registered cert
+    serialNumber:       serial,
+    teamIdentifier:     "V96R57F6T3",
+    organizationName:   "Brown Dose",
+    description:        "بطاقة ولاء براون دوز",
+    logoText:           "Brown Dose",
+
+    backgroundColor: "rgb(26, 8, 4)",
+    foregroundColor: "rgb(255, 255, 255)",
+    labelColor:      "rgb(196, 120, 58)",
+
+    storeCard: {
+      headerFields: [
+        { key: "points", label: "POINTS", value: String(points), textAlignment: "PKTextAlignmentRight" },
+      ],
+      primaryFields: [
+        { key: "name", label: "CARDHOLDER", value: String(name) },
+      ],
+      secondaryFields: [
+        { key: "tier",   label: "LEVEL",    value: String(tier) },
+        { key: "branch", label: "BRANCHES", value: "صبيا · جيزان · ضمد", textAlignment: "PKTextAlignmentRight" },
+      ],
+      auxiliaryFields: [
+        { key: "member", label: "MEMBER SINCE", value: "٢٠٢٤" },
+        { key: "next",   label: "TO SILVER",    value: `${Math.max(0, 700 - Number(points))} نقطة`, textAlignment: "PKTextAlignmentRight" },
+      ],
+      backFields: [
+        { key: "info",    label: "عن البطاقة",  value: "تجمع النقاط تلقائياً مع كل طلب. ١٥ نقطة = ١ ريال خصم." },
+        { key: "redeem",  label: "كيف أستبدل",  value: "اعرض الرمز عند الصندوق أو استخدم التطبيق." },
+        { key: "web",     label: "الموقع",       value: "browndose.sa" },
+        { key: "support", label: "الدعم",        value: "920XXXXXX" },
+        { key: "terms",   label: "الشروط",       value: "النقاط لا تنتهي · قابلة للإهداء · سارية في جميع الفروع." },
+      ],
+    },
+
+    barcodes: [{
+      message:         String(serial),
+      format:          "PKBarcodeFormatQR",
+      messageEncoding: "iso-8859-1",
+      altText:         `#${String(serial)}`,
+    }],
+
+    locations: [
+      { longitude: 42.5611, latitude: 17.0039, relevantText: "براون دوز جيزان" },
+      { longitude: 42.6237, latitude: 17.1455, relevantText: "براون دوز صبيا"  },
+    ],
+    maxDistance: 500,
+  };
+
+  try {
+    await buildPass(passJson, "browndose-loyalty.pkpass", certs, res, {
+      "strip.png":    STRIP_BD,
+      "strip@2x.png": STRIP_BD,
+    });
+    logger.info({ name, points, tier }, "browndose pass generated ok");
+  } catch (err) {
+    logger.error({ err }, "browndose pass generation failed");
+    res.status(500).json({ error: "generation_failed", message: String(err) });
+  }
+});
+
+/* Fallback: unsigned pkpass (no cert) — iOS shows partial preview */
+async function serveBrownDoseUnsigned(
+  params: Record<string, string>,
+  res: import("express").Response,
+) {
+  // Use JSZip-compatible approach via raw ZIP bytes
+  const { name = "عبدالإله علي", points = "480", tier = "كلاسيك", serial = `BD-${Date.now()}` } = params;
+
+  const passJson = {
+    formatVersion: 1,
+    passTypeIdentifier: "pass.sa.browndose.loyalty",
+    serialNumber: serial,
+    teamIdentifier: "BROWNDOSE1",
+    organizationName: "Brown Dose",
+    description: "بطاقة ولاء براون دوز",
+    logoText: "Brown Dose",
+    backgroundColor: "rgb(26, 8, 4)",
+    foregroundColor: "rgb(255, 255, 255)",
+    labelColor: "rgb(196, 120, 58)",
+    storeCard: {
+      headerFields:    [{ key: "points", label: "POINTS",     value: String(points) }],
+      primaryFields:   [{ key: "name",   label: "CARDHOLDER", value: String(name)   }],
+      secondaryFields: [{ key: "tier",   label: "LEVEL",      value: String(tier)   }],
+    },
+    barcodes: [{ message: String(serial), format: "PKBarcodeFormatQR", messageEncoding: "iso-8859-1" }],
+  };
+
+  // Build a minimal ZIP manually (no signing)
+  const { createZip } = await import("../lib/minizip");
+  const buf = await createZip({
+    "pass.json":  Buffer.from(JSON.stringify(passJson)),
+    "icon.png":   solidPng(29, 29, 26, 8, 4),
+    "icon@2x.png":solidPng(58, 58, 26, 8, 4),
+    "strip.png":  STRIP_BD,
+    "strip@2x.png": STRIP_BD,
+    "manifest.json": Buffer.from(JSON.stringify({ "pass.json": "0", "icon.png": "0", "icon@2x.png": "0" })),
+    "signature":  Buffer.alloc(0),
+  });
+
+  res.set({
+    "Content-Type":        "application/vnd.apple.pkpass",
+    "Content-Disposition": 'attachment; filename="browndose-loyalty.pkpass"',
+    "Content-Length":      String(buf.length),
+    "Cache-Control":       "no-cache, no-store",
+  });
+  res.send(buf);
+}
 
 /* ── GET /api/wallet/status ─────────────────────────────── */
 router.get("/status", (_req, res) => {

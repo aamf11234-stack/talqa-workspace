@@ -191,8 +191,15 @@ function TodaySpecial({ onOrder }: { onOrder: (item: CheckoutItem) => void }) {
   const { brand } = useBrand();
   const t = brand.todaySpecial;
   const [liked, setLiked] = useState(false);
+  const [ordered, setOrdered] = useState(false);
 
-  useEffect(() => setLiked(false), [brand.type]);
+  useEffect(() => { setLiked(false); setOrdered(false); }, [brand.type]);
+
+  function handleOrder() {
+    setOrdered(true);
+    onOrder({ name: t.name, price: t.price, emoji: t.emoji });
+    setTimeout(() => setOrdered(false), 3000);
+  }
 
   return (
     <motion.div
@@ -200,62 +207,102 @@ function TodaySpecial({ onOrder }: { onOrder: (item: CheckoutItem) => void }) {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.28 }}
-      className="mx-4 mb-5 rounded-[22px] overflow-hidden relative"
-      style={{ background: 'linear-gradient(150deg,#0C0002,#280506,#0D0205)', border: '1px solid rgba(201,149,106,0.12)', boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}
+      className="mx-4 mb-5 rounded-[26px] overflow-hidden relative"
+      style={{ boxShadow: '0 16px 48px rgba(0,0,0,0.35)' }}
     >
-      <div className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 90% 0%,rgba(201,149,106,0.14) 0%,transparent 55%)' }} />
+      {/* Full-bleed hero image */}
+      <div className="relative" style={{ height: 180 }}>
+        <img src={t.img} alt={t.name} className="w-full h-full object-cover"
+          style={{ objectPosition: 'center 40%' }} />
+        {/* Dark gradient layers */}
+        <div className="absolute inset-0"
+          style={{ background: 'linear-gradient(to bottom,rgba(0,0,0,0.1) 0%,rgba(0,0,0,0.55) 100%)' }} />
+        <div className="absolute inset-0"
+          style={{ background: 'linear-gradient(to right,rgba(26,8,4,0.6) 0%,transparent 55%)' }} />
 
-      <div className="relative flex gap-4 p-4">
-        <div className="relative shrink-0 rounded-[16px] overflow-hidden" style={{ width: 100, height: 100 }}>
-          <img src={t.img} alt={t.name} className="w-full h-full object-cover" />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg,rgba(0,0,0,0.15),transparent)' }} />
-          <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded-full text-[7px] font-bold text-white"
-            style={{ background: 'rgba(230,126,34,0.9)' }}>جارٍ الآن</div>
-        </div>
-        <div className="flex-1 flex flex-col justify-between py-0.5">
+        {/* Badge + title on image */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 flex items-end justify-between">
           <div>
-            <p className="text-[8px] font-bold tracking-widest text-[#7A3B18] mb-1"
-              style={{ fontFamily: 'ui-monospace,monospace' }}>{t.badge}</p>
-            <p className="text-white text-[16px] font-bold leading-tight mb-1">{t.name}</p>
-            <p className="text-white/35 text-[10px] font-light leading-snug">{t.desc}</p>
-          </div>
-          <div className="flex items-center justify-between mt-2">
-            <div>
-              <span className="text-[22px] font-black text-white font-inter">{t.price}</span>
-              <span className="text-[#7A3B18] text-[11px] font-bold mr-1">ريال</span>
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <div className="flex items-center gap-1 px-2 py-0.5 rounded-full"
+                style={{ background: 'rgba(230,126,34,0.9)', backdropFilter: 'blur(8px)' }}>
+                <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                <span className="text-white text-[7px] font-bold tracking-wider">جارٍ الآن</span>
+              </div>
+              <span className="text-white/40 text-[7px] font-inter tracking-widest">{t.badge}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <motion.button whileTap={{ scale: 0.85 }} onClick={() => setLiked(!liked)}
-                className="w-7 h-7 rounded-full flex items-center justify-center"
-                style={{ background: liked ? 'rgba(255,59,48,0.2)' : 'rgba(255,255,255,0.08)' }}>
-                <span className="text-[14px]">{liked ? '❤️' : '🤍'}</span>
-              </motion.button>
-              <motion.button
-                onClick={() => onOrder({ name: t.name, price: t.price, emoji: t.emoji })}
-                whileTap={{ scale: 0.94 }}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold text-white"
-                style={{ background: 'linear-gradient(135deg,#6B3210,#6B3A1F)' }}>
-                <svg viewBox="0 0 24 24" className="w-3 h-3 fill-none stroke-white shrink-0" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                </svg>
-                اطلب الآن
-              </motion.button>
-            </div>
+            <p className="text-white text-[20px] font-black leading-tight"
+              style={{ textShadow: '0 2px 12px rgba(0,0,0,0.5)' }}>{t.name}</p>
+            <p className="text-white/55 text-[10px] font-light mt-0.5">{t.desc}</p>
           </div>
+          {/* Like button */}
+          <motion.button whileTap={{ scale: 0.82 }} onClick={() => setLiked(!liked)}
+            className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
+            style={{
+              background: liked ? 'rgba(255,59,48,0.25)' : 'rgba(255,255,255,0.12)',
+              backdropFilter: 'blur(8px)',
+              border: liked ? '1px solid rgba(255,59,48,0.4)' : '1px solid rgba(255,255,255,0.15)',
+            }}>
+            <motion.span animate={{ scale: liked ? [1, 1.4, 1] : 1 }} transition={{ duration: 0.3 }}
+              className="text-[16px]">{liked ? '❤️' : '🤍'}</motion.span>
+          </motion.button>
         </div>
       </div>
 
-      <div className="px-4 pb-4 flex gap-2">
-        <div className="flex items-center gap-2 flex-1 rounded-[12px] px-3 py-2"
-          style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.06)' }}>
-          <img src={t.popImg} alt={t.popName} className="w-8 h-8 rounded-[8px] object-cover shrink-0" />
-          <div className="flex-1 min-w-0">
-            <p className="text-white text-[10px] font-semibold truncate">{t.popName}</p>
-            <p className="text-[#7A3B18] text-[9px] font-bold">{t.popPrice}</p>
+      {/* Bottom action bar */}
+      <div className="flex items-center justify-between px-4 py-3.5"
+        style={{ background: 'linear-gradient(135deg,#130204,#200407)' }}>
+        <div className="flex items-baseline gap-1.5">
+          <span className="text-white font-black text-[24px] font-inter leading-none">{t.price}</span>
+          <span className="text-[#7A3B18] text-[11px] font-bold">ريال</span>
+          {/* Points earned */}
+          <div className="flex items-center gap-0.5 mr-1 px-1.5 py-0.5 rounded-full"
+            style={{ background: 'rgba(201,149,106,0.12)' }}>
+            <span className="text-[#C4783A] text-[8px] font-bold">+١٥ نقطة</span>
           </div>
-          <span className="text-[9px] text-white/25 shrink-0">الأشهر</span>
+        </div>
+
+        <motion.button
+          onClick={handleOrder}
+          whileTap={{ scale: 0.93 }}
+          animate={ordered ? { scale: [1, 1.04, 1] } : {}}
+          className="flex items-center gap-2 px-5 py-2.5 rounded-[14px] text-white text-[13px] font-bold relative overflow-hidden"
+          style={{
+            background: ordered
+              ? 'linear-gradient(135deg,#30D158,#27A844)'
+              : 'linear-gradient(135deg,#6B3210,#8A4A20)',
+            boxShadow: ordered
+              ? '0 4px 18px rgba(48,209,88,0.4)'
+              : '0 4px 18px rgba(107,50,16,0.4)',
+            transition: 'background 0.3s ease, box-shadow 0.3s ease',
+          }}>
+          {/* Shine overlay */}
+          <div className="absolute inset-0 pointer-events-none"
+            style={{ background: 'linear-gradient(160deg,rgba(255,255,255,0.12) 0%,transparent 50%)' }} />
+          {ordered ? (
+            <><Check size={14} strokeWidth={2.5} /><span>تم الإضافة!</span></>
+          ) : (
+            <><svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-none stroke-white shrink-0" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg><span>اطلب الآن</span></>
+          )}
+        </motion.button>
+      </div>
+
+      {/* Popular pick strip */}
+      <div className="flex items-center gap-3 px-4 py-2.5"
+        style={{ background: '#0D0205', borderTop: '0.5px solid rgba(255,255,255,0.05)' }}>
+        <img src={t.popImg} alt={t.popName} className="w-8 h-8 rounded-[8px] object-cover shrink-0"
+          style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.4)' }} />
+        <div className="flex-1 min-w-0">
+          <p className="text-white/60 text-[10px] font-semibold truncate">{t.popName}</p>
+          <p className="text-[#7A3B18] text-[9px] font-bold">{t.popPrice}</p>
+        </div>
+        <div className="flex items-center gap-1 px-2 py-1 rounded-full shrink-0"
+          style={{ background: 'rgba(201,149,106,0.08)', border: '0.5px solid rgba(201,149,106,0.15)' }}>
+          <span className="text-white/30 text-[8px]">🔥</span>
+          <span className="text-white/30 text-[8px]">الأشهر اليوم</span>
         </div>
       </div>
     </motion.div>
@@ -646,47 +693,96 @@ function OffersSheet({ onClose }: { onClose: () => void }) {
 function BusyMeter() {
   const hour = new Date().getHours();
   const levels = [
-    { range:[0,7],   label:'هادي',   sub:'لا انتظار الآن',             color:'#30D158', bars:1, eta:'٢ دقيقة'  },
-    { range:[7,9],   label:'خفيف',   sub:'صباح هادي — أسرع وقت',       color:'#30D158', bars:2, eta:'٣ دقائق' },
-    { range:[9,12],  label:'عادي',   sub:'إقبال متوسط',                color:'#7A3B18', bars:3, eta:'٧ دقائق' },
-    { range:[12,14], label:'مزدحم',  sub:'ذروة الغداء — انتظر شوي',    color:'#FF9F0A', bars:5, eta:'١٥ دقيقة'},
-    { range:[14,17], label:'عادي',   sub:'هدأ الوضع بعد الغداء',       color:'#7A3B18', bars:3, eta:'٦ دقائق' },
-    { range:[17,20], label:'مزدحم',  sub:'ذروة المساء ☕ — حماس!',      color:'#FF9F0A', bars:4, eta:'١٢ دقيقة'},
-    { range:[20,24], label:'هادي',   sub:'قبيل الإغلاق — ارتاح',       color:'#30D158', bars:2, eta:'٤ دقائق' },
+    { range:[0,7],   label:'هادي',   sub:'لا انتظار الآن',             color:'#30D158', pct:15, eta:'٢ دقيقة'  },
+    { range:[7,9],   label:'خفيف',   sub:'صباح هادي — أسرع وقت',       color:'#30D158', pct:28, eta:'٣ دقائق' },
+    { range:[9,12],  label:'عادي',   sub:'إقبال متوسط',                color:'#FF9F0A', pct:52, eta:'٧ دقائق' },
+    { range:[12,14], label:'مزدحم',  sub:'ذروة الغداء — انتظر شوي',    color:'#FF3B30', pct:88, eta:'١٥ دقيقة'},
+    { range:[14,17], label:'عادي',   sub:'هدأ الوضع بعد الغداء',       color:'#FF9F0A', pct:45, eta:'٦ دقائق' },
+    { range:[17,20], label:'مزدحم',  sub:'ذروة المساء ☕',              color:'#FF9F0A', pct:72, eta:'١٢ دقيقة'},
+    { range:[20,24], label:'هادي',   sub:'قبيل الإغلاق — ارتاح',       color:'#30D158', pct:22, eta:'٤ دقائق' },
   ];
   const curr = levels.find(l => hour >= l.range[0] && hour < l.range[1]) ?? levels[0];
+  /* 24-hr sparkline */
+  const sparkPcts = [10,25,40,55,85,62,50,38,30,35,48,65,88,82,60,45,55,70,75,68,55,40,28,12];
+
   return (
     <motion.div
       initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }}
       transition={{ delay:0.24 }}
-      className="mx-4 mb-5 rounded-[20px] overflow-hidden"
-      style={{ background:'#fff', border:'1px solid rgba(196,181,159,0.2)', boxShadow:'0 4px 18px rgba(0,0,0,0.06)' }}
+      className="mx-4 mb-5 rounded-[22px] overflow-hidden"
+      style={{ background:'#fff', border:'1px solid rgba(196,181,159,0.18)', boxShadow:'0 4px 24px rgba(0,0,0,0.07)' }}
     >
-      <div className="flex items-center justify-between px-4 pt-3.5 pb-2">
+      {/* Top row */}
+      <div className="flex items-center justify-between px-4 pt-4 pb-3">
         <div className="flex items-center gap-2.5">
-          <motion.div animate={{ scale:[1,1.3,1] }} transition={{ duration:1.8, repeat:Infinity }}
-            className="w-2 h-2 rounded-full"
-            style={{ background:curr.color, boxShadow:`0 0 6px ${curr.color}` }} />
+          <div className="relative w-8 h-8 rounded-[10px] flex items-center justify-center shrink-0"
+            style={{ background: `${curr.color}15` }}>
+            <motion.div animate={{ scale:[1,1.25,1], opacity:[1,0.6,1] }}
+              transition={{ duration:1.6, repeat:Infinity }}
+              className="w-2 h-2 rounded-full"
+              style={{ background:curr.color, boxShadow:`0 0 8px ${curr.color}` }} />
+          </div>
           <div>
             <p className="text-[12px] font-bold text-[#111] leading-tight">مؤشر الازدحام الآن</p>
-            <p className="text-[9px] text-[#AAA] font-light mt-0.5">{curr.sub}</p>
+            <p className="text-[9px] text-[#BBB] font-light mt-0.5">{curr.sub}</p>
           </div>
         </div>
         <div className="text-left">
-          <p className="text-[12px] font-black" style={{ color:curr.color }}>{curr.label}</p>
-          <p className="text-[9px] text-[#CCC] mt-0.5 font-inter">⏱ {curr.eta}</p>
+          <p className="text-[14px] font-black leading-none" style={{ color:curr.color }}>{curr.label}</p>
+          <p className="text-[9px] text-[#CCC] mt-0.5 font-inter tracking-wide">⏱ {curr.eta}</p>
         </div>
       </div>
-      <div className="flex items-end gap-1 px-4 pb-3.5" style={{ height:38 }}>
-        {Array.from({ length:7 }).map((_,i) => (
-          <motion.div key={i}
-            initial={{ height:4 }}
-            animate={{ height: i < curr.bars ? `${14 + (i % 3)*8}px` : '4px' }}
-            transition={{ duration:0.7, delay:i*0.07, ease:[0.4,0,0.2,1] }}
-            className="flex-1 rounded-full"
-            style={{ background: i < curr.bars ? curr.color : 'rgba(196,181,159,0.18)' }}
-          />
-        ))}
+
+      {/* Progress arc bar */}
+      <div className="px-4 mb-3">
+        <div className="relative h-2 rounded-full overflow-hidden"
+          style={{ background:'rgba(196,181,159,0.15)' }}>
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${curr.pct}%` }}
+            transition={{ duration: 1, ease: [0.4,0,0.2,1], delay: 0.3 }}
+            className="absolute inset-y-0 left-0 rounded-full"
+            style={{
+              background: `linear-gradient(90deg,${curr.color}88,${curr.color})`,
+              boxShadow: `0 0 8px ${curr.color}55`,
+            }} />
+          {/* Now indicator dot */}
+          <motion.div
+            initial={{ left: 0 }} animate={{ left: `calc(${curr.pct}% - 4px)` }}
+            transition={{ duration: 1, ease: [0.4,0,0.2,1], delay: 0.3 }}
+            className="absolute top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white"
+            style={{ boxShadow:`0 0 0 2px ${curr.color}` }} />
+        </div>
+        <div className="flex justify-between mt-1">
+          <span className="text-[7px] text-[#CCC]">هادي</span>
+          <span className="text-[7px] text-[#CCC]">مزدحم</span>
+        </div>
+      </div>
+
+      {/* 24-hr sparkline */}
+      <div className="px-4 pb-4">
+        <p className="text-[7px] text-[#CCC] font-inter mb-1.5">توقع الازدحام خلال اليوم</p>
+        <div className="flex items-end gap-0.5" style={{ height: 28 }}>
+          {sparkPcts.map((p, i) => {
+            const isNow = i === hour;
+            return (
+              <motion.div key={i}
+                initial={{ height: 2 }}
+                animate={{ height: `${(p / 100) * 28}px` }}
+                transition={{ duration: 0.6, delay: 0.05 + i * 0.02, ease: 'easeOut' }}
+                className="flex-1 rounded-sm"
+                style={{
+                  background: isNow ? curr.color : `rgba(196,181,159,${p > 60 ? 0.4 : 0.2})`,
+                  boxShadow: isNow ? `0 0 6px ${curr.color}` : 'none',
+                }} />
+            );
+          })}
+        </div>
+        <div className="flex justify-between mt-0.5">
+          <span className="text-[6px] text-[#DDD] font-inter">١٢ص</span>
+          <span className="text-[6px] font-bold" style={{ color: curr.color }}>الآن</span>
+          <span className="text-[6px] text-[#DDD] font-inter">١٢م</span>
+        </div>
       </div>
     </motion.div>
   );
