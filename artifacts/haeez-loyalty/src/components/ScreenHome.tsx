@@ -556,83 +556,168 @@ function NotificationsPanel({ onClose }: { onClose: () => void }) {
 }
 
 /* ── Quick Book Sheet ────────────────────────────────────────────── */
-const SLOTS = ['١٢:٠٠ م', '١٢:٣٠ م', '١:٠٠ م', '٧:٠٠ م', '٧:٣٠ م', '٨:٠٠ م'];
+const SLOTS = [
+  { time: '١٢:٠٠ م', avail: true  },
+  { time: '١٢:٣٠ م', avail: true  },
+  { time: '١:٠٠ م',  avail: false },
+  { time: '٧:٠٠ م',  avail: true  },
+  { time: '٧:٣٠ م',  avail: true  },
+  { time: '٨:٠٠ م',  avail: true  },
+];
 
 function QuickBookSheet({ onClose }: { onClose: () => void }) {
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [pax, setPax] = useState(2);
   const [done, setDone] = useState(false);
+
   return (
     <>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-        onClick={onClose} className="absolute inset-0 bg-black/60 backdrop-blur-sm z-40 rounded-[48px]" />
+        onClick={!done ? onClose : undefined}
+        className="absolute inset-0 bg-black/70 backdrop-blur-md z-40 rounded-[48px]" />
+
       <motion.div
         initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '110%' }}
-        transition={{ type: 'spring', damping: 30, stiffness: 320 }}
-        className="absolute bottom-0 left-0 right-0 bg-[#FDFBF7] rounded-t-[30px] z-50 pb-8"
-        style={{ maxHeight: '80%' }}>
-        <div className="w-10 h-1 bg-[rgba(196,181,159,0.4)] rounded-full mx-auto mt-3 mb-4" />
-        <div className="px-5">
+        transition={{ type: 'spring', damping: 28, stiffness: 300 }}
+        className="absolute bottom-0 left-0 right-0 z-50 rounded-t-[28px] overflow-hidden"
+        style={{ background: '#0D0200' }}>
+
+        {/* Handle */}
+        <div className="flex justify-center pt-3 pb-1">
+          <div className="w-9 h-1 rounded-full bg-white/10" />
+        </div>
+
+        <AnimatePresence mode="wait">
           {done ? (
-            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-              className="flex flex-col items-center gap-3 py-6">
-              <div className="w-14 h-14 rounded-full flex items-center justify-center"
-                style={{ background: 'rgba(48,209,88,0.12)' }}>
-                <svg viewBox="0 0 24 24" className="w-7 h-7" fill="none" stroke="#30D158" strokeWidth={2.5} strokeLinecap="round">
-                  <path d="M20 6L9 17l-5-5" />
-                </svg>
+            /* ── Success state ── */
+            <motion.div key="done"
+              initial={{ opacity: 0, scale: 0.92 }} animate={{ opacity: 1, scale: 1 }}
+              className="flex flex-col items-center gap-4 px-6 pt-6 pb-10">
+
+              {/* Ring + check */}
+              <div className="relative w-20 h-20">
+                {[0,1].map(i => (
+                  <motion.div key={i}
+                    initial={{ scale: 1, opacity: 0.5 }}
+                    animate={{ scale: 2.2 + i * 0.4, opacity: 0 }}
+                    transition={{ duration: 1.1, delay: i * 0.18, ease: 'easeOut' }}
+                    className="absolute inset-0 rounded-full border-2 border-[#30D158]" />
+                ))}
+                <motion.div
+                  initial={{ scale: 0 }} animate={{ scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 18 }}
+                  className="w-20 h-20 rounded-full flex items-center justify-center"
+                  style={{ background: 'linear-gradient(135deg,#30D158,#25A349)', boxShadow: '0 12px 36px rgba(48,209,88,0.45)' }}>
+                  <svg viewBox="0 0 24 24" className="w-9 h-9" fill="none" stroke="white" strokeWidth={3} strokeLinecap="round">
+                    <path d="M20 6L9 17l-5-5" />
+                  </svg>
+                </motion.div>
               </div>
-              <p className="text-[16px] font-bold text-[#111]">تم الحجز!</p>
-              <p className="text-[12px] text-[#AAA] font-light text-center">حجزت طاولة لـ{pax} أشخاص — {selectedSlot}</p>
-              <p className="text-[10px] text-[#CCC] font-light">ستصلك رسالة تأكيد على الجوال</p>
+
+              <div className="text-center">
+                <p className="text-white text-[20px] font-black mb-1">تم الحجز! 🎉</p>
+                <p className="text-white/50 text-[12px] font-light">طاولة لـ{pax} أشخاص — {selectedSlot}</p>
+              </div>
+
+              {/* Booking card */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+                className="w-full rounded-[20px] p-4"
+                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                {[
+                  { label: 'الموعد',       val: selectedSlot ?? '' },
+                  { label: 'عدد الأشخاص', val: `${pax} أشخاص`    },
+                  { label: 'الفرع',        val: 'براون دوز — صبيا' },
+                  { label: 'الحالة',       val: 'مؤكّد ✓', color: '#30D158' },
+                ].map((r, i) => (
+                  <div key={i} className={`flex justify-between py-2.5 ${i < 3 ? 'border-b border-white/5' : ''}`}>
+                    <span className="text-white/35 text-[11px]">{r.label}</span>
+                    <span className="text-[11px] font-bold" style={{ color: r.color ?? 'white' }}>{r.val}</span>
+                  </div>
+                ))}
+              </motion.div>
+
+              <p className="text-white/20 text-[10px]">ستصلك رسالة تأكيد على جوالك</p>
+
               <motion.button whileTap={{ scale: 0.97 }} onClick={onClose}
-                className="mt-2 w-full py-3.5 rounded-[16px] font-semibold text-[14px] text-white"
-                style={{ background: 'linear-gradient(135deg,#6B3210,#6B3A1F)' }}>تمام</motion.button>
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }}
+                className="w-full py-4 rounded-[18px] font-bold text-[14px] text-white"
+                style={{ background: 'linear-gradient(135deg,#6B3210,#7A3B18)', boxShadow: '0 8px 24px rgba(107,50,16,0.45)' }}>
+                تمام ☕
+              </motion.button>
             </motion.div>
+
           ) : (
-            <>
-              <p className="text-[10px] text-[#6B3210] font-bold tracking-widest mb-0.5">احجز طاولة</p>
-              <h3 className="text-[19px] font-bold text-[#111] mb-4">اختر الموعد</h3>
-              <div className="flex items-center justify-between mb-4 bg-white rounded-[16px] p-3 border border-[rgba(196,181,159,0.2)]">
-                <p className="text-[13px] font-semibold text-[#111]">عدد الأشخاص</p>
-                <div className="flex items-center gap-3">
+            /* ── Booking form ── */
+            <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="px-5 pt-4 pb-8">
+
+              <p className="text-[9px] font-black tracking-[0.28em] text-[#C4783A] mb-1"
+                style={{ fontFamily: 'ui-monospace,monospace' }}>RESERVE · احجز طاولة</p>
+              <p className="text-white text-[21px] font-black mb-5">اختر الموعد</p>
+
+              {/* Pax selector */}
+              <div className="flex items-center justify-between mb-4 px-4 py-3.5 rounded-[18px]"
+                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <p className="text-white/70 text-[13px] font-semibold">عدد الأشخاص</p>
+                <div className="flex items-center gap-4">
                   <button onClick={() => setPax(p => Math.max(1, p - 1))}
                     className="w-8 h-8 rounded-full flex items-center justify-center"
-                    style={{ background: 'rgba(160,82,45,0.08)' }}>
-                    <span className="text-[18px] font-bold text-[#6B3210] leading-none">−</span>
+                    style={{ background: 'rgba(196,120,58,0.15)', border: '1px solid rgba(196,120,58,0.25)' }}>
+                    <span className="text-[20px] font-bold text-[#C4783A] leading-none">−</span>
                   </button>
-                  <span className="text-[15px] font-bold text-[#111] w-4 text-center">{pax}</span>
+                  <motion.span key={pax} initial={{ scale: 1.3 }} animate={{ scale: 1 }}
+                    className="text-white text-[18px] font-black w-5 text-center">{pax}</motion.span>
                   <button onClick={() => setPax(p => Math.min(10, p + 1))}
                     className="w-8 h-8 rounded-full flex items-center justify-center"
-                    style={{ background: 'rgba(160,82,45,0.08)' }}>
-                    <span className="text-[18px] font-bold text-[#6B3210] leading-none">+</span>
+                    style={{ background: 'rgba(196,120,58,0.15)', border: '1px solid rgba(196,120,58,0.25)' }}>
+                    <span className="text-[20px] font-bold text-[#C4783A] leading-none">+</span>
                   </button>
                 </div>
               </div>
-              <p className="text-[11px] text-[#888] font-semibold mb-2.5">المواعيد المتاحة اليوم</p>
+
+              {/* Slots */}
+              <p className="text-white/30 text-[10px] font-bold tracking-widest mb-3">المواعيد المتاحة اليوم</p>
               <div className="grid grid-cols-3 gap-2 mb-5">
-                {SLOTS.map(slot => (
-                  <button key={slot} onClick={() => setSelectedSlot(slot)}
-                    className="py-2.5 rounded-[12px] text-[11px] font-bold transition-all"
-                    style={{
-                      background: selectedSlot === slot ? 'linear-gradient(135deg,#6B3210,#6B3A1F)' : 'white',
-                      color: selectedSlot === slot ? 'white' : '#555',
-                      border: selectedSlot === slot ? 'none' : '1px solid rgba(196,181,159,0.25)',
-                    }}>{slot}</button>
-                ))}
+                {SLOTS.map(s => {
+                  const active = selectedSlot === s.time;
+                  return (
+                    <button key={s.time}
+                      disabled={!s.avail}
+                      onClick={() => setSelectedSlot(s.time)}
+                      className="py-3 rounded-[14px] text-[12px] font-bold transition-all relative"
+                      style={{
+                        background: active
+                          ? 'linear-gradient(135deg,#6B3210,#8B4515)'
+                          : s.avail ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.02)',
+                        color: active ? 'white' : s.avail ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.15)',
+                        border: active ? 'none' : `1px solid rgba(255,255,255,${s.avail ? '0.08' : '0.03'})`,
+                        boxShadow: active ? '0 4px 16px rgba(107,50,16,0.5)' : 'none',
+                      }}>
+                      {s.time}
+                      {!s.avail && (
+                        <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[6px] text-white/20">محجوز</span>
+                      )}
+                    </button>
+                  );
+                })}
               </div>
+
+              {/* CTA */}
               <motion.button whileTap={{ scale: 0.97 }}
                 onClick={() => selectedSlot && setDone(true)}
-                className="w-full py-4 rounded-[16px] font-semibold text-[14px] transition-all"
+                className="w-full py-4 rounded-[18px] font-bold text-[14px] transition-all"
                 style={{
-                  background: selectedSlot ? 'linear-gradient(135deg,#6B3210,#6B3A1F)' : 'rgba(196,181,159,0.2)',
-                  color: selectedSlot ? 'white' : '#AAA',
+                  background: selectedSlot
+                    ? 'linear-gradient(135deg,#6B3210,#7A3B18)'
+                    : 'rgba(255,255,255,0.06)',
+                  color: selectedSlot ? 'white' : 'rgba(255,255,255,0.25)',
+                  boxShadow: selectedSlot ? '0 8px 24px rgba(107,50,16,0.5)' : 'none',
                 }}>
                 {selectedSlot ? `احجز لـ${pax} أشخاص — ${selectedSlot}` : 'اختر موعداً أولاً'}
               </motion.button>
-            </>
+            </motion.div>
           )}
-        </div>
+        </AnimatePresence>
       </motion.div>
     </>
   );
@@ -640,45 +725,84 @@ function QuickBookSheet({ onClose }: { onClose: () => void }) {
 
 /* ── Offers Sheet ───────────────────────────────────────────────── */
 const OFFERS = [
-  { emoji: '🍔', title: 'برجر + مشروب بـ٤٩ ريال', sub: 'وفر ٢٢٪ — ينتهي الليلة', color: '#6B3210', tag: 'الأشهر' },
-  { emoji: '☕', title: 'قهوتان للسعر الواحد', sub: 'صالح للأعضاء فقط · حتى ١٢م', color: '#7A3B18', tag: 'عضوية' },
-  { emoji: '🎂', title: 'حلى مجاناً مع أي طلب', sub: 'لأعياد الميلاد هذا الشهر', color: '#2D7D46', tag: 'مناسبة' },
+  { emoji: '☕', title: 'قهوتان للسعر الواحد',    sub: 'صالح للأعضاء فقط · حتى ١٢م',   color: '#7A3B18', grad: 'linear-gradient(135deg,#1A0804,#3A1408)', tag: 'عضوية',   timer: '٢:١٨:٤٥' },
+  { emoji: '🍔', title: 'برجر + مشروب بـ٤٩ ريال', sub: 'وفر ٢٢٪ — ينتهي الليلة',        color: '#C4783A', grad: 'linear-gradient(135deg,#1A0E00,#3A2208)', tag: 'الأشهر',  timer: '٩:٤٢:٠٠' },
+  { emoji: '🎂', title: 'حلى مجاناً مع أي طلب',   sub: 'لأعياد الميلاد هذا الشهر',      color: '#2D7D46', grad: 'linear-gradient(135deg,#001A0A,#023818)', tag: 'مناسبة',  timer: null },
 ];
 
 function OffersSheet({ onClose }: { onClose: () => void }) {
+  const [claimed, setClaimed] = useState<number | null>(null);
   return (
     <>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-        onClick={onClose} className="absolute inset-0 bg-black/60 backdrop-blur-sm z-40 rounded-[48px]" />
+        onClick={onClose} className="absolute inset-0 bg-black/70 backdrop-blur-md z-40 rounded-[48px]" />
       <motion.div
         initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '110%' }}
-        transition={{ type: 'spring', damping: 30, stiffness: 320 }}
-        className="absolute bottom-0 left-0 right-0 bg-[#FDFBF7] rounded-t-[30px] z-50 pb-8"
-        style={{ maxHeight: '78%' }}>
-        <div className="w-10 h-1 bg-[rgba(196,181,159,0.4)] rounded-full mx-auto mt-3 mb-4" />
-        <div className="px-5">
-          <p className="text-[10px] text-[#6B3210] font-bold tracking-widest mb-0.5">حصري للأعضاء</p>
-          <h3 className="text-[19px] font-bold text-[#111] mb-4">عروضك الحالية</h3>
-          <div className="space-y-3">
-            {OFFERS.map((o, i) => (
-              <motion.div key={i}
-                initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.07 }}
-                className="flex items-center gap-3 bg-white rounded-[18px] p-4 border border-[rgba(196,181,159,0.15)] shadow-[0_2px_10px_rgba(0,0,0,0.04)]">
-                <div className="w-12 h-12 rounded-[14px] flex items-center justify-center text-2xl shrink-0"
-                  style={{ background: `${o.color}0F` }}>{o.emoji}</div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[12px] font-bold text-[#111] leading-tight">{o.title}</p>
-                  <p className="text-[10px] text-[#AAA] font-light mt-0.5">{o.sub}</p>
+        transition={{ type: 'spring', damping: 28, stiffness: 300 }}
+        className="absolute bottom-0 left-0 right-0 z-50 rounded-t-[28px] overflow-hidden"
+        style={{ background: '#0D0200' }}>
+
+        {/* Handle */}
+        <div className="flex justify-center pt-3 pb-1">
+          <div className="w-9 h-1 rounded-full bg-white/10" />
+        </div>
+
+        {/* Header */}
+        <div className="px-5 pt-3 pb-5">
+          <p className="text-[9px] font-black tracking-[0.28em] text-[#C4783A] mb-1"
+            style={{ fontFamily: 'ui-monospace,monospace' }}>EXCLUSIVE · حصري للأعضاء</p>
+          <p className="text-white text-[21px] font-black">عروضك الحالية</p>
+        </div>
+
+        {/* Offers */}
+        <div className="flex flex-col gap-2.5 px-4 pb-6">
+          {OFFERS.map((o, i) => (
+            <motion.button key={i}
+              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.07 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => setClaimed(i)}
+              className="relative overflow-hidden rounded-[20px] p-4 flex items-center gap-3.5 text-right w-full"
+              style={{ background: claimed === i ? 'rgba(48,209,88,0.15)' : o.grad, border: `1px solid ${claimed === i ? '#30D158' : o.color}30` }}>
+
+              <div className="absolute inset-0 pointer-events-none"
+                style={{ background: 'linear-gradient(135deg,rgba(255,255,255,0.04) 0%,transparent 55%)' }} />
+
+              {/* Emoji */}
+              <div className="w-[50px] h-[50px] rounded-[15px] flex items-center justify-center text-[24px] shrink-0"
+                style={{ background: 'rgba(255,255,255,0.07)', border: `1px solid ${o.color}35` }}>
+                {claimed === i ? '✅' : o.emoji}
+              </div>
+
+              {/* Text */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <p className="text-white text-[13px] font-bold leading-tight">{o.title}</p>
                 </div>
-                <span className="text-[8px] font-black px-2 py-1 rounded-full shrink-0"
-                  style={{ background: `${o.color}12`, color: o.color }}>{o.tag}</span>
-              </motion.div>
-            ))}
-          </div>
+                <p className="text-white/40 text-[10px] font-light">{o.sub}</p>
+                {o.timer && claimed !== i && (
+                  <div className="flex items-center gap-1 mt-1.5">
+                    <span className="text-[8px]">⏱</span>
+                    <span className="text-[9px] font-black font-inter" style={{ color: o.color }}>{o.timer}</span>
+                    <span className="text-white/30 text-[8px]">متبقي</span>
+                  </div>
+                )}
+                {claimed === i && (
+                  <p className="text-[#30D158] text-[10px] font-bold mt-1">✓ تم تفعيل العرض</p>
+                )}
+              </div>
+
+              {/* Tag */}
+              <span className="shrink-0 text-[8px] font-black px-2 py-1 rounded-full"
+                style={{ background: `${o.color}25`, color: o.color, border: `1px solid ${o.color}35` }}>
+                {claimed === i ? 'مفعّل' : o.tag}
+              </span>
+            </motion.button>
+          ))}
+
           <motion.button whileTap={{ scale: 0.97 }} onClick={onClose}
-            className="mt-4 w-full py-3.5 rounded-[16px] font-semibold text-[13px]"
-            style={{ background: 'rgba(196,181,159,0.15)', color: '#888' }}>
+            className="mt-1 w-full py-3.5 rounded-[18px] font-semibold text-[13px] text-white/40"
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }}>
             إغلاق
           </motion.button>
         </div>

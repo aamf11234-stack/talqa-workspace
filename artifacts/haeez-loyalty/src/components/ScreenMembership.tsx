@@ -781,6 +781,222 @@ function GiftsSection({ onGiftSent, currentPoints }: { onGiftSent: (msg: string,
 }
 
 /* ══════════════════════════════════════════════════════════════════
+   REDEEM INVOICE — receipt sheet after redemption
+══════════════════════════════════════════════════════════════════ */
+function pad(n: number) { return n.toString().padStart(2, '0'); }
+function nowAr() {
+  const d = new Date();
+  return `${pad(d.getHours())}:${pad(d.getMinutes())} · ${d.toLocaleDateString('ar-SA')}`;
+}
+function invNum() { return `RWD-${Math.floor(10000 + Math.random() * 90000)}`; }
+function useCounter(target: number, duration = 1000, delay = 200) {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    const t = setTimeout(() => {
+      const start = Date.now();
+      const tick = () => {
+        const p = Math.min((Date.now() - start) / duration, 1);
+        setValue(Math.round((1 - Math.pow(1 - p, 3)) * target));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }, delay);
+    return () => clearTimeout(t);
+  }, [target, duration, delay]);
+  return value;
+}
+
+const REWARD_CONFETTI = Array.from({ length: 20 }, (_, i) => ({
+  x: Math.random() * 100,
+  color: ['#C4783A','#30D158','#FFD60A','#AF52DE','#FF6B35','#00C9A7'][i % 6],
+  delay: Math.random() * 0.5,
+  dur: 0.9 + Math.random() * 0.7,
+  size: 4 + Math.random() * 7,
+}));
+
+function RedeemInvoiceSheet({
+  item, pointsSpent, remainingPoints, onClose,
+}: {
+  item: typeof REDEEMABLE[0];
+  pointsSpent: number;
+  remainingPoints: number;
+  onClose: () => void;
+}) {
+  const inv      = React.useMemo(() => invNum(), []);
+  const now      = React.useMemo(() => nowAr(), []);
+  const ptsCtr   = useCounter(pointsSpent, 1000, 500);
+  const remCtr   = useCounter(remainingPoints, 1000, 700);
+
+  return (
+    <motion.div
+      initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '110%' }}
+      transition={{ type: 'spring', damping: 26, stiffness: 280 }}
+      className="absolute inset-0 overflow-y-auto scrollbar-none z-50"
+      style={{ background: '#FDFBF7' }}
+    >
+      {/* ── Success header ── */}
+      <div className="relative overflow-hidden text-center py-10 px-5"
+        style={{ background: 'linear-gradient(160deg,#040010,#0A001A,#020008)' }}>
+
+        {/* Confetti */}
+        {REWARD_CONFETTI.map((c, i) => (
+          <motion.div key={i}
+            initial={{ y: 0, opacity: 1, scale: 1 }}
+            animate={{ y: -130, opacity: 0, scale: 0.4, rotate: Math.random() * 360 }}
+            transition={{ duration: c.dur, delay: c.delay, ease: 'easeOut' }}
+            className="absolute bottom-0 rounded-sm pointer-events-none"
+            style={{ width: c.size, height: c.size, background: c.color, left: `${c.x}%` }}
+          />
+        ))}
+
+        {/* Ring + checkmark */}
+        <div className="relative w-20 h-20 mx-auto mb-5">
+          {[0,1,2].map(i => (
+            <motion.div key={i}
+              initial={{ scale: 1, opacity: 0.6 }}
+              animate={{ scale: 2.5 + i * 0.5, opacity: 0 }}
+              transition={{ duration: 1.2, delay: 0.1 + i * 0.2, ease: 'easeOut' }}
+              className="absolute inset-0 rounded-full border-2"
+              style={{ borderColor: '#C4783A' }}
+            />
+          ))}
+          <motion.div
+            initial={{ scale: 0, rotate: -30 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ type: 'spring', damping: 16, stiffness: 260, delay: 0.05 }}
+            className="w-20 h-20 rounded-full flex items-center justify-center"
+            style={{ background: `linear-gradient(135deg,${item.color},${item.color}CC)`, boxShadow: `0 12px 40px ${item.color}60` }}
+          >
+            <span className="text-[34px]">{item.emoji}</span>
+          </motion.div>
+        </div>
+
+        <motion.p
+          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          className="text-white text-[22px] font-black mb-1">تم الاستبدال! 🎉
+        </motion.p>
+        <motion.p
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.45 }}
+          className="text-white/40 text-[11px] font-light">{now}
+        </motion.p>
+
+        {/* Points spent badge */}
+        <motion.div
+          initial={{ scale: 0, y: 20 }} animate={{ scale: 1, y: 0 }}
+          transition={{ type: 'spring', damping: 18, stiffness: 300, delay: 0.5 }}
+          className="inline-flex items-center gap-2 mt-5 px-5 py-3 rounded-[20px]"
+          style={{ background: 'rgba(196,120,58,0.2)', border: '1px solid rgba(196,120,58,0.4)', backdropFilter: 'blur(10px)' }}>
+          <Star size={14} fill="#C4783A" color="#C4783A" />
+          <span className="text-white/60 text-[12px]">خُصم</span>
+          <span className="text-[#C4783A] text-[24px] font-black font-inter leading-none">-{ptsCtr}</span>
+          <span className="text-white/60 text-[12px]">نقطة</span>
+        </motion.div>
+      </div>
+
+      {/* ── Invoice card ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.35, type: 'spring', stiffness: 340, damping: 28 }}
+        className="mx-4 -mt-5 rounded-[24px] overflow-hidden"
+        style={{ background: 'white', border: '1px solid rgba(196,181,159,0.2)', boxShadow: '0 12px 40px rgba(0,0,0,0.1)' }}>
+
+        {/* Brand row */}
+        <div className="flex items-center gap-3 p-5 border-b border-[rgba(196,181,159,0.12)]">
+          <div className="w-12 h-12 rounded-[14px] flex items-center justify-center text-[26px] shrink-0"
+            style={{ background: `${item.color}12`, border: `1px solid ${item.color}25` }}>
+            {item.emoji}
+          </div>
+          <div className="flex-1">
+            <p className="text-[15px] font-black text-[#111]">براون دوز</p>
+            <p className="text-[10px] text-[#AAA] font-light">إيصال استبدال نقاط · Loyalty</p>
+          </div>
+          <div className="text-left">
+            <p className="text-[9px] font-black text-[#7A3B18]" style={{ fontFamily: 'ui-monospace' }}>{inv}</p>
+            <p className="text-[8px] text-[#CCC] font-light">رقم الإيصال</p>
+          </div>
+        </div>
+
+        {/* Meta grid */}
+        <div className="grid grid-cols-2 gap-0 border-b border-[rgba(196,181,159,0.12)]">
+          {[
+            { label: 'المكافأة',      val: item.name },
+            { label: 'التاريخ والوقت', val: now },
+            { label: 'النقاط المُستخدمة', val: `${pointsSpent} نقطة`, color: '#E05A2B' },
+            { label: 'الرصيد المتبقي',   val: `${remainingPoints} نقطة`, color: '#30D158' },
+          ].map((r, i) => (
+            <div key={i} className={`px-4 py-3 ${i % 2 === 0 ? 'border-l border-[rgba(196,181,159,0.1)]' : ''}`}>
+              <p className="text-[8.5px] text-[#AAA] font-light mb-0.5">{r.label}</p>
+              <p className="text-[11px] font-bold" style={{ color: r.color || '#111' }}>{r.val}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Item detail */}
+        <div className="px-5 py-4 border-b border-[rgba(196,181,159,0.12)]">
+          <p className="text-[8.5px] font-black text-[#AAA] tracking-widest mb-3" style={{ fontFamily: 'ui-monospace' }}>المكافأة المستبدلة</p>
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-[12px] flex items-center justify-center text-[20px] shrink-0"
+              style={{ background: `${item.color}10` }}>{item.emoji}</div>
+            <div className="flex-1">
+              <p className="text-[13px] font-semibold text-[#111]">{item.name}</p>
+              <p className="text-[10px] text-[#AAA] font-light">{item.desc}</p>
+            </div>
+            <div className="text-left">
+              <p className="text-[9px] text-[#AAA]">القيمة</p>
+              <p className="text-[13px] font-black" style={{ color: item.color }}>{pointsSpent} نقطة</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Remaining balance */}
+        <div className="px-5 py-4 border-b border-[rgba(196,181,159,0.12)]">
+          <div className="flex items-center justify-between">
+            <span className="text-[13px] font-bold text-[#111]">رصيدك بعد الاستبدال</span>
+            <div className="flex items-center gap-1.5">
+              <Star size={13} fill="#30D158" color="#30D158" />
+              <motion.span key={remCtr} className="text-[22px] font-black text-[#30D158] font-inter leading-none">
+                {remCtr}
+              </motion.span>
+              <span className="text-[11px] text-[#30D158]">نقطة</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Barcode */}
+        <div className="px-5 pb-5 pt-4">
+          <div className="rounded-[12px] overflow-hidden p-3 flex flex-col items-center gap-1.5"
+            style={{ background: 'rgba(196,181,159,0.06)', border: '1px solid rgba(196,181,159,0.15)' }}>
+            <div className="flex gap-[1.5px] h-8">
+              {Array.from({ length: 52 }).map((_, i) => (
+                <div key={i} style={{
+                  width: i % 3 === 0 ? 3 : i % 5 === 0 ? 2 : 1,
+                  background: '#111',
+                  opacity: 0.12 + Math.sin(i * 1.3) * 0.12 + 0.15,
+                  borderRadius: 0.5,
+                }} />
+              ))}
+            </div>
+            <p className="text-[7.5px] font-mono text-[#AAA] tracking-widest">{inv}</p>
+          </div>
+          <p className="text-center text-[9px] text-[#CCC] mt-2 font-light">أرِ هذا الإيصال للكاشير لاستلام مكافأتك</p>
+        </div>
+      </motion.div>
+
+      {/* CTA */}
+      <div className="px-4 pt-4 pb-8">
+        <motion.button
+          whileTap={{ scale: 0.96 }} onClick={onClose}
+          initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
+          className="w-full py-4 rounded-[18px] font-bold text-[15px] text-white"
+          style={{ background: `linear-gradient(135deg,${item.color},${item.color}AA)`, boxShadow: `0 8px 24px ${item.color}35` }}>
+          تمام، شكراً {item.emoji}
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════
    REWARDS — redeemable items with points
 ══════════════════════════════════════════════════════════════════ */
 const REDEEMABLE = [
@@ -795,17 +1011,17 @@ const REDEEMABLE = [
 ];
 
 function RewardsTab({ points, onRedeem }: { points: number; onRedeem: (pts: number, name: string) => void }) {
-  const [redeeming, setRedeeming] = useState<number | null>(null);
-  const [done, setDone]           = useState<number | null>(null);
+  const [redeeming, setRedeeming]   = useState<number | null>(null);
+  const [invoice, setInvoice]       = useState<{ item: typeof REDEEMABLE[0]; remaining: number } | null>(null);
 
   function handleRedeem(item: typeof REDEEMABLE[0]) {
     if (points < item.pts || redeeming !== null) return;
     setRedeeming(item.id);
     setTimeout(() => {
-      setDone(item.id);
       setRedeeming(null);
+      const remaining = points - item.pts;
       onRedeem(item.pts, item.name);
-      setTimeout(() => setDone(null), 2200);
+      setInvoice({ item, remaining });
     }, 1400);
   }
 
@@ -813,7 +1029,19 @@ function RewardsTab({ points, onRedeem }: { points: number; onRedeem: (pts: numb
   const locked    = REDEEMABLE.filter(r => points < r.pts);
 
   return (
-    <div className="pb-6">
+    <div className="pb-6 relative">
+
+      {/* ── Redeem Invoice Sheet ── */}
+      <AnimatePresence>
+        {invoice && (
+          <RedeemInvoiceSheet
+            item={invoice.item}
+            pointsSpent={invoice.item.pts}
+            remainingPoints={invoice.remaining}
+            onClose={() => setInvoice(null)}
+          />
+        )}
+      </AnimatePresence>
 
       {/* ── Section header ── */}
       <div className="flex items-center gap-3 mb-4">
@@ -836,7 +1064,6 @@ function RewardsTab({ points, onRedeem }: { points: number; onRedeem: (pts: numb
           <div className="flex flex-col gap-2.5">
             {available.map((item, i) => {
               const isRedeeming = redeeming === item.id;
-              const isDone      = done === item.id;
               return (
                 <motion.div key={item.id}
                   initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
@@ -849,9 +1076,9 @@ function RewardsTab({ points, onRedeem }: { points: number; onRedeem: (pts: numb
                     style={{ background: 'linear-gradient(135deg,rgba(255,255,255,0.05) 0%,transparent 50%)' }} />
 
                   {/* Icon */}
-                  <div className="w-13 h-13 w-[52px] h-[52px] rounded-[16px] flex items-center justify-center text-[26px] shrink-0"
+                  <div className="w-[52px] h-[52px] rounded-[16px] flex items-center justify-center text-[26px] shrink-0"
                     style={{ background: 'rgba(255,255,255,0.07)', border: `1px solid ${item.color}40` }}>
-                    {isDone ? '✅' : item.emoji}
+                    {item.emoji}
                   </div>
 
                   {/* Text */}
@@ -873,19 +1100,17 @@ function RewardsTab({ points, onRedeem }: { points: number; onRedeem: (pts: numb
                   <motion.button
                     whileTap={{ scale: 0.91 }}
                     onClick={() => handleRedeem(item)}
-                    disabled={isRedeeming || isDone}
+                    disabled={isRedeeming}
                     className="shrink-0 flex items-center justify-center rounded-[13px] font-bold text-[12px]"
                     style={{
-                      background: isDone ? '#30D158' : `linear-gradient(135deg,${item.color},${item.color}BB)`,
+                      background: `linear-gradient(135deg,${item.color},${item.color}BB)`,
                       color: 'white',
                       minWidth: 68,
                       height: 38,
-                      boxShadow: isDone ? '0 4px 12px rgba(48,209,88,0.4)' : `0 4px 12px ${item.color}40`,
+                      boxShadow: `0 4px 12px ${item.color}40`,
                     }}>
                     <AnimatePresence mode="wait">
-                      {isDone ? (
-                        <motion.span key="done" initial={{ scale: 0 }} animate={{ scale: 1 }}>✓ تم</motion.span>
-                      ) : isRedeeming ? (
+                      {isRedeeming ? (
                         <motion.div key="spin"
                           animate={{ rotate: 360 }} transition={{ duration: 0.7, repeat: Infinity, ease: 'linear' }}>
                           <div className="w-3.5 h-3.5 rounded-full border-2 border-white/30 border-t-white" />
