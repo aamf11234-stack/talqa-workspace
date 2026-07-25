@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Clock, ChefHat, Bike, Star, ShoppingBag, RotateCcw, Truck, Package } from 'lucide-react';
+import { Check, Clock, ChefHat, Bike, Star, ShoppingBag, RotateCcw, Truck, Package, Phone } from 'lucide-react';
 import { CheckoutModal } from './CheckoutFlow';
 import type { CheckoutItem, CompletedOrderData } from './CheckoutFlow';
 import { useOrders } from '../OrdersContext';
@@ -106,7 +106,24 @@ function ActiveOrder({ items, orderId }: { items: string; orderId: string }) {
           ))}
         </div>
         <OrderTracker step={step} />
-        {step < 3 && (
+
+        {/* Call branch button */}
+        <div className="flex gap-2 mt-4">
+          <motion.a href="tel:+966" whileTap={{ scale: 0.95 }}
+            className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-[12px]"
+            style={{ background: 'rgba(48,209,88,0.12)', border: '1px solid rgba(48,209,88,0.25)' }}>
+            <Phone size={13} className="text-[#30D158]" strokeWidth={2.5} />
+            <span className="text-[#30D158] text-[11px] font-bold">اتصل بالفرع</span>
+          </motion.a>
+          <motion.div animate={{ opacity: [0.4, 0.9, 0.4] }} transition={{ duration: 2.5, repeat: Infinity }}
+            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-[12px]"
+            style={{ background: 'rgba(255,255,255,0.04)' }}>
+            <div className="w-1.5 h-1.5 rounded-full bg-[#C9956A] animate-pulse" />
+            <span className="text-white/30 text-[9px]">يتحدث تلقائياً</span>
+          </motion.div>
+        </div>
+
+        {step === 3 && (
           <motion.div animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 2, repeat: Infinity }}
             className="mt-4 text-center">
             <p className="text-white/20 text-[9px]">يتحدث تلقائياً · لا تحتاج تضغط شيء</p>
@@ -114,7 +131,7 @@ function ActiveOrder({ items, orderId }: { items: string; orderId: string }) {
         )}
         {step === 3 && (
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-            className="mt-4 flex items-center justify-center gap-2 py-2 rounded-[12px]"
+            className="mt-3 flex items-center justify-center gap-2 py-2 rounded-[12px]"
             style={{ background: 'rgba(48,209,88,0.12)', border: '1px solid rgba(48,209,88,0.25)' }}>
             <Check size={13} className="text-[#30D158]" strokeWidth={2.5} />
             <p className="text-[#30D158] text-[12px] font-bold">طلبك وصل — بالعافية!</p>
@@ -138,9 +155,9 @@ interface PastOrder {
 }
 
 const staticPastOrders: PastOrder[] = [
-  { id: '#٢٠٢٦-٠٤٦٨', date: 'أمس · ٨:٣٠ م',        items: 'كبسة جمبري + لاتيه',             total: '١٠٧ ر', basePrice: 93,  pts: '+٢٥ نقطة', rating: 5, emoji: '🦐' },
-  { id: '#٢٠٢٦-٠٤٥١', date: 'السبت الماضي',          items: 'برجر كلاسيك + كولسلو + بيبسي', total: '٦٨ ر',  basePrice: 59,  pts: '+١٥ نقطة', rating: 5, emoji: '🍔' },
-  { id: '#٢٠٢٦-٠٤٣٢', date: 'الأسبوع الماضي',       items: 'سلطة سيزر + لاتيه فاخر',       total: '٥٠ ر',  basePrice: 43,  pts: '+١٢ نقطة', rating: 4, emoji: '🥗' },
+  { id: '#٢٠٢٦-٠٤٦٨', date: 'أمس · ٨:٣٠ م',       items: 'افقاتو براون + كرواسون لوز',        total: '٥٢ ر', basePrice: 45,  pts: '+١٢ نقطة', rating: 5, emoji: '☕' },
+  { id: '#٢٠٢٦-٠٤٥١', date: 'السبت الماضي',         items: 'لاتيه بستاشيو + كيك تشيز',          total: '٤٥ ر', basePrice: 39,  pts: '+١٠ نقطة', rating: 5, emoji: '🍰' },
+  { id: '#٢٠٢٦-٠٤٣٢', date: 'الأسبوع الماضي',      items: 'ايس امريكانو + بسكويت لوز',          total: '٢٨ ر', basePrice: 24,  pts: '+٧ نقطة',  rating: 4, emoji: '🧊' },
 ];
 
 function PastOrderCard({ order, onReorder }: { order: PastOrder; onReorder: (item: CheckoutItem) => void }) {

@@ -320,7 +320,7 @@ function HaizCalendar() {
       <div className="relative overflow-hidden select-none"
         style={{ borderBottom: '1px solid rgba(255,255,255,0.06)', minHeight: 172 }}>
         <div className="absolute inset-0 pointer-events-none"
-          style={{ background: 'radial-gradient(ellipse at 10% 100%,rgba(123,22,24,0.6) 0%,transparent 55%)' }} />
+          style={{ background: 'radial-gradient(ellipse at 10% 100%,rgba(176,96,112,0.5) 0%,transparent 55%)' }} />
         <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none" style={{ paddingRight: 8 }}>
           <span style={{ fontSize: 128, fontWeight: 900, color: '#fff', opacity: 0.035, letterSpacing: '-0.03em', lineHeight: 1, whiteSpace: 'nowrap', transform: 'translateY(8px)' }}>
             {dt.hijriMonth}
@@ -641,6 +641,58 @@ function OffersSheet({ onClose }: { onClose: () => void }) {
 }
 
 /* ══════════════════════════════════════════════════════════════════
+   Busy Meter
+══════════════════════════════════════════════════════════════════ */
+function BusyMeter() {
+  const hour = new Date().getHours();
+  const levels = [
+    { range:[0,7],   label:'هادي',   sub:'لا انتظار الآن',             color:'#30D158', bars:1, eta:'٢ دقيقة'  },
+    { range:[7,9],   label:'خفيف',   sub:'صباح هادي — أسرع وقت',       color:'#30D158', bars:2, eta:'٣ دقائق' },
+    { range:[9,12],  label:'عادي',   sub:'إقبال متوسط',                color:'#C9956A', bars:3, eta:'٧ دقائق' },
+    { range:[12,14], label:'مزدحم',  sub:'ذروة الغداء — انتظر شوي',    color:'#FF9F0A', bars:5, eta:'١٥ دقيقة'},
+    { range:[14,17], label:'عادي',   sub:'هدأ الوضع بعد الغداء',       color:'#C9956A', bars:3, eta:'٦ دقائق' },
+    { range:[17,20], label:'مزدحم',  sub:'ذروة المساء ☕ — حماس!',      color:'#FF9F0A', bars:4, eta:'١٢ دقيقة'},
+    { range:[20,24], label:'هادي',   sub:'قبيل الإغلاق — ارتاح',       color:'#30D158', bars:2, eta:'٤ دقائق' },
+  ];
+  const curr = levels.find(l => hour >= l.range[0] && hour < l.range[1]) ?? levels[0];
+  return (
+    <motion.div
+      initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }}
+      transition={{ delay:0.24 }}
+      className="mx-4 mb-5 rounded-[20px] overflow-hidden"
+      style={{ background:'#fff', border:'1px solid rgba(196,181,159,0.2)', boxShadow:'0 4px 18px rgba(0,0,0,0.06)' }}
+    >
+      <div className="flex items-center justify-between px-4 pt-3.5 pb-2">
+        <div className="flex items-center gap-2.5">
+          <motion.div animate={{ scale:[1,1.3,1] }} transition={{ duration:1.8, repeat:Infinity }}
+            className="w-2 h-2 rounded-full"
+            style={{ background:curr.color, boxShadow:`0 0 6px ${curr.color}` }} />
+          <div>
+            <p className="text-[12px] font-bold text-[#111] leading-tight">مؤشر الازدحام الآن</p>
+            <p className="text-[9px] text-[#AAA] font-light mt-0.5">{curr.sub}</p>
+          </div>
+        </div>
+        <div className="text-left">
+          <p className="text-[12px] font-black" style={{ color:curr.color }}>{curr.label}</p>
+          <p className="text-[9px] text-[#CCC] mt-0.5 font-inter">⏱ {curr.eta}</p>
+        </div>
+      </div>
+      <div className="flex items-end gap-1 px-4 pb-3.5" style={{ height:38 }}>
+        {Array.from({ length:7 }).map((_,i) => (
+          <motion.div key={i}
+            initial={{ height:4 }}
+            animate={{ height: i < curr.bars ? `${14 + (i % 3)*8}px` : '4px' }}
+            transition={{ duration:0.7, delay:i*0.07, ease:[0.4,0,0.2,1] }}
+            className="flex-1 rounded-full"
+            style={{ background: i < curr.bars ? curr.color : 'rgba(196,181,159,0.18)' }}
+          />
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════
    Main Screen
 ══════════════════════════════════════════════════════════════════ */
 export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) {
@@ -820,6 +872,9 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
             );
           })}
         </div>
+
+        {/* مؤشر الازدحام */}
+        <BusyMeter />
 
         {/* طبق/قهوة اليوم */}
         <TodaySpecial onOrder={setPendingOrder} />

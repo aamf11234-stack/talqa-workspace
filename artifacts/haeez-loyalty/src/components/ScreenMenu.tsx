@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, X, Flame, Snowflake } from 'lucide-react';
+import { Search, X, Flame, Snowflake, Check, ChevronLeft } from 'lucide-react';
 import { CategoryIconMap, IOriginPin, IVase, ILeaf, ICoffeeBean, IEspresso } from './HaizIcons';
 import { useBrand } from '../BrandContext';
 import { CheckoutModal } from './CheckoutFlow';
@@ -112,8 +112,132 @@ function Price({ item }: { item: MenuItem }) {
   );
 }
 
+/* ══════════════════════════════════════════ CUSTOMIZE SHEET ══ */
+interface CustomizeTarget { name: string; basePrice: number; emoji: string; catColor: string }
+
+const sizes    = [{ id:'sm', label:'صغير', diff:0 }, { id:'lg', label:'كبير', diff:3 }];
+const sweets   = [{ id:'none', label:'بدون حلاوة' }, { id:'light', label:'خفيف' }, { id:'med', label:'عادي' }, { id:'sweet', label:'حلو' }];
+const milkOpts = [{ id:'full', label:'حليب كامل' }, { id:'skim', label:'خالي دسم' }, { id:'oat', label:'شوفان 🌱' }];
+
+function CustomizeSheet({ target, onConfirm, onClose }: {
+  target: CustomizeTarget;
+  onConfirm: (item: CheckoutItem) => void;
+  onClose: () => void;
+}) {
+  const [size,  setSize]  = useState('sm');
+  const [sweet, setSweet] = useState('med');
+  const [milk,  setMilk]  = useState('full');
+  const total = target.basePrice + (sizes.find(s => s.id === size)?.diff ?? 0);
+
+  function confirm() {
+    const sizeLabel  = sizes.find(s => s.id === size)?.label ?? '';
+    const sweetLabel = sweets.find(s => s.id === sweet)?.label ?? '';
+    const milkLabel  = milkOpts.find(m => m.id === milk)?.label ?? '';
+    onConfirm({
+      name: `${target.name} (${sizeLabel} · ${sweetLabel} · ${milkLabel})`,
+      price: String(total),
+      emoji: target.emoji,
+    });
+    onClose();
+  }
+
+  return (
+    <>
+      <motion.div initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
+        onClick={onClose} className="absolute inset-0 bg-black/40 backdrop-blur-sm z-40" />
+      <motion.div
+        initial={{ y:'100%' }} animate={{ y:0 }} exit={{ y:'100%' }}
+        transition={{ type:'spring', damping:32, stiffness:340 }}
+        className="absolute inset-x-0 bottom-0 z-50 rounded-t-[28px] overflow-hidden"
+        style={{ background:'#FDFBF7' }}
+      >
+        <div className="w-10 h-1 bg-[#D8CFC4] rounded-full mx-auto mt-3 mb-4" />
+        {/* Item title */}
+        <div className="px-5 mb-4 flex items-center gap-3">
+          <div className="w-11 h-11 rounded-[14px] flex items-center justify-center text-2xl shrink-0"
+            style={{ background:`${target.catColor}12` }}>{target.emoji}</div>
+          <div>
+            <p className="text-[15px] font-bold text-[#111]">{target.name}</p>
+            <p className="text-[11px] text-[#B06070] font-bold font-inter">{target.basePrice} ر</p>
+          </div>
+        </div>
+
+        {/* Size */}
+        <div className="px-5 mb-4">
+          <p className="text-[10px] font-black text-[#888] tracking-widest mb-2">الحجم</p>
+          <div className="flex gap-2">
+            {sizes.map(s => (
+              <motion.button key={s.id} whileTap={{ scale:0.93 }} onClick={() => setSize(s.id)}
+                className="flex-1 py-2.5 rounded-[14px] text-[12px] font-bold flex flex-col items-center gap-0.5 transition-all"
+                style={{
+                  background: size===s.id ? target.catColor : 'rgba(196,181,159,0.12)',
+                  color: size===s.id ? '#fff' : '#666',
+                  border: size===s.id ? `1.5px solid ${target.catColor}` : '1.5px solid transparent',
+                }}>
+                {s.label}
+                {s.diff > 0 && <span className="text-[9px] opacity-70">+{s.diff} ر</span>}
+              </motion.button>
+            ))}
+          </div>
+        </div>
+
+        {/* Sweetness */}
+        <div className="px-5 mb-4">
+          <p className="text-[10px] font-black text-[#888] tracking-widest mb-2">الحلاوة</p>
+          <div className="flex gap-1.5">
+            {sweets.map(s => (
+              <motion.button key={s.id} whileTap={{ scale:0.93 }} onClick={() => setSweet(s.id)}
+                className="flex-1 py-2 rounded-[12px] text-[10px] font-semibold transition-all"
+                style={{
+                  background: sweet===s.id ? `${target.catColor}18` : 'rgba(196,181,159,0.1)',
+                  color: sweet===s.id ? target.catColor : '#888',
+                  border: sweet===s.id ? `1px solid ${target.catColor}40` : '1px solid transparent',
+                }}>
+                {s.label}
+              </motion.button>
+            ))}
+          </div>
+        </div>
+
+        {/* Milk */}
+        <div className="px-5 mb-5">
+          <p className="text-[10px] font-black text-[#888] tracking-widest mb-2">نوع الحليب</p>
+          <div className="flex gap-2">
+            {milkOpts.map(m => (
+              <motion.button key={m.id} whileTap={{ scale:0.93 }} onClick={() => setMilk(m.id)}
+                className="flex-1 py-2.5 rounded-[14px] text-[11px] font-semibold transition-all"
+                style={{
+                  background: milk===m.id ? `${target.catColor}18` : 'rgba(196,181,159,0.1)',
+                  color: milk===m.id ? target.catColor : '#777',
+                  border: milk===m.id ? `1px solid ${target.catColor}35` : '1px solid transparent',
+                }}>
+                {m.label}
+              </motion.button>
+            ))}
+          </div>
+        </div>
+
+        {/* Confirm */}
+        <div className="px-5 pb-8">
+          <motion.button whileTap={{ scale:0.97 }} onClick={confirm}
+            className="w-full py-4 rounded-[18px] font-bold text-[15px] text-white flex items-center justify-center gap-2"
+            style={{ background:`linear-gradient(135deg,${target.catColor},#7A3050)`, boxShadow:`0 6px 20px ${target.catColor}45` }}>
+            <Check size={16} strokeWidth={2.5} />
+            أضف للسلة — {total} ريال
+          </motion.button>
+        </div>
+      </motion.div>
+    </>
+  );
+}
+
 /* ══════════════════════════════════════════ SECTION ══ */
-function Section({ cat, index, onOrder }: { cat: MenuCategory; index: number; onOrder?: (item: CheckoutItem) => void }) {
+function Section({ cat, index, onOrder, onCustomize }: {
+  cat: MenuCategory;
+  index: number;
+  onOrder?: (item: CheckoutItem) => void;
+  onCustomize?: (target: CustomizeTarget) => void;
+}) {
   return (
     <motion.div
       id={`cat-${cat.id}`}
@@ -202,9 +326,12 @@ function Section({ cat, index, onOrder }: { cat: MenuCategory; index: number; on
             {/* Price + Order */}
             <div className="flex flex-col items-end gap-1.5 shrink-0">
               <Price item={item} />
-              {onOrder && (
+              {(onOrder || onCustomize) && (
                 <motion.button whileTap={{ scale: 0.88 }}
-                  onClick={() => onOrder({ name: item.name, price: String(item.price ?? item.priceHot ?? 0), emoji: '☕' })}
+                  onClick={() => onCustomize
+                    ? onCustomize({ name: item.name, basePrice: item.price ?? item.priceHot ?? 0, emoji: '☕', catColor: cat.color })
+                    : onOrder?.({ name: item.name, price: String(item.price ?? item.priceHot ?? 0), emoji: '☕' })
+                  }
                   className="text-[9px] font-black px-2.5 py-1 rounded-full text-white"
                   style={{ background: cat.color, boxShadow: `0 3px 10px ${cat.color}55` }}>
                   اطلب
@@ -373,6 +500,7 @@ export function ScreenMenu() {
   const [searchFocused, setSearchFocused] = useState(false);
   const [heroScrolled, setHeroScrolled] = useState(false);
   const [pendingOrder, setPendingOrder] = useState<CheckoutItem | null>(null);
+  const [customizeTarget, setCustomizeTarget] = useState<CustomizeTarget | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
 
@@ -428,6 +556,15 @@ export function ScreenMenu() {
               onOrderComplete={handleOrderComplete}
             />
           </div>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {customizeTarget && (
+          <CustomizeSheet
+            target={customizeTarget}
+            onConfirm={(item) => { setPendingOrder(item); }}
+            onClose={() => setCustomizeTarget(null)}
+          />
         )}
       </AnimatePresence>
 
@@ -595,7 +732,7 @@ export function ScreenMenu() {
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               {activeId === null && <Shelf />}
               {displayed.map((cat, i) => (
-                <Section key={cat.id} cat={cat} index={i} onOrder={setPendingOrder} />
+                <Section key={cat.id} cat={cat} index={i} onCustomize={setCustomizeTarget} />
               ))}
             </motion.div>
           )}

@@ -183,7 +183,32 @@ export function ScreenPerks() {
                 ))}
               </div>
 
-              {/* Requirement */}
+              {/* Visual cup progress for current tier */}
+              {tier.current && (
+                <div className="mt-4 pt-4 border-t border-white/8">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-white/40 text-[10px]">تقدّمك للفضي</span>
+                    <span style={{ color: tier.accent }} className="text-[10px] font-semibold">{tier.cupsHave} / {7} كوب</span>
+                  </div>
+                  <div className="flex gap-1.5 mb-1.5">
+                    {Array.from({ length: 7 }).map((_, ci) => (
+                      <motion.div key={ci}
+                        initial={{ scale: 0 }} animate={{ scale: 1 }}
+                        transition={{ delay: 0.3 + ci * 0.07, type: 'spring', stiffness: 400, damping: 18 }}
+                        className="flex-1 h-7 rounded-[8px] flex items-center justify-center text-[15px]"
+                        style={{
+                          background: ci < tier.cupsHave ? `${tier.accent}22` : 'rgba(255,255,255,0.05)',
+                          border: `1px solid ${ci < tier.cupsHave ? `${tier.accent}40` : 'rgba(255,255,255,0.06)'}`,
+                        }}>
+                        {ci < tier.cupsHave ? '☕' : <span style={{ fontSize: 13, opacity: 0.2 }}>○</span>}
+                      </motion.div>
+                    ))}
+                  </div>
+                  <p className="text-white/30 text-[9px] text-center">٣ أكواب أخرى وتصبح عضواً فضياً 🥈</p>
+                </div>
+              )}
+
+              {/* Requirement bar for locked tiers */}
               {!tier.current && (
                 <div className="mt-4 pt-4 border-t border-white/8">
                   <div className="flex justify-between items-center mb-1.5">
