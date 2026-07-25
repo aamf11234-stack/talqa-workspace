@@ -119,7 +119,7 @@ export const BROWNDOSE_BRAND: BrandConfig = {
   type: 'cafe',
   name: 'Brown Dose',
   tagline: 'قهوة مختصة · جيزان',
-  logoImg: `${BASE}bd-logo-real.jpg`,
+  logoImg: `${BASE}bd-logo.svg`,
   heroImg: `${BASE}cafe-1.jpeg`,
   quickOrderMsg: 'أريد طلب',
   todaySpecial: {

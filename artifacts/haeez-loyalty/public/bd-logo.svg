@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <radialGradient id="bgG" cx="50%" cy="38%" r="68%">
+      <stop offset="0%" stop-color="#2A1509"/>
+      <stop offset="100%" stop-color="#0E0704"/>
+    </radialGradient>
+    <radialGradient id="glowG" cx="50%" cy="44%" r="52%">
+      <stop offset="0%" stop-color="#C9956A" stop-opacity="0.13"/>
+      <stop offset="100%" stop-color="#C9956A" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="200" height="200" rx="40" fill="url(#bgG)"/>
+  <rect width="200" height="200" rx="40" fill="url(#glowG)"/>
+
+  <!-- Top thin rule -->
+  <rect x="60" y="40" width="80" height="1.2" rx="0.6" fill="#C9956A" opacity="0.35"/>
+
+  <!-- ── B letterform ── -->
+  <!-- Vertical spine -->
+  <rect x="52" y="54" width="8" height="68" rx="4" fill="#D4A870"/>
+  <!-- Upper bowl -->
+  <path d="M59 54 C80 54 88 60 88 68 C88 77 80 82 59 82"
+        stroke="#D4A870" stroke-width="8" fill="none"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Lower bowl — wider -->
+  <path d="M59 82 C84 82 94 90 94 100 C94 111 84 122 59 122"
+        stroke="#D4A870" stroke-width="8" fill="none"
+        stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Centre dot separator -->
+  <circle cx="104" cy="88" r="2.5" fill="#C9956A" opacity="0.4"/>
+
+  <!-- ── D letterform ── -->
+  <!-- Vertical spine -->
+  <rect x="114" y="54" width="8" height="68" rx="4" fill="#D4A870"/>
+  <!-- D arc -->
+  <path d="M121 54 C148 54 152 70 152 88 C152 106 148 122 121 122"
+        stroke="#D4A870" stroke-width="8" fill="none"
+        stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Bottom thin rule -->
+  <rect x="60" y="134" width="80" height="1.2" rx="0.6" fill="#C9956A" opacity="0.35"/>
+
+  <!-- Brand name -->
+  <text x="100" y="156"
+        text-anchor="middle"
+        font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="9" font-weight="700" letter-spacing="5.5"
+        fill="#C9956A" opacity="0.68">BROWN DOSE</text>
+
+  <!-- Specialty tagline -->
+  <text x="100" y="170"
+        text-anchor="middle"
+        font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        font-size="6.5" font-weight="400" letter-spacing="2.5"
+        fill="#C9956A" opacity="0.35">SPECIALTY COFFEE</text>
+</svg>

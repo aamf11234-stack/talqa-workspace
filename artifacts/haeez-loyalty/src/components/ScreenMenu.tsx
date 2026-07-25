@@ -681,11 +681,10 @@ export function ScreenMenu() {
           <motion.div initial={{ scale: 0.88, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.45, ease: [0.34, 1.56, 0.64, 1] }}
             className="relative mb-3">
-            {/* Live dot */}
-            <div className="absolute -top-1 -left-1 z-10 w-3 h-3 rounded-full bg-[#30D158] border-2 border-[#110A05]" />
+            <div className="absolute -top-1 -right-1 z-10 w-3 h-3 rounded-full bg-[#30D158] border-2 border-[#110A05]" />
             <img src={brand.logoImg} alt={brand.name}
-              className="w-20 h-28 object-contain"
-              style={{ filter: 'invert(1) brightness(0.95)', dropShadow: '0 4px 20px rgba(0,0,0,0.6)' }} />
+              className="w-20 h-20 rounded-[22px] object-cover"
+              style={{ boxShadow: '0 0 0 1px rgba(201,149,106,0.2), 0 8px 28px rgba(0,0,0,0.55)' }} />
           </motion.div>
 
           <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.14 }}
