@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/brown-dose/"
+title = "Brown Dose — تطبيق الولاء"
+version = "1.0.0"
+id = "artifacts/brown-dose"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/brown-dose/" ]
+localPort = 19265
+
+[services.development]
+run = "pnpm --filter @workspace/brown-dose run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/brown-dose", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/brown-dose/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19265"
+BASE_PATH = "/brown-dose/"
