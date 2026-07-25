@@ -1010,9 +1010,12 @@ const REDEEMABLE = [
   { id: 8, emoji: '👑', name: 'تجربة VIP',     desc: 'جلسة خاصة مع باريستا براون دوز لمدة ساعة', pts: 500, color: '#D4AC0D', grad: 'linear-gradient(135deg,#0A0800,#201800)' },
 ];
 
-function RewardsTab({ points, onRedeem }: { points: number; onRedeem: (pts: number, name: string) => void }) {
-  const [redeeming, setRedeeming]   = useState<number | null>(null);
-  const [invoice, setInvoice]       = useState<{ item: typeof REDEEMABLE[0]; remaining: number } | null>(null);
+function RewardsTab({ points, onRedeem, onShowInvoice }: {
+  points: number;
+  onRedeem: (pts: number, name: string) => void;
+  onShowInvoice: (item: typeof REDEEMABLE[0], remaining: number) => void;
+}) {
+  const [redeeming, setRedeeming] = useState<number | null>(null);
 
   function handleRedeem(item: typeof REDEEMABLE[0]) {
     if (points < item.pts || redeeming !== null) return;
@@ -1021,7 +1024,7 @@ function RewardsTab({ points, onRedeem }: { points: number; onRedeem: (pts: numb
       setRedeeming(null);
       const remaining = points - item.pts;
       onRedeem(item.pts, item.name);
-      setInvoice({ item, remaining });
+      onShowInvoice(item, remaining);
     }, 1400);
   }
 
@@ -1029,19 +1032,7 @@ function RewardsTab({ points, onRedeem }: { points: number; onRedeem: (pts: numb
   const locked    = REDEEMABLE.filter(r => points < r.pts);
 
   return (
-    <div className="pb-6 relative">
-
-      {/* ── Redeem Invoice Sheet ── */}
-      <AnimatePresence>
-        {invoice && (
-          <RedeemInvoiceSheet
-            item={invoice.item}
-            pointsSpent={invoice.item.pts}
-            remainingPoints={invoice.remaining}
-            onClose={() => setInvoice(null)}
-          />
-        )}
-      </AnimatePresence>
+    <div className="pb-6">
 
       {/* ── Section header ── */}
       <div className="flex items-center gap-3 mb-4">
@@ -1191,13 +1182,24 @@ export function ScreenMembership({ onNavigate }: { onNavigate?: (tab: string) =>
   const [showGWallet, setShowGWallet] = useState(false);
   const [giftToast, setGiftToast] = useState<string | null>(null);
   const [points, setPoints] = useState(480);
+  const [redeemInvoice, setRedeemInvoice] = useState<{ item: typeof REDEEMABLE[0]; remaining: number } | null>(null);
 
   return (
-    <div className="flex flex-col h-full relative">
+    <div className="flex flex-col h-full relative overflow-hidden">
       <AnimatePresence>{showGWallet && <GoogleWalletModal onClose={() => setShowGWallet(false)} />}</AnimatePresence>
       <AnimatePresence>{giftToast && <GiftToast msg={giftToast} onDone={() => setGiftToast(null)} />}</AnimatePresence>
       <AnimatePresence>{showQR && <QRModal onClose={() => setShowQR(false)} />}</AnimatePresence>
       <AnimatePresence>{showAppleWallet && <AppleWalletModal onClose={() => setShowAppleWallet(false)} />}</AnimatePresence>
+      <AnimatePresence>
+        {redeemInvoice && (
+          <RedeemInvoiceSheet
+            item={redeemInvoice.item}
+            pointsSpent={redeemInvoice.item.pts}
+            remainingPoints={redeemInvoice.remaining}
+            onClose={() => setRedeemInvoice(null)}
+          />
+        )}
+      </AnimatePresence>
 
       <div className="flex-1 overflow-y-auto scrollbar-none px-5 pt-4 pb-28">
 
@@ -1413,10 +1415,14 @@ export function ScreenMembership({ onNavigate }: { onNavigate?: (tab: string) =>
         </motion.div>
 
         {/* Rewards */}
-        <RewardsTab points={points} onRedeem={(pts, name) => {
-          setPoints(p => Math.max(0, p - pts));
-          setGiftToast(`تم استبدال ${name} 🎁`);
-        }} />
+        <RewardsTab
+          points={points}
+          onRedeem={(pts, name) => {
+            setPoints(p => Math.max(0, p - pts));
+            setGiftToast(`تم استبدال ${name} 🎁`);
+          }}
+          onShowInvoice={(item, remaining) => setRedeemInvoice({ item, remaining })}
+        />
 
       </div>
 
