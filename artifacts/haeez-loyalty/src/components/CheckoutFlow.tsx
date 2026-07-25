@@ -183,51 +183,41 @@ function OrderTypeSheet({ brandType, item, onSelect, onClose }: {
   onSelect: (t: OrderType) => void;
   onClose: () => void;
 }) {
-  const opts = brandType === 'cafe'
-    ? [
-        {
-          type: 'dine' as OrderType,
-          emoji: '🧳',
-          label: 'استلام',
-          sub: 'خذها معك بعد دقيقتين',
-          color: '#6B3210',
-          gradient: 'linear-gradient(145deg,#0C0002,#2A0A00,#0C0002)',
-          features: ['بدون انتظار', 'جاهز بـ٢ دقيقة', 'ادفع وخذ'],
-          wait: '٢–٥ دقائق',
-        },
-        {
-          type: 'delivery' as OrderType,
-          emoji: '🛵',
-          label: 'توصيل',
-          sub: 'لحين موقعك — مجاناً',
-          color: '#2D7D46',
-          gradient: 'linear-gradient(145deg,#020C04,#062A10,#020C04)',
-          features: ['توصيل مجاني', 'تتبع حي', 'حتى ضمد وصبيا'],
-          wait: '٣٠–٤٥ دقيقة',
-        },
-      ]
-    : [
-        {
-          type: 'dine' as OrderType,
-          emoji: '🪑',
-          label: 'جلسة داخلية',
-          sub: 'اختر طاولتك واستمتع',
-          color: '#6B3210',
-          gradient: 'linear-gradient(145deg,#0C0002,#2A0A00,#0C0002)',
-          features: ['طاولة فورية', 'خدمة كاملة', 'أجواء براون دوز'],
-          wait: '٥–١٠ دقائق',
-        },
-        {
-          type: 'delivery' as OrderType,
-          emoji: '🛵',
-          label: 'توصيل',
-          sub: 'لحين موقعك — مجاناً',
-          color: '#2D7D46',
-          gradient: 'linear-gradient(145deg,#020C04,#062A10,#020C04)',
-          features: ['توصيل مجاني', 'تتبع حي', 'حتى ضمد وصبيا'],
-          wait: '٣٠–٤٥ دقيقة',
-        },
-      ];
+  const opts = [
+    {
+      type: 'dine' as OrderType,
+      sub_type: 'pickup',
+      emoji: '🧳',
+      label: 'استلام',
+      sub: 'خذها معك بعد دقيقتين',
+      color: '#6B3210',
+      gradient: 'linear-gradient(145deg,#0C0002,#2A0A00,#0C0002)',
+      features: ['بدون انتظار', 'جاهز بـ٢ دقيقة', 'ادفع وخذ'],
+      wait: '٢–٥ دقائق',
+    },
+    {
+      type: 'delivery' as OrderType,
+      sub_type: 'delivery',
+      emoji: '🛵',
+      label: 'توصيل',
+      sub: 'لحين موقعك — مجاناً',
+      color: '#2D7D46',
+      gradient: 'linear-gradient(145deg,#020C04,#062A10,#020C04)',
+      features: ['توصيل مجاني', 'تتبع حي', 'حتى ضمد وصبيا'],
+      wait: '٣٠–٤٥ دقيقة',
+    },
+    {
+      type: 'dine' as OrderType,
+      sub_type: 'dine',
+      emoji: '🪑',
+      label: 'جلسة',
+      sub: 'اجلس واستمتع بأجواء براون دوز',
+      color: '#7B4F00',
+      gradient: 'linear-gradient(145deg,#0A0500,#201000,#0A0500)',
+      features: ['طاولة فورية', 'خدمة كاملة', 'أجواء مميزة'],
+      wait: '٥–١٠ دقائق',
+    },
+  ];
 
   return (
     <motion.div
