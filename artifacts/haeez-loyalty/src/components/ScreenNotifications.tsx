@@ -88,7 +88,7 @@ const notifications: Notif[] = [
     id: 6,
     type: 'birthday',
     title: 'عيد ميلاد سعيد يا عبدالإله 🎂',
-    body: 'من فريق مطعمك — مشروبك الأول اليوم مجاني، وهدية مفاجئة بانتظارك عند الصندوق!',
+    body: 'من فريق براون دوز — مشروبك الأول اليوم مجاني، وهدية مفاجئة بانتظارك عند الصندوق!',
     time: 'أمس',
     unread: false,
   },
@@ -286,11 +286,11 @@ export function ScreenNotifications() {
         <div className="mx-5 mt-2 mb-4 p-4 rounded-[18px] flex items-center gap-3"
           style={{ background: 'linear-gradient(135deg,rgba(160,82,45,0.05),rgba(201,149,106,0.05))', border: '1px solid rgba(201,149,106,0.12)' }}>
           <div className="shrink-0">
-            <img src={logoImg} alt="مطعمك" className="w-9 h-9 rounded-[11px] object-cover"
+            <img src={logoImg} alt="براون دوز" className="w-9 h-9 rounded-[11px] object-cover"
               style={{ border: '1px solid rgba(201,149,106,0.2)' }} />
           </div>
           <div className="flex-1">
-            <p className="text-[11px] font-bold text-[#111]">إشعارات مطعمك</p>
+            <p className="text-[11px] font-bold text-[#111]">إشعارات براون دوز</p>
             <p className="text-[9px] text-[#AAA] font-light mt-0.5">مخصصة لك بناءً على تاريخ زياراتك وتفضيلاتك</p>
           </div>
           <div className="w-2 h-2 rounded-full bg-[#30D158] animate-pulse" />

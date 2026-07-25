@@ -33,7 +33,7 @@ export interface BrandConfig {
 /* ── Restaurant ─────────────────────────────────────────────────── */
 export const RESTAURANT_BRAND: BrandConfig = {
   type: 'restaurant',
-  name: 'مطعمك',
+  name: 'براون دوز',
   tagline: 'تطبيق · واتساب · محفظة · تقارير',
   logoImg: `${BASE}restaurant-logo.png`,
   heroImg: `${BASE}rest-hero.jpg`,
@@ -68,7 +68,7 @@ export const RESTAURANT_BRAND: BrandConfig = {
     { val: '٦٥', label: 'ريال توفير', icon: '💰' },
   ],
   streak: { count: '٧', label: '٧ أيام متواصلة' },
-  memberCard: { label: 'مطعمك', sub: 'عضوية كلاسيكية' },
+  memberCard: { label: 'براون دوز', sub: 'عضوية كلاسيكية' },
   accentColor: '#7B1618',
 };
 

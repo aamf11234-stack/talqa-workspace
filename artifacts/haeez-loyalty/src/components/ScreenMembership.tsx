@@ -655,7 +655,7 @@ function GiftToast({ msg, onDone }: { msg: string; onDone: () => void }) {
       </div>
       <div>
         <p className="text-[12px] font-semibold">{msg}</p>
-        <p className="text-[10px] text-white/50 font-light mt-0.5">سيصله إشعار فوري من مطعمك 🎁</p>
+        <p className="text-[10px] text-white/50 font-light mt-0.5">سيصله إشعار فوري من براون دوز 🎁</p>
       </div>
     </motion.div>
   );
@@ -717,7 +717,7 @@ function GiftModal({ gift, onClose, onSend }: { gift: { title: string; pts: numb
 
 /* ── Gifts Section ───────────────────────────────────────────────── */
 const giftOptions = [
-  { id: 'meal',      icon: '🍽️', title: 'وجبة مجانية', sub: 'من قائمة مطعمك',    pts: 150, color: '#6B3210' },
+  { id: 'meal',      icon: '🍽️', title: 'وجبة مجانية', sub: 'من قائمة براون دوز', pts: 150, color: '#6B3210' },
   { id: 'drink',     icon: '🥤', title: 'مشروب',        sub: 'أي مشروب تختاره',  pts: 60,  color: '#7A3B18' },
   { id: 'points',    icon: '⭐', title: 'نقاط',         sub: 'أرسل ١٠٠ نقطة',   pts: 100, color: '#D4AC0D' },
   { id: 'dessert',   icon: '🎂', title: 'حلى',          sub: 'حلو اليوم مجاناً', pts: 80,  color: '#B5651D' },

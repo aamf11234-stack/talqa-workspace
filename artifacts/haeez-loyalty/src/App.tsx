@@ -361,17 +361,17 @@ function RoiSection({ inline = false }: { inline?: boolean }) {
 const notifs = [
   {
     id: 1,
-    app: 'مطعمك',
+    app: 'براون دوز',
     icon: '🎂',
     iconBg: 'linear-gradient(135deg,#6B3210,#7A3B18)',
     time: 'الآن',
     title: 'عيد ميلادك اليوم! 🎉',
-    body: 'وجبة مجانية في انتظارك — هدية من مطعمك في يومك الخاص',
+    body: 'وجبة مجانية في انتظارك — هدية من براون دوز في يومك الخاص',
     accent: '#7A3B18',
   },
   {
     id: 2,
-    app: 'مطعمك',
+    app: 'براون دوز',
     icon: '⚡',
     iconBg: 'linear-gradient(135deg,#1A5276,#2980B9)',
     time: 'منذ دقيقة',
@@ -381,7 +381,7 @@ const notifs = [
   },
   {
     id: 3,
-    app: 'مطعمك',
+    app: 'براون دوز',
     icon: '⭐',
     iconBg: 'linear-gradient(135deg,#7A3B18,#E8C4A0)',
     time: 'منذ ٣ دقائق',
@@ -391,7 +391,7 @@ const notifs = [
   },
   {
     id: 4,
-    app: 'مطعمك',
+    app: 'براون دوز',
     icon: '🏆',
     iconBg: 'linear-gradient(135deg,#117A65,#2D7D46)',
     time: 'منذ ١٠ دقائق',
@@ -401,7 +401,7 @@ const notifs = [
   },
   {
     id: 5,
-    app: 'مطعمك',
+    app: 'براون دوز',
     icon: '🍽️',
     iconBg: 'linear-gradient(135deg,#3D0809,#6B3210)',
     time: 'منذ ٢٠ دقيقة',
@@ -411,11 +411,11 @@ const notifs = [
   },
   {
     id: 6,
-    app: 'مطعمك',
+    app: 'براون دوز',
     icon: '📍',
     iconBg: 'linear-gradient(135deg,#6C3483,#9B59B6)',
     time: 'منذ ساعة',
-    title: 'اقتربت من مطعمك 📍',
+    title: 'اقتربت من براون دوز 📍',
     body: 'أنت على بُعد ٥ دقائق — طاولتك المفضلة متاحة الآن',
     accent: '#9B59B6',
   },
@@ -533,7 +533,7 @@ function NotificationsShowcase() {
 
       {/* Caption */}
       <p className="text-center text-[11px] text-[#BBB] font-light mt-5">
-        كل إشعار له سبب ← يوم الميلاد · طلبك · نقاطك · قربك من مطعمك
+        كل إشعار له سبب ← يوم الميلاد · طلبك · نقاطك · قربك من براون دوز
       </p>
     </div>
   );
@@ -1101,7 +1101,7 @@ export default function App() {
 
             {/* Copy */}
             <div className="flex-1 text-right">
-              <p className="text-[#7A3B18] text-[10px] font-semibold mb-2"><span className="tracking-widest">Apple Watch</span> · مطعمك</p>
+              <p className="text-[#7A3B18] text-[10px] font-semibold mb-2"><span className="tracking-widest">Apple Watch</span> · براون دوز</p>
               <h3 className="text-white text-[22px] md:text-[26px] font-bold mb-3 leading-tight">
                 نقاطك ومستواك<br /><span className="text-[#7A3B18]">على معصمك دائماً</span>
               </h3>
@@ -1112,7 +1112,7 @@ export default function App() {
                 {[
                   'نقاطك الحالية دائماً على الشاشة',
                   'تنبيه لحظي عند الوصول للكوب المجاني',
-                  'تذكير ذكي عند اقتراب الزبون من مطعمك',
+                  'تذكير ذكي عند اقتراب الزبون من براون دوز',
                   'مشاركة لحظية مع تطبيق الجوال',
                 ].map((item) => (
                   <div key={item} className="flex items-center gap-2 text-white/55 text-[12px]">
@@ -1320,7 +1320,7 @@ export default function App() {
                 يضيف الأعضاء بطاقة العضوية لمحافظهم الرقمية بضغطة واحدة. تُحدَّث تلقائياً عند الترقية.
               </p>
               <div className="space-y-2">
-                {['تحديث فوري عند الترقية للمستوى التالي','تعمل بلا إنترنت عند الدفع','إشعار تلقائي عند اقتراب الزبون من مطعمك'].map((item) => (
+                {['تحديث فوري عند الترقية للمستوى التالي','تعمل بلا إنترنت عند الدفع','إشعار تلقائي عند اقتراب الزبون من براون دوز'].map((item) => (
                   <div key={item} className="flex items-center gap-2 text-white/55 text-[12px]">
                     <div className="w-1.5 h-1.5 bg-[#30D158] rounded-full shrink-0" />
                     {item}
@@ -1446,7 +1446,7 @@ export default function App() {
         <div className="bg-white/75 rounded-[28px] p-6 border border-[rgba(160,82,45,0.07)] shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
           <div className="flex items-start justify-between mb-5">
             <div>
-              <p className="text-[10px] text-[#6B3210] font-semibold mb-1">مجتمع مطعمك</p>
+              <p className="text-[10px] text-[#6B3210] font-semibold mb-1">مجتمع براون دوز</p>
               <h3 className="text-[22px] font-bold text-[#111]">١,٥٠٠+ عضو نشط</h3>
               <p className="text-[12px] text-[#888] font-light mt-1">منصة اجتماعية داخل التطبيق</p>
             </div>

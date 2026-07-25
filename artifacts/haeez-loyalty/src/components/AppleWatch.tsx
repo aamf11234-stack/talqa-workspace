@@ -93,10 +93,10 @@ export function AppleWatchHyz({ compact = false }: { compact?: boolean }) {
             <div className="flex items-center gap-[8%]">
               <img
                 src={logoImg}
-                alt="مطعمك"
+                alt="براون دوز"
                 style={{ width: Math.round(18 * scale), height: Math.round(18 * scale), borderRadius: Math.round(5 * scale), objectFit: 'cover', border: '1px solid rgba(201,149,106,0.3)' }}
               />
-              <p className="text-[#7A3B18] font-bold" style={{ fontSize: Math.round(11 * scale) }}>مطعمك</p>
+              <p className="text-[#7A3B18] font-bold" style={{ fontSize: Math.round(11 * scale) }}>براون دوز</p>
             </div>
             <div
               className="flex items-center gap-[6%] px-[8%] py-[3%] rounded-full"

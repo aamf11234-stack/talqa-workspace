@@ -20,7 +20,7 @@ const stories = [
     gradient: 'linear-gradient(145deg,#6B3210,#7A3B18)',
   },
   {
-    id: 1, user: 'مطعمك', isOfficial: true, seen: false,
+    id: 1, user: 'براون دوز', isOfficial: true, seen: false,
     gradient: 'linear-gradient(145deg,#0D0205,#6B3210)',
     content: '☕ محصول اليوم: إثيوبيا يرقاشيفي — حموضة ناعمة ورائحة زهرية',
     type: 'official',
@@ -34,7 +34,7 @@ const stories = [
   {
     id: 3, user: 'س. الغامدي', avatar: 'س', seen: true,
     gradient: 'linear-gradient(145deg,#2D7D46,#1a4a2e)',
-    content: 'كرواسون اللوز + قهوة مطعمك 🥐',
+    content: 'كرواسون اللوز + قهوة براون دوز 🥐',
     type: 'food',
   },
   {
@@ -61,11 +61,11 @@ const feedPosts = [
     postGradient: 'linear-gradient(145deg,#0D0205,#3D0809)',
     postEmoji: '☕', likes: 12, comments: 3,
     sharedTo: ['instagram', 'snapchat'],
-    location: 'مطعمك',
+    location: 'براون دوز',
   },
   {
     id: 1,
-    user: 'مطعمك', isOfficial: true,
+    user: 'براون دوز', isOfficial: true,
     time: 'منذ ٢ ساعة', tag: 'رسمي', tagColor: '#7A3B18',
     content: '💡 نصيحة الأسبوع: جرّب محصول إثيوبيا يرقاشيفي — حموضة ناعمة ورائحة زهرية لا تُقاوم. متاح بكميات محدودة!',
     postGradient: 'linear-gradient(145deg,#0A0800,#2E1800)',
@@ -168,7 +168,7 @@ function StoryViewer({ stories: storyList, startIndex, onClose }: {
       <div className="absolute top-7 left-4 right-4 flex items-center justify-between z-10">
         <div className="flex items-center gap-2">
           {story.isOfficial ? (
-            <img src={logoImg} alt="مطعمك" className="w-7 h-7 rounded-full object-cover border border-white/30" />
+            <img src={logoImg} alt="براون دوز" className="w-7 h-7 rounded-full object-cover border border-white/30" />
           ) : (
             <div className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center border border-white/30">
               <span className="text-white text-[11px] font-bold">{story.avatar ?? '+'}</span>
@@ -315,7 +315,7 @@ function CheckInSheet({ onClose, onPosted }: { onClose: () => void; onPosted: ()
                 />
               </div>
               <div>
-                <p className="text-[13px] font-bold text-[#111]">مطعمك</p>
+                <p className="text-[13px] font-bold text-[#111]">براون دوز</p>
                 <p className="text-[10px] text-[#30D158] font-medium">شارع لبنان · تم التحديد تلقائياً</p>
               </div>
               <div className="mr-auto flex items-center gap-1 bg-[#7A3B18]/10 px-2.5 py-1 rounded-full">
@@ -418,7 +418,7 @@ function PostCard({ post, index }: { post: typeof feedPosts[0]; index: number })
         {/* Official badge */}
         {post.isOfficial && (
           <div className="absolute top-2.5 left-3 flex items-center gap-1 bg-[#7A3B18]/90 backdrop-blur-sm rounded-full px-2.5 py-1">
-            <span className="text-white text-[9px] font-bold">✦ مطعمك</span>
+            <span className="text-white text-[9px] font-bold">✦ براون دوز</span>
           </div>
         )}
       </div>
@@ -428,7 +428,7 @@ function PostCard({ post, index }: { post: typeof feedPosts[0]; index: number })
         <div className="flex items-center justify-between mb-2.5">
           <div className="flex items-center gap-2.5">
             {post.isOfficial ? (
-              <img src={logoImg} alt="مطعمك" className="w-7 h-7 rounded-full object-cover border border-[rgba(201,149,106,0.3)]" />
+              <img src={logoImg} alt="براون دوز" className="w-7 h-7 rounded-full object-cover border border-[rgba(201,149,106,0.3)]" />
             ) : post.isChallenge ? (
               <div className="w-7 h-7 rounded-full bg-[#111] flex items-center justify-center">
                 <Trophy size={12} className="text-[#7A3B18]" />
@@ -563,7 +563,7 @@ export function ScreenCommunity() {
         {/* ── Header ── */}
         <div className="px-4 pt-4 pb-3 flex items-center justify-between">
           <div>
-            <h1 className="text-[20px] font-bold text-[#111] leading-tight">مجتمع مطعمك</h1>
+            <h1 className="text-[20px] font-bold text-[#111] leading-tight">مجتمع براون دوز</h1>
             <div className="flex items-center gap-1.5 mt-0.5">
               <div className="w-1.5 h-1.5 bg-[#30D158] rounded-full animate-pulse" />
               <p className="text-[10px] text-[#30D158] font-medium">٢٣ متصل الآن</p>
@@ -616,7 +616,7 @@ export function ScreenCommunity() {
                             <Plus size={20} className="text-white/70" />
                           </div>
                         ) : story.isOfficial ? (
-                          <img src={logoImg} alt="مطعمك" className="w-full h-full object-cover" />
+                          <img src={logoImg} alt="براون دوز" className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center">
                             <span className="text-white text-[18px] font-bold">{story.avatar}</span>
