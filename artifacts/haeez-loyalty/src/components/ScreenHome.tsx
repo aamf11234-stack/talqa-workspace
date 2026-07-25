@@ -945,7 +945,8 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
                 'مساء الخير 🌙';
 
   return (
-    <div className="h-full overflow-y-auto scrollbar-none relative">
+    <div className="h-full relative overflow-hidden">
+      {/* Overlays — clipped inside phone frame */}
       <AnimatePresence>
         {showSpin && <SpinWheelOverlay onClose={() => setShowSpin(false)} />}
       </AnimatePresence>
@@ -972,6 +973,9 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
       <AnimatePresence>
         {showOffersSheet && <OffersSheet onClose={() => setShowOffersSheet(false)} />}
       </AnimatePresence>
+
+      {/* Scrollable content */}
+      <div className="h-full overflow-y-auto scrollbar-none">
 
       {/* ── Dark hero ── */}
       <div className="relative overflow-hidden" style={{
@@ -1307,6 +1311,7 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
           <HaizCalendar />
         </div>
       </div>
+      </div> {/* end scrollable */}
     </div>
   );
 }
