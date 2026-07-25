@@ -872,13 +872,13 @@ export default function App() {
               </AnimatePresence>
 
               <div className="flex-1 relative overflow-hidden h-full">
-                <AnimatePresence mode="wait" initial={false}>
+                <AnimatePresence mode="sync" initial={false}>
                   <motion.div
                     key={activeTab}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.08 }}
                     className="absolute inset-0 overflow-y-auto scrollbar-none"
                   >
                     {activeTab === 'home'      && <ScreenHome onShakeTrigger={() => setShowShakeDeal(true)} />}
