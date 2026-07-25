@@ -332,7 +332,7 @@ function BestsellersRail({ cart, onCustomize }: {
                   <motion.button whileTap={{ scale: 0.82 }}
                     onClick={() => onCustomize({ name: h.name, basePrice: h.price, emoji: catMeta[h.catId]?.emoji ?? '☕', catId: catOf(h.name) })}
                     className="w-7 h-7 rounded-full flex items-center justify-center font-black text-[16px]"
-                    style={{ background: qty > 0 ? '#6B3210' : '#111', color: 'white' }}>
+                    style={{ background: qty > 0 ? '#6B3210' : '#6B3210', color: 'white' }}>
                     {qty > 0 ? qty : '+'}
                   </motion.button>
                 </div>
@@ -592,7 +592,7 @@ function DrinkRow({ item, catId, qty, onCustomize, onRemove, isLast }: {
         <motion.button whileTap={{ scale: 0.82 }}
           onClick={() => onCustomize({ name: item.name, basePrice: price, emoji: meta.emoji, catId })}
           className="w-8 h-8 rounded-full text-white flex items-center justify-center font-black text-[18px]"
-          style={{ background: qty > 0 ? meta.dot : '#111' }}>+</motion.button>
+          style={{ background: qty > 0 ? meta.dot : '#6B3210' }}>+</motion.button>
       </div>
     </div>
   );
@@ -704,7 +704,7 @@ function SearchResults({ results, query, onClear, cart, onCustomize }: {
               <motion.button whileTap={{ scale: 0.82 }}
                 onClick={() => onCustomize({ name: item.name, basePrice: price, emoji: meta.emoji, catId: cat.id })}
                 className="w-8 h-8 rounded-full text-white flex items-center justify-center font-black text-[18px] shrink-0"
-                style={{ background: qty > 0 ? meta.dot : '#111' }}>
+                style={{ background: qty > 0 ? meta.dot : '#6B3210' }}>
                 {qty > 0 ? qty : '+'}
               </motion.button>
             </div>
