@@ -929,7 +929,6 @@ export function ScreenMembership() {
   const [showGWallet, setShowGWallet] = useState(false);
   const [giftToast, setGiftToast] = useState<string | null>(null);
   const [points, setPoints] = useState(480);
-  const [activeTab, setActiveTab] = useState<'card' | 'offers'>('card');
 
   return (
     <div className="flex flex-col h-full relative">
@@ -959,42 +958,6 @@ export function ScreenMembership() {
               className="text-[#7A3B18] text-[10px] font-bold">{points} نقطة</motion.span>
           </div>
         </div>
-
-        {/* Tab switcher */}
-        <div className="flex gap-2 mb-5 p-1 rounded-[16px]" style={{ background: 'rgba(196,181,159,0.12)' }}>
-          {(['card', 'offers'] as const).map(tab => (
-            <button key={tab} onClick={() => setActiveTab(tab)}
-              className="relative flex-1 py-2.5 rounded-[13px] text-[13px] font-bold transition-colors"
-              style={{ color: activeTab === tab ? '#6B3210' : '#AAA' }}>
-              {activeTab === tab && (
-                <motion.div layoutId="tab-bg" className="absolute inset-0 rounded-[13px]"
-                  style={{ background: 'white', boxShadow: '0 2px 10px rgba(0,0,0,0.08)' }} />
-              )}
-              <span className="relative z-10">{tab === 'card' ? '💳 بطاقتي' : '🎁 عروضي'}</span>
-            </button>
-          ))}
-        </div>
-
-        {/* ─── OFFERS TAB ─── */}
-        <AnimatePresence mode="wait">
-          {activeTab === 'offers' && (
-            <motion.div key="offers"
-              initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.18 }}>
-              <RewardsTab points={points} onRedeem={(pts, name) => {
-                setPoints(p => Math.max(0, p - pts));
-                setGiftToast(`تم استبدال ${name} 🎁`);
-              }} />
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* ─── CARD TAB ─── */}
-        <AnimatePresence mode="wait">
-          {activeTab === 'card' && (
-            <motion.div key="card"
-              initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.18 }}>
 
         {/* Card */}
         <MembershipCard />
@@ -1187,9 +1150,11 @@ export function ScreenMembership() {
           </div>
         </motion.div>
 
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Rewards */}
+        <RewardsTab points={points} onRedeem={(pts, name) => {
+          setPoints(p => Math.max(0, p - pts));
+          setGiftToast(`تم استبدال ${name} 🎁`);
+        }} />
 
       </div>
 
