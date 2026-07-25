@@ -117,16 +117,16 @@ function FlyToTarget({ target }: { target: [number, number] | null }) {
    STEP INDICATOR
 ════════════════════════════════════════════════════════════════════ */
 const STEPS: { phase: Phase; label: string }[] = [
-  { phase: 'type',    label: 'الاستلام' },
-  { phase: 'branch',  label: 'الفرع'    },
-  { phase: 'payment', label: 'الدفع'    },
-  { phase: 'invoice', label: 'تم ✓'    },
+  { phase: 'type',    label: 'النوع'  },
+  { phase: 'branch',  label: 'الفرع'  },
+  { phase: 'payment', label: 'الدفع'  },
+  { phase: 'invoice', label: 'تم ✓'  },
 ];
 const DELIVERY_STEPS: { phase: Phase; label: string }[] = [
-  { phase: 'type',    label: 'الاستلام' },
-  { phase: 'address', label: 'الموقع'   },
-  { phase: 'payment', label: 'الدفع'    },
-  { phase: 'invoice', label: 'تم ✓'    },
+  { phase: 'type',    label: 'النوع'   },
+  { phase: 'address', label: 'الموقع'  },
+  { phase: 'payment', label: 'الدفع'   },
+  { phase: 'invoice', label: 'تم ✓'   },
 ];
 
 function StepIndicator({ phase, orderType }: { phase: Phase; orderType: OrderType }) {
@@ -1138,7 +1138,7 @@ export function CheckoutModal({ item, brandName, brandType, logoImg, onClose, on
     onClose();
   }
 
-  const showStep = !['paying','invoice'].includes(phase);
+  const showStep = !['paying','invoice','address'].includes(phase);
 
   return (
     <>
