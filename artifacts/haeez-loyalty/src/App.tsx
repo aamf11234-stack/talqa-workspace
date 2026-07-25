@@ -915,7 +915,7 @@ export default function App() {
             {[
               { label: '١,٥٠٠+', sub: 'عضو نشط', color: '#6B3210' },
               { label: '٤.٩ ★', sub: 'تقييم المتجر', color: '#7A3B18' },
-              { label: '٧ أيام', sub: 'وقت التسليم', color: '#2D7D46' },
+              { label: '٦٠ يوم', sub: 'وقت التسليم', color: '#2D7D46' },
             ].map((s, i) => (
               <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.65 + i * 0.08 }}
                 className="rounded-[16px] px-3.5 py-3 text-right"
@@ -1509,7 +1509,7 @@ export default function App() {
               طلب توصيل واستلام · Apple Pay · نقاط ولاء · منيو رقمي · فروع صبيا وضمد
             </p>
             <div className="grid grid-cols-2 gap-2.5 mb-7 text-right">
-              {['تسليم خلال ٧ أيام','هوية براون دوز الكاملة','دعم مباشر على واتساب','فرعَي صبيا وضمد'].map((item) => (
+              {['تسليم خلال ٦٠ يوم','هوية براون دوز الكاملة','دعم مباشر على واتساب','فرعَي صبيا وضمد'].map((item) => (
                 <div key={item} className="flex items-center gap-2 text-white/55 text-[11px]">
                   <div className="w-1.5 h-1.5 bg-[#30D158] rounded-full shrink-0" />
                   {item}
