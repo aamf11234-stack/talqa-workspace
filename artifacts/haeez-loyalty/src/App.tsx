@@ -110,31 +110,22 @@ function PhoneScreens({ activeTab, onShakeTrigger }: { activeTab: TabKey; onShak
 
   return (
     <div className="flex-1 relative overflow-hidden h-full">
-      {/* Horizontal strip — all 5 screens side by side, slide the strip */}
-      <div
-        style={{
-          display: 'flex',
-          width: `${TAB_ORDER.length * 100}%`,
-          height: '100%',
-          transform: `translateX(-${(idx / TAB_ORDER.length) * 100}%)`,
-          transition: 'transform 260ms cubic-bezier(0.4,0,0.2,1)',
-          willChange: 'transform',
-        }}
-      >
-        {TAB_ORDER.map(tab => (
-          <div
-            key={tab}
-            style={{ width: `${100 / TAB_ORDER.length}%`, height: '100%', flexShrink: 0, overflowY: 'auto' }}
-            className="scrollbar-none"
-          >
-            {tab === 'home'         && <ScreenHome onShakeTrigger={onShakeTrigger} />}
-            {tab === 'menu'         && <ScreenMenu />}
-            {tab === 'card'         && <ScreenMembership />}
-            {tab === 'orders'       && <ScreenOrders />}
-            {tab === 'reservations' && <ScreenReservations />}
-          </div>
-        ))}
-      </div>
+      {TAB_ORDER.map(tab => (
+        <div
+          key={tab}
+          className="absolute inset-0 overflow-y-auto scrollbar-none"
+          style={{
+            visibility: activeTab === tab ? 'visible' : 'hidden',
+            pointerEvents: activeTab === tab ? 'auto' : 'none',
+          }}
+        >
+          {tab === 'home'         && <ScreenHome onShakeTrigger={onShakeTrigger} />}
+          {tab === 'menu'         && <ScreenMenu />}
+          {tab === 'card'         && <ScreenMembership />}
+          {tab === 'orders'       && <ScreenOrders />}
+          {tab === 'reservations' && <ScreenReservations />}
+        </div>
+      ))}
     </div>
   );
 }
