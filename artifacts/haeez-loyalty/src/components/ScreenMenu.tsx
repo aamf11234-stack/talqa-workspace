@@ -19,6 +19,7 @@ interface MenuItem {
   badge?: string;
   badgeColor?: string;
   featured?: boolean;
+  img?: string;
 }
 interface MenuCategory {
   id: string;
@@ -43,7 +44,7 @@ const menu: MenuCategory[] = [
       { name: 'كورنادو',                                           price: 14 },
       { name: 'فلات وايت',                                         price: 16 },
       { name: 'كابتشينو',                                          price: 16 },
-      { name: 'لاتيه',                                             price: 17, featured: true },
+      { name: 'لاتيه',                                             price: 17, featured: true, img: `${import.meta.env.BASE_URL}bd-affogato.jpg` },
       { name: 'اسبانيش لاتيه',                                     price: 17 },
       { name: 'بستاشيو لاتيه',                                     price: 20 },
       { name: 'كراميل لاتيه',                                      price: 20 },
@@ -56,28 +57,28 @@ const menu: MenuCategory[] = [
       { name: 'قهوة اليوم بارده صغير',  price: 9  },
       { name: 'قهوة اليوم بارده كبير',  price: 10 },
       { name: 'ايس امريكانو',           price: 15 },
-      { name: 'موهيتو روز يري',         price: 17, badge: 'الأشهر', badgeColor: '#8B3252', featured: true },
+      { name: 'موهيتو روز يري',         price: 17, badge: 'الأشهر', badgeColor: '#8B3252', featured: true, img: `${import.meta.env.BASE_URL}bd-mohito.jpg` },
       { name: 'موهيتو يريز ليمون',      price: 17 },
       { name: 'موهيتو بلو اوشن',        price: 17 },
       { name: 'موهيتو مكس',             price: 17 },
       { name: 'موهيتو باشن فروت',       price: 18 },
       { name: 'كركديه',                 price: 18 },
       { name: 'ايس لاتيه',              price: 18 },
-      { name: 'ايس ستفتشر براون',       desc: 'التوقيع الخاص بنا', price: 19, badge: 'براون', badgeColor: '#7A3B28', featured: true },
+      { name: 'ايس ستفتشر براون',       desc: 'التوقيع الخاص بنا', price: 19, badge: 'براون', badgeColor: '#7A3B28', featured: true, img: `${import.meta.env.BASE_URL}bd-ice-stretcher.jpg` },
       { name: 'اسبانيش لاتيه بارد',     price: 19 },
       { name: 'ايس كراميل',             price: 20 },
       { name: 'بستاشيو لاتيه بارد',     price: 20 },
       { name: 'اسبرسو خوذ',             price: 20 },
       { name: 'ايس يري',                price: 19 },
       { name: 'ماتشا',                  price: 20 },
-      { name: 'افقاتو براون',           desc: 'إسبريسو فوق الآيس كريم', price: 25, badge: 'الأحلى', badgeColor: '#8B3252', featured: true },
+      { name: 'افقاتو براون',           desc: 'إسبريسو فوق الآيس كريم', price: 25, badge: 'الأحلى', badgeColor: '#8B3252', featured: true, img: `${import.meta.env.BASE_URL}bd-affogato.jpg` },
     ],
   },
   {
     id: 'filter', name: 'قهوة مقطرة', nameEn: 'POUR OVER', color: '#7A3B28',
     note: 'تُحضَّر بالطلب · ١٠-١٥ دقيقة',
     items: [
-      { name: 'أثيوبي هنيبلا',     origin: 'إثيوبيا', originFlag: '🇪🇹', priceHot: 17, priceCold: 17, featured: true },
+      { name: 'أثيوبي هنيبلا',     origin: 'إثيوبيا', originFlag: '🇪🇹', priceHot: 17, priceCold: 17, featured: true, img: `${import.meta.env.BASE_URL}bd-filter.jpg` },
       { name: 'أثيوبي اوراقا فاخر', origin: 'إثيوبيا', originFlag: '🇪🇹', priceHot: 18, priceCold: 18, badge: 'فاخر', badgeColor: '#7A3B28' },
       { name: 'أثيوبي شلشلي فاخر', origin: 'إثيوبيا', originFlag: '🇪🇹', priceHot: 20, priceCold: 20, badge: 'فاخر', badgeColor: '#7A3B28' },
       { name: 'كولومبي الندو فاخر', origin: 'كولومبيا', originFlag: '🇨🇴', priceHot: 17, priceCold: 18, badge: 'فاخر', badgeColor: '#7A3B28' },
@@ -276,7 +277,66 @@ function Section({ cat, index, onOrder, onCustomize }: {
 
       {/* Items */}
       <div className="px-5">
-        {cat.items.map((item, i) => (
+        {cat.items.map((item, i) => item.featured && item.img ? (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.04 + i * 0.04, duration: 0.28 }}
+              className="my-2 rounded-[18px] overflow-hidden relative"
+              style={{
+                borderBottom: i < cat.items.length - 1 ? '1px solid rgba(196,181,159,0.1)' : 'none',
+                background: `${cat.color}08`,
+                border: `1px solid ${cat.color}20`,
+              }}
+            >
+              {/* Photo */}
+              <div className="relative h-[110px]">
+                <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
+                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 60%, transparent 100%)' }} />
+                {item.badge && (
+                  <div className="absolute top-2.5 right-3 px-2 py-0.5 rounded-full text-[8px] font-black text-white"
+                    style={{ background: item.badgeColor ?? cat.color, boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}>
+                    {item.badge}
+                  </div>
+                )}
+                <div className="absolute bottom-2.5 right-3 left-3 flex items-end justify-between">
+                  <div>
+                    <p className="text-white text-[14px] font-black leading-snug drop-shadow-sm">{item.name}</p>
+                    {item.desc && <p className="text-white/70 text-[10px] font-light">{item.desc}</p>}
+                    {item.origin && (
+                      <div className="flex items-center gap-1 mt-0.5">
+                        <IOriginPin size={9} color="#fff" sw={1.5} />
+                        <span className="text-white/60 text-[9px]">{item.origin}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-col items-end gap-1.5 shrink-0">
+                    <div>
+                      {item.priceHot !== undefined ? (
+                        <div className="flex flex-col items-end gap-0.5">
+                          <span className="text-white text-[13px] font-black font-inter drop-shadow-sm">{item.priceHot}<span className="text-[9px] opacity-70"> ر</span></span>
+                        </div>
+                      ) : (
+                        <span className="text-white text-[15px] font-black font-inter drop-shadow-sm">{item.price}<span className="text-[9px] opacity-70"> ر</span></span>
+                      )}
+                    </div>
+                    {(onOrder || onCustomize) && (
+                      <motion.button whileTap={{ scale: 0.88 }}
+                        onClick={() => onCustomize
+                          ? onCustomize({ name: item.name, basePrice: item.price ?? item.priceHot ?? 0, emoji: '☕', catColor: cat.color })
+                          : onOrder?.({ name: item.name, price: String(item.price ?? item.priceHot ?? 0), emoji: '☕' })
+                        }
+                        className="text-[9px] font-black px-3 py-1.5 rounded-full text-white"
+                        style={{ background: cat.color, boxShadow: `0 3px 10px ${cat.color}66` }}>
+                        اطلب
+                      </motion.button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          ) : (
           <motion.div
             key={i}
             initial={{ opacity: 0, x: 6 }}

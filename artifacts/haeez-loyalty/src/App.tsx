@@ -70,14 +70,14 @@ function BrandToggle() {
   );
 }
 
-const cafeImg1    = `${import.meta.env.BASE_URL}rest-hero.jpg`;
-const imgExterior = `${import.meta.env.BASE_URL}rest-exterior.jpg`;
-const imgBurger   = `${import.meta.env.BASE_URL}food-burger.jpg`;
-const imgSalad    = `${import.meta.env.BASE_URL}food-salad.jpg`;
-const imgLatte    = `${import.meta.env.BASE_URL}food-latte.jpg`;
-const imgCheesecake = `${import.meta.env.BASE_URL}food-cheesecake.jpg`;
-const imgKabsa    = `${import.meta.env.BASE_URL}food-kabsa.jpg`;
-const imgLoyalty  = `${import.meta.env.BASE_URL}loyalty-card.jpg`;
+const cafeImg1      = `${import.meta.env.BASE_URL}bd-hero.jpg`;
+const imgExterior   = `${import.meta.env.BASE_URL}rest-exterior.jpg`;
+const imgAffogato   = `${import.meta.env.BASE_URL}bd-affogato.jpg`;
+const imgIceStr     = `${import.meta.env.BASE_URL}bd-ice-stretcher.jpg`;
+const imgFilter     = `${import.meta.env.BASE_URL}bd-filter.jpg`;
+const imgMohito     = `${import.meta.env.BASE_URL}bd-mohito.jpg`;
+const imgPistachio  = `${import.meta.env.BASE_URL}bd-pistachio.jpg`;
+const imgLoyalty    = `${import.meta.env.BASE_URL}loyalty-card.jpg`;
 
 /* ── App Store badges ─────────────────────────────────────────────── */
 function AppleBadge() {
@@ -113,10 +113,10 @@ function PlayBadge() {
 
 /* ── Pillars ──────────────────────────────────────────────────────── */
 const pillars = [
-  { icon: '☕', title: 'منيو براون دوز',       sub: 'حار · بارد · مقطرة',   desc: 'كل الأصناف بالأسعار الحقيقية',          bg: 'linear-gradient(145deg,#0D0205,#3D0809,#0D0205)' },
-  { icon: '🛵', title: 'توصيل واستلام',        sub: 'صبيا وضمد',            desc: 'الزبون يختار كيف يستلم طلبه',           bg: 'linear-gradient(145deg,#0A0A0A,#1A2E1A,#0A0A0A)' },
-  { icon: '💳', title: 'Apple & Google Wallet', sub: 'بطاقة رقمية دائمة',  desc: 'تظهر على شاشة القفل تلقائياً',          bg: 'linear-gradient(145deg,#0A0800,#2E2000,#0A0800)' },
-  { icon: '🏆', title: 'نقاط الولاء',          sub: 'كل طلب = نقاط',       desc: 'زبائن راجعين وعروض مخصصة',              bg: 'linear-gradient(145deg,#040D08,#0D2814,#040D08)' },
+  { icon: '☕', title: 'منيو براون دوز',       sub: 'حار · بارد · مقطرة',   desc: 'كل الأصناف بالأسعار الحقيقية',          bg: 'linear-gradient(145deg,#0D0205,#3D0809,#0D0205)', img: `${import.meta.env.BASE_URL}bd-affogato.jpg` },
+  { icon: '🛵', title: 'توصيل واستلام',        sub: 'صبيا وضمد',            desc: 'الزبون يختار كيف يستلم طلبه',           bg: 'linear-gradient(145deg,#0A0A0A,#1A2E1A,#0A0A0A)', img: `${import.meta.env.BASE_URL}bd-mohito.jpg` },
+  { icon: '💳', title: 'Apple & Google Wallet', sub: 'بطاقة رقمية دائمة',  desc: 'تظهر على شاشة القفل تلقائياً',          bg: 'linear-gradient(145deg,#0A0800,#2E2000,#0A0800)', img: `${import.meta.env.BASE_URL}bd-pistachio.jpg` },
+  { icon: '🏆', title: 'نقاط الولاء',          sub: 'كل طلب = نقاط',       desc: 'زبائن راجعين وعروض مخصصة',              bg: 'linear-gradient(145deg,#040D08,#0D2814,#040D08)', img: `${import.meta.env.BASE_URL}bd-filter.jpg` },
 ];
 
 const allFeatures = [
@@ -649,12 +649,20 @@ export default function App() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {pillars.map((p, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
-              className="rounded-[20px] p-5 relative overflow-hidden" style={{ background: p.bg }}>
-              <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at 80% 10%,rgba(201,149,106,0.1) 0%,transparent 60%)' }} />
-              <span className="text-2xl mb-3 block">{p.icon}</span>
-              <p className="text-white text-[14px] font-bold mb-0.5 relative">{p.title}</p>
-              <p className="text-white/35 text-[10px] font-light mb-1.5 relative">{p.sub}</p>
-              <p className="text-white/55 text-[11px] font-light relative leading-snug">{p.desc}</p>
+              className="rounded-[20px] relative overflow-hidden group" style={{ minHeight: 180 }}>
+              {/* Background photo */}
+              <img src={p.img} alt={p.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              {/* Dark overlay */}
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.25) 100%)' }} />
+              {/* Tint */}
+              <div className="absolute inset-0" style={{ background: p.bg, opacity: 0.45, mixBlendMode: 'multiply' }} />
+              {/* Content */}
+              <div className="relative z-10 p-5 flex flex-col justify-end h-full" style={{ minHeight: 180 }}>
+                <span className="text-2xl mb-2 block">{p.icon}</span>
+                <p className="text-white text-[14px] font-bold mb-0.5">{p.title}</p>
+                <p className="text-white/50 text-[10px] font-light mb-1">{p.sub}</p>
+                <p className="text-white/70 text-[11px] font-light leading-snug">{p.desc}</p>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -755,6 +763,46 @@ export default function App() {
         </motion.div>
       </div>
 
+      {/* ── Product Gallery ───────────────────────────────── */}
+      <div className="max-w-5xl mx-auto px-6 mb-10">
+        <div className="text-center mb-5">
+          <p className="text-[11px] text-[#B06070] font-bold tracking-[0.22em] uppercase mb-1.5">منيو براون دوز</p>
+          <h2 className="text-[26px] font-bold text-[#111] leading-tight">كل كوب له حكايته</h2>
+          <p className="text-[13px] text-[#999] font-light mt-1.5">الأصناف الحقيقية — بالصور والأسعار</p>
+        </div>
+        <div className="grid grid-cols-3 gap-2.5 md:grid-cols-6">
+          {[
+            { img: imgAffogato,  name: 'أفقاتو براون',      price: '٢٥', tag: '🔥 الأشهر' },
+            { img: imgPistachio, name: 'لاتيه بستاشيو',     price: '٢٠', tag: null         },
+            { img: imgMohito,    name: 'موهيتو روز يري',    price: '١٧', tag: '⭐ جديد'    },
+            { img: imgIceStr,    name: 'ستفتشر براون',      price: '١٩', tag: '🧊 توقيعنا' },
+            { img: imgFilter,    name: 'قهوة مقطرة',        price: '١٧', tag: null         },
+            { img: cafeImg1,     name: 'تجربة براون دوز',   price: null,  tag: '📍 صبيا'   },
+          ].map((item, idx) => (
+            <motion.div key={idx}
+              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.05 * idx }}
+              className="relative rounded-[18px] overflow-hidden group"
+              style={{ aspectRatio: '3/4' }}
+            >
+              <img src={item.img} alt={item.name}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.25) 50%, transparent 100%)' }} />
+              {item.tag && (
+                <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded-full text-[7px] font-bold text-white"
+                  style={{ background: 'rgba(176,96,112,0.85)', backdropFilter: 'blur(8px)' }}>
+                  {item.tag}
+                </div>
+              )}
+              <div className="absolute bottom-0 right-0 left-0 p-2.5">
+                <p className="text-white text-[10px] font-bold leading-tight mb-0.5">{item.name}</p>
+                {item.price && <p className="text-[#C9956A] text-[11px] font-black font-inter">{item.price} <span className="text-[8px] opacity-60">ر</span></p>}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
       {/* ── App Screens Strip ─────────────────────────────── */}
       <div className="max-w-5xl mx-auto mb-10">
         <div className="text-center mb-4 px-6">
@@ -827,10 +875,10 @@ export default function App() {
             {/* Food grid */}
             <div className="grid grid-cols-2 gap-2 px-5 pb-5 flex-1">
               {[
-                { img: imgBurger,     name: 'برجر كلاسيك',   price: '٣٥', badge: '🔥 الأكثر طلباً' },
-                { img: imgKabsa,      name: 'كبسة الجمبري',  price: '٨٥', badge: '⭐ مميز'          },
-                { img: imgLatte,      name: 'لاتيه فاخر',    price: '٢٢', badge: null               },
-                { img: imgCheesecake, name: 'تشيز كيك',      price: '٣٠', badge: '🎂 حلو اليوم'    },
+                { img: imgAffogato,  name: 'أفقاتو براون',      price: '٢٥', badge: '🔥 الأشهر'      },
+                { img: imgPistachio, name: 'لاتيه بستاشيو',     price: '٢٢', badge: '⭐ جديد'         },
+                { img: imgMohito,    name: 'موهيتو روز',         price: '١٧', badge: null              },
+                { img: imgIceStr,    name: 'ايس ستفتشر براون',  price: '١٩', badge: '🧊 بارد'         },
               ].map((item, idx) => (
                 <div key={idx} className="relative rounded-[16px] overflow-hidden flex flex-col" style={{background:'rgba(0,0,0,0.3)',border:'1px solid rgba(255,255,255,0.08)'}}>
                   <div className="relative h-[100px]">
