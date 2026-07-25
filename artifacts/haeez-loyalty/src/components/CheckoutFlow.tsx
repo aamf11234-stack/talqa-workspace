@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Check, ChevronLeft } from 'lucide-react';
+import { X, Check, ChevronLeft, MapPin, Navigation } from 'lucide-react';
+import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
+import L from 'leaflet';
 
 /* ── Types ─────────────────────────────────────────────────────── */
 export interface CheckoutItem {
@@ -47,12 +49,56 @@ const toInt = (ar: string) =>
 const toAr = (n: number) =>
   n.toLocaleString('ar-EG');
 
-/* ── Address Sheet ──────────────────────────────────────────────── */
-function AddressSheet({ onConfirm, onBack }: { onConfirm: (addr: string) => void; onBack: () => void }) {
-  const [district, setDistrict] = useState('');
-  const [building, setBuilding] = useState('');
-  const [notes, setNotes]       = useState('');
-  const ready = district.trim().length > 0;
+/* ── Custom pink pin icon ───────────────────────────────────────── */
+const pinkIcon = L.divIcon({
+  className: '',
+  html: `<div style="
+    width:36px;height:44px;position:relative;
+    filter:drop-shadow(0 4px 12px rgba(176,96,112,0.55));
+  ">
+    <svg viewBox="0 0 36 44" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18 0C8.059 0 0 8.059 0 18c0 13.5 18 26 18 26S36 31.5 36 18C36 8.059 27.941 0 18 0z"
+        fill="#B06070"/>
+      <circle cx="18" cy="18" r="8" fill="white" opacity="0.9"/>
+      <circle cx="18" cy="18" r="4" fill="#B06070"/>
+    </svg>
+  </div>`,
+  iconSize: [36, 44],
+  iconAnchor: [18, 44],
+});
+
+/* ── Click-to-place marker ──────────────────────────────────────── */
+function MapClickHandler({ onMove }: { onMove: (lat: number, lng: number) => void }) {
+  useMapEvents({ click(e) { onMove(e.latlng.lat, e.latlng.lng); } });
+  return null;
+}
+
+/* ── Recenter button helper ─────────────────────────────────────── */
+function RecenterBtn({ center }: { center: [number, number] }) {
+  const map = useMap();
+  return (
+    <button
+      onClick={() => map.flyTo(center, 15, { duration: 1 })}
+      style={{
+        position: 'absolute', bottom: 180, left: 12, zIndex: 1000,
+        width: 40, height: 40, borderRadius: '50%',
+        background: 'white', border: '1.5px solid rgba(176,96,112,0.25)',
+        boxShadow: '0 2px 10px rgba(0,0,0,0.15)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}
+    >
+      <Navigation size={16} color="#B06070" />
+    </button>
+  );
+}
+
+/* ── Map Picker Sheet ───────────────────────────────────────────── */
+// صبيا مركز
+const SABYA_CENTER: [number, number] = [17.1508, 42.6275];
+
+function MapPickerSheet({ onConfirm, onBack }: { onConfirm: (addr: string) => void; onBack: () => void }) {
+  const [pin, setPin] = useState<[number, number] | null>(null);
+  const [notes, setNotes] = useState('');
 
   return (
     <motion.div
@@ -60,72 +106,106 @@ function AddressSheet({ onConfirm, onBack }: { onConfirm: (addr: string) => void
       animate={{ y: 0 }}
       exit={{ y: '100%' }}
       transition={{ type: 'spring', damping: 30, stiffness: 320 }}
-      className="absolute inset-0 overflow-y-auto scrollbar-none z-10"
+      className="absolute inset-0 z-10 flex flex-col"
       style={{ background: '#FDFBF7' }}
     >
-      <div className="px-5 pt-5 pb-8">
-        <div className="w-10 h-1 bg-[#D8CFC4] rounded-full mx-auto mb-5" />
-        <button onClick={onBack} className="flex items-center gap-1 text-[#B06070] text-[11px] font-semibold mb-4">
-          <ChevronLeft size={14} />
-          رجوع
+      {/* Top bar */}
+      <div className="flex items-center gap-3 px-4 pt-4 pb-3 shrink-0"
+        style={{ borderBottom: '1px solid rgba(196,181,159,0.2)' }}>
+        <button onClick={onBack}
+          className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+          style={{ background: 'rgba(176,96,112,0.08)' }}>
+          <ChevronLeft size={16} color="#B06070" />
         </button>
-        <p className="text-[18px] font-black text-[#111] mb-1">عنوان التوصيل</p>
-        <p className="text-[11px] text-[#AAA] font-light mb-6">صبيا أو ضمد — نوصّل خلال ٣٠-٤٥ دقيقة</p>
+        <div>
+          <p className="text-[14px] font-bold text-[#111] leading-tight">حدد موقعك على الخريطة</p>
+          <p className="text-[10px] text-[#AAA]">اضغط على الخريطة لتثبيت الدبوس</p>
+        </div>
+      </div>
 
-        {/* Delivery info strip */}
-        <div className="flex gap-2 mb-5">
-          {[{ icon: '🛵', v: 'مجاني', l: 'التوصيل' }, { icon: '⏱', v: '٣٠ د', l: 'متوسط' }, { icon: '📍', v: 'صبيا/ضمد', l: 'نطاق التوصيل' }].map((s, i) => (
-            <div key={i} className="flex-1 rounded-[14px] p-2.5 text-center bg-white border border-[rgba(196,181,159,0.2)]">
-              <p className="text-[14px] mb-0.5">{s.icon}</p>
-              <p className="text-[11px] font-black text-[#111]">{s.v}</p>
+      {/* Map — fills remaining space */}
+      <div className="flex-1 relative overflow-hidden">
+        <MapContainer
+          center={SABYA_CENTER}
+          zoom={14}
+          style={{ width: '100%', height: '100%' }}
+          zoomControl={false}
+          attributionControl={false}
+        >
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+          <MapClickHandler onMove={(lat, lng) => setPin([lat, lng])} />
+          {pin && <Marker position={pin} icon={pinkIcon} />}
+          <RecenterBtn center={SABYA_CENTER} />
+        </MapContainer>
+
+        {/* Hint overlay when no pin yet */}
+        {!pin && (
+          <motion.div
+            initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
+            className="absolute top-3 left-1/2 -translate-x-1/2 z-[500] px-4 py-2 rounded-full flex items-center gap-2"
+            style={{ background: 'rgba(13,2,5,0.82)', backdropFilter: 'blur(8px)' }}>
+            <MapPin size={12} color="#B06070" />
+            <span className="text-white text-[11px] font-medium">اضغط لتحديد موقعك</span>
+          </motion.div>
+        )}
+
+        {/* Pin confirmed badge */}
+        {pin && (
+          <motion.div
+            initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
+            className="absolute top-3 left-1/2 -translate-x-1/2 z-[500] px-4 py-2 rounded-full flex items-center gap-2"
+            style={{ background: '#B06070', boxShadow: '0 4px 16px rgba(176,96,112,0.45)' }}>
+            <Check size={12} color="white" strokeWidth={2.5} />
+            <span className="text-white text-[11px] font-semibold">تم تحديد الموقع — يمكنك تغييره</span>
+          </motion.div>
+        )}
+      </div>
+
+      {/* Bottom panel */}
+      <div className="shrink-0 px-4 pt-3 pb-6"
+        style={{ background: 'white', borderTop: '1px solid rgba(196,181,159,0.2)', boxShadow: '0 -4px 20px rgba(0,0,0,0.06)' }}>
+
+        {/* Delivery info pills */}
+        <div className="flex gap-2 mb-3">
+          {[
+            { icon: '🛵', v: 'مجاني', l: 'التوصيل' },
+            { icon: '⏱',  v: '٣٠ د', l: 'وقت الوصول' },
+            { icon: '📍', v: 'صبيا · ضمد', l: 'نطاق التوصيل' },
+          ].map((s, i) => (
+            <div key={i} className="flex-1 rounded-[12px] p-2 text-center"
+              style={{ background: 'rgba(176,96,112,0.06)', border: '1px solid rgba(176,96,112,0.12)' }}>
+              <p className="text-[12px] mb-0.5">{s.icon}</p>
+              <p className="text-[10px] font-bold text-[#111]">{s.v}</p>
               <p className="text-[8px] text-[#AAA]">{s.l}</p>
             </div>
           ))}
         </div>
 
-        {/* Fields */}
-        <div className="space-y-3 mb-6">
-          <div>
-            <label className="text-[10px] font-bold text-[#888] mb-1.5 block">الحي / المنطقة *</label>
-            <input value={district} onChange={e => setDistrict(e.target.value)}
-              placeholder="مثال: حي الروضة، صبيا"
-              className="w-full px-4 py-3.5 rounded-[14px] text-[13px] text-[#111] placeholder-[#CCC] outline-none border transition-colors"
-              style={{ background: 'white', border: '1.5px solid rgba(196,181,159,0.3)', direction: 'rtl' }}
-              onFocus={e => (e.target.style.borderColor = '#B06070')}
-              onBlur={e => (e.target.style.borderColor = 'rgba(196,181,159,0.3)')}
-            />
-          </div>
-          <div>
-            <label className="text-[10px] font-bold text-[#888] mb-1.5 block">رقم المبنى / الشقة</label>
-            <input value={building} onChange={e => setBuilding(e.target.value)}
-              placeholder="مثال: فيلا ٢٤ أو شقة ٣"
-              className="w-full px-4 py-3.5 rounded-[14px] text-[13px] text-[#111] placeholder-[#CCC] outline-none border transition-colors"
-              style={{ background: 'white', border: '1.5px solid rgba(196,181,159,0.3)', direction: 'rtl' }}
-              onFocus={e => (e.target.style.borderColor = '#B06070')}
-              onBlur={e => (e.target.style.borderColor = 'rgba(196,181,159,0.3)')}
-            />
-          </div>
-          <div>
-            <label className="text-[10px] font-bold text-[#888] mb-1.5 block">ملاحظات التوصيل</label>
-            <textarea value={notes} onChange={e => setNotes(e.target.value)}
-              placeholder="مثال: قرب المسجد، اتصل عند الوصول"
-              rows={2}
-              className="w-full px-4 py-3 rounded-[14px] text-[13px] text-[#111] placeholder-[#CCC] outline-none border transition-colors resize-none"
-              style={{ background: 'white', border: '1.5px solid rgba(196,181,159,0.3)', direction: 'rtl' }}
-              onFocus={e => (e.target.style.borderColor = '#B06070')}
-              onBlur={e => (e.target.style.borderColor = 'rgba(196,181,159,0.3)')}
-            />
-          </div>
-        </div>
+        {/* Notes field */}
+        <input
+          value={notes}
+          onChange={e => setNotes(e.target.value)}
+          placeholder="ملاحظة للمندوب (اختياري) — مثال: قرب المسجد"
+          className="w-full px-3 py-2.5 rounded-[12px] text-[12px] text-[#111] placeholder-[#CCC] outline-none border mb-3"
+          style={{ background: '#FDFBF7', border: '1.5px solid rgba(196,181,159,0.3)', direction: 'rtl' }}
+          onFocus={e => (e.target.style.borderColor = '#B06070')}
+          onBlur={e => (e.target.style.borderColor = 'rgba(196,181,159,0.3)')}
+        />
 
-        <motion.button whileTap={{ scale: 0.97 }}
-          onClick={() => ready && onConfirm(`${district}${building ? ' · ' + building : ''}${notes ? ' · ' + notes : ''}`)}
-          className="w-full py-4 rounded-[18px] font-bold text-[15px] text-white transition-opacity"
+        <motion.button
+          whileTap={{ scale: 0.97 }}
+          onClick={() => pin && onConfirm(`${pin[0].toFixed(5)},${pin[1].toFixed(5)}${notes ? ' · ' + notes : ''}`)}
+          className="w-full py-3.5 rounded-[16px] font-bold text-[14px] flex items-center justify-center gap-2"
           style={{
-            background: ready ? 'linear-gradient(135deg,#B06070,#7A3050)' : 'rgba(196,181,159,0.3)',
-            color: ready ? 'white' : '#AAA',
+            background: pin ? 'linear-gradient(135deg,#B06070,#7A3050)' : 'rgba(196,181,159,0.3)',
+            color: pin ? 'white' : '#AAA',
+            boxShadow: pin ? '0 6px 20px rgba(176,96,112,0.4)' : 'none',
           }}>
-          {ready ? 'تأكيد العنوان' : 'أدخل الحي أولاً'}
+          {pin ? (
+            <><Check size={16} strokeWidth={2.5} />تأكيد الموقع</>
+          ) : (
+            'حدد موقعك على الخريطة أولاً'
+          )}
         </motion.button>
       </div>
     </motion.div>
@@ -594,7 +674,7 @@ export function CheckoutModal({ item, brandName, brandType, logoImg, onClose, on
           <OrderTypeSheet key="type" brandType={brandType} onSelect={handleTypeSelect} />
         )}
         {phase === 'address' && (
-          <AddressSheet key="address" onConfirm={handleAddressConfirm} onBack={() => setPhase('type')} />
+          <MapPickerSheet key="address" onConfirm={handleAddressConfirm} onBack={() => setPhase('type')} />
         )}
         {phase === 'payment' && (
           <PaymentSheet key="payment" item={item} orderType={orderType} onPay={handlePay} />
