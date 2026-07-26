@@ -114,3 +114,6 @@ JSX5mH6cyHpa95HveKyeZkbkJxscMZfjjgzm5TeO6BJU+obJggs1hQTanmwKwdy7
 JB+Q8srqwMvO45fkmJsWq0rHmvGYyxKy3KaA7Qu1RilMoZg7Ryld9MDwmGg5UG0f
 tdEpcgwRBV4I6to4NpwE
 -----END PRIVATE KEY-----"""
+
+[nix]
+channel = "stable-25_05"

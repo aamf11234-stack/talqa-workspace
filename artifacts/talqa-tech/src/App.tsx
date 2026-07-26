@@ -1,17 +1,19 @@
 import { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import CustomCursor  from './components/CustomCursor';
-import Navbar        from './components/Navbar';
-import Hero          from './components/Hero';
-import BentoGrid     from './components/BentoGrid';
-import Terminal      from './components/Terminal';
-import Process       from './components/Process';
-import Calculator    from './components/Calculator';
-import AppleSection  from './components/AppleSection';
-import TrustBar      from './components/TrustBar';
-import Footer        from './components/Footer';
-import WhatsAppFloat from './components/WhatsAppFloat';
+import CustomCursor       from './components/CustomCursor';
+import Navbar             from './components/Navbar';
+import Hero               from './components/Hero';
+import Marquee            from './components/Marquee';
+import HorizontalServices from './components/HorizontalServices';
+import Terminal           from './components/Terminal';
+import SpotlightSection   from './components/SpotlightSection';
+import Process            from './components/Process';
+import Calculator         from './components/Calculator';
+import AppleSection       from './components/AppleSection';
+import TrustBar           from './components/TrustBar';
+import Footer             from './components/Footer';
+import WhatsAppFloat      from './components/WhatsAppFloat';
 
 const qc = new QueryClient();
 
@@ -30,7 +32,9 @@ export default function App() {
         <Navbar />
         <main>
           <Hero />
-          <BentoGrid />
+          <Marquee />
+          <HorizontalServices />
+          <SpotlightSection />
           <Terminal />
           <Process />
           <Calculator />

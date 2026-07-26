@@ -7,50 +7,45 @@
 ═══════════════════════════════════════════ */
 :root {
   --bg:        #060608;
-  --bg2:       #0B0B10;
-  --bg3:       #121218;
+  --bg2:       #0A0A0E;
+  --bg3:       #111116;
   --surface:   #0E0E14;
   --surface2:  #16161E;
   --border:    rgba(255,255,255,0.07);
-  --border2:   rgba(255,255,255,0.13);
-  --text:      #FFFFFF;
-  --text2:     rgba(255,255,255,0.5);
-  --text3:     rgba(255,255,255,0.22);
   --blue:      #4F8EFF;
   --blue2:     #3B78FF;
-  --blue-dim:  rgba(79,142,255,0.12);
-  --blue-glow: rgba(79,142,255,0.28);
   --radius:    16px;
 }
 
 @theme inline { --font-sans: 'Cairo', sans-serif; }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html { scroll-behavior: smooth; }
 
 body {
   font-family: 'Cairo', sans-serif;
   background: var(--bg);
-  color: var(--text);
+  color: #fff;
   direction: rtl;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
-::selection { background: rgba(79,142,255,0.25); color: #fff; }
-
+::selection { background: rgba(79,142,255,0.28); color: #fff; }
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #4F8EFF, #3B78FF); border-radius: 99px; }
+::-webkit-scrollbar-thumb { background: linear-gradient(#4F8EFF,#3B78FF); border-radius: 99px; }
 
 /* ── Gradient text ── */
 .text-blue {
-  background: linear-gradient(135deg, #6BA3FF 0%, #4F8EFF 45%, #3B78FF 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background: linear-gradient(135deg, #7ABAFF 0%, #4F8EFF 45%, #3B78FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* ── Fine grid ── */
+/* ── Fine grid overlay ── */
 .grid-bg {
   background-image:
     linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
@@ -58,74 +53,145 @@ body {
   background-size: 60px 60px;
 }
 
-/* ── Animated gradient border hack ── */
+/* ═══ Holographic shimmer button effect ═══ */
+@property --holo-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes holo-spin { to { --holo-angle: 360deg; } }
+
+.holo-shimmer {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: conic-gradient(from var(--holo-angle),
+    transparent 0deg, rgba(255,255,255,0.18) 60deg, transparent 120deg);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  animation: holo-spin 2.4s linear infinite;
+}
+.btn-blue:hover .holo-shimmer,
+.btn-ghost:hover .holo-shimmer { opacity: 1; }
+
+/* ═══ Animated gradient border ═══ */
 @property --rotation {
   syntax: '<angle>';
   initial-value: 0deg;
   inherits: false;
 }
-@keyframes spin-border {
-  to { --rotation: 360deg; }
-}
+@keyframes spin-border { to { --rotation: 360deg; } }
 
-/* ── Blue button ── */
+/* ── Blue CTA ── */
 .btn-blue {
-  background: linear-gradient(135deg, #5598FF, #3B78FF);
-  box-shadow: 0 1px 0 rgba(255,255,255,0.14) inset, 0 8px 32px rgba(79,142,255,0.38);
-  color: #fff; cursor: pointer;
-  transition: box-shadow 0.3s ease, transform 0.25s ease;
-  border: none; text-decoration: none;
-  display: inline-flex; align-items: center; gap: 8px;
+  background: linear-gradient(135deg, #5A98FF, #3B78FF);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.15) inset, 0 8px 36px rgba(79,142,255,0.4);
+  color: #fff;
+  cursor: pointer;
+  transition: box-shadow 0.3s, transform 0.25s;
+  border: none;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
 }
 .btn-blue:hover {
-  box-shadow: 0 1px 0 rgba(255,255,255,0.2) inset, 0 16px 48px rgba(79,142,255,0.55);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.2) inset, 0 18px 56px rgba(79,142,255,0.58);
   transform: translateY(-2px);
 }
 .btn-blue:active { transform: scale(0.97) !important; }
 
-/* ── Ghost button ── */
+/* ── Ghost ── */
 .btn-ghost {
-  color: rgba(255,255,255,0.65);
-  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.62);
+  border: 1px solid rgba(255,255,255,0.11);
   background: rgba(255,255,255,0.04);
   cursor: pointer;
-  transition: all 0.22s ease;
+  transition: all 0.22s;
   text-decoration: none;
-  display: inline-flex; align-items: center; gap: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
 }
 .btn-ghost:hover {
   background: rgba(255,255,255,0.09);
-  border-color: rgba(255,255,255,0.2);
+  border-color: rgba(255,255,255,0.22);
   color: #fff;
 }
 
-/* ── WhatsApp pulse ── */
+/* ── WhatsApp ── */
 @keyframes wap {
-  0%,100% { box-shadow: 0 0 0 0 rgba(37,211,102,0.55); }
-  60%      { box-shadow: 0 0 0 16px rgba(37,211,102,0); }
+  0%,100%{box-shadow:0 0 0 0 rgba(37,211,102,0.55)}
+  60%{box-shadow:0 0 0 18px rgba(37,211,102,0)}
 }
 .wa-pulse { animation: wap 2.8s ease-in-out infinite; }
 
-/* ── Scroll progress ── */
+/* ── Scroll bar ── */
 #scroll-bar {
   position: fixed; top: 0; right: 0; left: 0;
   height: 2px; z-index: 9999;
-  background: linear-gradient(to left, #4F8EFF, #6BA3FF);
+  background: linear-gradient(to left, #4F8EFF, #7ABAFF);
   transform-origin: right;
   transform: scaleX(0);
 }
 
-/* ── Tag chip ── */
+/* ── Chip ── */
 .chip {
   display: inline-flex; align-items: center;
-  padding: 5px 13px; border-radius: 9px;
+  padding: 5px 14px; border-radius: 9px;
   border: 1px solid rgba(255,255,255,0.08);
   background: rgba(255,255,255,0.04);
   font-size: 12px; font-weight: 600;
   color: rgba(255,255,255,0.38);
-  transition: all 0.2s ease;
+  transition: all 0.2s;
 }
-.chip:hover {
-  border-color: rgba(79,142,255,0.3);
-  color: rgba(255,255,255,0.65);
+.chip:hover { border-color: rgba(79,142,255,0.32); color: rgba(255,255,255,0.68); }
+
+/* ═══ Word reveal animation ═══ */
+.word-reveal-container { overflow: hidden; display: inline-block; }
+.word-reveal-inner {
+  display: inline-block;
+  transform: translateY(110%);
+  opacity: 0;
+  transition: transform 0.75s cubic-bezier(0.22,1,0.36,1), opacity 0.6s ease;
+}
+.word-reveal-inner.visible { transform: translateY(0); opacity: 1; }
+
+/* ═══ Marquee ═══ */
+@keyframes marquee-f { from{transform:translateX(0)} to{transform:translateX(-33.333%)} }
+@keyframes marquee-r { from{transform:translateX(-33.333%)} to{transform:translateX(0)} }
+
+/* ═══ Glow card border ═══ */
+.glow-border {
+  position: relative;
+  padding: 1px;
+  border-radius: 22px;
+}
+.glow-border::before {
+  content: '';
+  position: absolute; inset: 0; border-radius: 22px;
+  background: conic-gradient(from var(--rotation, 0deg),
+    transparent 0deg, rgba(79,142,255,0.5) 60deg, transparent 120deg);
+  animation: spin-border 4s linear infinite;
+  opacity: 0.65;
+  z-index: 0;
+}
+.glow-border-inner {
+  position: relative; z-index: 1;
+  border-radius: 21px;
+  background: var(--surface);
+  height: 100%;
+}
+
+/* ═══ Noise texture overlay ═══ */
+.noise::after {
+  content: '';
+  position: absolute; inset: 0; border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1;
 }
