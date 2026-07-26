@@ -1,208 +1,137 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Wallet, Bell, RefreshCw, Check } from 'lucide-react';
+import { motion } from 'framer-motion';
 
-const TIERS = [
-  { id: 'bronze', label: 'Bronze', color: '#CD7F32', min: 0,    pts: '٠–٩٩٩' },
-  { id: 'silver', label: 'Silver', color: '#9CA3AF', min: 1000, pts: '١٠٠٠–٢٤٩٩' },
-  { id: 'gold',   label: 'Gold',   color: '#F59E0B', min: 2500, pts: '٢٥٠٠–٤٩٩٩' },
-  { id: 'plat',   label: 'Platinum', color: '#818CF8', min: 5000, pts: '+٥٠٠٠' },
+const COLORS = [
+  { label: 'ذهبي', val: '#C8996C', bg: '#1A120A' },
+  { label: 'أزرق', val: '#4F8EFF', bg: '#0A0E1A' },
+  { label: 'أخضر', val: '#34D399', bg: '#091A0F' },
+  { label: 'وردي', val: '#F472B6', bg: '#1A0A12' },
+  { label: 'بنفسجي', val: '#A78BFA', bg: '#120A1A' },
 ];
 
-const EMOJIS = ['☕', '🍕', '💇', '🏋️', '🛒', '🎮', '👗', '💊', '🏪', '✈️'];
+const ICONS = ['☕', '🏥', '💇', '🛒', '🏋️', '🍕', '✂️', '💊'];
 
 export default function WalletCustomizer() {
-  const [name,    setName]    = useState('منشأتك');
-  const [emoji,   setEmoji]   = useState('☕');
-  const [tier,    setTier]    = useState('gold');
-  const [pts,     setPts]     = useState(2450);
-  const [notif,   setNotif]   = useState(false);
+  const [name,  setName]  = useState('مشروعك');
+  const [color, setColor] = useState(COLORS[0]);
+  const [icon,  setIcon]  = useState('☕');
+  const [pts,   setPts]   = useState(1800);
 
-  const t = TIERS.find(x => x.id === tier) || TIERS[2];
+  const wa = `https://wa.me/966551378531?text=أريد%20بطاقة%20Apple%20Wallet%20لمشروع%20${encodeURIComponent(name)}`;
 
   return (
-    <section style={{ padding: '120px 0', background: 'var(--bg)', position: 'relative' }}>
-      <div style={{ position: 'absolute', top: 0, inset: '0 0 auto', height: 1, background: 'rgba(255,255,255,0.07)' }} />
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 28px' }}>
-
-        <div style={{ textAlign: 'center', marginBottom: 64 }}>
-          <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-            style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#4F8EFF', marginBottom: 18 }}>جرّب الآن</motion.div>
-          <motion.h2 initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.65, ease: [0.22,1,0.36,1] }}
-            style={{ fontWeight: 900, fontSize: 'clamp(1.9rem,3.5vw,3rem)', letterSpacing: '-0.03em', color: '#fff', lineHeight: 1.1, marginBottom: 14 }}>
-            صمّم بطاقة Wallet مشروعك<br /><span className="text-blue">الآن — قبل أن نبدأ.</span>
-          </motion.h2>
-          <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.35)', maxWidth: 500, margin: '0 auto' }}>
-            كتابة اسم مشروعك تكفي — ستراها حية على الفور.
-          </p>
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'start' }} className="wallet-cust-grid">
+    <section style={{ padding: 'clamp(72px,10vw,120px) 0', background: 'var(--bg2)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 clamp(20px,4vw,48px)' }}>
+        <div className="wallet-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'clamp(40px,6vw,72px)', alignItems: 'start' }}>
 
           {/* Controls */}
-          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.65 }}
-            style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+            <div className="section-label">Apple Wallet</div>
+            <h2 style={{ fontWeight: 900, fontSize: 'clamp(1.9rem,3.2vw,2.8rem)', letterSpacing: '-0.03em', color: '#fff', lineHeight: 1.1, marginBottom: 14 }}>
+              صمّم بطاقتك<br /><span className="text-blue">الآن، هنا.</span>
+            </h2>
+            <p style={{ fontSize: 14, color: 'var(--text2)', lineHeight: 1.8, marginBottom: 32 }}>
+              عدّل الاسم واللون وشاهد بطاقتك تتغير مباشرة — ثم أرسلها لنا ونبنيها خلال أيام.
+            </p>
 
-            {/* Business name */}
-            <div>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>اسم المشروع</label>
-              <input value={name} onChange={e => setName(e.target.value || 'منشأتك')} maxLength={22}
-                style={{ width: '100%', padding: '14px 18px', borderRadius: 12, background: 'var(--surface)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: 16, fontWeight: 700, fontFamily: 'Cairo, sans-serif', outline: 'none', direction: 'rtl', transition: 'border-color 0.2s' }}
-                onFocus={e => (e.currentTarget.style.borderColor = 'rgba(79,142,255,0.5)')}
-                onBlur={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)')}
-                placeholder="مثال: Coffee House" />
-            </div>
-
-            {/* Emoji */}
-            <div>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>أيقونة المشروع</label>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                {EMOJIS.map(e => (
-                  <button key={e} onClick={() => setEmoji(e)}
-                    style={{ width: 44, height: 44, borderRadius: 11, fontSize: 20, cursor: 'pointer', border: `1.5px solid ${emoji === e ? 'rgba(79,142,255,0.5)' : 'rgba(255,255,255,0.08)'}`, background: emoji === e ? 'rgba(79,142,255,0.1)' : 'rgba(255,255,255,0.03)', transition: 'all 0.18s' }}>
-                    {e}
-                  </button>
-                ))}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              {/* Name */}
+              <div>
+                <label style={{ fontSize: 11, fontWeight: 700, color: 'var(--text3)', letterSpacing: '0.08em', display: 'block', marginBottom: 8 }}>اسم المشروع</label>
+                <input value={name} onChange={e => setName(e.target.value || 'مشروعك')}
+                  style={{ width: '100%', padding: '11px 14px', borderRadius: 9, border: '1px solid var(--border)', background: 'var(--surface)', color: '#fff', fontSize: 14, fontFamily: 'Cairo,sans-serif', fontWeight: 600, outline: 'none', direction: 'rtl', transition: 'border-color 0.2s' }}
+                  onFocus={e => (e.target as HTMLInputElement).style.borderColor = 'rgba(79,142,255,0.4)'}
+                  onBlur={e => (e.target as HTMLInputElement).style.borderColor = 'var(--border)'}
+                  placeholder="اكتب اسم مشروعك" maxLength={24} />
               </div>
-            </div>
 
-            {/* Points */}
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
-                <label style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>رصيد النقاط</label>
-                <span style={{ fontSize: 13, fontWeight: 800, color: '#4F8EFF' }}>{pts.toLocaleString('ar-SA')} نقطة</span>
+              {/* Color */}
+              <div>
+                <label style={{ fontSize: 11, fontWeight: 700, color: 'var(--text3)', letterSpacing: '0.08em', display: 'block', marginBottom: 8 }}>لون البطاقة</label>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  {COLORS.map(c => (
+                    <button key={c.val} onClick={() => setColor(c)}
+                      style={{ width: 32, height: 32, borderRadius: '50%', background: c.val, border: color.val === c.val ? `2px solid #fff` : '2px solid transparent', cursor: 'pointer', transition: 'all 0.2s', transform: color.val === c.val ? 'scale(1.15)' : 'scale(1)' }} />
+                  ))}
+                </div>
               </div>
-              <input type="range" min={0} max={6000} step={50} value={pts} onChange={e => setPts(+e.target.value)}
-                style={{ width: '100%', accentColor: '#4F8EFF', height: 4, cursor: 'pointer' }} />
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: 10, color: 'rgba(255,255,255,0.2)' }}>
-                <span>٠</span><span>٣٠٠٠</span><span>٦٠٠٠</span>
-              </div>
-            </div>
 
-            {/* Tier */}
-            <div>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>مستوى العضوية</label>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 7 }}>
-                {TIERS.map(t2 => (
-                  <button key={t2.id} onClick={() => setTier(t2.id)}
-                    style={{ padding: '9px 4px', borderRadius: 10, fontSize: 11, fontWeight: 700, cursor: 'pointer', border: `1.5px solid ${tier === t2.id ? t2.color + '55' : 'rgba(255,255,255,0.08)'}`, background: tier === t2.id ? `${t2.color}12` : 'rgba(255,255,255,0.03)', color: tier === t2.id ? '#fff' : 'rgba(255,255,255,0.35)', transition: 'all 0.2s' }}>
-                    {t2.label}
-                  </button>
-                ))}
+              {/* Icon */}
+              <div>
+                <label style={{ fontSize: 11, fontWeight: 700, color: 'var(--text3)', letterSpacing: '0.08em', display: 'block', marginBottom: 8 }}>أيقونة القطاع</label>
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                  {ICONS.map(ic => (
+                    <button key={ic} onClick={() => setIcon(ic)}
+                      style={{ width: 38, height: 38, borderRadius: 9, border: `1px solid ${icon === ic ? color.val + '50' : 'var(--border)'}`, background: icon === ic ? color.val + '14' : 'transparent', cursor: 'pointer', fontSize: 18, transition: 'all 0.2s' }}>
+                      {ic}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            {/* Notification toggle */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px', background: 'var(--surface)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <Bell size={15} color="rgba(255,255,255,0.4)" />
-                <span style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.6)' }}>إظهار Push Notification</span>
+              {/* Points slider */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                  <label style={{ fontSize: 11, fontWeight: 700, color: 'var(--text3)', letterSpacing: '0.08em' }}>رصيد النقاط التجريبي</label>
+                  <span style={{ fontSize: 11, fontWeight: 800, color: color.val }}>{pts.toLocaleString('ar-SA')} نقطة</span>
+                </div>
+                <input type="range" min="0" max="5000" step="50" value={pts} onChange={e => setPts(+e.target.value)}
+                  style={{ width: '100%', accentColor: color.val, cursor: 'pointer' }} />
               </div>
-              <button onClick={() => setNotif(v => !v)}
-                style={{ width: 42, height: 24, borderRadius: 99, background: notif ? '#4F8EFF' : 'rgba(255,255,255,0.12)', border: 'none', cursor: 'pointer', position: 'relative', transition: 'background 0.3s' }}>
-                <div style={{ position: 'absolute', top: 3, width: 18, height: 18, borderRadius: '50%', background: '#fff', transition: 'left 0.3s', left: notif ? 21 : 3 }} />
-              </button>
-            </div>
 
-            <a href="https://wa.me/966551378531?text=أريد%20بطاقة%20Apple%20Wallet%20لمشروعي" target="_blank" rel="noopener noreferrer"
-              className="btn-blue" style={{ padding: '15px', borderRadius: 13, fontSize: 15, fontWeight: 700, justifyContent: 'center', textDecoration: 'none' }}>
-              ابنِ هذه البطاقة لمشروعي ←
-            </a>
+              <a href={wa} target="_blank" rel="noopener noreferrer" className="btn-blue" style={{ marginTop: 4, justifyContent: 'center', fontSize: 14 }}>
+                <span className="holo-shimmer" />
+                ابنِ هذا لـ «{name}» ←
+              </a>
+            </div>
           </motion.div>
 
-          {/* Live Preview */}
-          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.65, delay: 0.1 }}
-            style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {/* Live card preview */}
+          <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.65, delay: 0.1 }}
+            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: 16 }}>
+            <motion.div
+              key={color.val}
+              initial={{ scale: 0.97, opacity: 0.7 }} animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.35 }}
+              style={{ width: '100%', maxWidth: 340, borderRadius: 22, overflow: 'hidden', border: `1px solid ${color.val}25`, boxShadow: `0 24px 60px rgba(0,0,0,0.5), 0 0 40px ${color.val}10`, background: `linear-gradient(145deg, ${color.bg}, #050505)` }}>
 
-            {/* Card */}
-            <div style={{ borderRadius: 26, background: 'linear-gradient(145deg, #111120, #0d0d1a)', border: `1px solid ${t.color}25`, padding: '28px 24px', boxShadow: `0 24px 60px rgba(0,0,0,0.5), 0 0 60px ${t.color}10`, position: 'relative', overflow: 'hidden', transition: 'border-color 0.5s, box-shadow 0.5s' }}>
-              {/* Glow */}
-              <div style={{ position: 'absolute', top: '-30%', right: '-20%', width: 200, height: 200, borderRadius: '50%', background: `radial-gradient(circle, ${t.color}20, transparent 60%)`, pointerEvents: 'none', transition: 'background 0.5s' }} />
-              {/* Top bar */}
-              <div style={{ position: 'absolute', top: 0, inset: '0 0 auto', height: 3, background: `linear-gradient(to right, ${t.color}, transparent)`, transition: 'background 0.5s', borderRadius: '26px 26px 0 0' }} />
-
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24, position: 'relative', zIndex: 1 }}>
-                <div>
-                  <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)', marginBottom: 7 }}>MEMBERSHIP CARD</div>
-                  <motion.div key={name} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}
-                    style={{ fontSize: 22, fontWeight: 900, color: '#fff', letterSpacing: '-0.02em' }}>
-                    {name}
-                  </motion.div>
-                </div>
-                <motion.div key={emoji} initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                  style={{ width: 44, height: 44, borderRadius: 12, background: `${t.color}15`, border: `1px solid ${t.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>
-                  {emoji}
-                </motion.div>
-              </div>
-
-              <motion.div key={tier} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 12px', borderRadius: 8, background: `${t.color}14`, border: `1px solid ${t.color}30`, marginBottom: 22 }}>
-                <div style={{ width: 6, height: 6, borderRadius: '50%', background: t.color, boxShadow: `0 0 8px ${t.color}`, animation: 'ph-pulse 2s infinite' }} />
-                <span style={{ fontSize: 11, fontWeight: 700, color: t.color }}>{t.label} Member</span>
-              </motion.div>
-
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', position: 'relative', zIndex: 1 }}>
-                <div>
-                  <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.22)', marginBottom: 4 }}>رصيد النقاط</div>
-                  <motion.div key={pts} initial={{ scale: 0.85 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 280, damping: 22 }}
-                    style={{ fontSize: 36, fontWeight: 900, color: '#fff', letterSpacing: '-0.04em', lineHeight: 1 }}>
-                    {pts.toLocaleString('ar-SA')}
-                  </motion.div>
-                  <div style={{ fontSize: 10, color: t.color, marginTop: 4, fontWeight: 600 }}>نقطة متاحة</div>
-                </div>
-                {/* QR */}
-                <div style={{ width: 52, height: 52, background: '#fff', borderRadius: 10, display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 1.5, padding: 4 }}>
-                  {[1,1,1,0,1,0,1,0,1,1,0,1,0,1,1,1].map((v,i) => <div key={i} style={{ background: v ? '#111' : '#fff', borderRadius: 1 }} />)}
-                </div>
-              </div>
-
-              <div style={{ marginTop: 20, height: 4, borderRadius: 99, background: 'rgba(255,255,255,0.06)', overflow: 'hidden' }}>
-                <motion.div key={pts} initial={{ width: 0 }} animate={{ width: `${Math.min((pts / 6000) * 100, 100)}%` }} transition={{ duration: 0.8, ease: [0.22,1,0.36,1] }}
-                  style={{ height: '100%', borderRadius: 99, background: `linear-gradient(to right, ${t.color}, ${t.color}88)` }} />
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: 9, color: 'rgba(255,255,255,0.2)' }}>
-                <span>{t.pts}</span>
-                <span>Wallet Ready ✓</span>
-              </div>
-            </div>
-
-            {/* Notification preview */}
-            <AnimatePresence>
-              {notif && (
-                <motion.div initial={{ opacity: 0, y: -14, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                  style={{ background: 'rgba(20,20,30,0.95)', backdropFilter: 'blur(24px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 16, padding: '16px 16px', display: 'flex', gap: 12, alignItems: 'center', boxShadow: '0 12px 40px rgba(0,0,0,0.5)' }}>
-                  <div style={{ width: 42, height: 42, borderRadius: 10, background: `${t.color}15`, border: `1px solid ${t.color}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>{emoji}</div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 13, fontWeight: 800, color: '#fff', marginBottom: 3 }}>{name}</div>
-                    <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)' }}>🎉 عرض خاص لك! خصم ٢٠٪ اليوم فقط</div>
+              {/* Card top */}
+              <div style={{ padding: '24px 24px 18px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
+                  <div>
+                    <div style={{ fontSize: 10, fontWeight: 700, color: `${color.val}80`, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 5 }}>بطاقة الولاء</div>
+                    <div style={{ fontSize: 18, fontWeight: 900, color: '#fff', letterSpacing: '-0.01em' }}>{name}</div>
                   </div>
-                  <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.2)', flexShrink: 0 }}>الآن</div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Apple Wallet button mockup */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '14px 20px', background: '#000', borderRadius: 14, border: '1px solid rgba(255,255,255,0.12)', cursor: 'pointer' }}>
-              <Wallet size={18} color="#fff" />
-              <span style={{ fontSize: 14, fontWeight: 700, color: '#fff', flex: 1 }}>إضافة إلى Apple Wallet</span>
-              <Check size={14} color="#34D399" />
-            </div>
-
-            <div style={{ display: 'flex', gap: 8 }}>
-              {[{ icon: RefreshCw, label: 'تحديث آني', color: '#4F8EFF' }, { icon: Bell, label: 'Push Notification', color: '#A78BFA' }, { icon: Wallet, label: 'Apple Watch', color: '#34D399' }].map((f, i) => (
-                <div key={i} style={{ flex: 1, padding: '10px 8px', borderRadius: 10, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', textAlign: 'center' }}>
-                  <f.icon size={14} color={f.color} style={{ margin: '0 auto 5px' }} />
-                  <div style={{ fontSize: 9, fontWeight: 600, color: 'rgba(255,255,255,0.3)' }}>{f.label}</div>
+                  <div style={{ width: 44, height: 44, borderRadius: 12, background: `${color.val}15`, border: `1px solid ${color.val}25`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>{icon}</div>
                 </div>
-              ))}
-            </div>
+
+                <div style={{ marginBottom: 6 }}>
+                  <div style={{ fontSize: 32, fontWeight: 900, color: color.val, letterSpacing: '-0.04em', lineHeight: 1 }}>{pts.toLocaleString('ar-SA')}</div>
+                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', marginTop: 3 }}>نقطة متاحة</div>
+                </div>
+              </div>
+
+              {/* Progress */}
+              <div style={{ padding: '0 24px 18px' }}>
+                <div style={{ height: 4, borderRadius: 99, background: 'rgba(255,255,255,0.08)', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${Math.min(pts / 50, 100)}%`, background: `linear-gradient(to left, ${color.val}, ${color.val}88)`, borderRadius: 99, transition: 'width 0.4s ease' }} />
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 6, fontSize: 10, color: 'rgba(255,255,255,0.25)', fontWeight: 600 }}>
+                  <span>Gold Member ✦</span>
+                  <span>{Math.min(Math.round(pts / 50), 100)}٪</span>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div style={{ padding: '14px 24px', borderTop: `1px solid ${color.val}12`, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ fontSize: 11, color: `${color.val}80`, fontWeight: 700 }}>Apple Wallet ▼</div>
+                <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.2)' }}>يُحدَّث تلقائياً</div>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>
-      <style>{`
-        @media(max-width:900px){.wallet-cust-grid{grid-template-columns:1fr!important}}
-        @keyframes ph-pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-      `}</style>
+      <style>{`@media(max-width:768px){.wallet-grid{grid-template-columns:1fr!important}}`}</style>
     </section>
   );
 }

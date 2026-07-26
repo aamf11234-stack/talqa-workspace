@@ -1,32 +1,29 @@
 import { motion } from 'framer-motion';
-import { ShieldCheck, Clock3, HeartHandshake, Star } from 'lucide-react';
+import { ShieldCheck, Clock, HeartHandshake, Award } from 'lucide-react';
 
-const items = [
-  { Icon: ShieldCheck,    title: 'جودة مضمونة',        desc: 'كل مشروع يخضع لاختبار شامل قبل التسليم.' },
-  { Icon: Clock3,         title: 'الالتزام بالمواعيد', desc: 'نسلّم في الموعد ونُبلّغك بكل تحديث أسبوعي.' },
-  { Icon: HeartHandshake, title: 'شراكة طويلة الأمد',  desc: 'نحن شريكك التقني قبل وبعد الإطلاق.' },
-  { Icon: Star,           title: 'خبرة موثّقة',        desc: 'مشاريع في المطاعم، العيادات، الصالونات، والتجزئة.' },
+const ITEMS = [
+  { icon: ShieldCheck,    label: 'كود مصدري كامل', desc: 'تملك كل سطر في مشروعك.' },
+  { icon: Clock,          label: 'تسليم في الموعد', desc: 'نلتزم بالجدول الزمني المتفق عليه.' },
+  { icon: HeartHandshake, label: 'دعم بعد التسليم', desc: '٣ أشهر دعم مجاني مع كل مشروع.' },
+  { icon: Award,          label: 'جودة عالمية', desc: 'معايير تقنية تنافس أكبر الشركات.' },
 ];
 
 export default function TrustBar() {
   return (
-    <section style={{ padding: '80px 0', background: 'var(--bg)', position: 'relative' }}>
-      <div style={{ position: 'absolute', top: 0, inset: '0 0 auto', height: 1, background: 'rgba(255,255,255,0.07)' }} />
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 28px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 36 }}>
-          {items.map((item, i) => (
-            <motion.div key={i}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08, duration: 0.55, ease: [0.22,1,0.36,1] }}
-              style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              <div style={{ width: 44, height: 44, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(79,142,255,0.08)', color: '#4F8EFF', border: '1px solid rgba(79,142,255,0.13)' }}>
-                <item.Icon size={20} strokeWidth={1.6} />
-              </div>
+    <section style={{ padding: 'clamp(56px,8vw,96px) 0', background: 'var(--bg2)', borderTop: '1px solid var(--border)' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 clamp(20px,4vw,48px)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%,220px), 1fr))', gap: 1, border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden' }}>
+          {ITEMS.map(({ icon: Icon, label, desc }, i) => (
+            <motion.div key={label}
+              initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }} transition={{ delay: i * 0.07, duration: 0.45 }}
+              style={{ padding: 'clamp(22px,3vw,30px)', borderRight: '1px solid var(--border)', background: 'var(--bg2)', display: 'flex', flexDirection: 'column', gap: 10, transition: 'background 0.2s' }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.025)'}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'var(--bg2)'}>
+              <Icon size={20} color="var(--blue)" />
               <div>
-                <div style={{ fontSize: 14, fontWeight: 800, color: '#fff', marginBottom: 6 }}>{item.title}</div>
-                <div style={{ fontSize: 13, lineHeight: 1.8, color: 'rgba(255,255,255,0.36)' }}>{item.desc}</div>
+                <div style={{ fontSize: 14, fontWeight: 800, color: '#fff', marginBottom: 4 }}>{label}</div>
+                <div style={{ fontSize: 12, color: 'var(--text2)', lineHeight: 1.6 }}>{desc}</div>
               </div>
             </motion.div>
           ))}

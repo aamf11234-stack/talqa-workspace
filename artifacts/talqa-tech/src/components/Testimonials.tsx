@@ -1,72 +1,52 @@
-import { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Star } from 'lucide-react';
 
 const REVIEWS = [
-  { name: 'أحمد المالكي', role: 'صاحب سلسلة مقاهي، جازان', stars: 5, text: 'تلقا تك غيّرت طريقة تعاملنا مع عملائنا. بطاقة Apple Wallet لقيت قبولاً خرافياً — العملاء يشاركونها بأنفسهم!', avatar: 'أ' },
-  { name: 'سارة القحطاني', role: 'مديرة صالون تجميل، صبيا', stars: 5, text: 'التطبيق جاء أفضل من توقعاتي. التصميم احترافي، التسليم في الوقت المحدد، والدعم بعد الإطلاق ممتاز.', avatar: 'س' },
-  { name: 'محمد الحارثي', role: 'مدير مطعم، ضمد', stars: 5, text: 'ربحنا من نظام الولاء أكثر مما دفعناه في أول شهرين. الاستثمار كان يستحق بالكامل.', avatar: 'م' },
-  { name: 'نورة العسيري', role: 'صاحبة متجر إلكتروني', stars: 5, text: 'الفريق يفهم السوق المحلي — كل تفصيل في التطبيق يعكس ذوق العميل السعودي. ممتازون.', avatar: 'ن' },
-  { name: 'فهد الزهراني', role: 'مدير عيادة طبية، جازان', stars: 5, text: 'لوحة التحكم سهّلت إدارة المواعيد بشكل لا يُصدق. أنصح كل عيادة بالتواصل مع تلقا تك.', avatar: 'ف' },
-  { name: 'خالد البارقي', role: 'صاحب مركز لياقة، صبيا', stars: 5, text: 'الدعم الفني متواجد ٢٤/٧ فعلاً — رسائلي تجد رداً خلال دقائق. ثقة حقيقية لا كلام فارغ.', avatar: 'خ' },
+  { name: 'أحمد القحطاني', role: 'صاحب Brown Dose', text: 'من أول يوم والتطبيق شغّال — عملاؤنا يضيفون البطاقة بأنفسهم ونشوف زيادة في الزيارات المتكررة.', stars: 5 },
+  { name: 'د. سارة الزهراني', role: 'عيادة صحة', text: 'وفّر علينا ساعات يومياً في إدارة المواعيد. النظام سهل جداً والدعم متوفر دائماً.', stars: 5 },
+  { name: 'خالد العمري', role: 'مدير تسويق', text: 'فريق تلقا تك يفهم الفكرة من أول جلسة ويترجمها بشكل أفضل مما تخيّلته.', stars: 5 },
 ];
-
-function ReviewCard({ r, i }: { r: typeof REVIEWS[0]; i: number }) {
-  return (
-    <div style={{ width: 300, flexShrink: 0, padding: '24px 22px', borderRadius: 18, background: 'var(--surface)', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', flexDirection: 'column', gap: 14 }}>
-      {/* Stars */}
-      <div style={{ display: 'flex', gap: 3 }}>
-        {[...Array(r.stars)].map((_, j) => <Star key={j} size={13} fill="#F59E0B" color="#F59E0B" />)}
-      </div>
-      {/* Text */}
-      <p style={{ fontSize: 13.5, lineHeight: 1.85, color: 'rgba(255,255,255,0.55)', fontWeight: 500, flex: 1 }}>"{r.text}"</p>
-      {/* Author */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-        <div style={{ width: 36, height: 36, borderRadius: '50%', background: `hsl(${i * 60 + 220},60%,40%)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 900, color: '#fff', flexShrink: 0 }}>{r.avatar}</div>
-        <div>
-          <div style={{ fontSize: 13, fontWeight: 800, color: '#fff' }}>{r.name}</div>
-          <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', fontWeight: 500 }}>{r.role}</div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function MarqueeRow({ reversed = false }) {
-  const reviews = reversed ? [...REVIEWS].reverse() : REVIEWS;
-  return (
-    <div style={{ overflow: 'hidden', maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)' }}>
-      <div style={{ display: 'flex', gap: 14, animation: `tm-${reversed ? 'r' : 'f'} ${reversed ? 42 : 36}s linear infinite`, width: 'max-content', alignItems: 'stretch' }}>
-        {[...reviews, ...reviews].map((r, i) => <ReviewCard key={i} r={r} i={i % REVIEWS.length} />)}
-      </div>
-    </div>
-  );
-}
 
 export default function Testimonials() {
   return (
-    <section style={{ padding: '100px 0', background: 'var(--bg2)', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', top: 0, inset: '0 0 auto', height: 1, background: 'rgba(255,255,255,0.07)' }} />
-      <div style={{ position: 'absolute', bottom: 0, inset: 'auto 0 0', height: 1, background: 'rgba(255,255,255,0.07)' }} />
+    <section style={{ padding: 'clamp(72px,10vw,120px) 0', background: 'var(--bg2)', borderTop: '1px solid var(--border)' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 clamp(20px,4vw,48px)' }}>
+        <div style={{ textAlign: 'center', marginBottom: 48 }}>
+          <div className="section-label" style={{ justifyContent: 'center' }}>آراء العملاء</div>
+          <h2 style={{ fontWeight: 900, fontSize: 'clamp(1.9rem,3.5vw,3rem)', letterSpacing: '-0.03em', color: '#fff', lineHeight: 1.1 }}>
+            ماذا يقول<br /><span className="text-blue">عملاؤنا.</span>
+          </h2>
+        </div>
 
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 28px', marginBottom: 52 }}>
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-          style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#F59E0B', marginBottom: 16 }}>آراء عملائنا</motion.div>
-        <motion.h2 initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.65 }}
-          style={{ fontWeight: 900, fontSize: 'clamp(1.8rem,3vw,2.8rem)', letterSpacing: '-0.03em', color: '#fff', lineHeight: 1.1 }}>
-          عملاء سعداء.<br /><span style={{ background: 'linear-gradient(135deg,#FCD34D,#F59E0B)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>نتائج حقيقية.</span>
-        </motion.h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%,300px), 1fr))', gap: 1, border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden' }}>
+          {REVIEWS.map(({ name, role, text, stars }, i) => (
+            <motion.div key={name}
+              initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.5 }}
+              style={{ padding: 'clamp(24px,3vw,32px)', borderRight: '1px solid var(--border)', background: 'var(--bg2)', display: 'flex', flexDirection: 'column', gap: 16, transition: 'background 0.2s' }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.025)'}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'var(--bg2)'}>
+
+              <div style={{ display: 'flex', gap: 3 }}>
+                {Array.from({ length: stars }).map((_, i) => (
+                  <span key={i} style={{ color: '#F59E0B', fontSize: 13 }}>★</span>
+                ))}
+              </div>
+
+              <p style={{ fontSize: 14, color: 'var(--text2)', lineHeight: 1.8, flex: 1 }}>"{text}"</p>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
+                <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--blue-dim)', border: '1px solid rgba(79,142,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 900, color: 'var(--blue)', flexShrink: 0 }}>
+                  {name[0]}
+                </div>
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 800, color: '#fff' }}>{name}</div>
+                  <div style={{ fontSize: 11, color: 'var(--text3)' }}>{role}</div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-        <MarqueeRow />
-        <MarqueeRow reversed />
-      </div>
-
-      <style>{`
-        @keyframes tm-f { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-        @keyframes tm-r { from{transform:translateX(-50%)} to{transform:translateX(0)} }
-      `}</style>
     </section>
   );
 }

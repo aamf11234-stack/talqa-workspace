@@ -6,18 +6,14 @@ import Navbar             from './components/Navbar';
 import Hero               from './components/Hero';
 import Marquee            from './components/Marquee';
 import HorizontalServices from './components/HorizontalServices';
-import PhoneShowcase      from './components/PhoneShowcase';
-import WalletCustomizer   from './components/WalletCustomizer';
 import LiveDemo           from './components/LiveDemo';
 import ClinicSection      from './components/ClinicSection';
-import SpotlightSection   from './components/SpotlightSection';
-import Terminal           from './components/Terminal';
-import TechStack          from './components/TechStack';
+import PhoneShowcase      from './components/PhoneShowcase';
+import WalletCustomizer   from './components/WalletCustomizer';
 import Process            from './components/Process';
 import Calculator         from './components/Calculator';
 import ProjectsGallery    from './components/ProjectsGallery';
 import Testimonials       from './components/Testimonials';
-import AppleSection       from './components/AppleSection';
 import FAQ                from './components/FAQ';
 import TrustBar           from './components/TrustBar';
 import Footer             from './components/Footer';
@@ -29,14 +25,24 @@ export default function App() {
   useEffect(() => {
     document.documentElement.dir  = 'rtl';
     document.documentElement.lang = 'ar';
-    document.body.style.background = '#060608';
-    document.title = 'تلقا تك | نحوّل أفكارك التجارية إلى حلول برمجية تدر الأرباح';
+    document.body.style.background = '#080808';
+    document.title = 'تلقا تك | نحوّل أفكارك التجارية إلى حلول رقمية تدر الأرباح';
+
+    // Scroll progress bar
+    const bar = document.getElementById('scroll-bar');
+    if (!bar) return;
+    const onScroll = () => {
+      const pct = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+      bar.style.transform = `scaleX(${pct})`;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   return (
     <QueryClientProvider client={qc}>
       <CustomCursor />
-      <div style={{ minHeight: '100vh', overflowX: 'hidden', background: '#060608' }}>
+      <div style={{ minHeight: '100vh', overflowX: 'hidden', background: '#080808' }}>
         <Navbar />
         <main>
           <Hero />
@@ -46,14 +52,10 @@ export default function App() {
           <ClinicSection />
           <PhoneShowcase />
           <WalletCustomizer />
-          <SpotlightSection />
-          <Terminal />
-          <TechStack />
           <Process />
           <Calculator />
           <ProjectsGallery />
           <Testimonials />
-          <AppleSection />
           <FAQ />
           <TrustBar />
         </main>
