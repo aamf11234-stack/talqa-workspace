@@ -1,123 +1,90 @@
 import { motion } from 'framer-motion';
 
 const steps = [
-  {
-    num: '01',
-    title: 'استشارة مجانية',
-    desc: 'نتفاهم على فكرتك، متطلباتك، والجدول الزمني. لا التزام، لا دفع — فقط محادثة صريحة.',
-  },
-  {
-    num: '02',
-    title: 'عرض سعر واضح',
-    desc: 'خلال ٢٤ ساعة تصلك ميزانية مفصّلة وخطة تسليم — لا أسعار مفاجئة بعد البدء.',
-  },
-  {
-    num: '03',
-    title: 'بناء وتسليم',
-    desc: 'نبني المشروع مع تحديثات أسبوعية منتظمة، ونسلّم مع تدريب كامل على كيفية الاستخدام.',
-  },
-  {
-    num: '04',
-    title: 'دعم ما بعد الإطلاق',
-    desc: 'أنت لست وحدك بعد التسليم — نقف معك لأي تعديل أو دعم تقني تحتاجه لاحقاً.',
-  },
+  { n: '01', title: 'استشارة مجانية',      desc: 'نجلس معك، نفهم فكرتك ومتطلباتك والجدول الزمني. لا التزام، لا دفع.' },
+  { n: '02', title: 'عرض سعر مفصّل',       desc: 'خلال ٢٤ ساعة تصلك ميزانية واضحة وخطة تسليم. لا أسعار مفاجئة.' },
+  { n: '03', title: 'بناء وتحديثات',        desc: 'نبني مع تحديثات أسبوعية منتظمة حتى تكون دائماً على دراية بكل خطوة.' },
+  { n: '04', title: 'تسليم ودعم مستمر',    desc: 'تسليم مع تدريب كامل، ودعم تقني ما بعد الإطلاق بلا انقطاع.' },
 ];
 
 export default function Process() {
   return (
-    <section
-      className="py-32 relative"
-      style={{ background: '#1A1A18' }}
-    >
-      <div className="absolute top-0 inset-x-0 h-px" style={{ background: 'rgba(255,255,255,0.06)' }} />
+    <section id="process" style={{
+      padding: '120px 0', position: 'relative',
+      background: 'var(--bg-2)',
+    }}>
+      <div style={{ position: 'absolute', top: 0, right: 0, left: 0, height: 1, background: 'rgba(255,255,255,0.07)' }} />
+      <div style={{ position: 'absolute', bottom: 0, right: 0, left: 0, height: 1, background: 'rgba(255,255,255,0.07)' }} />
 
-      {/* Subtle warm glow */}
-      <div
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full opacity-15"
-        style={{ background: 'radial-gradient(ellipse, #C5A880 0%, transparent 70%)', filter: 'blur(60px)' }}
-      />
-
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
 
         {/* Header */}
-        <div className="text-center max-w-xl mx-auto mb-20">
-          <motion.span
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="inline-block text-[11px] font-bold tracking-[0.15em] uppercase mb-5"
-            style={{ color: '#C5A880' }}
-          >
-            طريقة عملنا
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-            className="font-black leading-tight text-white"
-            style={{ fontSize: 'clamp(1.9rem, 3.5vw, 2.8rem)' }}
-          >
-            من الفكرة إلى الإطلاق
-            <br />
-            <span style={{
-              background: 'linear-gradient(135deg, #C5A880, #A8895E)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              في أربع خطوات
-            </span>
-          </motion.h2>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 20, marginBottom: 64 }}>
+          <div>
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: '#D4A843', marginBottom: 16 }}
+            >طريقة عملنا</motion.div>
+            <motion.h2
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              style={{ fontWeight: 900, fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)', letterSpacing: '-0.03em', color: '#fff', lineHeight: 1.1 }}
+            >
+              من الفكرة إلى الإطلاق<br />
+              <span className="text-gold">في أربع خطوات.</span>
+            </motion.h2>
+          </div>
         </div>
 
-        {/* Steps grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {steps.map((step, i) => (
+        {/* Steps */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 2 }}>
+          {steps.map((s, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 28 }}
+              initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="relative p-7 rounded-3xl border"
+              viewport={{ once: true, margin: '-30px' }}
+              transition={{ duration: 0.55, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
               style={{
-                background: 'rgba(255,255,255,0.03)',
-                borderColor: 'rgba(255,255,255,0.08)',
+                padding: '36px 28px',
+                borderRight: i > 0 ? '1px solid rgba(255,255,255,0.07)' : 'none',
+                position: 'relative',
               }}
             >
-              {/* Connector line (desktop) */}
-              {i < 3 && (
-                <div
-                  className="hidden lg:block absolute top-11 -left-3 w-6 h-px"
-                  style={{ background: 'rgba(197,168,128,0.25)' }}
-                />
+              {/* Connector dot */}
+              {i > 0 && (
+                <div style={{
+                  position: 'absolute', top: 44, right: -5, width: 9, height: 9,
+                  borderRadius: '50%', background: 'rgba(212,168,67,0.3)',
+                  border: '2px solid rgba(212,168,67,0.5)',
+                }} />
               )}
 
-              {/* Step number */}
-              <div
-                className="inline-flex items-center justify-center w-11 h-11 rounded-2xl font-black text-sm mb-7"
-                style={{
-                  background: 'rgba(197,168,128,0.12)',
-                  color: '#C5A880',
-                  border: '1px solid rgba(197,168,128,0.2)',
-                }}
-              >
-                {step.num}
-              </div>
+              <div style={{
+                fontSize: 11, fontWeight: 800, letterSpacing: '0.1em',
+                color: 'rgba(212,168,67,0.5)', marginBottom: 20,
+                fontVariantNumeric: 'tabular-nums',
+              }}>STEP {s.n}</div>
 
-              <h3
-                className="font-black text-[1.1rem] text-white mb-3"
-              >
-                {step.title}
-              </h3>
+              <div style={{
+                fontSize: 32, fontWeight: 900, color: 'rgba(255,255,255,0.06)',
+                lineHeight: 1, marginBottom: -8, letterSpacing: '-0.04em',
+                userSelect: 'none',
+              }}>{s.n}</div>
 
-              <p
-                className="text-sm leading-[1.9]"
-                style={{ color: 'rgba(255,255,255,0.5)' }}
-              >
-                {step.desc}
-              </p>
+              <h3 style={{
+                fontSize: 18, fontWeight: 900, color: '#fff',
+                letterSpacing: '-0.02em', marginBottom: 12, marginTop: 4,
+              }}>{s.title}</h3>
+
+              <p style={{
+                fontSize: 13.5, lineHeight: 1.9,
+                color: 'rgba(255,255,255,0.4)',
+              }}>{s.desc}</p>
             </motion.div>
           ))}
         </div>

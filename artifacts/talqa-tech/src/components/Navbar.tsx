@@ -2,132 +2,127 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 
-const WHATSAPP_LINK = "https://wa.me/966551378531";
+const WHATSAPP = "https://wa.me/966551378531";
 
 const links = [
-  { label: 'الخدمات', href: '#services' },
-  { label: 'الأسعار', href: '#calculator' },
-  { label: 'Apple Wallet', href: '#apple' },
-  { label: 'تواصل معنا', href: '#contact' },
+  { label: 'الخدمات',       href: '#services' },
+  { label: 'كيف نعمل',     href: '#process' },
+  { label: 'الأسعار',       href: '#calculator' },
+  { label: 'تواصل',         href: '#contact' },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen]         = useState(false);
 
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 24);
-    window.addEventListener('scroll', handler, { passive: true });
-    return () => window.removeEventListener('scroll', handler);
+    const fn = () => setScrolled(window.scrollY > 30);
+    window.addEventListener('scroll', fn, { passive: true });
+    return () => window.removeEventListener('scroll', fn);
   }, []);
 
   return (
     <>
       <motion.nav
-        initial={{ y: -80, opacity: 0 }}
+        initial={{ y: -70, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed top-0 inset-x-0 z-50"
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         style={{
-          background: scrolled ? 'rgba(251,249,245,0.92)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(18px)' : 'none',
-          WebkitBackdropFilter: scrolled ? 'blur(18px)' : 'none',
-          borderBottom: scrolled ? '1px solid #EAE6DF' : '1px solid transparent',
-          transition: 'background 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease',
+          position: 'fixed', top: 0, right: 0, left: 0, zIndex: 50,
+          background: scrolled ? 'rgba(8,8,8,0.88)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(20px)' : 'none',
+          WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
+          borderBottom: scrolled ? '1px solid rgba(255,255,255,0.07)' : '1px solid transparent',
+          transition: 'all 0.35s ease',
         }}
       >
-        <div className="max-w-7xl mx-auto px-6 h-[72px] flex items-center justify-between">
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px', height: 68, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2.5 group">
-            <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center shadow-sm"
-              style={{ background: '#C5A880' }}
-            >
-              <span className="font-black text-white text-lg leading-none">ت</span>
+          <a href="#" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
+            <div style={{
+              width: 36, height: 36, borderRadius: 10,
+              background: 'linear-gradient(135deg, #D4A843, #C49730)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: '0 4px 16px rgba(212,168,67,0.3)',
+            }}>
+              <span style={{ color: '#000', fontWeight: 900, fontSize: 18, lineHeight: 1 }}>ت</span>
             </div>
-            <div className="leading-none">
-              <span className="font-black text-[#1A1A18] text-lg tracking-tight">تلقا تك</span>
-              <span className="hidden sm:block text-[10px] font-medium tracking-widest uppercase" style={{ color: '#C5A880' }}>
-                Tlga Tech
-              </span>
+            <div>
+              <div style={{ color: '#fff', fontWeight: 900, fontSize: 17, lineHeight: 1.1, letterSpacing: '-0.02em' }}>تلقا تك</div>
+              <div style={{ color: 'rgba(212,168,67,0.7)', fontWeight: 700, fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase', lineHeight: 1 }}>TLGA TECH</div>
             </div>
           </a>
 
           {/* Desktop links */}
-          <div className="hidden md:flex items-center gap-8">
-            {links.map(link => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="text-sm font-semibold transition-colors duration-200"
-                style={{ color: '#7A7060' }}
-                onMouseEnter={e => (e.currentTarget.style.color = '#1A1A18')}
-                onMouseLeave={e => (e.currentTarget.style.color = '#7A7060')}
-              >
-                {link.label}
-              </a>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 36 }} className="hidden md:flex">
+            {links.map(l => (
+              <a key={l.href} href={l.href} style={{
+                color: 'rgba(255,255,255,0.5)', fontSize: 14, fontWeight: 600,
+                textDecoration: 'none', transition: 'color 0.2s',
+              }}
+                onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.5)')}
+              >{l.label}</a>
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="flex items-center gap-3">
-            <a
-              href={WHATSAPP_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-bold text-white shadow-md transition-all duration-200 hover:scale-105 active:scale-95"
-              style={{ background: '#C5A880', boxShadow: '0 4px 18px rgba(197,168,128,0.35)' }}
+          {/* CTA + Burger */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <a href={WHATSAPP} target="_blank" rel="noopener noreferrer"
+              className="btn-gold hidden sm:inline-flex"
+              style={{
+                padding: '10px 22px', borderRadius: 10, fontSize: 13, fontWeight: 700,
+                color: '#000', textDecoration: 'none', letterSpacing: '-0.01em',
+              }}
             >
-              ابدأ مشروعك
+              ابدأ مشروعك ←
             </a>
-
-            {/* Burger */}
             <button
-              className="md:hidden w-10 h-10 flex items-center justify-center rounded-full border transition-colors"
-              style={{ borderColor: '#EAE6DF' }}
               onClick={() => setOpen(v => !v)}
-              aria-label="القائمة"
+              className="md:hidden"
+              style={{
+                width: 38, height: 38, borderRadius: 8, border: '1px solid rgba(255,255,255,0.1)',
+                background: 'rgba(255,255,255,0.04)', display: 'flex', alignItems: 'center',
+                justifyContent: 'center', cursor: 'pointer',
+              }}
             >
-              {open ? <X size={18} color="#1A1A18" /> : <Menu size={18} color="#1A1A18" />}
+              {open ? <X size={16} color="#fff" /> : <Menu size={16} color="#fff" />}
             </button>
           </div>
         </div>
       </motion.nav>
 
-      {/* Mobile drawer */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {open && (
           <motion.div
-            key="drawer"
-            initial={{ opacity: 0, y: -16 }}
+            key="mob"
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.25 }}
-            className="fixed top-[72px] inset-x-0 z-40 md:hidden"
-            style={{ background: 'rgba(251,249,245,0.97)', borderBottom: '1px solid #EAE6DF' }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.22 }}
+            style={{
+              position: 'fixed', top: 68, right: 0, left: 0, zIndex: 49,
+              background: '#0F0F0F', borderBottom: '1px solid rgba(255,255,255,0.07)',
+              padding: '20px 24px',
+            }}
           >
-            <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col gap-5">
-              {links.map(link => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-base font-bold"
-                  style={{ color: '#1A1A18' }}
-                  onClick={() => setOpen(false)}
-                >
-                  {link.label}
-                </a>
-              ))}
-              <a
-                href={WHATSAPP_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 inline-flex items-center justify-center gap-2 py-3 rounded-2xl font-bold text-white"
-                style={{ background: '#C5A880' }}
-              >
-                ابدأ مشروعك الآن
-              </a>
-            </div>
+            {links.map(l => (
+              <a key={l.href} href={l.href} onClick={() => setOpen(false)} style={{
+                display: 'block', color: '#fff', fontSize: 16, fontWeight: 700,
+                textDecoration: 'none', padding: '12px 0',
+                borderBottom: '1px solid rgba(255,255,255,0.06)',
+              }}>{l.label}</a>
+            ))}
+            <a href={WHATSAPP} target="_blank" rel="noopener noreferrer"
+              className="btn-gold"
+              style={{
+                display: 'block', marginTop: 16, padding: '12px', borderRadius: 10,
+                fontSize: 14, fontWeight: 700, color: '#000', textDecoration: 'none',
+                textAlign: 'center',
+              }}
+            >ابدأ مشروعك الآن ←</a>
           </motion.div>
         )}
       </AnimatePresence>

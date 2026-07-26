@@ -1,185 +1,173 @@
 import { motion } from 'framer-motion';
 import { Wallet, Smartphone, LayoutDashboard, Zap } from 'lucide-react';
 
-const services = [
+const S = [
   {
-    icon: Wallet,
-    en: 'Apple Wallet',
-    title: 'تكامل Apple Wallet',
-    desc: 'بطاقات ولاء رقمية تُضاف مباشرةً لمحفظة عميلك. تحديث تلقائي للنقاط، QR Code للاسترداد، وإشعارات فورية — كل ذلك بدون تطبيق.',
+    Icon: Wallet, en: 'Apple Wallet',
+    ar: 'تكامل Apple Wallet',
+    desc: 'بطاقات ولاء رقمية تُضاف لمحفظة عميلك. تحديث آني للنقاط، QR Code للاسترداد، وإشعارات فورية — بدون تطبيق.',
     tag: 'الأكثر طلباً',
-    features: ['بطاقة عضوية رقمية', 'تحديث نقاط آني', 'إشعارات Wallet'],
-    accent: '#C5A880',
+    feats: ['بطاقة عضوية رقمية', 'تحديث نقاط آني', 'Push Notifications'],
+    accent: '#D4A843',
   },
   {
-    icon: Smartphone,
-    en: 'Mobile Apps',
-    title: 'تطبيقات الجوال',
-    desc: 'تطبيقات iOS & Android بتجربة مستخدم Native سلسة وتصميم مخصص يعكس هوية علامتك التجارية بالكامل.',
+    Icon: Smartphone, en: 'Mobile Apps',
+    ar: 'تطبيقات الجوال',
+    desc: 'تطبيقات iOS & Android بتصميم Native فاخر وتجربة مستخدم سلسة تعكس هوية علامتك التجارية بالكامل.',
     tag: null,
-    features: ['iOS & Android', 'تصميم UI/UX مخصص', 'لوحة تحكم مدمجة'],
-    accent: '#1A1A18',
+    feats: ['iOS & Android', 'UI/UX مخصص', 'لوحة تحكم مرفقة'],
+    accent: '#5E8BFF',
   },
   {
-    icon: LayoutDashboard,
-    en: 'Web Platforms',
-    title: 'المواقع ولوحات التحكم',
-    desc: 'مواقع تسويقية سريعة التحميل ولوحات تحكم سحابية تمنحك رؤية كاملة على بياناتك وعملياتك في مكان واحد.',
+    Icon: LayoutDashboard, en: 'Web Platforms',
+    ar: 'مواقع ولوحات التحكم',
+    desc: 'مواقع تسويقية فائقة السرعة ولوحات تحكم سحابية تمنحك رؤية كاملة على بياناتك وعملياتك.',
     tag: null,
-    features: ['أداء فائق', 'تحليلات لحظية', 'صلاحيات متعددة'],
-    accent: '#4B7BEC',
+    feats: ['أداء فائق', 'تحليلات لحظية', 'صلاحيات متعددة'],
+    accent: '#4CD890',
   },
   {
-    icon: Zap,
-    en: 'Automation & API',
-    title: 'أتمتة وحلول مخصصة',
-    desc: 'حلول برمجية خاصة تربط أنظمتك ببعضها — تكامل واتساب، ربط API خارجي، وأتمتة العمليات التي تستهلك وقتك يومياً.',
+    Icon: Zap, en: 'Automation & API',
+    ar: 'أتمتة وحلول مخصصة',
+    desc: 'حلول برمجية تربط أنظمتك ببعضها — تكامل واتساب، ربط API خارجي، وأتمتة العمليات اليومية بالكامل.',
     tag: null,
-    features: ['تكامل واتساب', 'ربط أنظمة API', 'أتمتة كاملة'],
-    accent: '#E85D4A',
+    feats: ['تكامل واتساب', 'ربط API', 'أتمتة كاملة'],
+    accent: '#FF6B6B',
   },
 ];
 
 export default function Services() {
   return (
-    <section
-      id="services"
-      className="py-32 relative"
-      style={{ background: '#FBF9F5' }}
-    >
-      <div className="absolute top-0 inset-x-0 h-px" style={{ background: '#EAE6DF' }} />
+    <section id="services" style={{ padding: '120px 0', background: 'var(--bg)', position: 'relative' }}>
+      <div style={{ position: 'absolute', top: 0, right: 0, left: 0, height: 1, background: 'rgba(255,255,255,0.07)' }} />
 
-      <div className="max-w-7xl mx-auto px-6">
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
 
         {/* Header */}
-        <div className="max-w-xl mb-20">
-          <motion.span
+        <div style={{ marginBottom: 72 }}>
+          <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="inline-block text-[11px] font-bold tracking-[0.15em] uppercase mb-5"
-            style={{ color: '#C5A880' }}
-          >
-            ما نبنيه لك
-          </motion.span>
+            style={{
+              fontSize: 11, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase',
+              color: '#D4A843', marginBottom: 18,
+            }}
+          >ما نبنيه لك</motion.div>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-            className="font-black leading-tight mb-5"
-            style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#1A1A18' }}
+            style={{
+              fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.1, color: '#fff',
+              fontSize: 'clamp(2rem, 4vw, 3.2rem)', maxWidth: 520,
+            }}
           >
-            خدماتنا الأربع الجوهرية
+            أربع خدمات جوهرية.<br />
+            <span className="text-gold">منظومة واحدة متكاملة.</span>
           </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-base md:text-lg leading-[1.8] font-medium"
-            style={{ color: '#7A7060' }}
-          >
-            لا نقدم مجرد تطبيقات. نبني منظومات رقمية متكاملة تعمل معاً لتحويل براندك إلى تجربة لا تُنسى.
-          </motion.p>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {services.map((svc, i) => (
+        {/* Cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
+          {S.map((s, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.65, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative rounded-3xl p-8 border overflow-hidden cursor-default transition-all duration-400"
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.6, delay: i * 0.09, ease: [0.22, 1, 0.36, 1] }}
+              whileHover={{ y: -6, transition: { duration: 0.28 } }}
               style={{
-                background: '#FFFFFF',
-                borderColor: '#EAE6DF',
+                background: 'var(--surface)',
+                border: '1px solid rgba(255,255,255,0.07)',
+                borderRadius: 20, padding: '32px 28px',
+                cursor: 'default', position: 'relative', overflow: 'hidden',
+                transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
               }}
-              whileHover={{
-                y: -5,
-                boxShadow: '0 24px 60px rgba(26,26,24,0.09)',
-                borderColor: svc.accent === '#C5A880' ? '#C5A880' : '#D8D4CD',
-                transition: { duration: 0.3 },
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLElement).style.borderColor = `${s.accent}40`;
+                (e.currentTarget as HTMLElement).style.boxShadow = `0 24px 60px rgba(0,0,0,0.4), 0 0 0 1px ${s.accent}20`;
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.07)';
+                (e.currentTarget as HTMLElement).style.boxShadow = 'none';
               }}
             >
               {/* Tag */}
-              {svc.tag && (
-                <div
-                  className="absolute top-7 left-7 text-[11px] font-bold px-3 py-1 rounded-full tracking-wide"
-                  style={{ background: 'rgba(197,168,128,0.12)', color: '#A8895E' }}
-                >
-                  {svc.tag}
-                </div>
+              {s.tag && (
+                <div style={{
+                  position: 'absolute', top: 20, left: 20,
+                  fontSize: 10, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase',
+                  padding: '4px 10px', borderRadius: 6,
+                  background: `${s.accent}18`, color: s.accent,
+                  border: `1px solid ${s.accent}35`,
+                }}>{s.tag}</div>
               )}
 
               {/* Index */}
-              <div
-                className="absolute top-7 right-8 font-black text-6xl leading-none select-none pointer-events-none"
-                style={{ color: 'rgba(26,26,24,0.04)' }}
-              >
-                {String(i + 1).padStart(2, '0')}
-              </div>
+              <div style={{
+                position: 'absolute', top: 20, right: 24,
+                fontSize: 48, fontWeight: 900, color: 'rgba(255,255,255,0.03)',
+                lineHeight: 1, pointerEvents: 'none', userSelect: 'none',
+              }}>{String(i + 1).padStart(2, '0')}</div>
 
               {/* Icon */}
-              <div
-                className="w-14 h-14 rounded-2xl flex items-center justify-center mb-7 transition-all duration-300 group-hover:scale-[1.08]"
-                style={{
-                  background: `${svc.accent}14`,
-                  color: svc.accent,
-                }}
-              >
-                <svc.icon size={26} strokeWidth={1.6} />
+              <div style={{
+                width: 52, height: 52, borderRadius: 14, marginBottom: 28,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: `${s.accent}14`, color: s.accent,
+                border: `1px solid ${s.accent}20`,
+              }}>
+                <s.Icon size={24} strokeWidth={1.5} />
               </div>
 
               {/* Label */}
-              <div
-                className="text-[11px] font-bold tracking-[0.14em] uppercase mb-2"
-                style={{ color: svc.accent === '#C5A880' ? '#A8895E' : '#B0A898' }}
-              >
-                {svc.en}
-              </div>
+              <div style={{
+                fontSize: 10, fontWeight: 700, letterSpacing: '0.16em',
+                textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)', marginBottom: 8,
+              }}>{s.en}</div>
 
               {/* Title */}
-              <h3
-                className="font-black text-[1.35rem] leading-tight mb-4"
-                style={{ color: '#1A1A18' }}
-              >
-                {svc.title}
-              </h3>
+              <h3 style={{
+                fontSize: 20, fontWeight: 900, color: '#fff',
+                lineHeight: 1.25, letterSpacing: '-0.02em', marginBottom: 14,
+              }}>{s.ar}</h3>
 
-              {/* Description */}
-              <p
-                className="text-[0.94rem] leading-[1.85] mb-8"
-                style={{ color: '#7A7060' }}
-              >
-                {svc.desc}
-              </p>
+              {/* Desc */}
+              <p style={{
+                fontSize: 14, lineHeight: 1.9, color: 'rgba(255,255,255,0.45)',
+                marginBottom: 28,
+              }}>{s.desc}</p>
 
               {/* Features */}
-              <div className="flex flex-wrap gap-2">
-                {svc.features.map(f => (
-                  <span
-                    key={f}
-                    className="text-xs font-semibold px-3 py-1.5 rounded-full"
-                    style={{ background: '#F4F1EB', color: '#7A7060' }}
-                  >
-                    {f}
-                  </span>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                {s.feats.map(f => (
+                  <span key={f} style={{
+                    fontSize: 11, fontWeight: 600, padding: '5px 10px', borderRadius: 6,
+                    background: 'rgba(255,255,255,0.05)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    color: 'rgba(255,255,255,0.45)',
+                  }}>{f}</span>
                 ))}
               </div>
 
-              {/* Bottom reveal line */}
-              <div
-                className="absolute bottom-0 inset-x-0 h-[3px] rounded-b-3xl origin-right scale-x-0 group-hover:scale-x-100 transition-transform duration-500"
-                style={{ background: `linear-gradient(to left, ${svc.accent}, ${svc.accent}88)` }}
-              />
+              {/* Bottom accent */}
+              <div style={{
+                position: 'absolute', bottom: 0, right: 0, left: 0, height: 2,
+                background: `linear-gradient(to left, ${s.accent}, transparent)`,
+                transform: 'scaleX(0)', transformOrigin: 'right',
+                transition: 'transform 0.45s ease',
+              }} className="card-line" />
             </motion.div>
           ))}
         </div>
       </div>
+
+      <style>{`
+        div:hover > .card-line { transform: scaleX(1) !important; }
+      `}</style>
     </section>
   );
 }

@@ -1,142 +1,115 @@
 import { motion } from 'framer-motion';
 import { MapPin, FileText, MessageCircle } from 'lucide-react';
 
-const WHATSAPP_LINK = "https://wa.me/966551378531";
+const WHATSAPP = "https://wa.me/966551378531";
 
-const footerLinks = [
-  { label: 'الخدمات', href: '#services' },
-  { label: 'احسب مشروعك', href: '#calculator' },
-  { label: 'Apple Wallet', href: '#apple' },
-  { label: 'تواصل معنا', href: '#contact' },
+const cols = [
+  { label: 'الخدمات',       href: '#services' },
+  { label: 'كيف نعمل',     href: '#process' },
+  { label: 'احسب مشروعك',  href: '#calculator' },
+  { label: 'Apple Wallet',  href: '#apple' },
+  { label: 'تواصل معنا',   href: '#contact' },
 ];
 
 export default function Footer() {
   return (
-    <footer
-      id="contact"
-      className="relative pt-24 pb-10 overflow-hidden"
-      style={{ background: '#FBF9F5', borderTop: '1px solid #EAE6DF' }}
-    >
+    <footer id="contact" style={{ background: 'var(--bg-2)', borderTop: '1px solid rgba(255,255,255,0.07)', position: 'relative', overflow: 'hidden' }}>
       {/* Top gold line */}
-      <div
-        className="absolute top-0 inset-x-0 h-px"
-        style={{ background: 'linear-gradient(to left, transparent, #C5A880, transparent)' }}
-      />
+      <div style={{ position: 'absolute', top: 0, right: 0, left: 0, height: 1, background: 'linear-gradient(to left, transparent, rgba(212,168,67,0.5), transparent)' }} />
 
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-20">
-          {/* Brand col */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="md:col-span-5"
-          >
-            <div className="flex items-center gap-2.5 mb-6">
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ background: '#C5A880' }}
-              >
-                <span className="font-black text-white text-xl leading-none">ت</span>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '72px 24px 32px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1.5fr', gap: 48, marginBottom: 64 }}
+          className="footer-grid">
+
+          {/* Brand */}
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
+              <div style={{
+                width: 38, height: 38, borderRadius: 10,
+                background: 'linear-gradient(135deg, #D4A843, #C49730)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 4px 16px rgba(212,168,67,0.25)',
+              }}>
+                <span style={{ color: '#000', fontWeight: 900, fontSize: 18, lineHeight: 1 }}>ت</span>
               </div>
               <div>
-                <div className="font-black text-xl leading-none" style={{ color: '#1A1A18' }}>تلقا تك</div>
-                <div className="text-xs font-bold tracking-widest uppercase mt-0.5" style={{ color: '#C5A880' }}>
-                  Tlga Tech
-                </div>
+                <div style={{ color: '#fff', fontWeight: 900, fontSize: 17, letterSpacing: '-0.02em', lineHeight: 1.1 }}>تلقا تك</div>
+                <div style={{ color: 'rgba(212,168,67,0.6)', fontWeight: 700, fontSize: 9, letterSpacing: '0.18em', textTransform: 'uppercase' }}>TLGA TECH</div>
               </div>
             </div>
-
-            <p className="text-base leading-relaxed mb-8 max-w-xs" style={{ color: '#7A7060' }}>
+            <p style={{ fontSize: 13.5, lineHeight: 1.9, color: 'rgba(255,255,255,0.35)', maxWidth: 300, marginBottom: 28, fontWeight: 500 }}>
               شريكك التقني الموثوق في المملكة العربية السعودية. نحوّل أفكارك إلى منتجات رقمية تضمن لك التفوق في سوقك.
             </p>
-
-            <a
-              href={WHATSAPP_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl text-sm font-bold text-white transition-all hover:scale-105 active:scale-95 shadow-md"
-              style={{ background: '#25D366', boxShadow: '0 4px 18px rgba(37,211,102,0.3)' }}
-            >
-              <MessageCircle size={16} />
+            <a href={WHATSAPP} target="_blank" rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8, padding: '11px 20px',
+                borderRadius: 10, fontSize: 13, fontWeight: 700, textDecoration: 'none',
+                background: '#25D366', color: '#fff',
+                boxShadow: '0 4px 16px rgba(37,211,102,0.25)',
+              }}>
+              <MessageCircle size={15} />
               تحدث معنا الآن
             </a>
           </motion.div>
 
-          {/* Quick links */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="md:col-span-3"
-          >
-            <h4 className="font-black text-base mb-6" style={{ color: '#1A1A18' }}>الصفحات</h4>
-            <ul className="space-y-4">
-              {footerLinks.map(link => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className="text-sm font-semibold transition-colors duration-200"
-                    style={{ color: '#7A7060' }}
-                    onMouseEnter={e => (e.currentTarget.style.color = '#C5A880')}
-                    onMouseLeave={e => (e.currentTarget.style.color = '#7A7060')}
-                  >
-                    {link.label}
-                  </a>
-                </li>
+          {/* Links */}
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.08 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)', marginBottom: 20 }}>الصفحات</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {cols.map(c => (
+                <a key={c.href} href={c.href} style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.4)', textDecoration: 'none', transition: 'color 0.2s' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = '#D4A843')}
+                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.4)')}>
+                  {c.label}
+                </a>
               ))}
-            </ul>
+            </div>
           </motion.div>
 
           {/* Contact */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.15 }}
-            className="md:col-span-4"
-          >
-            <h4 className="font-black text-base mb-6" style={{ color: '#1A1A18' }}>تواصل وفروع</h4>
-            <ul className="space-y-5">
-              <li>
-                <a
-                  href={WHATSAPP_LINK}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-sm font-semibold transition-colors"
-                  style={{ color: '#7A7060' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = '#1A1A18')}
-                  onMouseLeave={e => (e.currentTarget.style.color = '#7A7060')}
-                >
-                  <MessageCircle size={16} style={{ color: '#C5A880' }} />
-                  +966 55 137 8531
-                </a>
-              </li>
-              <li className="flex items-center gap-3 text-sm font-semibold" style={{ color: '#7A7060' }}>
-                <FileText size={16} style={{ color: '#C5A880' }} />
-                <span>السجل التجاري: 7054835322</span>
-              </li>
-              <li className="flex items-start gap-3 text-sm font-semibold" style={{ color: '#7A7060' }}>
-                <MapPin size={16} className="shrink-0 mt-0.5" style={{ color: '#C5A880' }} />
-                <span>منطقة جازان — صبيا وضمد<br />المملكة العربية السعودية</span>
-              </li>
-            </ul>
+          <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.14 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)', marginBottom: 20 }}>تواصل وفروع</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              <a href={WHATSAPP} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.45)', textDecoration: 'none', transition: 'color 0.2s' }}
+                onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}>
+                <MessageCircle size={14} color="#D4A843" />
+                +966 55 137 8531
+              </a>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.35)' }}>
+                <FileText size={14} color="rgba(212,168,67,0.6)" />
+                السجل التجاري: 7054835322
+              </div>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.35)' }}>
+                <MapPin size={14} color="rgba(212,168,67,0.6)" style={{ flexShrink: 0, marginTop: 2 }} />
+                منطقة جازان — صبيا وضمد<br />المملكة العربية السعودية
+              </div>
+            </div>
           </motion.div>
         </div>
 
-        {/* Bottom bar */}
-        <div
-          className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-medium"
-          style={{ borderTop: '1px solid #EAE6DF', color: '#B0A898' }}
-        >
-          <p>© {new Date().getFullYear()} تلقا تك (Tlga Tech) — جميع الحقوق محفوظة.</p>
-          <div className="flex gap-6">
-            <span className="cursor-pointer hover:text-[#C5A880] transition-colors">شروط الاستخدام</span>
-            <span className="cursor-pointer hover:text-[#C5A880] transition-colors">سياسة الخصوصية</span>
+        {/* Bottom */}
+        <div style={{
+          paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.07)',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          flexWrap: 'wrap', gap: 12,
+        }}>
+          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', fontWeight: 500 }}>
+            © {new Date().getFullYear()} تلقا تك (Tlga Tech) — جميع الحقوق محفوظة.
+          </p>
+          <div style={{ display: 'flex', gap: 20, fontSize: 12, color: 'rgba(255,255,255,0.2)', fontWeight: 500 }}>
+            <span style={{ cursor: 'pointer' }}>شروط الاستخدام</span>
+            <span style={{ cursor: 'pointer' }}>سياسة الخصوصية</span>
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media(max-width: 768px) {
+          .footer-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </footer>
   );
 }

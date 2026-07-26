@@ -2,301 +2,205 @@ import { motion } from 'framer-motion';
 import { Wallet, Bell, Watch, RefreshCw } from 'lucide-react';
 import { SiApple } from 'react-icons/si';
 
-const features = [
-  {
-    icon: Wallet,
-    title: 'بطاقة ولاء رقمية',
-    desc: 'تضاف مباشرةً لمحفظة Apple Wallet — لا تطبيق، لا حساب، بلمسة واحدة.',
-  },
-  {
-    icon: Bell,
-    title: 'إشعارات Push مجانية',
-    desc: 'أرسل عروضاً وتنبيهات مخصصة على شاشة العميل مباشرةً — بدون فتح أي تطبيق.',
-  },
-  {
-    icon: Watch,
-    title: 'تكامل Apple Watch',
-    desc: 'رصيد النقاط وكود QR للاسترداد متاحان على معصم العميل في ثانية.',
-  },
-  {
-    icon: RefreshCw,
-    title: 'تحديث تلقائي',
-    desc: 'النقاط ومستوى العضوية تتحدثان لحظياً بعد كل زيارة — صفر تدخل يدوي.',
-  },
+const feats = [
+  { Icon: Wallet,    title: 'بطاقة ولاء رقمية',    desc: 'تُضاف مباشرةً لمحفظة Apple Wallet. لا تطبيق، لا حساب، بلمسة واحدة.' },
+  { Icon: Bell,      title: 'Push Notifications مجانية', desc: 'أرسل عروضاً وتنبيهات مخصصة على شاشة العميل بدون فتح أي تطبيق.' },
+  { Icon: Watch,     title: 'تكامل Apple Watch',    desc: 'رصيد النقاط وكود QR متاحان على معصم العميل في ثانية واحدة.' },
+  { Icon: RefreshCw, title: 'تحديث لحظي تلقائي',   desc: 'النقاط ومستوى العضوية تتحدثان بعد كل زيارة. صفر تدخل يدوي.' },
 ];
 
 export default function AppleSection() {
   return (
-    <section
-      id="apple"
-      className="py-32 relative overflow-hidden"
-      style={{ background: '#FBF9F5' }}
-    >
-      <div className="absolute top-0 inset-x-0 h-px" style={{ background: '#EAE6DF' }} />
+    <section id="apple" style={{ padding: '120px 0', background: 'var(--bg-2)', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', top: 0, right: 0, left: 0, height: 1, background: 'rgba(255,255,255,0.07)' }} />
+      <div style={{ position: 'absolute', bottom: 0, right: 0, left: 0, height: 1, background: 'rgba(255,255,255,0.07)' }} />
 
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      {/* Gold ambient */}
+      <div style={{
+        position: 'absolute', top: '50%', right: '-10%', transform: 'translateY(-50%)',
+        width: 600, height: 600, borderRadius: '50%', pointerEvents: 'none',
+        background: 'radial-gradient(circle, rgba(212,168,67,0.07) 0%, transparent 65%)',
+      }} />
 
-          {/* ─── Text (right in RTL) ─── */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div
-              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-8"
-              style={{
-                background: '#1A1A18',
-                border: '1px solid rgba(255,255,255,0.08)',
-              }}
-            >
-              <SiApple size={14} color="#FFFFFF" />
-              <span className="text-[11px] font-bold tracking-[0.14em] uppercase text-white">
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}
+          className="block lg:grid" >
+
+          {/* Text */}
+          <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
+
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              padding: '7px 14px', borderRadius: 8, marginBottom: 28,
+              background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)',
+            }}>
+              <SiApple size={13} color="rgba(255,255,255,0.7)" />
+              <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)' }}>
                 Apple Ecosystem
               </span>
             </div>
 
-            <h2
-              className="font-black leading-tight mb-6"
-              style={{ fontSize: 'clamp(1.9rem, 3.5vw, 2.9rem)', color: '#1A1A18' }}
-            >
-              تجربة عميل
-              <br />
-              <span style={{
-                background: 'linear-gradient(135deg, #C5A880, #A8895E)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}>
-                من مستوى آخر تماماً
-              </span>
+            <h2 style={{
+              fontWeight: 900, fontSize: 'clamp(1.9rem, 3.5vw, 2.9rem)',
+              letterSpacing: '-0.03em', lineHeight: 1.1, color: '#fff', marginBottom: 20,
+            }}>
+              تجربة عميل<br />
+              <span className="text-gold">من مستوى آخر.</span>
             </h2>
 
-            <p
-              className="text-base md:text-lg leading-[1.85] mb-12 font-medium"
-              style={{ color: '#7A7060' }}
-            >
+            <p style={{ fontSize: 15, lineHeight: 1.9, color: 'rgba(255,255,255,0.45)', marginBottom: 48, fontWeight: 500 }}>
               نوظّف أحدث تقنيات Apple لتمنح عملاءك تجربة انسيابية تجعلهم يتذكرون براندك في كل لحظة — بدون احتكاك، بدون تعقيد.
             </p>
 
-            <div className="space-y-7">
-              {features.map((f, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 14 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.08, duration: 0.55 }}
-                  className="flex gap-5 items-start"
-                >
-                  <div
-                    className="w-11 h-11 rounded-2xl shrink-0 flex items-center justify-center"
-                    style={{ background: 'rgba(197,168,128,0.12)', color: '#C5A880' }}
-                  >
-                    <f.icon size={20} strokeWidth={1.6} />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
+              {feats.map((f, i) => (
+                <motion.div key={i} initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.5 }}
+                  style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+                  <div style={{
+                    width: 40, height: 40, borderRadius: 10, flexShrink: 0,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    background: 'rgba(212,168,67,0.1)', color: '#D4A843',
+                    border: '1px solid rgba(212,168,67,0.15)',
+                  }}>
+                    <f.Icon size={18} strokeWidth={1.6} />
                   </div>
                   <div>
-                    <div
-                      className="font-black text-[0.95rem] mb-1"
-                      style={{ color: '#1A1A18' }}
-                    >
-                      {f.title}
-                    </div>
-                    <div
-                      className="text-sm leading-[1.8]"
-                      style={{ color: '#7A7060' }}
-                    >
-                      {f.desc}
-                    </div>
+                    <div style={{ fontSize: 14, fontWeight: 800, color: '#fff', marginBottom: 4 }}>{f.title}</div>
+                    <div style={{ fontSize: 13, lineHeight: 1.8, color: 'rgba(255,255,255,0.4)' }}>{f.desc}</div>
                   </div>
                 </motion.div>
               ))}
             </div>
           </motion.div>
 
-          {/* ─── Visual (left in RTL) ─── */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="flex justify-center items-center relative py-12"
-          >
+          {/* Visual */}
+          <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', padding: '60px 0' }}>
+
             {/* Rings */}
-            <div
-              className="absolute rounded-full"
-              style={{
-                width: 380, height: 380,
-                border: '1px solid rgba(197,168,128,0.1)',
-              }}
-            />
-            <div
-              className="absolute rounded-full"
-              style={{
-                width: 300, height: 300,
-                border: '1px dashed rgba(197,168,128,0.08)',
-              }}
-            />
+            {[380, 300, 220].map((size, i) => (
+              <div key={i} style={{
+                position: 'absolute', width: size, height: size, borderRadius: '50%',
+                border: `1px solid rgba(212,168,67,${0.08 - i * 0.025})`,
+                pointerEvents: 'none',
+              }} />
+            ))}
 
-            {/* Wallet card */}
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-              className="relative z-10"
-            >
-              <div
-                className="w-72 rounded-3xl p-6 relative overflow-hidden"
-                style={{
-                  background: 'linear-gradient(145deg, #1A1A18, #2D2B25)',
-                  border: '1px solid rgba(197,168,128,0.2)',
-                  boxShadow: '0 40px 80px rgba(26,26,24,0.18), 0 0 0 1px rgba(197,168,128,0.08)',
-                }}
-              >
+            {/* Card */}
+            <motion.div animate={{ y: [0, -12, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+              style={{ position: 'relative', zIndex: 2 }}>
+              <div style={{
+                width: 280, borderRadius: 28, padding: '24px',
+                background: 'linear-gradient(145deg, #161616, #1F1E19)',
+                border: '1px solid rgba(212,168,67,0.18)',
+                boxShadow: '0 40px 80px rgba(0,0,0,0.5), 0 0 80px rgba(212,168,67,0.06), 0 0 0 1px rgba(255,255,255,0.04)',
+                position: 'relative', overflow: 'hidden',
+              }}>
                 {/* Shimmer */}
-                <div
-                  className="absolute inset-0 rounded-3xl pointer-events-none"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(197,168,128,0.06) 0%, transparent 60%)',
-                  }}
-                />
+                <div style={{
+                  position: 'absolute', inset: 0, borderRadius: 28,
+                  background: 'linear-gradient(135deg, rgba(212,168,67,0.05) 0%, transparent 50%)',
+                  pointerEvents: 'none',
+                }} />
 
-                {/* Card header */}
-                <div className="flex items-start justify-between mb-8 relative z-10">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28, position: 'relative', zIndex: 1 }}>
                   <div>
-                    <div
-                      className="text-[10px] font-bold tracking-[0.18em] uppercase mb-1.5"
-                      style={{ color: 'rgba(255,255,255,0.35)' }}
-                    >
-                      MEMBERSHIP CARD
-                    </div>
-                    <div className="text-lg font-black text-white">منشأتك هنا</div>
+                    <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.25)', marginBottom: 6 }}>MEMBERSHIP CARD</div>
+                    <div style={{ fontSize: 17, fontWeight: 900, color: '#fff' }}>منشأتك هنا</div>
                   </div>
-                  <div
-                    className="w-9 h-9 rounded-xl flex items-center justify-center"
-                    style={{ background: 'rgba(255,255,255,0.06)' }}
-                  >
-                    <SiApple size={18} color="rgba(255,255,255,0.6)" />
+                  <div style={{
+                    width: 32, height: 32, borderRadius: 8,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    background: 'rgba(255,255,255,0.05)',
+                  }}>
+                    <SiApple size={16} color="rgba(255,255,255,0.5)" />
                   </div>
                 </div>
 
-                {/* Level badge */}
-                <div
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-7 relative z-10"
-                  style={{
-                    background: 'rgba(197,168,128,0.12)',
-                    border: '1px solid rgba(197,168,128,0.25)',
-                  }}
-                >
-                  <div
-                    className="w-1.5 h-1.5 rounded-full"
-                    style={{ background: '#C5A880' }}
-                  />
-                  <span
-                    className="text-xs font-bold"
-                    style={{ color: '#C5A880' }}
-                  >
-                    Gold Member
-                  </span>
+                <div style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 6,
+                  padding: '5px 12px', borderRadius: 8, marginBottom: 24,
+                  background: 'rgba(212,168,67,0.1)', border: '1px solid rgba(212,168,67,0.22)',
+                  position: 'relative', zIndex: 1,
+                }}>
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#D4A843', boxShadow: '0 0 6px #D4A843' }} />
+                  <span style={{ fontSize: 11, fontWeight: 700, color: '#D4A843' }}>Gold Member</span>
                 </div>
 
-                {/* Points */}
-                <div className="flex items-end justify-between relative z-10">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', position: 'relative', zIndex: 1 }}>
                   <div>
-                    <div
-                      className="text-[11px] font-semibold mb-1"
-                      style={{ color: 'rgba(255,255,255,0.35)' }}
-                    >
-                      رصيد النقاط
-                    </div>
-                    <div className="text-3xl font-black text-white leading-none">٢٬٤٥٠</div>
-                    <div
-                      className="text-xs mt-1.5 font-semibold"
-                      style={{ color: '#C5A880' }}
-                    >
-                      نقطة متاحة للاسترداد
-                    </div>
+                    <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', marginBottom: 4 }}>رصيد النقاط</div>
+                    <div style={{ fontSize: 30, fontWeight: 900, color: '#fff', letterSpacing: '-0.03em', lineHeight: 1 }}>٢٬٤٥٠</div>
+                    <div style={{ fontSize: 11, color: '#D4A843', marginTop: 4, fontWeight: 600 }}>نقطة متاحة</div>
                   </div>
-                  {/* QR placeholder */}
-                  <div
-                    className="w-14 h-14 rounded-2xl flex flex-col items-center justify-center gap-1"
-                    style={{ background: 'rgba(255,255,255,0.05)' }}
-                  >
-                    <div className="grid grid-cols-3 gap-0.5">
-                      {[...Array(9)].map((_, j) => (
-                        <div
-                          key={j}
-                          className="w-2 h-2 rounded-[2px]"
-                          style={{
-                            background: [0,2,4,6,8].includes(j)
-                              ? 'rgba(255,255,255,0.5)'
-                              : 'transparent',
-                          }}
-                        />
-                      ))}
-                    </div>
-                    <div
-                      className="text-[9px] font-bold"
-                      style={{ color: 'rgba(255,255,255,0.3)' }}
-                    >
-                      QR
-                    </div>
+                  {/* QR */}
+                  <div style={{
+                    width: 52, height: 52, borderRadius: 10,
+                    display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 2,
+                    padding: 6, background: 'rgba(255,255,255,0.04)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                  }}>
+                    {[...Array(16)].map((_, j) => (
+                      <div key={j} style={{
+                        borderRadius: 2,
+                        background: [0,1,4,5,2,7,8,13,15,10,11,14].includes(j) ? 'rgba(255,255,255,0.5)' : 'transparent',
+                      }} />
+                    ))}
                   </div>
                 </div>
 
-                {/* Bottom line */}
-                <div
-                  className="absolute bottom-0 inset-x-0 h-[3px] rounded-b-3xl"
-                  style={{ background: 'linear-gradient(to left, #C5A880, #A8895E)' }}
-                />
+                <div style={{
+                  position: 'absolute', bottom: 0, right: 0, left: 0, height: 3, borderRadius: '0 0 28px 28px',
+                  background: 'linear-gradient(to left, #D4A843, #C49730)',
+                }} />
               </div>
             </motion.div>
 
             {/* Floating notification */}
-            <motion.div
-              animate={{ y: [0, -8, 0], x: [0, 4, 0] }}
-              transition={{ duration: 3.8, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
-              className="absolute top-10 -left-6 rounded-2xl px-4 py-3 shadow-xl"
+            <motion.div animate={{ y: [0, -8, 0], x: [0, 4, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 0.8 }}
               style={{
-                background: '#FFFFFF',
-                border: '1px solid #EAE6DF',
-                boxShadow: '0 8px 28px rgba(26,26,24,0.1)',
-              }}
-            >
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-                  style={{ background: 'rgba(197,168,128,0.12)' }}
-                >
-                  <Bell size={14} style={{ color: '#C5A880' }} />
-                </div>
-                <div className="leading-tight">
-                  <div className="text-xs font-black" style={{ color: '#1A1A18' }}>عرض خاص 🎉</div>
-                  <div className="text-[11px] mt-0.5 font-medium" style={{ color: '#7A7060' }}>خصم ٢٠٪ لعملاء Gold</div>
-                </div>
+                position: 'absolute', top: 40, left: -20, zIndex: 3,
+                padding: '12px 14px', borderRadius: 14,
+                background: '#161616', border: '1px solid rgba(255,255,255,0.1)',
+                boxShadow: '0 8px 32px rgba(0,0,0,0.4)',
+                display: 'flex', alignItems: 'center', gap: 10,
+              }}>
+              <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(212,168,67,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Bell size={14} color="#D4A843" />
+              </div>
+              <div>
+                <div style={{ fontSize: 12, fontWeight: 800, color: '#fff', marginBottom: 2 }}>عرض خاص! 🎉</div>
+                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>خصم ٢٠٪ لعملاء Gold</div>
               </div>
             </motion.div>
 
-            {/* Points update badge */}
-            <motion.div
-              animate={{ y: [0, 6, 0] }}
-              transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut', delay: 1.4 }}
-              className="absolute bottom-10 -right-4 rounded-2xl px-4 py-2.5"
+            {/* Update badge */}
+            <motion.div animate={{ y: [0, 6, 0] }}
+              transition={{ duration: 3.4, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
               style={{
-                background: '#FFFFFF',
-                border: '1px solid #EAE6DF',
-                boxShadow: '0 6px 20px rgba(26,26,24,0.08)',
-              }}
-            >
-              <div className="flex items-center gap-2">
-                <RefreshCw size={12} style={{ color: '#C5A880' }} />
-                <span className="text-xs font-bold" style={{ color: '#1A1A18' }}>+٥٠ نقطة</span>
-                <span className="text-[11px]" style={{ color: '#7A7060' }}>تحديث آني</span>
-              </div>
+                position: 'absolute', bottom: 40, right: -16, zIndex: 3,
+                padding: '9px 14px', borderRadius: 10,
+                background: '#161616', border: '1px solid rgba(255,255,255,0.08)',
+                boxShadow: '0 6px 20px rgba(0,0,0,0.3)',
+                display: 'flex', alignItems: 'center', gap: 8,
+              }}>
+              <RefreshCw size={12} color="#D4A843" />
+              <span style={{ fontSize: 12, fontWeight: 700, color: '#fff' }}>+٥٠ نقطة</span>
+              <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', fontWeight: 500 }}>تحديث آني</span>
             </motion.div>
           </motion.div>
         </div>
       </div>
+
+      <style>{`
+        @media(max-width:1023px){
+          .block.lg\\:grid { display:flex; flex-direction:column; gap:60px; }
+        }
+      `}</style>
     </section>
   );
 }
