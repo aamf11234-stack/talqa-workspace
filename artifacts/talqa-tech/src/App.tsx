@@ -7,15 +7,15 @@ import Hero               from './components/Hero';
 import Marquee            from './components/Marquee';
 import HorizontalServices from './components/HorizontalServices';
 import LiveDemo           from './components/LiveDemo';
-import ClinicSection      from './components/ClinicSection';
-import PhoneShowcase      from './components/PhoneShowcase';
 import WalletCustomizer   from './components/WalletCustomizer';
+import BookingsSection    from './components/BookingsSection';
+import ClinicSection      from './components/ClinicSection';
+import WhyUs              from './components/WhyUs';
 import Process            from './components/Process';
 import Calculator         from './components/Calculator';
 import ProjectsGallery    from './components/ProjectsGallery';
 import Testimonials       from './components/Testimonials';
 import FAQ                from './components/FAQ';
-import TrustBar           from './components/TrustBar';
 import Footer             from './components/Footer';
 import WhatsAppFloat      from './components/WhatsAppFloat';
 
@@ -25,10 +25,9 @@ export default function App() {
   useEffect(() => {
     document.documentElement.dir  = 'rtl';
     document.documentElement.lang = 'ar';
-    document.body.style.background = '#080808';
-    document.title = 'تلقا تك | نحوّل أفكارك التجارية إلى حلول رقمية تدر الأرباح';
+    document.body.style.background = '#07070f';
+    document.title = 'تلقا تك | نحوّل أفكارك التجارية إلى حلول رقمية';
 
-    // Scroll progress bar
     const bar = document.getElementById('scroll-bar');
     if (!bar) return;
     const onScroll = () => {
@@ -41,23 +40,24 @@ export default function App() {
 
   return (
     <QueryClientProvider client={qc}>
+      <div id="scroll-bar" />
       <CustomCursor />
-      <div style={{ minHeight: '100vh', overflowX: 'hidden', background: '#080808' }}>
+      <div style={{ minHeight: '100vh', overflowX: 'hidden', background: 'var(--bg)' }}>
         <Navbar />
         <main>
           <Hero />
           <Marquee />
           <HorizontalServices />
           <LiveDemo />
-          <ClinicSection />
-          <PhoneShowcase />
           <WalletCustomizer />
+          <BookingsSection />
+          <ClinicSection />
+          <WhyUs />
           <Process />
           <Calculator />
           <ProjectsGallery />
           <Testimonials />
           <FAQ />
-          <TrustBar />
         </main>
         <Footer />
         <WhatsAppFloat />

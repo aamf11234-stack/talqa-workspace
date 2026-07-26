@@ -1,38 +1,32 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 export default function CustomCursor() {
   const mx = useMotionValue(-100);
   const my = useMotionValue(-100);
-  const cx = useSpring(mx, { stiffness: 350, damping: 28, mass: 0.5 });
-  const cy = useSpring(my, { stiffness: 350, damping: 28, mass: 0.5 });
-  const scaleRef = useRef(1);
-  const dotRef = useRef<HTMLDivElement>(null);
+  const cx = useSpring(mx, { stiffness: 280, damping: 24, mass: 0.5 });
+  const cy = useSpring(my, { stiffness: 280, damping: 24, mass: 0.5 });
+  const [hovered, setHovered] = useState(false);
+  const [clicked, setClicked] = useState(false);
+  const ringRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Don't show on touch devices
     if ('ontouchstart' in window || navigator.maxTouchPoints > 0) return;
     document.body.style.cursor = 'none';
 
     const move = (e: MouseEvent) => { mx.set(e.clientX); my.set(e.clientY); };
-    const down = () => { scaleRef.current = 0.7; if (dotRef.current) dotRef.current.style.transform = 'scale(0.7)'; };
-    const up   = () => { scaleRef.current = 1;   if (dotRef.current) dotRef.current.style.transform = 'scale(1)'; };
+    const down = () => setClicked(true);
+    const up   = () => setClicked(false);
+
+    const over = (e: MouseEvent) => {
+      const el = e.target as HTMLElement;
+      if (el.closest('a,button,[role=button],input,textarea')) setHovered(true);
+    };
+    const out = () => setHovered(false);
 
     window.addEventListener('mousemove', move);
     window.addEventListener('mousedown', down);
     window.addEventListener('mouseup', up);
-
-    // Scale up on interactive elements
-    const over = (e: MouseEvent) => {
-      const el = e.target as HTMLElement;
-      if (el.closest('a,button,[role=button]') && dotRef.current) {
-        dotRef.current.style.transform = 'scale(1.6)';
-        dotRef.current.style.opacity = '0.6';
-      }
-    };
-    const out = () => {
-      if (dotRef.current) { dotRef.current.style.transform = 'scale(1)'; dotRef.current.style.opacity = '1'; }
-    };
     window.addEventListener('mouseover', over);
     window.addEventListener('mouseout', out);
 
@@ -50,25 +44,33 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* Outer ring - follows with spring */}
+      {/* Outer ring */}
+      <motion.div
+        ref={ringRef}
+        style={{
+          position: 'fixed', top: 0, left: 0, zIndex: 99999, pointerEvents: 'none',
+          x: cx, y: cy,
+          width: hovered ? 44 : 28,
+          height: hovered ? 44 : 28,
+          marginLeft: hovered ? -22 : -14,
+          marginTop: hovered ? -22 : -14,
+          borderRadius: '50%',
+          border: `1.5px solid ${hovered ? 'rgba(139,92,246,0.6)' : 'rgba(139,92,246,0.35)'}`,
+          background: hovered ? 'rgba(139,92,246,0.06)' : 'transparent',
+          scale: clicked ? 0.8 : 1,
+          transition: 'width 0.2s, height 0.2s, margin 0.2s, border-color 0.2s, background 0.2s, scale 0.1s',
+        }}
+      />
+      {/* Dot */}
       <motion.div style={{
-        position: 'fixed', top: 0, left: 0, zIndex: 99999, pointerEvents: 'none',
-        x: cx, y: cy,
-        width: 28, height: 28,
-        marginLeft: -14, marginTop: -14,
-        borderRadius: '50%',
-        border: '1.5px solid rgba(79,142,255,0.5)',
-        mixBlendMode: 'difference',
-      }} />
-      {/* Dot - follows directly */}
-      <motion.div ref={dotRef} style={{
         position: 'fixed', top: 0, left: 0, zIndex: 99999, pointerEvents: 'none',
         x: mx, y: my,
         width: 5, height: 5,
         marginLeft: -2.5, marginTop: -2.5,
         borderRadius: '50%',
-        background: '#fff',
-        transition: 'transform 0.2s ease, opacity 0.2s ease',
+        background: hovered ? 'var(--purple)' : 'rgba(255,255,255,0.9)',
+        scale: clicked ? 0.6 : 1,
+        transition: 'background 0.15s, scale 0.1s',
       }} />
     </>
   );

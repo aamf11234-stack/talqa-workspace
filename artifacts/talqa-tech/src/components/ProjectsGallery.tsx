@@ -1,92 +1,98 @@
 import { motion } from 'framer-motion';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, ArrowLeft } from 'lucide-react';
 
 const PROJECTS = [
   {
     title: 'Brown Dose',
     sub: 'تطبيق ولاء + Apple Wallet',
-    desc: 'منظومة ولاء رقمية لكافيه Brown Dose تشمل بطاقة Apple Wallet، نقاط، وإشعارات Push.',
+    desc: 'منظومة ولاء رقمية لكافيه Brown Dose — بطاقة Apple Wallet، نقاط، وإشعارات Push تلقائية.',
     tags: ['React Native', 'Apple Wallet', 'iOS / Android'],
     color: '#C8996C',
+    grad: 'linear-gradient(135deg, #3D1F0A, #1a0e05)',
     emoji: '☕',
     link: '/brown-dose/',
-    linkLabel: 'شاهد الديمو',
   },
   {
     title: 'عيادات تلقا',
     sub: 'نظام إدارة عيادات',
-    desc: 'نظام متكامل لإدارة المواعيد والملفات الطبية والوصفات يعمل على الويب والجوال.',
+    desc: 'نظام متكامل لإدارة المواعيد والملفات الطبية والوصفات — ويب وجوال بتجربة واحدة.',
     tags: ['React', 'Node.js', 'تطبيق جوال'],
-    color: '#4F8EFF',
+    color: '#3B82F6',
+    grad: 'linear-gradient(135deg, #071835, #030d1a)',
     emoji: '🏥',
     link: '/clinic-demo/',
-    linkLabel: 'شاهد الديمو',
   },
   {
     title: 'حيز',
-    sub: 'منصة عضوية',
-    desc: 'منصة عضوية رقمية لحيز تشمل الاشتراكات والولاء والتواصل مع الأعضاء.',
-    tags: ['Next.js', 'Membership', 'API'],
+    sub: 'منصة عضوية رقمية',
+    desc: 'منصة عضوية متكاملة لحيز — اشتراكات، ولاء، بطاقة رقمية، وتواصل مع الأعضاء.',
+    tags: ['Next.js', 'Membership', 'NFC'],
     color: '#A78BFA',
+    grad: 'linear-gradient(135deg, #150830, #0a0318)',
     emoji: '💎',
     link: '/haeez-loyalty/',
-    linkLabel: 'شاهد الديمو',
   },
 ];
 
-const fade = {
-  hidden:  { opacity: 0, y: 20 },
-  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.55, ease: [0.22, 1, 0.36, 1] } }),
-};
-
 export default function ProjectsGallery() {
   return (
-    <section id="projects" style={{ padding: 'clamp(72px,10vw,120px) 0', background: 'var(--bg)', borderTop: '1px solid var(--border)' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 clamp(20px,4vw,48px)' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 48, flexWrap: 'wrap', gap: 16 }}>
+    <section id="projects" style={{ padding: 'clamp(80px,10vw,130px) 0', background: 'var(--bg)', position: 'relative', overflow: 'hidden' }}>
+      <div className="orb" style={{ width: 600, height: 400, top: '40%', right: '-10%', background: 'rgba(59,130,246,0.07)', animationDelay: '-5s' }} />
+
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px', position: 'relative' }}>
+        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+          style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 52, flexWrap: 'wrap', gap: 20 }}>
           <div>
             <div className="section-label">مشاريعنا</div>
-            <h2 style={{ fontWeight: 900, fontSize: 'clamp(1.9rem,3.5vw,3rem)', letterSpacing: '-0.03em', color: '#fff', lineHeight: 1.1 }}>
-              أعمال حقيقية<br /><span className="text-blue">تعمل الآن.</span>
+            <h2 style={{ fontWeight: 900, fontSize: 'clamp(2rem,4vw,3.2rem)', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
+              أعمال حقيقية{' '}
+              <span className="grad">تعمل الآن</span>
             </h2>
           </div>
           <a href="https://wa.me/966551378531?text=أريد%20مشروعاً%20مثل%20هذه%20الأعمال" target="_blank" rel="noopener noreferrer"
-            className="btn-ghost" style={{ fontSize: 13, padding: '10px 20px' }}>
-            ابنِ مشروعك ←
+            className="btn-ghost" style={{ fontSize: 14 }}>
+            ابنِ مشروعك <ArrowLeft size={14} />
           </a>
-        </div>
+        </motion.div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%,320px), 1fr))', gap: 1, border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden' }}>
-          {PROJECTS.map(({ title, sub, desc, tags, color, emoji, link, linkLabel }, i) => (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px,1fr))', gap: 20 }}>
+          {PROJECTS.map(({ title, sub, desc, tags, color, grad, emoji, link }, i) => (
             <motion.div key={title}
-              custom={i} variants={fade} initial="hidden" whileInView="visible" viewport={{ once: true }}
-              style={{ padding: 'clamp(24px,3vw,32px)', borderRight: '1px solid var(--border)', borderBottom: '1px solid var(--border)', background: 'var(--bg)', transition: 'background 0.2s', display: 'flex', flexDirection: 'column', gap: 16 }}
-              onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.02)'}
-              onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = 'var(--bg)'}>
-
-              {/* Icon + title */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div style={{ width: 44, height: 44, borderRadius: 12, background: `${color}12`, border: `1px solid ${color}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>{emoji}</div>
-                <div>
-                  <div style={{ fontSize: 16, fontWeight: 900, color: '#fff' }}>{title}</div>
-                  <div style={{ fontSize: 11, color: color, fontWeight: 700, marginTop: 2 }}>{sub}</div>
+              initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.55 }}
+              whileHover={{ y: -5 }}
+              style={{ borderRadius: 20, overflow: 'hidden', display: 'flex', flexDirection: 'column', border: `1px solid ${color}25`, transition: 'box-shadow 0.3s' }}
+              onMouseEnter={e => (e.currentTarget as HTMLElement).style.boxShadow = `0 12px 48px ${color}20`}
+              onMouseLeave={e => (e.currentTarget as HTMLElement).style.boxShadow = 'none'}
+            >
+              {/* Card header */}
+              <div style={{ padding: '28px 28px 24px', background: grad, position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: -30, right: -30, width: 140, height: 140, borderRadius: '50%', background: `${color}15` }} />
+                <div style={{ position: 'absolute', bottom: -20, left: 20, width: 80, height: 80, borderRadius: '50%', background: `${color}10` }} />
+                <div style={{ position: 'relative' }}>
+                  <div style={{ fontSize: 40, marginBottom: 14 }}>{emoji}</div>
+                  <div style={{ fontSize: 20, fontWeight: 900, color: '#fff', marginBottom: 4 }}>{title}</div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{sub}</div>
                 </div>
               </div>
 
-              <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.75, flex: 1 }}>{desc}</p>
+              {/* Card body */}
+              <div style={{ padding: '22px 28px 28px', background: 'rgba(255,255,255,0.03)', flex: 1, display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.8, flex: 1 }}>{desc}</p>
 
-              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                {tags.map(t => (
-                  <span key={t} style={{ fontSize: 10, fontWeight: 700, padding: '3px 9px', borderRadius: 6, border: '1px solid var(--border)', color: 'var(--text3)' }}>{t}</span>
-                ))}
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                  {tags.map(t => (
+                    <span key={t} style={{ fontSize: 11, fontWeight: 700, padding: '4px 10px', borderRadius: 99, background: `${color}15`, border: `1px solid ${color}30`, color }}>{t}</span>
+                  ))}
+                </div>
+
+                <a href={link} target="_blank" rel="noopener noreferrer"
+                  style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 13, fontWeight: 800, color, textDecoration: 'none', transition: 'gap 0.2s' }}
+                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.gap = '12px')}
+                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.gap = '7px')}>
+                  شاهد الديمو <ExternalLink size={13} />
+                </a>
               </div>
-
-              <a href={link} target="_blank" rel="noopener noreferrer"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 700, color: color, textDecoration: 'none', transition: 'opacity 0.2s' }}
-                onMouseEnter={e => (e.currentTarget as HTMLElement).style.opacity = '0.7'}
-                onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = '1'}>
-                <ExternalLink size={12} /> {linkLabel}
-              </a>
             </motion.div>
           ))}
         </div>

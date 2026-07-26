@@ -5,11 +5,11 @@ import { Menu, X } from 'lucide-react';
 const WA = 'https://wa.me/966551378531';
 
 const LINKS = [
-  { href: '#services', label: 'الخدمات' },
-  { href: '#clinic',   label: 'عيادات' },
-  { href: '#projects', label: 'مشاريعنا' },
+  { href: '#services',  label: 'الخدمات' },
+  { href: '#live-demo', label: 'الديمو' },
+  { href: '#wallet',    label: 'Apple Wallet' },
+  { href: '#bookings',  label: 'الحجوزات' },
   { href: '#calculator', label: 'الأسعار' },
-  { href: '#contact',  label: 'تواصل' },
 ];
 
 export default function Navbar() {
@@ -35,7 +35,7 @@ export default function Navbar() {
       <header style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
         transition: 'background 0.3s, border-color 0.3s',
-        background: scrolled ? 'rgba(8,8,8,0.88)' : 'transparent',
+        background: scrolled ? 'rgba(7,7,15,0.92)' : 'transparent',
         backdropFilter: scrolled ? 'blur(16px)' : 'none',
         WebkitBackdropFilter: scrolled ? 'blur(16px)' : 'none',
         borderBottom: `1px solid ${scrolled ? 'rgba(255,255,255,0.07)' : 'transparent'}`,
@@ -48,7 +48,7 @@ export default function Navbar() {
           <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 9, textDecoration: 'none', flexShrink: 0 }}>
             <div style={{
               width: 34, height: 34, borderRadius: 9,
-              background: 'var(--blue)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'linear-gradient(135deg, var(--purple), var(--blue))', display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontWeight: 900, fontSize: 15, color: '#fff', letterSpacing: '-0.02em',
             }}>ت</div>
             <div>
@@ -100,7 +100,7 @@ export default function Navbar() {
             transition={{ duration: 0.2 }}
             style={{
               position: 'fixed', inset: 0, zIndex: 999,
-              background: 'rgba(8,8,8,0.97)',
+              background: 'rgba(7,7,15,0.97)',
               backdropFilter: 'blur(20px)',
               display: 'flex', flexDirection: 'column',
               paddingTop: 80, paddingBottom: 32, paddingInline: 28,
@@ -117,7 +117,7 @@ export default function Navbar() {
                     borderBottom: '1px solid var(--border)',
                     transition: 'color 0.15s',
                   }}
-                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = 'var(--blue)'}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = 'var(--purple2)'}
                   onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = '#fff'}>
                   {l.label}
                 </motion.a>
@@ -126,7 +126,7 @@ export default function Navbar() {
             <motion.a href={WA} target="_blank" rel="noopener noreferrer"
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.35 }}
-              className="btn-blue" onClick={() => setOpen(false)}
+              className="btn-purple" onClick={() => setOpen(false)}
               style={{ textAlign: 'center', justifyContent: 'center', borderRadius: 12, padding: '16px', fontSize: 16 }}>
               <span className="holo-shimmer" />
               ابدأ مشروعك على واتساب ←
