@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/talqa-tech/"
+title = "تلقا تك — الموقع الرسمي"
+version = "1.0.0"
+id = "artifacts/talqa-tech"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/talqa-tech/" ]
+localPort = 18982
+
+[services.development]
+run = "pnpm --filter @workspace/talqa-tech run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/talqa-tech", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/talqa-tech/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18982"
+BASE_PATH = "/talqa-tech/"
