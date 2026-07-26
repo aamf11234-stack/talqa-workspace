@@ -6,11 +6,16 @@ import Navbar             from './components/Navbar';
 import Hero               from './components/Hero';
 import Marquee            from './components/Marquee';
 import HorizontalServices from './components/HorizontalServices';
-import Terminal           from './components/Terminal';
+import PhoneShowcase      from './components/PhoneShowcase';
+import WalletCustomizer   from './components/WalletCustomizer';
 import SpotlightSection   from './components/SpotlightSection';
+import Terminal           from './components/Terminal';
+import TechStack          from './components/TechStack';
 import Process            from './components/Process';
 import Calculator         from './components/Calculator';
+import Testimonials       from './components/Testimonials';
 import AppleSection       from './components/AppleSection';
+import FAQ                from './components/FAQ';
 import TrustBar           from './components/TrustBar';
 import Footer             from './components/Footer';
 import WhatsAppFloat      from './components/WhatsAppFloat';
@@ -34,11 +39,16 @@ export default function App() {
           <Hero />
           <Marquee />
           <HorizontalServices />
+          <PhoneShowcase />
+          <WalletCustomizer />
           <SpotlightSection />
           <Terminal />
+          <TechStack />
           <Process />
           <Calculator />
+          <Testimonials />
           <AppleSection />
+          <FAQ />
           <TrustBar />
         </main>
         <Footer />
