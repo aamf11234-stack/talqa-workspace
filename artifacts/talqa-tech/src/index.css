@@ -259,4 +259,5 @@ body {
 
 @media (max-width: 768px) {
   .btn-purple, .btn-blue, .btn-ghost { padding: 11px 20px; font-size: 14px; }
+  .floating-card { display: none !important; }
 }

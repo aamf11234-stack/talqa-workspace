@@ -6,7 +6,7 @@ const WA = 'https://wa.me/966551378531?text=أريد%20تطبيق%20مثل%20ا�
 
 const DEMOS = [
   {
-    id: 'brown',
+    id: 'loyalty',
     label: 'تطبيق الولاء',
     sub: 'نقاط · بطاقة رقمية · Apple Wallet',
     color: '#C4783A',
@@ -27,7 +27,7 @@ const DEMOS = [
 
 /* ── Realistic iPhone frame ── */
 function PhoneFrame({ url, color }: { url: string; color: string }) {
-  const [unlocked, setUnlocked] = useState(false);
+  const [unlocked, setUnlocked] = useState(true);
 
   /* iPhone 14 Pro ratio ≈ 390 × 844  →  scale down to 340 × 736 */
   const W = 340;

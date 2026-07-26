@@ -20,6 +20,7 @@ function Stat({ end, label, suffix = '' }: { end: number; label: string; suffix?
 function FloatingCard({ children, style }: { children: React.ReactNode; style: React.CSSProperties }) {
   return (
     <motion.div
+      className="floating-card"
       animate={{ y: [0, -10, 0] }}
       transition={{ duration: 4 + Math.random() * 2, repeat: Infinity, ease: 'easeInOut' }}
       style={{
