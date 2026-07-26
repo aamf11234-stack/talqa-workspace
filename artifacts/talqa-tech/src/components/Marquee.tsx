@@ -3,7 +3,7 @@ import { useRef } from 'react';
 const ITEMS = [
   'React Native', 'iOS', 'Android', 'Apple Wallet', 'واتساب API',
   'Node.js', 'TypeScript', 'تطبيقات جوال', 'Apple PassKit',
-  'Push Notifications', 'لوحات تحكم', 'API Integration', 'جازان',
+  'Push Notifications', 'لوحات تحكم', 'API Integration', 'الرياض',
   'أتمتة كاملة', 'Supabase', 'PostgreSQL', 'Next.js',
 ];
 

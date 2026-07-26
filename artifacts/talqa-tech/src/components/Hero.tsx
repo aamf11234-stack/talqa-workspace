@@ -89,7 +89,7 @@ export default function Hero() {
             color: 'rgba(130,175,255,0.8)', letterSpacing: '0.07em',
           }}>
             <span className="pulse-dot" style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--blue)', flexShrink: 0 }} />
-            تلقا تك · جازان، المملكة العربية السعودية
+            تلقا تك · الرياض، المملكة العربية السعودية
           </span>
         </motion.div>
 

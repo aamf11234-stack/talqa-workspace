@@ -16,7 +16,7 @@ export default function Footer() {
               </div>
             </div>
             <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.8, maxWidth: 240, marginBottom: 16 }}>
-              شركة برمجة سعودية في جازان. نبني تطبيقات جوال ومواقع وأنظمة Apple Wallet.
+              شركة برمجة سعودية في الرياض. نبني تطبيقات جوال ومواقع وأنظمة Apple Wallet.
             </p>
             <div style={{ fontSize: 11, color: 'var(--text3)', fontWeight: 600 }}>س.ت. 7054835322</div>
           </div>
@@ -25,7 +25,7 @@ export default function Footer() {
           {[
             { title: 'الخدمات', links: [['الخدمات', '#services'], ['العيادات', '#clinic'], ['Apple Wallet', '#wallet'], ['الأسعار', '#calculator']] },
             { title: 'الشركة',  links: [['مشاريعنا', '#projects'], ['كيف نعمل', '#process'], ['الأسئلة الشائعة', '#faq']] },
-            { title: 'تواصل',   links: [['واتساب', WA], ['جازان، صبيا وضمد', '#'], ['966551378531+', WA]] },
+            { title: 'تواصل',   links: [['واتساب', WA], ['الرياض، المملكة العربية السعودية', '#'], ['966551378531+', WA]] },
           ].map(({ title, links }) => (
             <div key={title}>
               <div style={{ fontSize: 11, fontWeight: 800, color: '#fff', letterSpacing: '0.06em', marginBottom: 14, textTransform: 'uppercase' }}>{title}</div>
