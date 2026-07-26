@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, MessageCircle } from 'lucide-react';
+import { ExternalLink, MessageCircle, Lock, Play } from 'lucide-react';
 
 const WA = 'https://wa.me/966551378531?text=أريد%20تطبيق%20مثل%20الديمو';
 
@@ -10,7 +10,7 @@ const DEMOS = [
     label: 'تطبيق الولاء',
     sub: 'نقاط · بطاقة رقمية · Apple Wallet',
     color: '#C4783A',
-    url: '/brown-dose/',
+    url: '/brown-dose/?mode=app',
     description: 'يشوف عميلك نقاطه ويحصل على مكافآت مباشرة من جواله — بدون تطبيق خارجي.',
     features: ['بطاقة Apple Wallet', 'نقاط وزيارات', 'عروض تلقائية', 'Push Notifications'],
   },
@@ -19,7 +19,7 @@ const DEMOS = [
     label: 'تطبيق العضوية',
     sub: 'اشتراكات · بطاقة عضوية · رصيد',
     color: '#8B5CF6',
-    url: '/haeez-loyalty/',
+    url: '/haeez-loyalty/?mode=app',
     description: 'بطاقة عضوية رقمية — الرصيد والزيارات والمستوى في مكان واحد.',
     features: ['بطاقة عضوية NFC', 'رصيد قابل للشحن', 'مستويات العضوية', 'سجل المعاملات'],
   },
@@ -27,11 +27,13 @@ const DEMOS = [
 
 /* ── Realistic iPhone frame ── */
 function PhoneFrame({ url, color }: { url: string; color: string }) {
+  const [unlocked, setUnlocked] = useState(false);
+
   /* iPhone 14 Pro ratio ≈ 390 × 844  →  scale down to 340 × 736 */
   const W = 340;
   const H = 736;
-  const R = 50;          /* corner radius of the outer shell */
-  const BORDER = 8;      /* shell thickness */
+  const R = 50;
+  const BORDER = 8;
   const innerR = R - BORDER + 2;
 
   return (
@@ -54,7 +56,7 @@ function PhoneFrame({ url, color }: { url: string; color: string }) {
           '0 60px 120px rgba(0,0,0,0.75)',
           'inset 0 1px 0 rgba(255,255,255,0.18)',
           'inset 0 -1px 0 rgba(255,255,255,0.06)',
-          `0 0 0 1px rgba(255,255,255,0.06)`,
+          '0 0 0 1px rgba(255,255,255,0.06)',
         ].join(', '),
         padding: BORDER,
         boxSizing: 'border-box',
@@ -73,45 +75,103 @@ function PhoneFrame({ url, color }: { url: string; color: string }) {
             position: 'absolute', top: 12, left: '50%',
             transform: 'translateX(-50%)',
             width: 108, height: 30,
-            background: '#000',
-            borderRadius: 20,
-            zIndex: 10,
-            boxShadow: '0 0 0 2px rgba(255,255,255,0.08)',
+            background: '#000', borderRadius: 20,
+            zIndex: 20, boxShadow: '0 0 0 2px rgba(255,255,255,0.08)',
           }} />
 
-          {/* Status bar overlay so Dynamic Island blends in */}
+          {/* Status bar overlay */}
           <div style={{
-            position: 'absolute', top: 0, left: 0, right: 0,
-            height: 52,
+            position: 'absolute', top: 0, left: 0, right: 0, height: 52,
             background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, transparent 100%)',
-            zIndex: 9, pointerEvents: 'none',
+            zIndex: 15, pointerEvents: 'none',
           }} />
 
-          {/* The actual app */}
-          <iframe
-            src={url}
-            style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
-            title="demo app"
-            loading="lazy"
-          />
+          {/* App iframe — only rendered after unlock */}
+          {unlocked && (
+            <iframe
+              src={url}
+              style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
+              title="demo app"
+              loading="eager"
+            />
+          )}
 
-          {/* Home indicator overlay */}
+          {/* Copyright gate overlay */}
+          <AnimatePresence>
+            {!unlocked && (
+              <motion.div
+                initial={{ opacity: 1 }}
+                exit={{ opacity: 0, scale: 1.04 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                style={{
+                  position: 'absolute', inset: 0, zIndex: 30,
+                  background: 'linear-gradient(160deg, #0e0e18 0%, #07070f 100%)',
+                  display: 'flex', flexDirection: 'column',
+                  alignItems: 'center', justifyContent: 'center',
+                  gap: 0, padding: '32px 24px',
+                  textAlign: 'center',
+                }}>
+
+                {/* Logo mark */}
+                <div style={{
+                  width: 56, height: 56, borderRadius: 16, marginBottom: 20,
+                  background: `linear-gradient(135deg, ${color}30, ${color}10)`,
+                  border: `1px solid ${color}40`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <Lock size={22} color={color} />
+                </div>
+
+                {/* Copyright text */}
+                <div style={{ fontSize: 11, fontWeight: 800, color: 'rgba(255,255,255,0.35)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: 8 }}>
+                  جميع الحقوق محفوظة
+                </div>
+                <div style={{ fontSize: 15, fontWeight: 900, color: '#fff', marginBottom: 6 }}>
+                  تلقا تك · TLQA TECH
+                </div>
+                <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', marginBottom: 28, lineHeight: 1.6 }}>
+                  هذا التطبيق من تصميم وتطوير تلقا تك.
+                  <br />يُمنع النسخ أو التقليد بدون إذن.
+                </div>
+
+                {/* Unlock button */}
+                <motion.button
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.96 }}
+                  onClick={() => setUnlocked(true)}
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: 8,
+                    padding: '13px 26px', borderRadius: 14, border: 'none',
+                    background: `linear-gradient(135deg, ${color}, ${color}99)`,
+                    color: '#fff', fontFamily: 'Cairo, sans-serif',
+                    fontSize: 14, fontWeight: 800, cursor: 'pointer',
+                    boxShadow: `0 8px 28px ${color}45`,
+                  }}>
+                  <Play size={14} fill="#fff" />
+                  جرّب الديمو
+                </motion.button>
+
+                <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.18)', marginTop: 16 }}>
+                  بالضغط توافق على شروط الاستخدام
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Home indicator */}
           <div style={{
             position: 'absolute', bottom: 10, left: '50%',
             transform: 'translateX(-50%)',
-            width: 112, height: 4,
-            borderRadius: 99,
+            width: 112, height: 4, borderRadius: 99,
             background: 'rgba(255,255,255,0.3)',
-            zIndex: 10, pointerEvents: 'none',
+            zIndex: 25, pointerEvents: 'none',
           }} />
         </div>
       </div>
 
-      {/* Side buttons — volume up */}
+      {/* Side buttons */}
       <div style={{ position: 'absolute', top: 130, left: -4, width: 4, height: 34, borderRadius: '3px 0 0 3px', background: 'rgba(255,255,255,0.13)' }} />
-      {/* volume down */}
       <div style={{ position: 'absolute', top: 174, left: -4, width: 4, height: 34, borderRadius: '3px 0 0 3px', background: 'rgba(255,255,255,0.13)' }} />
-      {/* power */}
       <div style={{ position: 'absolute', top: 160, right: -4, width: 4, height: 64, borderRadius: '0 3px 3px 0', background: 'rgba(255,255,255,0.13)' }} />
     </div>
   );

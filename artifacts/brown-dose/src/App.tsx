@@ -358,12 +358,28 @@ function LandingPage() {
 
 function App() {
   const [showAdmin, setShowAdmin] = useState(false);
+  const isAppMode = new URLSearchParams(window.location.search).get('mode') === 'app';
 
-  // expose opener so the footer ⚙ button can call it
   useEffect(() => {
     (window as any).__bdAdmin = () => setShowAdmin(true);
     return () => { delete (window as any).__bdAdmin; };
   }, []);
+
+  // ?mode=app → show the interactive app directly, no landing page
+  if (isAppMode) {
+    return (
+      <div dir="rtl" style={{ width: '100%', height: '100dvh', background: 'hsl(var(--background))', overflow: 'hidden' }}>
+        <AppProvider>
+          <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}>
+            <AnimatePresence mode="wait">
+              {/* re-use useAppContext inside a child */}
+            </AnimatePresence>
+            <AppModeInner />
+          </div>
+        </AppProvider>
+      </div>
+    );
+  }
 
   return (
     <div dir="rtl">
@@ -371,6 +387,22 @@ function App() {
         ? <AdminScreen onClose={() => setShowAdmin(false)} />
         : <LandingPage />}
     </div>
+  );
+}
+
+function AppModeInner() {
+  const { activeTab } = useAppContext();
+  return (
+    <>
+      <AnimatePresence mode="wait">
+        {activeTab === 'home'   && <HomeScreen   key="home" />}
+        {activeTab === 'menu'   && <MenuScreen   key="menu" />}
+        {activeTab === 'orders' && <OrdersScreen key="orders" />}
+        {activeTab === 'card'   && <CardScreen   key="card" />}
+      </AnimatePresence>
+      <BottomNav />
+      <OrderFlow />
+    </>
   );
 }
 

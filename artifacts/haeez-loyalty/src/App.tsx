@@ -688,6 +688,7 @@ function AppScreensStrip({ onTabSelect }: { onTabSelect: (t: Tab) => void }) {
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('home');
   const [showShakeDeal, setShowShakeDeal] = useState(false);
+  const isAppMode = new URLSearchParams(window.location.search).get('mode') === 'app';
   const handleShake = useCallback(() => {
     if (!showShakeDeal) setShowShakeDeal(true);
   }, [showShakeDeal]);
@@ -697,6 +698,27 @@ export default function App() {
     document.documentElement.dir = 'rtl';
     document.documentElement.lang = 'ar';
   }, []);
+
+  // ?mode=app → show only the phone screens, no landing page wrapper
+  if (isAppMode) {
+    return (
+      <OrdersProvider>
+      <BrandProvider>
+        <div dir="rtl" style={{ width: '100%', height: '100dvh', background: '#F8F6F2', display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative', fontFamily: "'Readex Pro','SF Pro Display',sans-serif", color: '#2C2825' }}>
+          <AnimatePresence>
+            {showShakeDeal && (
+              <div style={{ position: 'absolute', inset: 0, zIndex: 100 }}>
+                <FlashDealModal onClose={() => setShowShakeDeal(false)} />
+              </div>
+            )}
+          </AnimatePresence>
+          <PhoneScreens activeTab={activeTab} onShakeTrigger={() => setShowShakeDeal(true)} onNavigate={setActiveTab} />
+          <BottomNav activeTab={activeTab} onChangeTab={setActiveTab} notifCount={1} />
+        </div>
+      </BrandProvider>
+      </OrdersProvider>
+    );
+  }
 
   return (
     <OrdersProvider>
