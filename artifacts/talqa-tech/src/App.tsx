@@ -13,6 +13,7 @@ import Terminal           from './components/Terminal';
 import TechStack          from './components/TechStack';
 import Process            from './components/Process';
 import Calculator         from './components/Calculator';
+import ProjectsGallery    from './components/ProjectsGallery';
 import Testimonials       from './components/Testimonials';
 import AppleSection       from './components/AppleSection';
 import FAQ                from './components/FAQ';
@@ -46,6 +47,7 @@ export default function App() {
           <TechStack />
           <Process />
           <Calculator />
+          <ProjectsGallery />
           <Testimonials />
           <AppleSection />
           <FAQ />
