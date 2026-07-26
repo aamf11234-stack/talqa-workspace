@@ -8,6 +8,7 @@ import Marquee            from './components/Marquee';
 import HorizontalServices from './components/HorizontalServices';
 import PhoneShowcase      from './components/PhoneShowcase';
 import WalletCustomizer   from './components/WalletCustomizer';
+import LiveDemo           from './components/LiveDemo';
 import SpotlightSection   from './components/SpotlightSection';
 import Terminal           from './components/Terminal';
 import TechStack          from './components/TechStack';
@@ -40,6 +41,7 @@ export default function App() {
           <Hero />
           <Marquee />
           <HorizontalServices />
+          <LiveDemo />
           <PhoneShowcase />
           <WalletCustomizer />
           <SpotlightSection />
