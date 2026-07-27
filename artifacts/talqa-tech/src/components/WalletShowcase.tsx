@@ -181,7 +181,7 @@ function IPhoneFrame({ pal, type, brand, holder }: {
 export default function WalletShowcase() {
   const [palIdx, setPalIdx] = useState(0);
   const [typeIdx, setTypeIdx] = useState(0);
-  const [brand, setBrand] = useState('براون دوز');
+  const [brand, setBrand] = useState('تلقا تك');
   const [holder, setHolder] = useState('أحمد العتيبي');
 
   const pal  = PALETTES[palIdx];
