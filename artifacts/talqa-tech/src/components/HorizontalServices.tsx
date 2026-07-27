@@ -1,4 +1,8 @@
 import { motion } from 'framer-motion';
+import {
+  Smartphone, CreditCard, Globe, Monitor, Bot, CalendarDays, Star,
+  HeartPulse, Nfc, Zap, Palette, BarChart2, type LucideIcon,
+} from 'lucide-react';
 
 const WA = 'https://wa.me/966551378531?text=أبي%20أعرف%20أكثر%20عن%20خدماتكم';
 
@@ -158,86 +162,90 @@ function AnalyticsMini({ color }: { color: string }) {
 }
 
 /* ── SERVICES DATA ── */
-const SERVICES = [
+const SERVICES: {
+  Icon: LucideIcon; title: string; sub: string; desc: string;
+  tags: string[]; color: string; bg: string; size: string;
+  Visual: (p: { color: string }) => JSX.Element;
+}[] = [
   {
-    emoji: '📱', title: 'تطبيقات جوال',    sub: 'iOS & Android',
+    Icon: Smartphone, title: 'تطبيقات جوال', sub: 'iOS & Android',
     desc:  'تطبيقات احترافية تعمل على جميع الأجهزة بتصميم Native فاخر وتجربة مستخدم لا تُنسى.',
     tags:  ['React Native', 'Push Notifications', 'App Store & Play'],
     color: '#8B5CF6', bg: 'linear-gradient(135deg,#1a0a35 0%,#2d1260 100%)',
     size:  'large', Visual: PhoneMini,
   },
   {
-    emoji: '💳', title: 'Digital Wallet',  sub: 'Apple & Google Wallet',
+    Icon: CreditCard, title: 'Digital Wallet', sub: 'Apple & Google Wallet',
     desc:  'بطاقات ولاء، حجوزات، تذاكر وعضويات مباشرة في جيب عميلك — iPhone وAndroid، بدون تطبيق.',
     tags:  ['Apple Wallet', 'Google Wallet', 'NFC', 'QR Code'],
     color: '#06B6D4', bg: 'linear-gradient(135deg,#001020 0%,#0C4A6E 100%)',
     size:  'large', Visual: WalletMini,
   },
   {
-    emoji: '🌐', title: 'مواقع تسويقية', sub: 'Landing Pages',
+    Icon: Globe, title: 'مواقع تسويقية', sub: 'Landing Pages',
     desc:  'مواقع سريعة وجذابة تحوّل الزوار إلى عملاء — محسّنة للموبايل وGoogle.',
     tags:  ['SEO', 'Framer Motion', 'Core Web Vitals'],
     color: '#3B82F6', bg: 'linear-gradient(135deg,#000C20 0%,#0F2557 100%)',
     size:  'medium', Visual: GlobeMini,
   },
   {
-    emoji: '🖥️', title: 'لوحات تحكم',    sub: 'Admin Dashboard',
+    Icon: Monitor, title: 'لوحات تحكم', sub: 'Admin Dashboard',
     desc:  'رؤية كاملة على أعمالك — تقارير، مبيعات، عملاء، كل شيء في مكان واحد.',
     tags:  ['Analytics', 'Real-time', 'Multi-user'],
     color: '#10B981', bg: 'linear-gradient(135deg,#001A12 0%,#064E3B 100%)',
     size:  'medium', Visual: DashboardMini,
   },
   {
-    emoji: '🤖', title: 'مساعد واتساب', sub: 'AI Chatbot',
+    Icon: Bot, title: 'مساعد واتساب', sub: 'AI Chatbot',
     desc:  'ذكاء اصطناعي يرد على عملائك بلهجة طبيعية ويحوّل الاستفسار لحجز أو بيع.',
     tags:  ['WhatsApp API', 'AI', 'Auto-reply'],
     color: '#25D366', bg: 'linear-gradient(135deg,#001A0A 0%,#064E20 100%)',
     size:  'medium', Visual: ChatMini,
   },
   {
-    emoji: '📅', title: 'نظام حجوزات',  sub: 'Booking System',
+    Icon: CalendarDays, title: 'نظام حجوزات', sub: 'Booking System',
     desc:  'حجز، تذكير، وإلغاء تلقائي — مع إشعارات واتساب وساعة Apple.',
     tags:  ['Calendar', 'WhatsApp', 'Apple Watch'],
     color: '#F59E0B', bg: 'linear-gradient(135deg,#1A0A00 0%,#4A2800 100%)',
     size:  'medium', Visual: CalendarMini,
   },
   {
-    emoji: '⭐', title: 'برامج ولاء',    sub: 'Loyalty Programs',
+    Icon: Star, title: 'برامج ولاء', sub: 'Loyalty Programs',
     desc:  'نقاط، مستويات، ومكافآت — يخلي عميلك يرجع ويرجع.',
     tags:  ['Points', 'Tiers', 'Rewards'],
     color: '#D97706', bg: 'linear-gradient(135deg,#1A0800 0%,#4A2000 100%)',
     size:  'small', Visual: StarMini,
   },
   {
-    emoji: '🏥', title: 'إدارة عيادات', sub: 'Clinic System',
+    Icon: HeartPulse, title: 'إدارة عيادات', sub: 'Clinic System',
     desc:  'ملفات مرضى، وصفات، حجوزات، وتقارير طبية — كل شيء رقمي.',
     tags:  ['EMR', 'Prescriptions', 'Reports'],
     color: '#EC4899', bg: 'linear-gradient(135deg,#1A0015 0%,#4A0040 100%)',
     size:  'small', Visual: HospitalMini,
   },
   {
-    emoji: '📡', title: 'بطاقات NFC',   sub: 'NFC Business Cards',
+    Icon: Nfc, title: 'بطاقات NFC', sub: 'NFC Business Cards',
     desc:  'ضع جوالك قريب وتنتقل المعلومات — بطاقات أعمال المستقبل.',
     tags:  ['NFC', 'Digital Card', 'vCard'],
     color: '#A855F7', bg: 'linear-gradient(135deg,#100020 0%,#2D0060 100%)',
     size:  'small', Visual: NfcMini,
   },
   {
-    emoji: '⚡', title: 'أتمتة وربط',   sub: 'API & Automation',
+    Icon: Zap, title: 'أتمتة وربط', sub: 'API & Automation',
     desc:  'ربط أنظمتك ببعض — واتساب، بايمنت، ERP، أي API تبيه.',
     tags:  ['REST API', 'Webhooks', 'Zapier'],
     color: '#FB923C', bg: 'linear-gradient(135deg,#1A0800 0%,#5A2500 100%)',
     size:  'small', Visual: ZapMini,
   },
   {
-    emoji: '🎨', title: 'تصميم UI/UX',  sub: 'Design System',
+    Icon: Palette, title: 'تصميم UI/UX', sub: 'Design System',
     desc:  'هوية بصرية متكاملة — من الشعار لكل شاشة في التطبيق.',
     tags:  ['Figma', 'Brand Identity', 'UX Research'],
     color: '#F43F5E', bg: 'linear-gradient(135deg,#200010 0%,#600030 100%)',
     size:  'small', Visual: DesignMini,
   },
   {
-    emoji: '📊', title: 'تقارير وتحليل', sub: 'Analytics & BI',
+    Icon: BarChart2, title: 'تقارير وتحليل', sub: 'Analytics & BI',
     desc:  'بيانات حقيقية تساعدك تاخذ قرارات صح — مبيعات، عملاء، أداء.',
     tags:  ['Power BI', 'Real-time', 'Custom Reports'],
     color: '#84CC16', bg: 'linear-gradient(135deg,#0A1400 0%,#284200 100%)',
@@ -253,7 +261,7 @@ const fadeUp = (i: number) => ({
 });
 
 function ServiceCard({ s, i }: { s: typeof SERVICES[0]; i: number }) {
-  const { emoji, title, sub, desc, tags, color, bg, Visual } = s;
+  const { Icon, title, sub, desc, tags, color, bg, Visual } = s;
   return (
     <motion.div {...fadeUp(i)}
       whileHover={{ y: -4, transition: { duration: 0.25 } }}
@@ -283,8 +291,8 @@ function ServiceCard({ s, i }: { s: typeof SERVICES[0]; i: number }) {
 
       {/* Header row */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8, position: 'relative', zIndex: 2 }}>
-        <div style={{ width: 40, height: 40, borderRadius: 11, background: `${color}18`, border: `1px solid ${color}35`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>
-          {emoji}
+        <div style={{ width: 40, height: 40, borderRadius: 11, background: `${color}18`, border: `1px solid ${color}35`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color }}>
+          <Icon size={20} strokeWidth={1.75} />
         </div>
         <div style={{ padding: '3px 9px', borderRadius: 99, background: `${color}15`, border: `1px solid ${color}30`, fontSize: 9, fontWeight: 800, color, whiteSpace: 'nowrap', letterSpacing: '0.05em' }}>
           {sub}
@@ -393,7 +401,7 @@ export default function HorizontalServices() {
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
             <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-purple"
               style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span>📱</span> تواصل على واتساب
+              <Smartphone size={14} strokeWidth={1.75} /> تواصل على واتساب
             </a>
           </div>
         </motion.div>

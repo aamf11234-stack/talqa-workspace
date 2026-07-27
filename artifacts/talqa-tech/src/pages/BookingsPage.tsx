@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+  CalendarDays, CalendarCheck, Smartphone, Zap, RefreshCw, CreditCard,
+  BarChart2, Globe, Bot, HeartPulse, Scissors, Dumbbell, UtensilsCrossed,
+  Building2, BookOpen, TrendingDown, TrendingUp, Timer, Star, type LucideIcon,
+} from 'lucide-react';
 import PageLayout from './PageLayout';
 import BookingsSection from '../components/BookingsSection';
 import BookingBuilder from '../components/BookingBuilder';
@@ -7,24 +12,24 @@ import BookingsWebDemo from '../components/BookingsWebDemo';
 
 const WA = 'https://wa.me/966551378531?text=أبي%20نظام%20حجوزات%20لمشروعي';
 
-const SECTORS_SUPPORTED = [
-  { icon:'🏥', name:'عيادات', color:'#059669', stat:'↓٩٠٪ غياب' },
-  { icon:'💇', name:'صالونات', color:'#EC4899', stat:'↑٦٠٪ إشغال' },
-  { icon:'🏋️', name:'نوادي رياضية', color:'#F59E0B', stat:'↑٨٠٪ تجديد' },
-  { icon:'🍽️', name:'مطاعم', color:'#DC2626', stat:'↑٧٠٪ حجوزات' },
-  { icon:'🏨', name:'فنادق', color:'#8B5CF6', stat:'↓٤٠٪ إلغاء' },
-  { icon:'📚', name:'مراكز تعليمية', color:'#3B82F6', stat:'↑٥٠٪ التزام' },
+const SECTORS_SUPPORTED: { Icon: LucideIcon; name: string; color: string; stat: string }[] = [
+  { Icon: HeartPulse,       name:'عيادات',         color:'#059669', stat:'↓٩٠٪ غياب' },
+  { Icon: Scissors,         name:'صالونات',         color:'#EC4899', stat:'↑٦٠٪ إشغال' },
+  { Icon: Dumbbell,         name:'نوادي رياضية',    color:'#F59E0B', stat:'↑٨٠٪ تجديد' },
+  { Icon: UtensilsCrossed,  name:'مطاعم',           color:'#DC2626', stat:'↑٧٠٪ حجوزات' },
+  { Icon: Building2,        name:'فنادق',           color:'#8B5CF6', stat:'↓٤٠٪ إلغاء' },
+  { Icon: BookOpen,         name:'مراكز تعليمية',   color:'#3B82F6', stat:'↑٥٠٪ التزام' },
 ];
 
-const FEATURES = [
-  { icon:'📅', title:'بدون تضارب', desc:'الكالندر الذكي يمنع الحجوزات المتداخلة تلقائياً — صفر مواعيد مزدوجة للأبد.' },
-  { icon:'📱', title:'واتساب + Apple Watch', desc:'تأكيد الحجز على واتساب وتنبيه على Apple Watch قبل الموعد — العميل لا ينسى.' },
-  { icon:'⚡', title:'لحظي بالكامل', desc:'العميل يحجز، أنت تتلقى إشعاراً في ثوانٍ — لوحة تحكم مباشرة.' },
-  { icon:'🔄', title:'إلغاء وإعادة جدولة', desc:'العميل يعدّل موعده بنفسه بدون اتصال — يوفّر وقت فريقك ويرفع رضاه.' },
-  { icon:'💳', title:'دفع مسبق اختياري', desc:'استقبل الدفع عند الحجز عبر Apple Pay أو STC Pay — قلّل الإلغاءات المجانية.' },
-  { icon:'📊', title:'تحليلات الإشغال', desc:'أوقات الذروة والساعات الفارغة بالرسوم — خطط جدولك بدلاً من التخمين.' },
-  { icon:'🌍', title:'متعدد الفروع', desc:'فرع واحد أو عشرة — نظام واحد يدير كل المواعيد مع تقارير لكل فرع.' },
-  { icon:'🤖', title:'تذكير ذكي بالـ AI', desc:'يتعلم عادات عملائك ويرسل التذكير في اللحظة الأنسب — بدون إزعاج.' },
+const FEATURES: { Icon: LucideIcon; title: string; desc: string }[] = [
+  { Icon: CalendarCheck, title:'بدون تضارب',           desc:'الكالندر الذكي يمنع الحجوزات المتداخلة تلقائياً — صفر مواعيد مزدوجة للأبد.' },
+  { Icon: Smartphone,    title:'واتساب + Apple Watch',  desc:'تأكيد الحجز على واتساب وتنبيه على Apple Watch قبل الموعد — العميل لا ينسى.' },
+  { Icon: Zap,           title:'لحظي بالكامل',          desc:'العميل يحجز، أنت تتلقى إشعاراً في ثوانٍ — لوحة تحكم مباشرة.' },
+  { Icon: RefreshCw,     title:'إلغاء وإعادة جدولة',    desc:'العميل يعدّل موعده بنفسه بدون اتصال — يوفّر وقت فريقك ويرفع رضاه.' },
+  { Icon: CreditCard,    title:'دفع مسبق اختياري',      desc:'استقبل الدفع عند الحجز عبر Apple Pay أو STC Pay — قلّل الإلغاءات المجانية.' },
+  { Icon: BarChart2,     title:'تحليلات الإشغال',       desc:'أوقات الذروة والساعات الفارغة بالرسوم — خطط جدولك بدلاً من التخمين.' },
+  { Icon: Globe,         title:'متعدد الفروع',           desc:'فرع واحد أو عشرة — نظام واحد يدير كل المواعيد مع تقارير لكل فرع.' },
+  { Icon: Bot,           title:'تذكير ذكي بالـ AI',     desc:'يتعلم عادات عملائك ويرسل التذكير في اللحظة الأنسب — بدون إزعاج.' },
 ];
 
 const LIVE_BOOKINGS = [
@@ -36,11 +41,11 @@ const LIVE_BOOKINGS = [
   { name:'ريم الغامدي',    service:'جلسة تدليك',       time:'٢٤ د',    color:'#10B981' },
 ];
 
-const RESULTS = [
-  { n:'↓٩٠٪', label:'انخفاض الغياب', icon:'📉' },
-  { n:'↑٧٠٪', label:'زيادة الحجوزات', icon:'📈' },
-  { n:'٣×',   label:'توفير في وقت الفريق', icon:'⏱️' },
-  { n:'+٤.٨',  label:'متوسط تقييم العملاء', icon:'⭐' },
+const RESULTS: { n: string; label: string; Icon: LucideIcon }[] = [
+  { n:'↓٩٠٪', label:'انخفاض الغياب',        Icon: TrendingDown },
+  { n:'↑٧٠٪', label:'زيادة الحجوزات',       Icon: TrendingUp   },
+  { n:'٣×',   label:'توفير في وقت الفريق',  Icon: Timer        },
+  { n:'+٤.٨', label:'متوسط تقييم العملاء',  Icon: Star         },
 ];
 
 export default function BookingsPage() {
@@ -71,7 +76,7 @@ export default function BookingsPage() {
               transition={{ type:'spring', stiffness:220 }}
               style={{ display:'inline-flex', alignItems:'center', gap:10, marginBottom:28, padding:'10px 22px',
                 borderRadius:28, background:'rgba(5,150,105,0.1)', border:'1px solid rgba(5,150,105,0.3)' }}>
-              <span style={{ fontSize:22 }}>📅</span>
+              <CalendarDays size={20} strokeWidth={1.75} style={{ color:'#34D399' }} />
               <span style={{ fontSize:13, fontWeight:800, color:'#34D399', letterSpacing:0.3 }}>نظام الحجوزات الذكي</span>
             </motion.div>
 
@@ -104,7 +109,7 @@ export default function BookingsPage() {
                 <motion.div key={i} initial={{ opacity:0, x:-12 }} animate={{ opacity:1, x:0 }} transition={{ delay:0.4+i*0.08 }}
                   style={{ padding:'12px 14px', borderRadius:12, background:'rgba(5,150,105,0.08)',
                     border:'1px solid rgba(5,150,105,0.2)', display:'flex', alignItems:'center', gap:8 }}>
-                  <span style={{ fontSize:18 }}>{r.icon}</span>
+                  <r.Icon size={18} strokeWidth={1.75} style={{ color:'#34D399', flexShrink:0 }} />
                   <div>
                     <div style={{ fontSize:18, fontWeight:900, color:'#34D399', letterSpacing:-0.5 }}>{r.n}</div>
                     <div style={{ fontSize:10, color:'var(--text2)', lineHeight:1.3 }}>{r.label}</div>
@@ -180,7 +185,8 @@ export default function BookingsPage() {
           <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
             style={{ textAlign:'center', marginBottom:48 }}>
             <div className="section-label" style={{ color:'#34D399', borderColor:'rgba(52,211,153,0.3)',
-              background:'rgba(52,211,153,0.08)', marginBottom:16 }}>🏢 القطاعات</div>
+              background:'rgba(52,211,153,0.08)', marginBottom:16, display:'inline-flex', alignItems:'center', gap:6 }}>
+              <Building2 size={13} strokeWidth={2} /> القطاعات</div>
             <h2 style={{ fontWeight:900, fontSize:'clamp(1.8rem,4vw,3rem)', color:'#fff' }}>يعمل في كل القطاعات</h2>
           </motion.div>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(160px,1fr))', gap:12 }}>
@@ -191,7 +197,8 @@ export default function BookingsPage() {
                 style={{ padding:'18px 14px', borderRadius:14, textAlign:'center',
                   background:`${s.color}08`, border:`1px solid ${s.color}20`,
                   transition:'transform 0.2s' }}>
-                <div style={{ fontSize:26, marginBottom:8 }}>{s.icon}</div>
+                <div style={{ marginBottom:8, color:s.color, display:'flex', justifyContent:'center' }}>
+                  <s.Icon size={26} strokeWidth={1.5} /></div>
                 <div style={{ fontSize:12, fontWeight:800, color:'#fff', marginBottom:4 }}>{s.name}</div>
                 <div style={{ fontSize:10.5, fontWeight:700, color:s.color }}>{s.stat}</div>
               </motion.div>
@@ -206,7 +213,8 @@ export default function BookingsPage() {
           <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
             style={{ textAlign:'center', marginBottom:52 }}>
             <div className="section-label" style={{ color:'#34D399', borderColor:'rgba(52,211,153,0.3)',
-              background:'rgba(52,211,153,0.08)', marginBottom:16 }}>✨ المزايا</div>
+              background:'rgba(52,211,153,0.08)', marginBottom:16, display:'inline-flex', alignItems:'center', gap:6 }}>
+              <Zap size={13} strokeWidth={2} /> المزايا</div>
             <h2 style={{ fontWeight:900, fontSize:'clamp(1.8rem,4vw,3rem)', color:'#fff' }}>كل ما تحتاجه من أول يوم</h2>
           </motion.div>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))', gap:14 }}>
@@ -216,7 +224,7 @@ export default function BookingsPage() {
                 whileHover={{ y:-5 }}
                 style={{ padding:'22px', borderRadius:16, background:'rgba(255,255,255,0.03)',
                   border:'1px solid rgba(255,255,255,0.07)', transition:'transform 0.2s' }}>
-                <div style={{ fontSize:26, marginBottom:10 }}>{f.icon}</div>
+                <div style={{ marginBottom:10, color:'#34D399' }}><f.Icon size={24} strokeWidth={1.5} /></div>
                 <div style={{ fontSize:13.5, fontWeight:800, color:'#fff', marginBottom:6 }}>{f.title}</div>
                 <div style={{ fontSize:12, color:'var(--text2)', lineHeight:1.7 }}>{f.desc}</div>
               </motion.div>
@@ -233,7 +241,9 @@ export default function BookingsPage() {
       <section style={{ padding:'clamp(80px,10vw,120px) 24px', textAlign:'center',
         background:'radial-gradient(ellipse 70% 60% at 50% 50%,rgba(5,150,105,0.12) 0%,transparent 70%)' }}>
         <motion.div initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}>
-          <div style={{ fontSize:52, marginBottom:20 }}>📅</div>
+          <div style={{ display:'flex', justifyContent:'center', marginBottom:20 }}>
+            <CalendarDays size={52} strokeWidth={1.25} style={{ color:'#34D399' }} />
+          </div>
           <h2 style={{ fontWeight:900, fontSize:'clamp(1.8rem,4vw,3rem)', color:'#fff', marginBottom:14 }}>
             وصّفر الغياب من يومها</h2>
           <p style={{ fontSize:16, color:'var(--text2)', marginBottom:36, maxWidth:420, margin:'0 auto 36px' }}>

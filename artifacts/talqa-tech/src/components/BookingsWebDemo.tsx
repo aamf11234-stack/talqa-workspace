@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Stethoscope, Waves, Eye, Syringe, Sparkles, Activity,
+  LayoutDashboard, CalendarDays, Users, BarChart2, Settings,
+  Calendar, Timer, Banknote, CheckCircle2, MessageCircle, type LucideIcon,
+} from 'lucide-react';
 
 function useIsMobile() {
   const [m, setM] = useState(() => window.innerWidth < 768);
@@ -37,16 +42,22 @@ const APPOINTMENTS: Appt[] = [
   { id:11,day:4, hour:14, span:2, name:'بندر الحربي',   service:'علاج طبيعي',   color:'#0EA5E9', bg:'rgba(14,165,233,0.18)', status:'confirmed', avatar:'ب', price:'٥٥٠ ر' },
 ];
 
-const SERVICES = [
-  { icon:'🦷', name:'فحص أسنان',      price:'٢٥٠ ر', duration:'٣٠ د', color:'#059669' },
-  { icon:'💆', name:'تدليك علاجي',    price:'٤٥٠ ر', duration:'٦٠ د', color:'#8B5CF6' },
-  { icon:'👁',  name:'فحص نظر',       price:'٢٠٠ ر', duration:'٣٠ د', color:'#10B981' },
-  { icon:'💉', name:'استشارة طبية',   price:'١٥٠ ر', duration:'٢٠ د', color:'#F59E0B' },
-  { icon:'🧖', name:'جلسة تجميل',    price:'٨٠٠ ر', duration:'٩٠ د', color:'#EC4899' },
-  { icon:'🏃', name:'علاج طبيعي',    price:'٥٥٠ ر', duration:'٦٠ د', color:'#0EA5E9' },
+const SERVICES: { Icon: LucideIcon; name: string; price: string; duration: string; color: string }[] = [
+  { Icon: Stethoscope, name:'فحص أسنان',    price:'٢٥٠ ر', duration:'٣٠ د', color:'#059669' },
+  { Icon: Waves,       name:'تدليك علاجي',  price:'٤٥٠ ر', duration:'٦٠ د', color:'#8B5CF6' },
+  { Icon: Eye,         name:'فحص نظر',      price:'٢٠٠ ر', duration:'٣٠ د', color:'#10B981' },
+  { Icon: Syringe,     name:'استشارة طبية', price:'١٥٠ ر', duration:'٢٠ د', color:'#F59E0B' },
+  { Icon: Sparkles,    name:'جلسة تجميل',   price:'٨٠٠ ر', duration:'٩٠ د', color:'#EC4899' },
+  { Icon: Activity,    name:'علاج طبيعي',   price:'٥٥٠ ر', duration:'٦٠ د', color:'#0EA5E9' },
 ];
 
-const NAV = ['📊 الرئيسية', '📅 التقويم', '👥 العملاء', '📈 التقارير', '⚙️ الإعدادات'];
+const NAV: { Icon: LucideIcon; label: string }[] = [
+  { Icon: LayoutDashboard, label: 'الرئيسية'   },
+  { Icon: CalendarDays,    label: 'التقويم'    },
+  { Icon: Users,           label: 'العملاء'    },
+  { Icon: BarChart2,       label: 'التقارير'   },
+  { Icon: Settings,        label: 'الإعدادات'  },
+];
 
 const SLOT_H = 56; // px per hour
 
@@ -206,14 +217,16 @@ function RightPanel({ selected, onClose, newSlot, onBook }:
           </div>
           <StatusBadge s={selected.status}/>
         </div>
-        {[['📅 الوقت', `${DAYS[selected.day]}  ${hourLabel(selected.hour)}`],
-          ['⏱ المدة', `${selected.span * 30} دقيقة`],
-          ['💰 السعر', selected.price],
-        ].map(([lbl,val]) => (
+        {[
+          { lbl:'الوقت',   val:`${DAYS[selected.day]}  ${hourLabel(selected.hour)}`, I: Calendar },
+          { lbl:'المدة',   val:`${selected.span * 30} دقيقة`,                        I: Timer    },
+          { lbl:'السعر',   val:selected.price,                                        I: Banknote },
+        ].map(({lbl,val,I}) => (
           <div key={lbl} style={{ display:'flex', justifyContent:'space-between', alignItems:'center',
             padding:'9px 12px', borderRadius:10, background:'rgba(255,255,255,0.04)',
             border:'1px solid rgba(255,255,255,0.06)', marginBottom:7 }}>
-            <span style={{ fontSize:10.5, color:'rgba(255,255,255,0.5)', fontFamily:'Cairo,sans-serif' }}>{lbl}</span>
+            <span style={{ display:'flex', alignItems:'center', gap:5, fontSize:10.5, color:'rgba(255,255,255,0.5)', fontFamily:'Cairo,sans-serif' }}>
+              <I size={11} strokeWidth={2} />{lbl}</span>
             <span style={{ fontSize:11, fontWeight:800, color:'#fff', fontFamily:'Cairo,sans-serif' }}>{val}</span>
           </div>
         ))}
@@ -238,7 +251,7 @@ function RightPanel({ selected, onClose, newSlot, onBook }:
         <motion.div animate={{ scale:[1,1.15,1] }} transition={{ duration:0.5 }}
           style={{ width:64, height:64, borderRadius:20, background:'rgba(5,150,105,0.2)',
             border:'2px solid #059669', display:'flex', alignItems:'center', justifyContent:'center',
-            fontSize:28, marginBottom:16 }}>✅</motion.div>
+            marginBottom:16 }}><CheckCircle2 size={28} strokeWidth={1.75} style={{ color:'#34D399' }} /></motion.div>
         <div style={{ fontSize:15, fontWeight:900, color:'#fff', fontFamily:'Cairo,sans-serif', marginBottom:8 }}>تم تأكيد الموعد!</div>
         <div style={{ fontSize:11, color:'rgba(255,255,255,0.5)', lineHeight:1.7, fontFamily:'Cairo,sans-serif' }}>
           رسالة واتساب تذهب لـ {name || 'العميل'}<br/>
@@ -247,7 +260,8 @@ function RightPanel({ selected, onClose, newSlot, onBook }:
         </div>
         <div style={{ marginTop:16, padding:'10px 20px', borderRadius:12,
           background:'rgba(37,211,102,0.1)', border:'1px solid rgba(37,211,102,0.3)' }}>
-          <div style={{ fontSize:9, color:'#25D366', fontWeight:800 }}>💬 واتساب أُرسل تلقائياً</div>
+          <div style={{ display:'flex', alignItems:'center', gap:4, fontSize:9, color:'#25D366', fontWeight:800 }}>
+            <MessageCircle size={10} strokeWidth={2}/> واتساب أُرسل تلقائياً</div>
         </div>
         <button onClick={() => { setBooked(false); onClose(); }}
           style={{ marginTop:16, padding:'9px 24px', borderRadius:10, background:'rgba(255,255,255,0.07)',
@@ -280,7 +294,9 @@ function RightPanel({ selected, onClose, newSlot, onBook }:
                   style={{ padding:'10px 12px', borderRadius:11, background:`${s.color}10`,
                     border:`1px solid ${s.color}30`, cursor:'pointer', display:'flex',
                     alignItems:'center', gap:10, textAlign:'right' }}>
-                  <span style={{ fontSize:18 }}>{s.icon}</span>
+                  <div style={{ width:30, height:30, borderRadius:9, background:`${s.color}18`, border:`1px solid ${s.color}35`, display:'flex', alignItems:'center', justifyContent:'center', color:s.color, flexShrink:0 }}>
+                    <s.Icon size={15} strokeWidth={1.75} />
+                  </div>
                   <div style={{ flex:1 }}>
                     <div style={{ fontSize:11, fontWeight:800, color:'#fff', fontFamily:'Cairo,sans-serif' }}>{s.name}</div>
                     <div style={{ fontSize:9, color:'rgba(255,255,255,0.4)', fontFamily:'Cairo,sans-serif' }}>{s.duration}</div>
@@ -297,7 +313,9 @@ function RightPanel({ selected, onClose, newSlot, onBook }:
             <div style={{ padding:'10px 12px', borderRadius:10, background:`${chosenSvc!.color}12`,
               border:`1px solid ${chosenSvc!.color}30`, marginBottom:14,
               display:'flex', alignItems:'center', gap:8 }}>
-              <span style={{ fontSize:18 }}>{chosenSvc!.icon}</span>
+              <div style={{ width:30, height:30, borderRadius:9, background:`${chosenSvc!.color}18`, border:`1px solid ${chosenSvc!.color}35`, display:'flex', alignItems:'center', justifyContent:'center', color:chosenSvc!.color, flexShrink:0 }}>
+                <chosenSvc.Icon size={15} strokeWidth={1.75} />
+              </div>
               <div>
                 <div style={{ fontSize:11, fontWeight:800, color:'#fff', fontFamily:'Cairo,sans-serif' }}>{chosenSvc!.name}</div>
                 <div style={{ fontSize:9, color:`${chosenSvc!.color}cc` }}>{chosenSvc!.price} · {chosenSvc!.duration}</div>
@@ -371,7 +389,7 @@ function MobileDemo() {
         display:'flex', justifyContent:'space-between', alignItems:'center' }}>
         <div style={{ display:'flex', alignItems:'center', gap:8 }}>
           <div style={{ width:24, height:24, borderRadius:7, background:'linear-gradient(135deg,#059669,#047857)',
-            display:'flex', alignItems:'center', justifyContent:'center', fontSize:12 }}>📅</div>
+            display:'flex', alignItems:'center', justifyContent:'center' }}><CalendarDays size={12} strokeWidth={1.75} style={{ color:'#fff' }}/></div>
           <div>
             <div style={{ fontSize:11, fontWeight:900, color:'#fff', fontFamily:'Cairo,sans-serif' }}>تلقا حجوزات</div>
             <div style={{ fontSize:8, color:'rgba(255,255,255,0.35)', fontFamily:'Cairo,sans-serif' }}>لوحة التحكم</div>
@@ -389,8 +407,8 @@ function MobileDemo() {
       <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:1,
         borderBottom:'1px solid rgba(255,255,255,0.05)' }}>
         {[
-          { label:'إيرادات اليوم', val:`${arabicNum(revenue)} ر`, icon:'💰', color:'#34D399', sub:'↑١٨٪ عن أمس' },
-          { label:'مواعيد اليوم',  val:arabicNum(apptCount),       icon:'📅', color:'#60A5FA', sub:`${arabicNum(Math.floor(apptCount*0.6))} مؤكد` },
+          { label:'إيرادات اليوم', val:`${arabicNum(revenue)} ر`, Icon: Banknote,    color:'#34D399', sub:'↑١٨٪ عن أمس' },
+          { label:'مواعيد اليوم',  val:arabicNum(apptCount),     Icon: CalendarDays, color:'#60A5FA', sub:`${arabicNum(Math.floor(apptCount*0.6))} مؤكد` },
         ].map(k => (
           <div key={k.label} style={{ padding:'14px 16px', background:'rgba(255,255,255,0.02)' }}>
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
@@ -400,7 +418,7 @@ function MobileDemo() {
                   style={{ fontSize:22, fontWeight:900, color:k.color, letterSpacing:-0.5 }}>{k.val}</motion.div>
                 <div style={{ fontSize:9, color:k.color, fontWeight:700, marginTop:2 }}>{k.sub}</div>
               </div>
-              <span style={{ fontSize:20 }}>{k.icon}</span>
+              <k.Icon size={18} strokeWidth={1.75} style={{ color:k.color, flexShrink:0 }} />
             </div>
           </div>
         ))}
@@ -426,14 +444,15 @@ function MobileDemo() {
               {booked && chosenSvc ? (
                 <div style={{ textAlign:'center', padding:'24px 0' }}>
                   <motion.div animate={{ scale:[1,1.2,1] }} transition={{ duration:0.5 }}
-                    style={{ fontSize:48, marginBottom:12 }}>✅</motion.div>
+                    style={{ marginBottom:12 }}><CheckCircle2 size={48} strokeWidth={1.25} style={{ color:'#34D399' }} /></motion.div>
                   <div style={{ fontSize:15, fontWeight:900, color:'#fff', fontFamily:'Cairo,sans-serif', marginBottom:6 }}>تم تأكيد الموعد!</div>
                   <div style={{ fontSize:11, color:'rgba(255,255,255,0.5)', lineHeight:1.7, fontFamily:'Cairo,sans-serif' }}>
                     {bookingName || 'العميل'} · {chosenSvc.name}<br/>الأربعاء — ١٢:٠٠ ظ
                   </div>
                   <div style={{ margin:'14px 0', padding:'10px', borderRadius:12,
                     background:'rgba(37,211,102,0.1)', border:'1px solid rgba(37,211,102,0.3)' }}>
-                    <div style={{ fontSize:10, color:'#25D366', fontWeight:800 }}>💬 واتساب أُرسل تلقائياً</div>
+                    <div style={{ display:'flex', alignItems:'center', gap:4, fontSize:10, color:'#25D366', fontWeight:800 }}>
+                      <MessageCircle size={11} strokeWidth={2}/> واتساب أُرسل تلقائياً</div>
                   </div>
                   <button onClick={() => setShowBooking(false)}
                     style={{ padding:'8px 20px', borderRadius:10, background:'rgba(255,255,255,0.07)',
@@ -455,7 +474,7 @@ function MobileDemo() {
                         style={{ padding:'12px 14px', borderRadius:12, background:`${s.color}10`,
                           border:`1px solid ${s.color}30`, cursor:'pointer',
                           display:'flex', alignItems:'center', gap:12, textAlign:'right' }}>
-                        <span style={{ fontSize:20 }}>{s.icon}</span>
+                        <div style={{ width:34, height:34, borderRadius:10, background:`${s.color}18`, border:`1px solid ${s.color}35`, display:'flex', alignItems:'center', justifyContent:'center', color:s.color, flexShrink:0 }}><s.Icon size={17} strokeWidth={1.75}/></div>
                         <div style={{ flex:1 }}>
                           <div style={{ fontSize:12, fontWeight:800, color:'#fff', fontFamily:'Cairo,sans-serif' }}>{s.name}</div>
                           <div style={{ fontSize:9, color:'rgba(255,255,255,0.4)', fontFamily:'Cairo,sans-serif' }}>{s.duration}</div>
@@ -475,7 +494,9 @@ function MobileDemo() {
                   <div style={{ padding:'10px 12px', borderRadius:10, background:`${chosenSvc.color}12`,
                     border:`1px solid ${chosenSvc.color}30`, marginBottom:12,
                     display:'flex', alignItems:'center', gap:8 }}>
-                    <span style={{ fontSize:18 }}>{chosenSvc.icon}</span>
+                    <div style={{ width:30, height:30, borderRadius:9, background:`${chosenSvc.color}18`, border:`1px solid ${chosenSvc.color}35`, display:'flex', alignItems:'center', justifyContent:'center', color:chosenSvc.color, flexShrink:0 }}>
+                      <chosenSvc.Icon size={15} strokeWidth={1.75} />
+                    </div>
                     <div>
                       <div style={{ fontSize:11, fontWeight:800, color:'#fff', fontFamily:'Cairo,sans-serif' }}>{chosenSvc.name}</div>
                       <div style={{ fontSize:9, color:`${chosenSvc.color}cc` }}>{chosenSvc.price} · {chosenSvc.duration}</div>
@@ -650,14 +671,14 @@ export default function BookingsWebDemo() {
                 borderBottom:'1px solid #0f0f1e',
                 display:'flex', alignItems:'center', gap:6 }}>
                 <div style={{ width:12, height:12, borderRadius:3, background:'linear-gradient(135deg,#059669,#34D399)',
-                  display:'flex', alignItems:'center', justifyContent:'center', fontSize:7 }}>📅</div>
+                  display:'flex', alignItems:'center', justifyContent:'center' }}><CalendarDays size={7} strokeWidth={2} style={{ color:'#fff' }} /></div>
                 <span style={{ fontSize:11, color:'rgba(255,255,255,0.7)', fontFamily:'Cairo,sans-serif' }}>لوحة تحكم الحجوزات</span>
               </div>
             </div>
             {/* Address bar */}
             <div style={{ flex:1, background:'rgba(255,255,255,0.05)', borderRadius:8,
               padding:'5px 12px', display:'flex', alignItems:'center', gap:7, maxWidth:320 }}>
-              <span style={{ fontSize:10 }}>🔒</span>
+              <span style={{ fontSize:10, color:'rgba(255,255,255,0.4)' }}>🔒</span>
               <span style={{ fontSize:10, color:'rgba(255,255,255,0.4)', fontFamily:'monospace' }}>
                 app.tlqa.tech/bookings
               </span>
@@ -675,7 +696,7 @@ export default function BookingsWebDemo() {
               <div style={{ padding:'16px', borderBottom:'1px solid rgba(255,255,255,0.05)',
                 display:'flex', alignItems:'center', gap:8 }}>
                 <div style={{ width:28, height:28, borderRadius:8, background:'linear-gradient(135deg,#059669,#047857)',
-                  display:'flex', alignItems:'center', justifyContent:'center', fontSize:14 }}>📅</div>
+                  display:'flex', alignItems:'center', justifyContent:'center' }}><CalendarDays size={14} strokeWidth={1.75} style={{ color:'#fff' }} /></div>
                 <div>
                   <div style={{ fontSize:11, fontWeight:900, color:'#fff', fontFamily:'Cairo,sans-serif' }}>تلقا حجوزات</div>
                   <div style={{ fontSize:8, color:'rgba(255,255,255,0.35)', fontFamily:'Cairo,sans-serif' }}>لوحة التحكم</div>
@@ -691,8 +712,10 @@ export default function BookingsWebDemo() {
                       border: activeNav===i ? '1px solid rgba(5,150,105,0.35)' : '1px solid transparent',
                       color: activeNav===i ? '#34D399' : 'rgba(255,255,255,0.45)',
                       fontFamily:'Cairo,sans-serif', fontSize:11, fontWeight:activeNav===i?800:500,
-                      cursor:'pointer', textAlign:'right', transition:'all 0.15s' }}>
-                    {item}
+                      cursor:'pointer', textAlign:'right', transition:'all 0.15s',
+                      display:'flex', alignItems:'center', gap:7 }}>
+                    <item.Icon size={13} strokeWidth={1.75} style={{ flexShrink:0 }} />
+                    {item.label}
                   </button>
                 ))}
               </nav>

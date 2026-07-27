@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+  CalendarDays, Smartphone, Users, CreditCard, Bot, BarChart2,
+  FolderOpen, MessageSquare, Wallet, UserCircle, Check, Layers,
+  type LucideIcon,
+} from 'lucide-react';
 
 function useIsMobile() {
   const [m, setM] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
@@ -14,17 +19,17 @@ function useIsMobile() {
 /* ══════════════════════════════════════════
    DATA
 ══════════════════════════════════════════ */
-const TABS = [
-  { id:'bookings',  emoji:'📅', label:'الحجوزات الذكية' },
-  { id:'app',       emoji:'📱', label:'التطبيق والولاء'  },
-  { id:'hr',        emoji:'👥', label:'إدارة الفريق'     },
-  { id:'wallet',    emoji:'💳', label:'Digital Wallet'   },
-  { id:'ai',        emoji:'🤖', label:'الذكاء الاصطناعي'},
-  { id:'reports',   emoji:'📊', label:'التقارير'         },
-  { id:'files',     emoji:'📁', label:'إدارة الملفات'    },
-  { id:'comms',     emoji:'💬', label:'التواصل التلقائي' },
-  { id:'payments',  emoji:'💰', label:'المدفوعات'        },
-  { id:'crm',       emoji:'👤', label:'إدارة العملاء'   },
+const TABS: { id: string; Icon: LucideIcon; label: string }[] = [
+  { id:'bookings',  Icon: CalendarDays,   label:'الحجوزات الذكية' },
+  { id:'app',       Icon: Smartphone,     label:'التطبيق والولاء'  },
+  { id:'hr',        Icon: Users,          label:'إدارة الفريق'     },
+  { id:'wallet',    Icon: CreditCard,     label:'Digital Wallet'   },
+  { id:'ai',        Icon: Bot,            label:'الذكاء الاصطناعي'},
+  { id:'reports',   Icon: BarChart2,      label:'التقارير'         },
+  { id:'files',     Icon: FolderOpen,     label:'إدارة الملفات'    },
+  { id:'comms',     Icon: MessageSquare,  label:'التواصل التلقائي' },
+  { id:'payments',  Icon: Wallet,         label:'المدفوعات'        },
+  { id:'crm',       Icon: UserCircle,     label:'إدارة العملاء'   },
 ];
 
 const FEATURES: Record<string, {
@@ -32,7 +37,7 @@ const FEATURES: Record<string, {
   gradient: string;
   title: string;
   subtitle: string;
-  bullets: { icon: string; text: string }[];
+  bullets: { text: string }[];
   Visual: () => JSX.Element;
 }> = {
 
@@ -42,14 +47,14 @@ const FEATURES: Record<string, {
     title: 'نظام حجوزات لا يُقارن',
     subtitle: 'كل موعد في مكانه — بدون تداخل ولا فوضى',
     bullets: [
-      { icon:'🗓', text:'تقويم ذكي يمنع الحجوزات المتضاربة تلقائياً' },
-      { icon:'⚡', text:'حجز أونلاين ٢٤/٧ — العميل يختار الوقت بنفسه' },
-      { icon:'📲', text:'تذكير واتساب وSMS قبل الموعد بـ ٢٤ ساعة وساعة' },
-      { icon:'🚫', text:'نظام Anti-No-Show: رسوم إلغاء + قائمة انتظار تلقائية' },
-      { icon:'👨‍⚕️', text:'تخصيص الحجز بالموظف أو الخدمة أو الفرع' },
-      { icon:'📋', text:'قائمة انتظار ذكية تملأ الفراغات تلقائياً' },
-      { icon:'📍', text:'حجوزات متعددة الفروع من نافذة واحدة' },
-      { icon:'🔁', text:'حجوزات متكررة للعملاء المنتظمين' },
+      { text:'تقويم ذكي يمنع الحجوزات المتضاربة تلقائياً' },
+      { text:'حجز أونلاين ٢٤/٧ — العميل يختار الوقت بنفسه' },
+      { text:'تذكير واتساب وSMS قبل الموعد بـ ٢٤ ساعة وساعة' },
+      { text:'نظام Anti-No-Show: رسوم إلغاء + قائمة انتظار تلقائية' },
+      { text:'تخصيص الحجز بالموظف أو الخدمة أو الفرع' },
+      { text:'قائمة انتظار ذكية تملأ الفراغات تلقائياً' },
+      { text:'حجوزات متعددة الفروع من نافذة واحدة' },
+      { text:'حجوزات متكررة للعملاء المنتظمين' },
     ],
     Visual: BookingMockup,
   },
@@ -60,14 +65,14 @@ const FEATURES: Record<string, {
     title: 'تطبيق العلامة التجارية + ولاء العملاء',
     subtitle: 'تطبيق بهويتك — يجمع العميل ويجعله يعود',
     bullets: [
-      { icon:'🏆', text:'نقاط ولاء على كل عملية — تُضاف تلقائياً' },
-      { icon:'🎖', text:'مستويات VIP: عادي، فضي، ذهبي، بلاتيني' },
-      { icon:'🎁', text:'مكافآت قابلة للاستبدال — هدايا، خصومات، خدمات مجانية' },
-      { icon:'📱', text:'تطبيق iOS & Android بشعارك وألوانك' },
-      { icon:'🔔', text:'إشعارات Push مستهدفة — يصل العرض للعميل الصح' },
-      { icon:'🎂', text:'عروض تلقائية لأعياد الميلاد والمناسبات' },
-      { icon:'👥', text:'برنامج إحالة — العميل يجيب أصدقاءه ويكسب' },
-      { icon:'🛒', text:'متجر داخل التطبيق لبيع المنتجات والباقات' },
+      { text:'نقاط ولاء على كل عملية — تُضاف تلقائياً' },
+      { text:'مستويات VIP: عادي، فضي، ذهبي، بلاتيني' },
+      { text:'مكافآت قابلة للاستبدال — هدايا، خصومات، خدمات مجانية' },
+      { text:'تطبيق iOS & Android بشعارك وألوانك' },
+      { text:'إشعارات Push مستهدفة — يصل العرض للعميل الصح' },
+      { text:'عروض تلقائية لأعياد الميلاد والمناسبات' },
+      { text:'برنامج إحالة — العميل يجيب أصدقاءه ويكسب' },
+      { text:'متجر داخل التطبيق لبيع المنتجات والباقات' },
     ],
     Visual: AppMockup,
   },
@@ -78,14 +83,14 @@ const FEATURES: Record<string, {
     title: 'إدارة الفريق والموظفين',
     subtitle: 'ملفات، صلاحيات، متابعة — كل شيء رقمي',
     bullets: [
-      { icon:'👤', text:'ملف رقمي لكل موظف: بياناته، عقده، شهاداته' },
-      { icon:'🏗', text:'هيكل تنظيمي تفاعلي — كل قسم وتسلسله الوظيفي' },
-      { icon:'📁', text:'إدارة الملفات: رفع، تنظيم، إصدارات، تتبع لحظي' },
-      { icon:'✅', text:'دورة الاعتماد: الموظف يرفع، المدير يعتمد أو يرفض' },
-      { icon:'⏱', text:'الحضور والانصراف عبر QR أو بصمة رقمية' },
-      { icon:'📊', text:'تقارير الأداء الشهرية لكل موظف' },
-      { icon:'🔐', text:'صلاحيات دقيقة — كل شخص يرى ما يخصه فقط' },
-      { icon:'📲', text:'الموظف يتابع مهامه وطلباته من تطبيق الجوال' },
+      { text:'ملف رقمي لكل موظف: بياناته، عقده، شهاداته' },
+      { text:'هيكل تنظيمي تفاعلي — كل قسم وتسلسله الوظيفي' },
+      { text:'إدارة الملفات: رفع، تنظيم، إصدارات، تتبع لحظي' },
+      { text:'دورة الاعتماد: الموظف يرفع، المدير يعتمد أو يرفض' },
+      { text:'الحضور والانصراف عبر QR أو بصمة رقمية' },
+      { text:'تقارير الأداء الشهرية لكل موظف' },
+      { text:'صلاحيات دقيقة — كل شخص يرى ما يخصه فقط' },
+      { text:'الموظف يتابع مهامه وطلباته من تطبيق الجوال' },
     ],
     Visual: HRMockup,
   },
@@ -96,14 +101,14 @@ const FEATURES: Record<string, {
     title: 'Apple & Google Wallet',
     subtitle: 'بطاقتك في جيب كل عميل — iPhone وAndroid',
     bullets: [
-      { icon:'🍎', text:'Apple Wallet — تُضاف لـ iPhone بلمسة واحدة' },
-      { icon:'🤖', text:'Google Wallet — تعمل على كل أجهزة Android' },
-      { icon:'🎨', text:'تصميم بهوية علامتك — ألوان، شعار، خطوط' },
-      { icon:'🔄', text:'تحديث لحظي للرصيد والبيانات بدون تدخل العميل' },
-      { icon:'📳', text:'إشعار على شاشة الجوال عند الاقتراب من المكان' },
-      { icon:'📶', text:'تعمل بدون إنترنت — QR وNFC' },
-      { icon:'🎴', text:'٨ أنواع: ولاء، موعد، فندق، طيران، تذاكر، عضوية...' },
-      { icon:'🔐', text:'موقّعة رسمياً — لا يمكن تزويرها أو تكرارها' },
+      { text:'Apple Wallet — تُضاف لـ iPhone بلمسة واحدة' },
+      { text:'Google Wallet — تعمل على كل أجهزة Android' },
+      { text:'تصميم بهوية علامتك — ألوان، شعار، خطوط' },
+      { text:'تحديث لحظي للرصيد والبيانات بدون تدخل العميل' },
+      { text:'إشعار على شاشة الجوال عند الاقتراب من المكان' },
+      { text:'تعمل بدون إنترنت — QR وNFC' },
+      { text:'٨ أنواع: ولاء، موعد، فندق، طيران، تذاكر، عضوية...' },
+      { text:'موقّعة رسمياً — لا يمكن تزويرها أو تكرارها' },
     ],
     Visual: WalletMockup,
   },
@@ -114,14 +119,14 @@ const FEATURES: Record<string, {
     title: 'الذكاء الاصطناعي المدمج',
     subtitle: 'مساعد يعمل ٢٤/٧ — يرد، يحجز، يبيع',
     bullets: [
-      { icon:'💬', text:'بوت واتساب يرد على العملاء بالعربي فوراً' },
-      { icon:'📅', text:'يكمّل الحجز كاملاً بدون تدخل بشري' },
-      { icon:'🧠', text:'يتعلم من سلوك العملاء ويقترح أفضل الأوقات' },
-      { icon:'📢', text:'حملات تسويقية ذكية — يرسل للعميل الصح في الوقت الصح' },
-      { icon:'🔮', text:'تحليل نمط المبيعات والتنبؤ بالطلب' },
-      { icon:'😊', text:'تحليل رضا العملاء من التقييمات والردود' },
-      { icon:'🛒', text:'يُكمّل السلل المتروكة — يذكّر العميل ويحوّله' },
-      { icon:'📞', text:'يحول للموظف البشري عند الحاجة بسلاسة' },
+      { text:'بوت واتساب يرد على العملاء بالعربي فوراً' },
+      { text:'يكمّل الحجز كاملاً بدون تدخل بشري' },
+      { text:'يتعلم من سلوك العملاء ويقترح أفضل الأوقات' },
+      { text:'حملات تسويقية ذكية — يرسل للعميل الصح في الوقت الصح' },
+      { text:'تحليل نمط المبيعات والتنبؤ بالطلب' },
+      { text:'تحليل رضا العملاء من التقييمات والردود' },
+      { text:'يُكمّل السلل المتروكة — يذكّر العميل ويحوّله' },
+      { text:'يحول للموظف البشري عند الحاجة بسلاسة' },
     ],
     Visual: AIMockup,
   },
@@ -132,14 +137,14 @@ const FEATURES: Record<string, {
     title: 'تقارير وتحليلات في الوقت الفعلي',
     subtitle: 'كل قرار مبني على بيانات — لا تخمين',
     bullets: [
-      { icon:'💰', text:'المبيعات اليومية والشهرية والسنوية لحظياً' },
-      { icon:'📈', text:'مقارنة الأداء بالفترة السابقة — نمو أو تراجع' },
-      { icon:'🏆', text:'أفضل المنتجات والخدمات والموظفين مبيعاً' },
-      { icon:'🗺', text:'خريطة العملاء — من أين يأتون ومتى' },
-      { icon:'🔄', text:'معدل عودة العملاء ومعدل الاحتفاظ' },
-      { icon:'📉', text:'تحليل الغياب والإلغاءات وأسبابها' },
-      { icon:'📊', text:'تقارير قابلة للتصدير — PDF وExcel' },
-      { icon:'🔔', text:'تنبيهات تلقائية عند انخفاض الأداء عن الهدف' },
+      { text:'المبيعات اليومية والشهرية والسنوية لحظياً' },
+      { text:'مقارنة الأداء بالفترة السابقة — نمو أو تراجع' },
+      { text:'أفضل المنتجات والخدمات والموظفين مبيعاً' },
+      { text:'خريطة العملاء — من أين يأتون ومتى' },
+      { text:'معدل عودة العملاء ومعدل الاحتفاظ' },
+      { text:'تحليل الغياب والإلغاءات وأسبابها' },
+      { text:'تقارير قابلة للتصدير — PDF وExcel' },
+      { text:'تنبيهات تلقائية عند انخفاض الأداء عن الهدف' },
     ],
     Visual: ReportsMockup,
   },
@@ -150,14 +155,14 @@ const FEATURES: Record<string, {
     title: 'إدارة الملفات والمستندات',
     subtitle: 'كل ورقة رقمية — مرتبة، متتبعة، محمية',
     bullets: [
-      { icon:'📁', text:'رفع وتنظيم الملفات في مجلدات ذكية' },
-      { icon:'🔍', text:'بحث فوري في محتوى الملفات — لا تضيع وثيقة' },
-      { icon:'📝', text:'توقيع رقمي على العقود والاتفاقيات' },
-      { icon:'📜', text:'تتبع إصدارات الملف — من عدّل وماذا ومتى' },
-      { icon:'✅', text:'دورة اعتماد: إرسال → مراجعة → اعتماد → حفظ' },
-      { icon:'⏰', text:'تنبيه عند انتهاء صلاحية العقد أو التراخيص' },
-      { icon:'🔐', text:'صلاحيات الوصول — من يرى ومن يعدّل' },
-      { icon:'☁️', text:'نسخ احتياطي تلقائي — لا تُفقد وثيقة أبداً' },
+      { text:'رفع وتنظيم الملفات في مجلدات ذكية' },
+      { text:'بحث فوري في محتوى الملفات — لا تضيع وثيقة' },
+      { text:'توقيع رقمي على العقود والاتفاقيات' },
+      { text:'تتبع إصدارات الملف — من عدّل وماذا ومتى' },
+      { text:'دورة اعتماد: إرسال → مراجعة → اعتماد → حفظ' },
+      { text:'تنبيه عند انتهاء صلاحية العقد أو التراخيص' },
+      { text:'صلاحيات الوصول — من يرى ومن يعدّل' },
+      { text:'نسخ احتياطي تلقائي — لا تُفقد وثيقة أبداً' },
     ],
     Visual: FilesMockup,
   },
@@ -168,14 +173,14 @@ const FEATURES: Record<string, {
     title: 'التواصل التلقائي المتكامل',
     subtitle: 'رسالتك تصل — في الوقت الصح، على القناة الصح',
     bullets: [
-      { icon:'💬', text:'واتساب أوتوماتيكي — تذكير، تأكيد، متابعة' },
-      { icon:'📧', text:'إيميل احترافي بتصميم علامتك التجارية' },
-      { icon:'📲', text:'Push Notification لأعضاء التطبيق' },
-      { icon:'🎯', text:'إرسال مجمّع مستهدف — شريحة العملاء الصح' },
-      { icon:'🔁', text:'حملات تلقائية: ترحيب، إعادة تفعيل، احتفال' },
-      { icon:'📊', text:'معدل الفتح والنقر لكل رسالة' },
-      { icon:'🌐', text:'رسائل بالعربي والإنجليزي حسب تفضيل العميل' },
-      { icon:'🛡', text:'قائمة opt-out — حماية من إزعاج العميل' },
+      { text:'واتساب أوتوماتيكي — تذكير، تأكيد، متابعة' },
+      { text:'إيميل احترافي بتصميم علامتك التجارية' },
+      { text:'Push Notification لأعضاء التطبيق' },
+      { text:'إرسال مجمّع مستهدف — شريحة العملاء الصح' },
+      { text:'حملات تلقائية: ترحيب، إعادة تفعيل، احتفال' },
+      { text:'معدل الفتح والنقر لكل رسالة' },
+      { text:'رسائل بالعربي والإنجليزي حسب تفضيل العميل' },
+      { text:'قائمة opt-out — حماية من إزعاج العميل' },
     ],
     Visual: CommsMockup,
   },
@@ -186,14 +191,14 @@ const FEATURES: Record<string, {
     title: 'المدفوعات والفواتير الرقمية',
     subtitle: 'استلم أموالك بكل طريقة — أونلاين وبالمحل',
     bullets: [
-      { icon:'💳', text:'بطاقات بنكية، Apple Pay، STC Pay، مدى' },
-      { icon:'📄', text:'فاتورة رقمية تُرسل فور الدفع' },
-      { icon:'🔁', text:'اشتراكات شهرية تُجدَّد تلقائياً' },
-      { icon:'💰', text:'دفع مسبق — العميل يودع ويسحب رصيداً' },
-      { icon:'📦', text:'باقات متعددة بأسعار مختلفة' },
-      { icon:'🏦', text:'تقارير المبيعات اليومية والتسوية' },
-      { icon:'🔐', text:'بوابة دفع آمنة — PCI DSS' },
-      { icon:'💸', text:'استرداد المبالغ بسهولة من لوحة التحكم' },
+      { text:'بطاقات بنكية، Apple Pay، STC Pay، مدى' },
+      { text:'فاتورة رقمية تُرسل فور الدفع' },
+      { text:'اشتراكات شهرية تُجدَّد تلقائياً' },
+      { text:'دفع مسبق — العميل يودع ويسحب رصيداً' },
+      { text:'باقات متعددة بأسعار مختلفة' },
+      { text:'تقارير المبيعات اليومية والتسوية' },
+      { text:'بوابة دفع آمنة — PCI DSS' },
+      { text:'استرداد المبالغ بسهولة من لوحة التحكم' },
     ],
     Visual: PaymentsMockup,
   },
@@ -204,14 +209,14 @@ const FEATURES: Record<string, {
     title: 'إدارة علاقات العملاء CRM',
     subtitle: 'كل عميل بتاريخه الكامل — في ثوانٍ',
     bullets: [
-      { icon:'👤', text:'ملف شامل لكل عميل: زياراته، مشترياته، تفضيلاته' },
-      { icon:'🏷', text:'تصنيف العملاء: جديد، منتظم، VIP، معرّض للتوقف' },
-      { icon:'📞', text:'سجل التواصل الكامل — واتساب، مكالمات، إيميل' },
-      { icon:'🎯', text:'شرائح ذكية — استهدف بالعروض من يستحقها' },
-      { icon:'⭐', text:'نظام التقييمات والمراجعات مع الرد التلقائي' },
-      { icon:'🔮', text:'تنبؤ بالعملاء المعرّضين للانقطاع وتفعيلهم' },
-      { icon:'📈', text:'قيمة العميل مدى الحياة — LTV تلقائي' },
-      { icon:'🗓', text:'جدولة متابعة — لا تنسى عميلاً مهماً' },
+      { text:'ملف شامل لكل عميل: زياراته، مشترياته، تفضيلاته' },
+      { text:'تصنيف العملاء: جديد، منتظم، VIP، معرّض للتوقف' },
+      { text:'سجل التواصل الكامل — واتساب، مكالمات، إيميل' },
+      { text:'شرائح ذكية — استهدف بالعروض من يستحقها' },
+      { text:'نظام التقييمات والمراجعات مع الرد التلقائي' },
+      { text:'تنبؤ بالعملاء المعرّضين للانقطاع وتفعيلهم' },
+      { text:'قيمة العميل مدى الحياة — LTV تلقائي' },
+      { text:'جدولة متابعة — لا تنسى عميلاً مهماً' },
     ],
     Visual: CRMMockup,
   },
@@ -386,9 +391,9 @@ function WalletMockup() {
         <motion.div animate={{ x:['-80%','180%'] }} transition={{ duration:4, repeat:Infinity, ease:'linear', repeatDelay:2 }}
           style={{ position:'absolute', inset:0, background:'linear-gradient(105deg,transparent 30%,rgba(255,255,255,0.1) 50%,transparent 70%)' }}/>
         <div style={{ position:'absolute', top:10, left:12, display:'flex', alignItems:'center', gap:5 }}>
-          <div style={{ fontSize:12 }}>🍎</div>
-          <div style={{ fontSize:12 }}>🤖</div>
-          <span style={{ fontSize:7, color:'rgba(255,255,255,0.35)', fontWeight:600 }}>Apple & Google Wallet</span>
+          <span style={{ fontSize:7, fontWeight:800, color:'rgba(255,255,255,0.7)', padding:'1px 5px', borderRadius:4, background:'rgba(255,255,255,0.12)' }}>Apple</span>
+          <span style={{ fontSize:7, fontWeight:800, color:'rgba(255,255,255,0.7)', padding:'1px 5px', borderRadius:4, background:'rgba(255,255,255,0.12)' }}>Google</span>
+          <span style={{ fontSize:7, color:'rgba(255,255,255,0.35)', fontWeight:600 }}>Wallet</span>
         </div>
         <div style={{ position:'absolute', bottom:10, left:12, right:12 }}>
           <div style={{ fontSize:9, color:'rgba(255,255,255,0.4)', marginBottom:2, fontFamily:'Cairo,sans-serif' }}>كافيهك — نقاط الولاء</div>
@@ -405,10 +410,10 @@ function WalletMockup() {
         </div>
       </div>
       <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, marginTop:12 }}>
-        {[['🍎 iPhone','Apple Wallet'],['🤖 Android','Google Wallet']].map(([icon,lbl])=>(
+        {[['iPhone','Apple Wallet'],['Android','Google Wallet']].map(([icon,lbl])=>(
           <div key={lbl} style={{ padding:'8px', borderRadius:10, background:'rgba(139,92,246,0.08)',
             border:'1px solid rgba(139,92,246,0.2)', textAlign:'center' }}>
-            <div style={{ fontSize:11 }}>{icon}</div>
+            <div style={{ fontSize:9, color:'rgba(255,255,255,0.6)', fontWeight:700 }}>{icon}</div>
             <div style={{ fontSize:8, color:'#A78BFA', fontWeight:800, fontFamily:'Cairo,sans-serif', marginTop:2 }}>{lbl}</div>
           </div>
         ))}
@@ -429,7 +434,7 @@ function AIMockup() {
       <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:12,
         padding:'8px 10px', borderRadius:10, background:'rgba(16,185,129,0.08)', border:'1px solid rgba(16,185,129,0.2)' }}>
         <div style={{ width:28, height:28, borderRadius:8, background:'linear-gradient(135deg,#059669,#10B981)',
-          display:'flex', alignItems:'center', justifyContent:'center', fontSize:14 }}>🤖</div>
+          display:'flex', alignItems:'center', justifyContent:'center' }}><Bot size={14} strokeWidth={1.75} style={{ color:'#fff' }} /></div>
         <div>
           <div style={{ fontSize:10, fontWeight:900, color:'#fff', fontFamily:'Cairo,sans-serif' }}>مساعد تلقا</div>
           <div style={{ display:'flex', alignItems:'center', gap:4 }}>
@@ -484,10 +489,10 @@ function ReportsMockup() {
 
 function FilesMockup() {
   const files = [
-    { name:'عقد الإيجار.pdf',       status:'معتمد',  color:'#10B981', icon:'📄' },
-    { name:'السجل التجاري.pdf',      status:'معتمد',  color:'#10B981', icon:'📋' },
-    { name:'شهادة الموظف.pdf',       status:'قيد المراجعة', color:'#F59E0B', icon:'📝' },
-    { name:'بوليصة التأمين.pdf',     status:'منتهي',  color:'#EF4444', icon:'⚠️' },
+    { name:'عقد الإيجار.pdf',       status:'معتمد',       color:'#10B981' },
+    { name:'السجل التجاري.pdf',      status:'معتمد',       color:'#10B981' },
+    { name:'شهادة الموظف.pdf',       status:'قيد المراجعة',color:'#F59E0B' },
+    { name:'بوليصة التأمين.pdf',     status:'منتهي',       color:'#EF4444' },
   ];
   return (
     <MockupShell color="#EC4899">
@@ -498,7 +503,9 @@ function FilesMockup() {
       {files.map((f,i)=>(
         <div key={i} style={{ display:'flex', alignItems:'center', gap:8, padding:'8px 10px',
           borderRadius:10, background:'rgba(255,255,255,0.04)', border:'1px solid rgba(255,255,255,0.06)', marginBottom:5 }}>
-          <span style={{ fontSize:16 }}>{f.icon}</span>
+          <div style={{ width:28, height:28, borderRadius:7, background:`${f.color}18`, border:`1px solid ${f.color}30`, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+            <FolderOpen size={13} strokeWidth={2} style={{ color:f.color }} />
+          </div>
           <div style={{ flex:1, overflow:'hidden' }}>
             <div style={{ fontSize:9.5, fontWeight:700, color:'#fff', fontFamily:'Cairo,sans-serif',
               whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{f.name}</div>
@@ -608,7 +615,7 @@ export default function PlatformShowcase() {
           style={{ textAlign:'center', marginBottom:52 }}>
           <div className="section-label" style={{ color:'#A78BFA', borderColor:'rgba(167,139,250,0.3)',
             background:'rgba(167,139,250,0.08)', marginBottom:16 }}>
-            🚀 منصة متكاملة
+            <Layers size={13} strokeWidth={2} style={{ verticalAlign:'middle', marginLeft:5 }} /> منصة متكاملة
           </div>
           <h2 style={{ fontWeight:900, fontSize:'clamp(2rem,4.5vw,3.5rem)', color:'#fff', marginBottom:14, letterSpacing:'-0.04em' }}>
             كل ما تحتاجه في مكان واحد
@@ -633,7 +640,7 @@ export default function PlatformShowcase() {
                     background: isActive ? `${f.color}20` : 'rgba(255,255,255,0.04)',
                     outline: isActive ? `1.5px solid ${f.color}60` : '1.5px solid rgba(255,255,255,0.08)',
                     transition:'all 0.2s', flexShrink:0 }}>
-                  <span style={{ fontSize:16 }}>{t.emoji}</span>
+                  <t.Icon size={15} strokeWidth={2} style={{ color: isActive ? f.color : 'rgba(255,255,255,0.4)', flexShrink:0 }} />
                   <span style={{ fontSize:12, fontWeight:800, fontFamily:'Cairo,sans-serif',
                     color: isActive ? '#fff' : 'rgba(255,255,255,0.5)' }}>
                     {t.label}
@@ -663,8 +670,9 @@ export default function PlatformShowcase() {
             <div>
               <div style={{ display:'inline-flex', alignItems:'center', gap:8, marginBottom:16,
                 padding:'7px 16px', borderRadius:20, background:`${feat.color}18`, border:`1px solid ${feat.color}35` }}>
-                <span style={{ fontSize:11, fontWeight:800, color:feat.color, fontFamily:'Cairo,sans-serif' }}>
-                  {TABS.find(t=>t.id===active)?.emoji} {TABS.find(t=>t.id===active)?.label}
+                <span style={{ display:'inline-flex', alignItems:'center', gap:6, fontSize:11, fontWeight:800, color:feat.color, fontFamily:'Cairo,sans-serif' }}>
+                  {(() => { const T = TABS.find(t=>t.id===active); return T ? <T.Icon size={12} strokeWidth={2} /> : null; })()}
+                  {TABS.find(t=>t.id===active)?.label}
                 </span>
               </div>
               <h3 style={{ fontWeight:900,
@@ -685,7 +693,7 @@ export default function PlatformShowcase() {
                     style={{ display:'flex', alignItems:'flex-start', gap:10, padding:'10px 12px',
                       borderRadius:12, background:'rgba(255,255,255,0.04)',
                       border:'1px solid rgba(255,255,255,0.06)' }}>
-                    <span style={{ fontSize:15, flexShrink:0, marginTop:1 }}>{b.icon}</span>
+                    <Check size={13} strokeWidth={2.5} style={{ flexShrink:0, marginTop:2, color:feat.color }} />
                     <span style={{ fontSize:12, color:'rgba(255,255,255,0.8)',
                       lineHeight:1.55, fontFamily:'Cairo,sans-serif' }}>{b.text}</span>
                   </motion.div>
@@ -705,14 +713,16 @@ export default function PlatformShowcase() {
         <motion.div initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
           style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(180px,1fr))', gap:16, marginTop:40 }}>
           {[
-            { n:'١٠', label:'أنظمة متكاملة', icon:'⚡' },
-            { n:'+٨٠', label:'ميزة جاهزة فور التسليم', icon:'✅' },
-            { n:'أسبوعان', label:'متوسط وقت التسليم', icon:'🚀' },
-            { n:'٢٤/٧', label:'دعم فني بعد الإطلاق', icon:'🛡' },
+            { n:'١٠',      label:'أنظمة متكاملة',           I: Layers,       c:'#A78BFA' },
+            { n:'+٨٠',     label:'ميزة جاهزة فور التسليم',  I: Check,        c:'#34D399' },
+            { n:'أسبوعان', label:'متوسط وقت التسليم',        I: CalendarDays, c:'#60A5FA' },
+            { n:'٢٤/٧',    label:'دعم فني بعد الإطلاق',     I: MessageSquare,c:'#F59E0B' },
           ].map(s => (
             <div key={s.label} style={{ padding:'20px', borderRadius:18, textAlign:'center',
               background:'rgba(255,255,255,0.03)', border:'1px solid rgba(255,255,255,0.07)' }}>
-              <div style={{ fontSize:22, marginBottom:6 }}>{s.icon}</div>
+              <div style={{ display:'flex', justifyContent:'center', marginBottom:8 }}>
+                <s.I size={22} strokeWidth={1.75} style={{ color:s.c }} />
+              </div>
               <div style={{ fontSize:26, fontWeight:900, color:'#fff', letterSpacing:-1, lineHeight:1 }}>{s.n}</div>
               <div style={{ fontSize:12, color:'var(--text2)', marginTop:6, fontFamily:'Cairo,sans-serif' }}>{s.label}</div>
             </div>
