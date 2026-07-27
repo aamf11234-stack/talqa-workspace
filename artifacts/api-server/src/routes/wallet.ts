@@ -481,6 +481,133 @@ async function serveBrownDoseUnsigned(
   res.send(buf);
 }
 
+/* ══════════════════════════════════════════════════════════
+   تلقا تك – Showcase / Business Pass
+   GET /api/wallet/tlqa?name=...&role=...
+════════════════════════════════════════════════════════════ */
+router.get("/tlqa", async (req, res) => {
+  const {
+    name  = "زائر تلقا",
+    role  = "عميل محتمل",
+    serial = `TQ-${Date.now()}`,
+  } = req.query as Record<string, string>;
+
+  /* Strip: deep purple + teal band */
+  const STRIP_TQ    = solidPng(375, 110, 26,  10, 53);   // #1a0a35
+  const STRIP_TQ_2X = solidPng(750, 220, 36,  16, 80);   // a touch lighter
+
+  const passJson = {
+    formatVersion:      1,
+    passTypeIdentifier: "pass.clinic.tlgaads.com",
+    serialNumber:       serial,
+    teamIdentifier:     "V96R57F6T3",
+    organizationName:   "تلقا البرمجية",
+    description:        "بطاقة تلقا تك — تحوّل أفكارك إلى منتجات",
+    logoText:           "تلقا تك",
+
+    backgroundColor: "rgb(26, 10, 53)",
+    foregroundColor: "rgb(255, 255, 255)",
+    labelColor:      "rgb(6, 182, 212)",
+
+    generic: {
+      headerFields: [
+        {
+          key:   "tag",
+          label: "TLQA TECH",
+          value: "🇸🇦 الرياض",
+          textAlignment: "PKTextAlignmentRight",
+        },
+      ],
+      primaryFields: [
+        { key: "holder", label: "الاسم", value: String(name) },
+      ],
+      secondaryFields: [
+        {
+          key:   "role",
+          label: "الصفة",
+          value: String(role),
+          textAlignment: "PKTextAlignmentLeft",
+        },
+        {
+          key:   "phone",
+          label: "واتساب",
+          value: "966551378531+",
+          textAlignment: "PKTextAlignmentRight",
+        },
+      ],
+      auxiliaryFields: [
+        {
+          key:   "services",
+          label: "خدماتنا",
+          value: "تطبيقات · مواقع · Apple Wallet · AI",
+          textAlignment: "PKTextAlignmentLeft",
+        },
+        {
+          key:   "cr",
+          label: "س.ت",
+          value: "7054835322",
+          textAlignment: "PKTextAlignmentRight",
+        },
+      ],
+      backFields: [
+        { key: "about",   label: "من نحن",          value: "تلقا البرمجية — شركة سعودية متخصصة في تطوير التطبيقات والمواقع وحلول Apple Wallet." },
+        { key: "web",     label: "الموقع",           value: "talqa.tech" },
+        { key: "wa",      label: "واتساب",            value: "966551378531+" },
+        { key: "riyadh",  label: "الموقع",           value: "الرياض، المملكة العربية السعودية" },
+        { key: "slogan",  label: "شعارنا",           value: "نحوّل أفكارك إلى منتجات يعشقها عملاؤك." },
+      ],
+    },
+
+    barcodes: [{
+      message:         "https://talqa.tech",
+      format:          "PKBarcodeFormatQR",
+      messageEncoding: "iso-8859-1",
+      altText:         "talqa.tech",
+    }],
+  };
+
+  const certs = getCerts();
+
+  if (certs) {
+    try {
+      await buildPass(passJson, "talqa-tech.pkpass", certs, res, {
+        "strip.png":    STRIP_TQ,
+        "strip@2x.png": STRIP_TQ_2X,
+      });
+      logger.info({ name, role }, "tlqa pass generated (signed)");
+      return;
+    } catch (err) {
+      logger.error({ err }, "tlqa signed pass failed, falling back to unsigned");
+    }
+  }
+
+  /* ─ Unsigned fallback ─ */
+  const { createZip } = await import("../lib/minizip");
+  const iconPurple    = solidPng(29, 29, 26, 10, 53);
+  const icon2xPurple  = solidPng(58, 58, 26, 10, 53);
+
+  const buf = await createZip({
+    "pass.json":    Buffer.from(JSON.stringify(passJson)),
+    "icon.png":     iconPurple,
+    "icon@2x.png":  icon2xPurple,
+    "strip.png":    STRIP_TQ,
+    "strip@2x.png": STRIP_TQ_2X,
+    "manifest.json": Buffer.from(JSON.stringify({
+      "pass.json": "tlqa", "icon.png": "0", "icon@2x.png": "0",
+    })),
+    "signature": Buffer.alloc(0),
+  });
+
+  res.set({
+    "Content-Type":        "application/vnd.apple.pkpass",
+    "Content-Disposition": 'attachment; filename="talqa-tech.pkpass"',
+    "Content-Length":      String(buf.length),
+    "Cache-Control":       "no-cache, no-store",
+  });
+  res.send(buf);
+  logger.info({ name, role }, "tlqa pass generated (unsigned fallback)");
+});
+
 /* ── GET /api/wallet/status ─────────────────────────────── */
 router.get("/status", (_req, res) => {
   const ready = getCerts() !== null;

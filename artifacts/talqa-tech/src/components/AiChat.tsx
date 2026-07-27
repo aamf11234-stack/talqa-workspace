@@ -146,11 +146,13 @@ function WaPhone() {
   const [ctaReady, setCtaReady] = useState(false);
   const [phase,    setPhase]    = useState(0); // index into SCRIPT
   const [started,  setStarted]  = useState(false);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const chatBoxRef = useRef<HTMLDivElement>(null);
 
-  /* Auto-scroll */
+  /* Auto-scroll the inner chat container only — never touches the page */
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const el = chatBoxRef.current;
+    if (!el) return;
+    el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
   }, [messages, typing]);
 
   /* Start sequence after a short wait */
@@ -234,7 +236,7 @@ function WaPhone() {
             <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle,rgba(0,0,0,0.04) 1px,transparent 1px)', backgroundSize: '22px 22px', pointerEvents: 'none' }} />
 
             {/* Messages scroll */}
-            <div style={{ height: '100%', overflowY: 'auto', padding: '12px 10px', display: 'flex', flexDirection: 'column' }}>
+            <div ref={chatBoxRef} style={{ height: '100%', overflowY: 'auto', padding: '12px 10px', display: 'flex', flexDirection: 'column' }}>
               {/* Date pill */}
               <div style={{ textAlign: 'center', marginBottom: 10 }}>
                 <span style={{ fontSize: 10, color: '#667781', background: 'rgba(255,255,255,0.8)', padding: '3px 10px', borderRadius: 99, fontFamily: 'Cairo,sans-serif', backdropFilter: 'blur(8px)' }}>اليوم</span>
@@ -247,13 +249,14 @@ function WaPhone() {
               <AnimatePresence>
                 {typing && (
                   <div style={{ display: 'flex', alignItems: 'flex-end', gap: 6 }}>
-                    <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg,#25D366,#128C7E)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, flexShrink: 0 }}>🤖</div>
+                    <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg,#8B5CF6,#06B6D4)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 2px 8px rgba(139,92,246,0.4)' }}>
+                      <span style={{ fontSize: 13, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif', lineHeight: 1 }}>ت</span>
+                    </div>
                     <TypingBubble />
                   </div>
                 )}
               </AnimatePresence>
 
-              <div ref={bottomRef} />
             </div>
           </div>
 
