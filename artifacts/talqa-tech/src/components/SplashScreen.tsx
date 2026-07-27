@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import TlqaLogo from './TlqaLogo';
 
 // Only show once per browser session
 const SEEN_KEY = 'tlqa_splash_seen';
@@ -99,16 +100,9 @@ export default function SplashScreen({ onDone }: { onDone: () => void }) {
             initial={{ scale: 0.4, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: 'spring', stiffness: 260, damping: 18, delay: 0.05 }}
-            style={{
-              width: 72, height: 72, borderRadius: 20,
-              background: 'linear-gradient(135deg,#7C3AED,#4F46E5)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 34, fontWeight: 900, color: '#fff',
-              boxShadow: '0 0 48px rgba(124,58,237,0.6), 0 0 100px rgba(124,58,237,0.25)',
-              marginBottom: 22, fontFamily: 'Cairo,sans-serif',
-            }}
+            style={{ marginBottom: 22 }}
           >
-            ت
+            <TlqaLogo size={72} splash />
           </motion.div>
 
           {/* ── brand name ── */}

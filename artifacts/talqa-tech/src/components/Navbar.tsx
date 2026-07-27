@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
+import TlqaLogo from './TlqaLogo';
 
 const WA = 'https://wa.me/966551378531';
 
@@ -54,19 +55,10 @@ export default function Navbar({ accent = '#8B5CF6' }: Props) {
           height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
           {/* Logo */}
-          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 9, textDecoration: 'none', flexShrink: 0 }}>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              style={{
-                width: 34, height: 34, borderRadius: 9,
-                background: 'linear-gradient(135deg, var(--purple), var(--blue))',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontWeight: 900, fontSize: 15, color: '#fff', letterSpacing: '-0.02em',
-              }}>ت</motion.div>
-            <div>
-              <div style={{ fontSize: 14, fontWeight: 900, color: '#fff', lineHeight: 1, letterSpacing: '-0.01em' }}>تلقا تك</div>
-              <div style={{ fontSize: 9, fontWeight: 600, color: 'var(--text3)', letterSpacing: '0.06em' }}>TLGA TECH</div>
-            </div>
+          <Link href="/" style={{ textDecoration: 'none', flexShrink: 0 }}>
+            <motion.div whileHover={{ scale: 1.04 }} style={{ display: 'inline-flex' }}>
+              <TlqaLogo size={34} withText />
+            </motion.div>
           </Link>
 
           {/* Desktop nav */}
