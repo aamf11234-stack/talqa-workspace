@@ -9,6 +9,7 @@ import HorizontalServices from './components/HorizontalServices';
 import LiveDemo           from './components/LiveDemo';
 import WalletCustomizer   from './components/WalletCustomizer';
 import BookingsSection    from './components/BookingsSection';
+import AiChat             from './components/AiChat';
 import ClinicSection      from './components/ClinicSection';
 import WhyUs              from './components/WhyUs';
 import Process            from './components/Process';
@@ -51,6 +52,7 @@ export default function App() {
           <LiveDemo />
           <WalletCustomizer />
           <BookingsSection />
+          <AiChat />
           <ClinicSection />
           <WhyUs />
           <Process />

@@ -26,7 +26,7 @@ export default function WhatsAppFloat() {
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0, opacity: 0 }}
           transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-          style={{ position: 'fixed', bottom: 28, left: 28, zIndex: 9000, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 10 }}>
+          style={{ position: 'fixed', bottom: 24, left: 20, zIndex: 9000, display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 10, pointerEvents: open ? 'auto' : 'none' }}>
 
           {/* Chat bubble */}
           <AnimatePresence>
@@ -78,7 +78,7 @@ export default function WhatsAppFloat() {
           </AnimatePresence>
 
           {/* WhatsApp button */}
-          <div style={{ position: 'relative' }}>
+          <div style={{ position: 'relative', pointerEvents: 'auto' }}>
             {/* Pulse rings */}
             <motion.div
               animate={{ scale: [1, 1.6], opacity: [0.4, 0] }}
