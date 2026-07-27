@@ -7,9 +7,9 @@ import Hero               from './components/Hero';
 import Marquee            from './components/Marquee';
 import HorizontalServices from './components/HorizontalServices';
 import LiveDemo           from './components/LiveDemo';
-import WalletCustomizer   from './components/WalletCustomizer';
-import WalletDownload     from './components/WalletDownload';
+import WalletShowcase     from './components/WalletShowcase';
 import RestaurantOffer    from './components/RestaurantOffer';
+import SectorsSection    from './components/SectorsSection';
 import BookingsSection    from './components/BookingsSection';
 import AiChat             from './components/AiChat';
 import ClinicSection      from './components/ClinicSection';
@@ -45,24 +45,60 @@ export default function App() {
     <QueryClientProvider client={qc}>
       <div id="scroll-bar" />
       <CustomCursor />
-      <div style={{ minHeight: '100vh', overflowX: 'hidden', background: 'var(--bg)' }}>
+      {/* Global ambient blobs */}
+      <div id="app-ambient"><span /><span /><span /></div>
+
+      <div style={{ minHeight: '100vh', overflowX: 'hidden', background: 'var(--bg)', position: 'relative', zIndex: 1 }}>
         <Navbar />
         <main>
+          {/* 1 — Hook */}
           <Hero />
           <Marquee />
+
+          {/* 2 — نحن نخدم الجميع */}
+          <div className="section-divider" />
+          <SectorsSection />
+
+          {/* 3 — شوف الخدمات */}
+          <div className="section-divider" />
           <HorizontalServices />
+
+          {/* 4 — جرّب المنتج */}
+          <div className="section-divider" />
           <LiveDemo />
-          <WalletCustomizer />
-          <WalletDownload />
+
+          {/* 5 — الميزات التقنية */}
+          <div className="section-divider" />
           <BookingsSection />
+          <div className="section-divider" />
           <AiChat />
+          <div className="section-divider" />
+          <WalletShowcase />
+
+          {/* 6 — مثال حقيقي */}
+          <div className="section-divider" />
           <ClinicSection />
+
+          {/* 7 — لماذا تلقا */}
+          <div className="section-divider" />
           <WhyUs />
+          <div className="section-divider" />
           <Process />
+
+          {/* 8 — العرض التجاري */}
+          <div className="section-divider" />
           <RestaurantOffer />
+          <div className="section-divider" />
           <Calculator />
+
+          {/* 9 — الإثبات الاجتماعي */}
+          <div className="section-divider" />
           <ProjectsGallery />
+          <div className="section-divider" />
           <Testimonials />
+
+          {/* 10 — إزالة الشكوك */}
+          <div className="section-divider" />
           <FAQ />
         </main>
         <Footer />

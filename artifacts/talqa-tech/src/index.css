@@ -4,8 +4,8 @@
 
 :root {
   --bg:      #07070f;
-  --bg2:     #0c0c18;
-  --bg3:     #111126;
+  --bg2:     #0a0a16;
+  --bg3:     #0e0e20;
   --surface: rgba(255,255,255,0.04);
   --surface2: rgba(255,255,255,0.07);
   --border:  rgba(255,255,255,0.08);
@@ -23,6 +23,10 @@
   --text3:   rgba(255,255,255,0.30);
   --radius:  16px;
   --radius-sm: 10px;
+
+  /* tech grid */
+  --grid-color: rgba(139,92,246,0.045);
+  --grid-size: 52px;
 }
 
 html { scroll-behavior: smooth; }
@@ -34,6 +38,67 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+}
+
+/* ── Global tech grid overlay ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* fade-in dots at intersections */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(139,92,246,0.18) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* make all sections sit above grid */
+main > section, main > * { position: relative; z-index: 1; }
+
+/* ── Ambient glow blobs (static, cheap) ── */
+#app-ambient {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+}
+#app-ambient span:nth-child(1) {
+  position: absolute; width: 700px; height: 700px; border-radius: 50%;
+  top: -200px; left: -200px;
+  background: radial-gradient(circle, rgba(139,92,246,0.07) 0%, transparent 70%);
+  animation: amb 18s ease-in-out infinite alternate;
+}
+#app-ambient span:nth-child(2) {
+  position: absolute; width: 600px; height: 600px; border-radius: 50%;
+  bottom: -100px; right: -150px;
+  background: radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 70%);
+  animation: amb 22s ease-in-out infinite alternate-reverse;
+}
+#app-ambient span:nth-child(3) {
+  position: absolute; width: 500px; height: 500px; border-radius: 50%;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  background: radial-gradient(circle, rgba(59,130,246,0.04) 0%, transparent 70%);
+  animation: amb 14s ease-in-out infinite alternate;
+}
+@keyframes amb {
+  0%   { transform: translate(0,0) scale(1); }
+  100% { transform: translate(40px,30px) scale(1.08); }
+}
+
+/* ── Section divider line ── */
+.section-divider {
+  width: 100%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139,92,246,0.2), rgba(6,182,212,0.15), transparent);
+  position: relative; z-index: 2;
 }
 
 /* ── Gradient text ── */
