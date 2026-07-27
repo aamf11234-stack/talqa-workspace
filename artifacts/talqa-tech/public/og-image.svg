@@ -1,0 +1,73 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#07070f"/>
+      <stop offset="100%" stop-color="#0f0a20"/>
+    </linearGradient>
+    <linearGradient id="purple" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#8B5CF6"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="30%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="80%" cy="70%" r="40%">
+      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#06B6D4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow1)"/>
+  <rect width="1200" height="630" fill="url(#glow2)"/>
+
+  <!-- Top gradient bar -->
+  <rect width="1200" height="5" fill="url(#purple)"/>
+
+  <!-- Logo mark -->
+  <rect x="80" y="80" width="90" height="90" rx="22" fill="url(#purple)"/>
+  <text x="125" y="152" font-family="Arial,sans-serif" font-size="62" font-weight="900" fill="white" text-anchor="middle">ت</text>
+
+  <!-- Brand name -->
+  <text x="190" y="115" font-family="Arial,sans-serif" font-size="38" font-weight="900" fill="white">تلقا تك</text>
+  <text x="190" y="148" font-family="Arial,sans-serif" font-size="18" font-weight="400" fill="#8B5CF6" letter-spacing="4">TLGA TECH</text>
+
+  <!-- Main headline -->
+  <text x="80" y="300" font-family="Arial,sans-serif" font-size="72" font-weight="900" fill="white">نحوّل أفكارك</text>
+  <text x="80" y="385" font-family="Arial,sans-serif" font-size="72" font-weight="900">
+    <tspan fill="#8B5CF6">إلى منتجات</tspan>
+    <tspan fill="white"> رقمية</tspan>
+  </text>
+
+  <!-- Subtext -->
+  <text x="80" y="450" font-family="Arial,sans-serif" font-size="26" fill="#94A3B8">تطبيقات · Apple Wallet · مواقع · ذكاء اصطناعي</text>
+
+  <!-- Service pills -->
+  <rect x="80" y="490" width="180" height="48" rx="24" fill="#8B5CF620" stroke="#8B5CF6" stroke-width="1.5"/>
+  <text x="170" y="521" font-family="Arial,sans-serif" font-size="20" fill="#8B5CF6" text-anchor="middle">📱 تطبيقات</text>
+
+  <rect x="278" y="490" width="200" height="48" rx="24" fill="#06B6D420" stroke="#06B6D4" stroke-width="1.5"/>
+  <text x="378" y="521" font-family="Arial,sans-serif" font-size="20" fill="#06B6D4" text-anchor="middle">💳 Apple Wallet</text>
+
+  <rect x="496" y="490" width="160" height="48" rx="24" fill="#10B98120" stroke="#10B981" stroke-width="1.5"/>
+  <text x="576" y="521" font-family="Arial,sans-serif" font-size="20" fill="#10B981" text-anchor="middle">🤖 AI واتساب</text>
+
+  <!-- Right side: phone mockup hint -->
+  <rect x="850" y="100" width="280" height="440" rx="36" fill="#1a1a2e" stroke="#8B5CF630" stroke-width="2"/>
+  <rect x="870" y="120" width="240" height="380" rx="28" fill="#0f0f1a"/>
+  <!-- Screen content hint -->
+  <rect x="890" y="150" width="200" height="12" rx="6" fill="#8B5CF640"/>
+  <rect x="890" y="175" width="160" height="12" rx="6" fill="#8B5CF630"/>
+  <rect x="890" y="200" width="180" height="12" rx="6" fill="#8B5CF620"/>
+  <rect x="890" y="240" width="200" height="60" rx="12" fill="#8B5CF615" stroke="#8B5CF630" stroke-width="1"/>
+  <rect x="890" y="315" width="200" height="60" rx="12" fill="#06B6D415" stroke="#06B6D430" stroke-width="1"/>
+  <rect x="890" y="390" width="200" height="60" rx="12" fill="#10B98115" stroke="#10B98130" stroke-width="1"/>
+  <!-- Home indicator -->
+  <rect x="960" y="472" width="60" height="5" rx="3" fill="#ffffff30"/>
+
+  <!-- Bottom: location + contact -->
+  <text x="80" y="590" font-family="Arial,sans-serif" font-size="20" fill="#475569">🇸🇦 الرياض · واتساب: 966551378531+</text>
+  <text x="1120" y="590" font-family="Arial,sans-serif" font-size="20" fill="#475569" text-anchor="end">tlgaads.com</text>
+</svg>
