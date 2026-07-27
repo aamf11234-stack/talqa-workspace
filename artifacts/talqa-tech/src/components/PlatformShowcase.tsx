@@ -1,5 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+function useIsMobile() {
+  const [m, setM] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
+  useEffect(() => {
+    const fn = () => setM(window.innerWidth < 768);
+    window.addEventListener('resize', fn);
+    return () => window.removeEventListener('resize', fn);
+  }, []);
+  return m;
+}
 
 /* ══════════════════════════════════════════
    DATA
@@ -586,6 +596,7 @@ function CRMMockup() {
 ══════════════════════════════════════════ */
 export default function PlatformShowcase() {
   const [active, setActive] = useState('bookings');
+  const isMobile = useIsMobile();
   const feat = FEATURES[active];
 
   return (
@@ -638,45 +649,53 @@ export default function PlatformShowcase() {
           <motion.div key={active}
             initial={{ opacity:0, y:18 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0, y:-10 }}
             transition={{ duration:0.28, ease:'easeOut' }}
-            style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:48, alignItems:'center',
-              padding:'44px', borderRadius:28,
+            style={{ display:'grid',
+              gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+              gap: isMobile ? 24 : 48,
+              alignItems:'center',
+              padding: isMobile ? '22px 18px' : '44px',
+              borderRadius:28,
               background: feat.gradient,
               border:`1px solid ${feat.color}25`,
               boxShadow:`0 40px 100px ${feat.color}15` }}>
 
-            {/* Left: text */}
+            {/* Text block */}
             <div>
-              <div style={{ display:'inline-flex', alignItems:'center', gap:8, marginBottom:20,
-                padding:'8px 18px', borderRadius:20, background:`${feat.color}18`, border:`1px solid ${feat.color}35` }}>
+              <div style={{ display:'inline-flex', alignItems:'center', gap:8, marginBottom:16,
+                padding:'7px 16px', borderRadius:20, background:`${feat.color}18`, border:`1px solid ${feat.color}35` }}>
                 <span style={{ fontSize:11, fontWeight:800, color:feat.color, fontFamily:'Cairo,sans-serif' }}>
                   {TABS.find(t=>t.id===active)?.emoji} {TABS.find(t=>t.id===active)?.label}
                 </span>
               </div>
-              <h3 style={{ fontWeight:900, fontSize:'clamp(1.6rem,3vw,2.4rem)', color:'#fff',
-                letterSpacing:'-0.04em', lineHeight:1.15, marginBottom:10 }}>
+              <h3 style={{ fontWeight:900,
+                fontSize: isMobile ? 'clamp(1.3rem,5vw,1.8rem)' : 'clamp(1.6rem,3vw,2.4rem)',
+                color:'#fff', letterSpacing:'-0.04em', lineHeight:1.2, marginBottom:8 }}>
                 {feat.title}
               </h3>
-              <p style={{ fontSize:14, color:'rgba(255,255,255,0.5)', marginBottom:28, lineHeight:1.7 }}>
+              <p style={{ fontSize:13, color:'rgba(255,255,255,0.5)', marginBottom:20, lineHeight:1.7 }}>
                 {feat.subtitle}
               </p>
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
+              <div style={{ display:'grid',
+                gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+                gap:8 }}>
                 {feat.bullets.map((b,i) => (
                   <motion.div key={i}
                     initial={{ opacity:0, x:-8 }} animate={{ opacity:1, x:0 }}
                     transition={{ delay:i*0.04 }}
-                    style={{ display:'flex', alignItems:'flex-start', gap:8, padding:'10px 12px',
+                    style={{ display:'flex', alignItems:'flex-start', gap:10, padding:'10px 12px',
                       borderRadius:12, background:'rgba(255,255,255,0.04)',
                       border:'1px solid rgba(255,255,255,0.06)' }}>
                     <span style={{ fontSize:15, flexShrink:0, marginTop:1 }}>{b.icon}</span>
-                    <span style={{ fontSize:11.5, color:'rgba(255,255,255,0.75)',
-                      lineHeight:1.5, fontFamily:'Cairo,sans-serif' }}>{b.text}</span>
+                    <span style={{ fontSize:12, color:'rgba(255,255,255,0.8)',
+                      lineHeight:1.55, fontFamily:'Cairo,sans-serif' }}>{b.text}</span>
                   </motion.div>
                 ))}
               </div>
             </div>
 
-            {/* Right: mockup */}
-            <div style={{ display:'flex', justifyContent:'center' }}>
+            {/* Mockup — hidden on very small screens via visibility, always rendered */}
+            <div style={{ display:'flex', justifyContent:'center',
+              order: isMobile ? -1 : 0 }}>
               <feat.Visual />
             </div>
           </motion.div>

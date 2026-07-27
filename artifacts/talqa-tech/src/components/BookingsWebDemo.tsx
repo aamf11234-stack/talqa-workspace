@@ -1,6 +1,16 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+function useIsMobile() {
+  const [m, setM] = useState(() => window.innerWidth < 768);
+  useEffect(() => {
+    const fn = () => setM(window.innerWidth < 768);
+    window.addEventListener('resize', fn);
+    return () => window.removeEventListener('resize', fn);
+  }, []);
+  return m;
+}
+
 /* ═══════════════════════════════════════════════
    DATA
 ═══════════════════════════════════════════════ */
@@ -328,7 +338,232 @@ function RightPanel({ selected, onClose, newSlot, onBook }:
 /* ═══════════════════════════════════════════════
    MAIN COMPONENT
 ═══════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════
+   MOBILE VERSION
+═══════════════════════════════════════════════ */
+function MobileDemo() {
+  const [revenue, setRevenue] = useState(12480);
+  const [apptCount, setApptCount] = useState(18);
+  const [selectedAppt, setSelectedAppt] = useState<Appt | null>(null);
+  const [showBooking, setShowBooking] = useState(false);
+  const [chosenSvc, setChosenSvc] = useState<typeof SERVICES[0] | null>(null);
+  const [bookingName, setBookingName] = useState('');
+  const [booked, setBooked] = useState(false);
+
+  useEffect(() => {
+    const t = setInterval(() => {
+      setRevenue(r => r + Math.floor(Math.random() * 120 + 40));
+      setApptCount(c => c + (Math.random() > 0.7 ? 1 : 0));
+    }, 4000);
+    return () => clearInterval(t);
+  }, []);
+
+  return (
+    <div style={{
+      borderRadius: 24,
+      overflow: 'hidden',
+      border: '1px solid rgba(255,255,255,0.1)',
+      background: '#0a0a16',
+      boxShadow: '0 40px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(5,150,105,0.1)',
+    }}>
+      {/* Phone status bar */}
+      <div style={{ background:'#0d0d1f', padding:'10px 16px 8px',
+        display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+        <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+          <div style={{ width:24, height:24, borderRadius:7, background:'linear-gradient(135deg,#059669,#047857)',
+            display:'flex', alignItems:'center', justifyContent:'center', fontSize:12 }}>📅</div>
+          <div>
+            <div style={{ fontSize:11, fontWeight:900, color:'#fff', fontFamily:'Cairo,sans-serif' }}>تلقا حجوزات</div>
+            <div style={{ fontSize:8, color:'rgba(255,255,255,0.35)', fontFamily:'Cairo,sans-serif' }}>لوحة التحكم</div>
+          </div>
+        </div>
+        <div style={{ display:'flex', alignItems:'center', gap:5,
+          padding:'5px 10px', borderRadius:20,
+          background:'rgba(5,150,105,0.15)', border:'1px solid rgba(5,150,105,0.3)' }}>
+          <div style={{ width:5, height:5, borderRadius:'50%', background:'#10B981' }}/>
+          <span style={{ fontSize:9, color:'#34D399', fontWeight:800, fontFamily:'Cairo,sans-serif' }}>مباشر</span>
+        </div>
+      </div>
+
+      {/* KPI row */}
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:1,
+        borderBottom:'1px solid rgba(255,255,255,0.05)' }}>
+        {[
+          { label:'إيرادات اليوم', val:`${arabicNum(revenue)} ر`, icon:'💰', color:'#34D399', sub:'↑١٨٪ عن أمس' },
+          { label:'مواعيد اليوم',  val:arabicNum(apptCount),       icon:'📅', color:'#60A5FA', sub:`${arabicNum(Math.floor(apptCount*0.6))} مؤكد` },
+        ].map(k => (
+          <div key={k.label} style={{ padding:'14px 16px', background:'rgba(255,255,255,0.02)' }}>
+            <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
+              <div>
+                <div style={{ fontSize:9, color:'rgba(255,255,255,0.4)', fontFamily:'Cairo,sans-serif', marginBottom:4 }}>{k.label}</div>
+                <motion.div key={k.val} initial={{ opacity:0.5 }} animate={{ opacity:1 }}
+                  style={{ fontSize:22, fontWeight:900, color:k.color, letterSpacing:-0.5 }}>{k.val}</motion.div>
+                <div style={{ fontSize:9, color:k.color, fontWeight:700, marginTop:2 }}>{k.sub}</div>
+              </div>
+              <span style={{ fontSize:20 }}>{k.icon}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Appointments list */}
+      <div style={{ padding:'14px 16px' }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:12 }}>
+          <span style={{ fontSize:12, fontWeight:900, color:'#fff', fontFamily:'Cairo,sans-serif' }}>مواعيد اليوم</span>
+          <motion.button whileTap={{ scale:0.95 }} onClick={() => { setShowBooking(true); setBooked(false); setChosenSvc(null); setBookingName(''); }}
+            style={{ padding:'6px 14px', borderRadius:9,
+              background:'linear-gradient(135deg,#059669,#047857)',
+              border:'none', color:'#fff', fontFamily:'Cairo,sans-serif',
+              fontSize:10, fontWeight:800, cursor:'pointer',
+              boxShadow:'0 4px 16px rgba(5,150,105,0.4)' }}>
+            + حجز جديد
+          </motion.button>
+        </div>
+
+        <AnimatePresence mode="wait">
+          {showBooking ? (
+            <motion.div key="booking" initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }} exit={{ opacity:0 }}>
+              {booked && chosenSvc ? (
+                <div style={{ textAlign:'center', padding:'24px 0' }}>
+                  <motion.div animate={{ scale:[1,1.2,1] }} transition={{ duration:0.5 }}
+                    style={{ fontSize:48, marginBottom:12 }}>✅</motion.div>
+                  <div style={{ fontSize:15, fontWeight:900, color:'#fff', fontFamily:'Cairo,sans-serif', marginBottom:6 }}>تم تأكيد الموعد!</div>
+                  <div style={{ fontSize:11, color:'rgba(255,255,255,0.5)', lineHeight:1.7, fontFamily:'Cairo,sans-serif' }}>
+                    {bookingName || 'العميل'} · {chosenSvc.name}<br/>الأربعاء — ١٢:٠٠ ظ
+                  </div>
+                  <div style={{ margin:'14px 0', padding:'10px', borderRadius:12,
+                    background:'rgba(37,211,102,0.1)', border:'1px solid rgba(37,211,102,0.3)' }}>
+                    <div style={{ fontSize:10, color:'#25D366', fontWeight:800 }}>💬 واتساب أُرسل تلقائياً</div>
+                  </div>
+                  <button onClick={() => setShowBooking(false)}
+                    style={{ padding:'8px 20px', borderRadius:10, background:'rgba(255,255,255,0.07)',
+                      border:'1px solid rgba(255,255,255,0.1)', color:'rgba(255,255,255,0.6)',
+                      fontFamily:'Cairo,sans-serif', fontSize:11, cursor:'pointer' }}>
+                    رجوع للمواعيد
+                  </button>
+                </div>
+              ) : !chosenSvc ? (
+                <div>
+                  <div style={{ display:'flex', justifyContent:'space-between', marginBottom:10 }}>
+                    <span style={{ fontSize:11, fontWeight:900, color:'#fff', fontFamily:'Cairo,sans-serif' }}>اختر الخدمة</span>
+                    <button onClick={() => setShowBooking(false)} style={{ background:'none', border:'none',
+                      color:'rgba(255,255,255,0.4)', cursor:'pointer', fontSize:14 }}>×</button>
+                  </div>
+                  <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                    {SERVICES.map(s => (
+                      <motion.button key={s.name} whileTap={{ scale:0.97 }} onClick={() => setChosenSvc(s)}
+                        style={{ padding:'12px 14px', borderRadius:12, background:`${s.color}10`,
+                          border:`1px solid ${s.color}30`, cursor:'pointer',
+                          display:'flex', alignItems:'center', gap:12, textAlign:'right' }}>
+                        <span style={{ fontSize:20 }}>{s.icon}</span>
+                        <div style={{ flex:1 }}>
+                          <div style={{ fontSize:12, fontWeight:800, color:'#fff', fontFamily:'Cairo,sans-serif' }}>{s.name}</div>
+                          <div style={{ fontSize:9, color:'rgba(255,255,255,0.4)', fontFamily:'Cairo,sans-serif' }}>{s.duration}</div>
+                        </div>
+                        <span style={{ fontSize:12, fontWeight:900, color:s.color }}>{s.price}</span>
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <div style={{ display:'flex', justifyContent:'space-between', marginBottom:12 }}>
+                    <span style={{ fontSize:11, fontWeight:900, color:'#fff', fontFamily:'Cairo,sans-serif' }}>بيانات العميل</span>
+                    <button onClick={() => setChosenSvc(null)} style={{ background:'none', border:'none',
+                      color:'rgba(255,255,255,0.4)', cursor:'pointer', fontSize:12, fontFamily:'Cairo,sans-serif' }}>رجوع</button>
+                  </div>
+                  <div style={{ padding:'10px 12px', borderRadius:10, background:`${chosenSvc.color}12`,
+                    border:`1px solid ${chosenSvc.color}30`, marginBottom:12,
+                    display:'flex', alignItems:'center', gap:8 }}>
+                    <span style={{ fontSize:18 }}>{chosenSvc.icon}</span>
+                    <div>
+                      <div style={{ fontSize:11, fontWeight:800, color:'#fff', fontFamily:'Cairo,sans-serif' }}>{chosenSvc.name}</div>
+                      <div style={{ fontSize:9, color:`${chosenSvc.color}cc` }}>{chosenSvc.price} · {chosenSvc.duration}</div>
+                    </div>
+                  </div>
+                  <input value={bookingName} onChange={e => setBookingName(e.target.value)}
+                    placeholder="اسم العميل"
+                    style={{ width:'100%', padding:'12px 14px', borderRadius:12, boxSizing:'border-box',
+                      background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.12)',
+                      color:'#fff', fontFamily:'Cairo,sans-serif', fontSize:13, outline:'none',
+                      direction:'rtl', marginBottom:12 }}/>
+                  <motion.button whileTap={{ scale:0.97 }}
+                    onClick={() => setBooked(true)}
+                    style={{ width:'100%', padding:'14px', borderRadius:12,
+                      background:'linear-gradient(135deg,#059669,#047857)',
+                      border:'none', color:'#fff', fontFamily:'Cairo,sans-serif',
+                      fontSize:14, fontWeight:900, cursor:'pointer',
+                      boxShadow:'0 8px 24px rgba(5,150,105,0.4)' }}>
+                    تأكيد الحجز ←
+                  </motion.button>
+                </div>
+              )}
+            </motion.div>
+          ) : (
+            <motion.div key="list" initial={{ opacity:0 }} animate={{ opacity:1 }}>
+              {APPOINTMENTS.slice(0, 7).map((a, i) => (
+                <motion.div key={a.id}
+                  onClick={() => setSelectedAppt(selectedAppt?.id === a.id ? null : a)}
+                  initial={{ opacity:0, x:16 }} animate={{ opacity:1, x:0 }}
+                  transition={{ delay: i * 0.04 }}
+                  style={{ padding:'11px 14px', borderRadius:14, marginBottom:8, cursor:'pointer',
+                    background: selectedAppt?.id === a.id ? `${a.color}15` : 'rgba(255,255,255,0.03)',
+                    border: `1px solid ${selectedAppt?.id === a.id ? a.color+'50' : 'rgba(255,255,255,0.07)'}`,
+                    transition:'all 0.2s' }}>
+                  <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+                    <div style={{ width:34, height:34, borderRadius:10, background:`${a.color}20`,
+                      border:`1.5px solid ${a.color}50`,
+                      display:'flex', alignItems:'center', justifyContent:'center',
+                      fontSize:14, fontWeight:900, color:a.color, flexShrink:0 }}>{a.avatar}</div>
+                    <div style={{ flex:1, minWidth:0 }}>
+                      <div style={{ fontSize:12, fontWeight:800, color:'#fff', fontFamily:'Cairo,sans-serif' }}>{a.name}</div>
+                      <div style={{ fontSize:10, color:`${a.color}bb`, fontFamily:'Cairo,sans-serif' }}>{a.service}</div>
+                    </div>
+                    <div style={{ textAlign:'left', flexShrink:0 }}>
+                      <StatusBadge s={a.status}/>
+                      <div style={{ fontSize:9, color:'rgba(255,255,255,0.35)', fontFamily:'Cairo,sans-serif',
+                        marginTop:3, textAlign:'center' }}>{DAYS[a.day]} {hourLabel(a.hour)}</div>
+                    </div>
+                  </div>
+                  {selectedAppt?.id === a.id && (
+                    <motion.div initial={{ height:0, opacity:0 }} animate={{ height:'auto', opacity:1 }}
+                      style={{ marginTop:10, paddingTop:10, borderTop:`1px solid ${a.color}25`,
+                        display:'flex', justifyContent:'space-between' }}>
+                      <span style={{ fontSize:11, fontWeight:900, color:a.color }}>{a.price}</span>
+                      <div style={{ display:'flex', gap:6 }}>
+                        <button style={{ padding:'4px 10px', borderRadius:7, background:'rgba(239,68,68,0.12)',
+                          border:'1px solid rgba(239,68,68,0.25)', color:'#EF4444',
+                          fontFamily:'Cairo,sans-serif', fontSize:9, fontWeight:800, cursor:'pointer' }}>إلغاء</button>
+                        <button style={{ padding:'4px 10px', borderRadius:7, background:'rgba(5,150,105,0.15)',
+                          border:'1px solid rgba(5,150,105,0.3)', color:'#34D399',
+                          fontFamily:'Cairo,sans-serif', fontSize:9, fontWeight:800, cursor:'pointer' }}>جدولة</button>
+                      </div>
+                    </motion.div>
+                  )}
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Bottom bar */}
+      <div style={{ padding:'10px 16px', background:'#0d0d1f',
+        borderTop:'1px solid rgba(255,255,255,0.05)',
+        display:'flex', justifyContent:'space-around' }}>
+        {[['📅','التقويم'], ['📊','التقارير'], ['👥','العملاء'], ['⚙️','الإعدادات']].map(([icon, lbl]) => (
+          <div key={lbl} style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:2 }}>
+            <span style={{ fontSize:16 }}>{icon}</span>
+            <span style={{ fontSize:8, color:'rgba(255,255,255,0.35)', fontFamily:'Cairo,sans-serif' }}>{lbl}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function BookingsWebDemo() {
+  const isMobile = useIsMobile();
   const [activeAppt, setActiveAppt] = useState<Appt | null>(null);
   const [newSlot, setNewSlot] = useState<{ day: number; hour: number } | null>(null);
   const [activeNav, setActiveNav] = useState(1);
@@ -358,11 +593,11 @@ export default function BookingsWebDemo() {
 
   return (
     <section style={{ padding: 'clamp(80px,10vw,120px) 0' }}>
-      <div style={{ maxWidth: 1240, margin: '0 auto', padding: '0 24px' }}>
+      <div style={{ maxWidth: isMobile ? 480 : 1240, margin: '0 auto', padding: '0 16px' }}>
 
         {/* ── Section header ── */}
         <motion.div initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
-          style={{ textAlign:'center', marginBottom:52 }}>
+          style={{ textAlign:'center', marginBottom: isMobile ? 32 : 52 }}>
           <div className="section-label" style={{ color:'#059669', borderColor:'rgba(5,150,105,0.3)',
             background:'rgba(5,150,105,0.08)', marginBottom:16 }}>📅 نظام الحجوزات</div>
           <h2 style={{ fontWeight:900, fontSize:'clamp(2rem,4.5vw,3.5rem)', color:'#fff',
@@ -377,7 +612,17 @@ export default function BookingsWebDemo() {
           </p>
         </motion.div>
 
-        {/* ══════════════ BROWSER FRAME ══════════════ */}
+        {/* ══════════════ RESPONSIVE FRAME ══════════════ */}
+        {isMobile ? (
+          <motion.div initial={{ opacity:0, y:30 }} whileInView={{ opacity:1, y:0 }}
+            viewport={{ once:true }} transition={{ duration:0.5 }}>
+            <MobileDemo />
+            <p style={{ textAlign:'center', marginTop:16, fontSize:11,
+              color:'rgba(255,255,255,0.25)', fontFamily:'Cairo,sans-serif' }}>
+              💡 اضغط على موعد لرؤية التفاصيل · جرّب الحجز الجديد
+            </p>
+          </motion.div>
+        ) : (
         <motion.div
           initial={{ opacity:0, y:40 }} whileInView={{ opacity:1, y:0 }}
           viewport={{ once:true }} transition={{ duration:0.6, ease:[0.22,1,0.36,1] }}
@@ -596,14 +841,16 @@ export default function BookingsWebDemo() {
             </div>
           </div>
         </motion.div>
+        )}
 
-        {/* ── Hint caption ── */}
-        <motion.p initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}
-          transition={{ delay:0.4 }}
-          style={{ textAlign:'center', marginTop:20, fontSize:12,
-            color:'rgba(255,255,255,0.25)', fontFamily:'Cairo,sans-serif' }}>
-          💡 اضغط على أي خانة فارغة لتجرب الحجز · اضغط على موعد موجود لترى تفاصيله
-        </motion.p>
+        {!isMobile && (
+          <motion.p initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}
+            transition={{ delay:0.4 }}
+            style={{ textAlign:'center', marginTop:20, fontSize:12,
+              color:'rgba(255,255,255,0.25)', fontFamily:'Cairo,sans-serif' }}>
+            💡 اضغط على أي خانة فارغة لتجرب الحجز · اضغط على موعد موجود لترى تفاصيله
+          </motion.p>
+        )}
       </div>
     </section>
   );
