@@ -6,15 +6,6 @@ const WA = 'https://wa.me/966551378531?text=أريد%20تطبيق%20مثل%20ا�
 
 const DEMOS = [
   {
-    id: 'loyalty',
-    label: 'تطبيق الولاء',
-    sub: 'نقاط · بطاقة رقمية · Apple Wallet',
-    color: '#C4783A',
-    url: '/brown-dose/?mode=app',
-    description: 'يشوف عميلك نقاطه ويحصل على مكافآت مباشرة من جواله — بدون تطبيق خارجي.',
-    features: ['بطاقة Apple Wallet', 'نقاط وزيارات', 'عروض تلقائية', 'Push Notifications'],
-  },
-  {
     id: 'haiz',
     label: 'تطبيق العضوية',
     sub: 'اشتراكات · بطاقة عضوية · رصيد',
@@ -206,32 +197,6 @@ export default function LiveDemo() {
           </p>
         </motion.div>
 
-        {/* Tabs */}
-        <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          style={{ display: 'flex', justifyContent: 'center', marginBottom: 56 }}>
-          <div style={{
-            display: 'inline-flex',
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid var(--border)',
-            borderRadius: 14, padding: 5, gap: 4,
-          }}>
-            {DEMOS.map((d, i) => (
-              <button key={d.id} onClick={() => setActive(i)}
-                style={{
-                  padding: '10px 28px', borderRadius: 10, border: 'none', cursor: 'pointer',
-                  fontFamily: 'Cairo, sans-serif', fontWeight: 700, fontSize: 14,
-                  transition: 'all 0.25s',
-                  background: active === i
-                    ? `linear-gradient(135deg, ${d.color}ee, ${d.color}88)`
-                    : 'transparent',
-                  color: active === i ? '#fff' : 'var(--text2)',
-                  boxShadow: active === i ? `0 4px 20px ${d.color}40` : 'none',
-                }}>
-                {d.label}
-              </button>
-            ))}
-          </div>
-        </motion.div>
 
         {/* Body: phone + info */}
         <div style={{
