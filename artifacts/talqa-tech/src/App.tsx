@@ -9,6 +9,7 @@ import HorizontalServices from './components/HorizontalServices';
 import LiveDemo           from './components/LiveDemo';
 import WalletCustomizer   from './components/WalletCustomizer';
 import WalletDownload     from './components/WalletDownload';
+import RestaurantOffer    from './components/RestaurantOffer';
 import BookingsSection    from './components/BookingsSection';
 import AiChat             from './components/AiChat';
 import ClinicSection      from './components/ClinicSection';
@@ -58,6 +59,7 @@ export default function App() {
           <ClinicSection />
           <WhyUs />
           <Process />
+          <RestaurantOffer />
           <Calculator />
           <ProjectsGallery />
           <Testimonials />
