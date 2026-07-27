@@ -1,20 +1,27 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import { Link, useLocation } from 'wouter';
 
 const WA = 'https://wa.me/966551378531';
 
 const LINKS = [
-  { href: '#services',  label: 'الخدمات' },
-  { href: '#live-demo', label: 'الديمو' },
-  { href: '#wallet',    label: 'Apple Wallet' },
-  { href: '#bookings',  label: 'الحجوزات' },
-  { href: '#calculator', label: 'الأسعار' },
+  { href: '/services',  label: 'الخدمات'      },
+  { href: '/bookings',  label: 'الحجوزات'     },
+  { href: '/wallet',    label: 'Digital Wallet' },
+  { href: '/ai',        label: 'الذكاء الاصطناعي' },
+  { href: '/clinic',    label: 'العيادات'      },
+  { href: '/pricing',   label: 'الأسعار'      },
+  { href: '/projects',  label: 'مشاريعنا'     },
+  { href: '/about',     label: 'من نحن'        },
 ];
 
-export default function Navbar() {
+interface Props { accent?: string }
+
+export default function Navbar({ accent = '#8B5CF6' }: Props) {
   const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen]         = useState(false);
+  const [loc]                   = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -27,9 +34,11 @@ export default function Navbar() {
     return () => { document.body.style.overflow = ''; };
   }, [open]);
 
+  // close menu on route change
+  useEffect(() => { setOpen(false); }, [loc]);
+
   return (
     <>
-      {/* Scroll bar */}
       <div id="scroll-bar" />
 
       <header style={{
@@ -45,36 +54,45 @@ export default function Navbar() {
           height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
           {/* Logo */}
-          <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 9, textDecoration: 'none', flexShrink: 0 }}>
-            <div style={{
-              width: 34, height: 34, borderRadius: 9,
-              background: 'linear-gradient(135deg, var(--purple), var(--blue))', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontWeight: 900, fontSize: 15, color: '#fff', letterSpacing: '-0.02em',
-            }}>ت</div>
+          <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 9, textDecoration: 'none', flexShrink: 0 }}>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              style={{
+                width: 34, height: 34, borderRadius: 9,
+                background: 'linear-gradient(135deg, var(--purple), var(--blue))',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontWeight: 900, fontSize: 15, color: '#fff', letterSpacing: '-0.02em',
+              }}>ت</motion.div>
             <div>
               <div style={{ fontSize: 14, fontWeight: 900, color: '#fff', lineHeight: 1, letterSpacing: '-0.01em' }}>تلقا تك</div>
               <div style={{ fontSize: 9, fontWeight: 600, color: 'var(--text3)', letterSpacing: '0.06em' }}>TLGA TECH</div>
             </div>
-          </a>
+          </Link>
 
           {/* Desktop nav */}
-          <nav className="nav-desktop" style={{ gap: 2 }}>
-            {LINKS.map(l => (
-              <a key={l.href} href={l.href} style={{
-                padding: '7px 14px', borderRadius: 8,
-                fontSize: 13, fontWeight: 600, color: 'var(--text2)',
-                textDecoration: 'none', transition: 'color 0.15s, background 0.15s',
-              }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#fff'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.06)'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'var(--text2)'; (e.currentTarget as HTMLElement).style.background = ''; }}>
-                {l.label}
-              </a>
-            ))}
+          <nav className="nav-desktop" style={{ gap: 1 }}>
+            {LINKS.map(l => {
+              const active = loc === l.href;
+              return (
+                <Link key={l.href} href={l.href} style={{
+                  padding: '7px 11px', borderRadius: 8,
+                  fontSize: 12.5, fontWeight: active ? 700 : 600,
+                  color: active ? '#fff' : 'var(--text2)',
+                  textDecoration: 'none', transition: 'color 0.15s, background 0.15s',
+                  background: active ? 'rgba(255,255,255,0.07)' : 'transparent',
+                  borderBottom: active ? `2px solid ${accent}` : '2px solid transparent',
+                }}
+                  onMouseEnter={e => { if (!active) { (e.currentTarget as HTMLElement).style.color = '#fff'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.05)'; }}}
+                  onMouseLeave={e => { if (!active) { (e.currentTarget as HTMLElement).style.color = 'var(--text2)'; (e.currentTarget as HTMLElement).style.background = 'transparent'; }}}>
+                  {l.label}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Desktop CTA */}
           <a href={WA} target="_blank" rel="noopener noreferrer" className="nav-cta btn-blue"
-            style={{ padding: '9px 20px', borderRadius: 9, fontSize: 13, gap: 6 }}>
+            style={{ padding: '9px 18px', borderRadius: 9, fontSize: 12.5, gap: 6, flexShrink: 0 }}>
             <span className="holo-shimmer" />
             ابدأ مشروعك ←
           </a>
@@ -96,41 +114,51 @@ export default function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
+            initial={{ opacity: 0, x: '100%' }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: '100%' }}
+            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
             style={{
               position: 'fixed', inset: 0, zIndex: 999,
-              background: 'rgba(7,7,15,0.97)',
-              backdropFilter: 'blur(20px)',
+              background: 'rgba(7,7,15,0.98)',
+              backdropFilter: 'blur(24px)',
               display: 'flex', flexDirection: 'column',
               paddingTop: 80, paddingBottom: 32, paddingInline: 28,
             }}>
-            <nav style={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1 }}>
-              {LINKS.map((l, i) => (
-                <motion.a key={l.href} href={l.href}
-                  initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.05 + i * 0.06 }}
-                  onClick={() => setOpen(false)}
-                  style={{
-                    padding: '16px 0', fontSize: 22, fontWeight: 800,
-                    color: '#fff', textDecoration: 'none',
-                    borderBottom: '1px solid var(--border)',
-                    transition: 'color 0.15s',
-                  }}
-                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.color = 'var(--purple2)'}
-                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.color = '#fff'}>
-                  {l.label}
-                </motion.a>
-              ))}
+            <nav style={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1, overflowY: 'auto' }}>
+              {LINKS.map((l, i) => {
+                const active = loc === l.href;
+                return (
+                  <motion.div key={l.href}
+                    initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.04 + i * 0.05 }}>
+                    <Link href={l.href}
+                      style={{
+                        display: 'block', padding: '15px 0', fontSize: 20, fontWeight: 800,
+                        color: active ? accent : '#fff', textDecoration: 'none',
+                        borderBottom: '1px solid var(--border)', transition: 'color 0.15s',
+                      }}>
+                      {l.label}
+                      {active && <span style={{ fontSize: 12, marginRight: 8, opacity: 0.6 }}>← أنت هنا</span>}
+                    </Link>
+                  </motion.div>
+                );
+              })}
             </nav>
-            <motion.a href={WA} target="_blank" rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.35 }}
-              className="btn-purple" onClick={() => setOpen(false)}
-              style={{ textAlign: 'center', justifyContent: 'center', borderRadius: 12, padding: '16px', fontSize: 16 }}>
-              <span className="holo-shimmer" />
-              ابدأ مشروعك على واتساب ←
-            </motion.a>
+
+            <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+              style={{ display: 'flex', flexDirection: 'column', gap: 10, paddingTop: 20 }}>
+              <Link href="/faq"
+                style={{ textAlign: 'center', padding: '13px', borderRadius: 12, fontSize: 14, fontWeight: 700,
+                  color: 'var(--text2)', textDecoration: 'none', background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid var(--border)' }}>
+                الأسئلة الشائعة
+              </Link>
+              <a href={WA} target="_blank" rel="noopener noreferrer"
+                className="btn-purple"
+                style={{ textAlign: 'center', justifyContent: 'center', borderRadius: 12, padding: '15px', fontSize: 16 }}>
+                <span className="holo-shimmer" />
+                ابدأ مشروعك على واتساب ←
+              </a>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

@@ -167,9 +167,9 @@ const SERVICES = [
     size:  'large', Visual: PhoneMini,
   },
   {
-    emoji: '🍎', title: 'Apple Wallet',    sub: 'بطاقات رقمية',
-    desc:  'بطاقات ولاء، حجوزات، تذاكر وعضويات مباشرة في جيب عميلك — بدون تطبيق.',
-    tags:  ['PassKit', 'NFC', 'QR Code'],
+    emoji: '💳', title: 'Digital Wallet',  sub: 'Apple & Google Wallet',
+    desc:  'بطاقات ولاء، حجوزات، تذاكر وعضويات مباشرة في جيب عميلك — iPhone وAndroid، بدون تطبيق.',
+    tags:  ['Apple Wallet', 'Google Wallet', 'NFC', 'QR Code'],
     color: '#06B6D4', bg: 'linear-gradient(135deg,#001020 0%,#0C4A6E 100%)',
     size:  'large', Visual: WalletMini,
   },

@@ -76,7 +76,7 @@ export default function Hero() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
           <div style={{ width: 28, height: 28, borderRadius: 7, background: 'linear-gradient(135deg,#F59E0B,#EF4444)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14 }}>☕</div>
           <div>
-            <div style={{ fontSize: 11, fontWeight: 800, color: '#fff' }}>بطاقة Apple Wallet</div>
+            <div style={{ fontSize: 11, fontWeight: 800, color: '#fff' }}>Apple & Google Wallet</div>
             <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.4)' }}>تُضاف بضغطة واحدة</div>
           </div>
         </div>
@@ -165,7 +165,7 @@ export default function Hero() {
         {/* Sub */}
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.55, duration: 0.7 }}
           style={{ fontSize: 'clamp(15px,1.9vw,18px)', fontWeight: 500, color: 'var(--text2)', lineHeight: 1.85, maxWidth: 500, margin: '0 auto 48px' }}>
-          تطبيقات جوال · Apple Wallet · مواقع · أتمتة
+          تطبيقات جوال · Apple & Google Wallet · مواقع · أتمتة
           <br />نبني معك ما يجعل عميلك يعود دائماً.
         </motion.p>
 
