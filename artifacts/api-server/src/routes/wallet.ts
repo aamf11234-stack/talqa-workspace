@@ -375,9 +375,9 @@ router.get("/browndose", async (req, res) => {
     passTypeIdentifier: "pass.clinic.tlgaads.com",   // reuse registered cert
     serialNumber:       serial,
     teamIdentifier:     "V96R57F6T3",
-    organizationName:   "Brown Dose",
-    description:        "بطاقة ولاء براون دوز",
-    logoText:           "Brown Dose",
+    organizationName:   "تلقا",
+    description:        "بطاقة ولاء تلقا",
+    logoText:           "تلقا",
 
     backgroundColor: "rgb(26, 8, 4)",
     foregroundColor: "rgb(255, 255, 255)",
@@ -392,7 +392,7 @@ router.get("/browndose", async (req, res) => {
       ],
       secondaryFields: [
         { key: "tier",   label: "LEVEL",    value: String(tier) },
-        { key: "branch", label: "BRANCHES", value: "صبيا · جيزان · ضمد", textAlignment: "PKTextAlignmentRight" },
+        { key: "branch", label: "BRANCHES", value: "الرياض", textAlignment: "PKTextAlignmentRight" },
       ],
       auxiliaryFields: [
         { key: "member", label: "MEMBER SINCE", value: "٢٠٢٤" },
@@ -401,8 +401,8 @@ router.get("/browndose", async (req, res) => {
       backFields: [
         { key: "info",    label: "عن البطاقة",  value: "تجمع النقاط تلقائياً مع كل طلب. ١٥ نقطة = ١ ريال خصم." },
         { key: "redeem",  label: "كيف أستبدل",  value: "اعرض الرمز عند الصندوق أو استخدم التطبيق." },
-        { key: "web",     label: "الموقع",       value: "browndose.sa" },
-        { key: "support", label: "الدعم",        value: "920XXXXXX" },
+        { key: "web",     label: "الموقع",       value: "talqa.tech" },
+        { key: "support", label: "الدعم",        value: "966551378531+" },
         { key: "terms",   label: "الشروط",       value: "النقاط لا تنتهي · قابلة للإهداء · سارية في جميع الفروع." },
       ],
     },
@@ -415,8 +415,7 @@ router.get("/browndose", async (req, res) => {
     }],
 
     locations: [
-      { longitude: 42.5611, latitude: 17.0039, relevantText: "براون دوز جيزان" },
-      { longitude: 42.6237, latitude: 17.1455, relevantText: "براون دوز صبيا"  },
+      { longitude: 46.6753, latitude: 24.7136, relevantText: "تلقا — الرياض" },
     ],
     maxDistance: 500,
   };

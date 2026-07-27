@@ -3,6 +3,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const WA_WALLET = 'https://wa.me/966551378531?text=السلام%20عليكم%2C%20أبي%20أضيف%20Apple%20Wallet%20لمشروعي';
 
+function getPassUrl(name: string, role: string) {
+  const base = `${window.location.origin}/api/wallet/tlqa`;
+  const params = new URLSearchParams({
+    name: name || 'زائر تلقا',
+    role: role  || 'عميل محتمل',
+  });
+  return `${base}?${params}`;
+}
+
 const PALETTES = [
   { id: 'violet', swatch: ['#6D28D9','#8B5CF6'], card: ['#18003f','#2e0068'], accent: '#A78BFA', accent2: '#C4B5FD' },
   { id: 'gold',   swatch: ['#B45309','#D97706'], card: ['#1c0a00','#3a1800'], accent: '#FBBF24', accent2: '#FCD34D' },
@@ -335,6 +344,43 @@ export default function WalletShowcase() {
         {/* ── CTA ── */}
         <motion.div initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}
           style={{ textAlign:'center' }}>
+
+          {/* Add to Apple Wallet button */}
+          <div style={{ marginBottom:16 }}>
+            <a
+              href={getPassUrl(holder, 'عميل محتمل')}
+              download="talqa-tech.pkpass"
+              style={{
+                display:'inline-flex', alignItems:'center', gap:10,
+                padding:'14px 36px', borderRadius:14,
+                background:'#000', color:'#fff',
+                fontFamily:'-apple-system,Cairo,sans-serif', fontSize:15, fontWeight:700,
+                textDecoration:'none',
+                boxShadow:'0 8px 28px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)',
+                transition:'transform 0.18s, box-shadow 0.18s',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.transform='translateY(-2px)'; (e.currentTarget as HTMLAnchorElement).style.boxShadow='0 14px 40px rgba(0,0,0,0.55)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.transform='none'; (e.currentTarget as HTMLAnchorElement).style.boxShadow='0 8px 28px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)'; }}
+            >
+              {/* Apple Wallet SVG badge */}
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <rect width="22" height="22" rx="5" fill="white" fillOpacity="0.12"/>
+                <path d="M11 5.5C9.067 5.5 7.5 7.067 7.5 9c0 1.06.465 2.01 1.2 2.667C7.01 12.36 6 13.91 6 15.5h1c0-1.657 1.343-3 3-3h2c1.657 0 3 1.343 3 3h1c0-1.59-1.01-3.14-2.7-3.833A3.496 3.496 0 0014.5 9c0-1.933-1.567-3.5-3.5-3.5zm0 1c1.38 0 2.5 1.12 2.5 2.5S12.38 11.5 11 11.5 8.5 10.38 8.5 9 9.62 6.5 11 6.5z" fill="white"/>
+              </svg>
+              <span>Add to Apple Wallet</span>
+              {/* Official Apple Wallet mark */}
+              <svg width="20" height="14" viewBox="0 0 60 40" fill="none">
+                <rect width="60" height="40" rx="6" fill="white" fillOpacity="0.08"/>
+                <text x="30" y="26" textAnchor="middle" fontSize="13" fontWeight="700" fill="white" fontFamily="-apple-system,sans-serif">Wallet</text>
+              </svg>
+            </a>
+            <div style={{ fontSize:11, color:'rgba(255,255,255,0.22)', marginTop:8 }}>
+              يفتح مباشرة في iPhone · iOS 9 وأحدث
+            </div>
+          </div>
+
+          <div style={{ fontSize:12, color:'rgba(255,255,255,0.3)', marginBottom:14 }}>أو تواصل معنا لإضافة Wallet لمشروعك</div>
+
           <a href={WA_WALLET} target="_blank" rel="noopener noreferrer"
             style={{ display:'inline-flex', alignItems:'center', gap:10,
               padding:'15px 40px', borderRadius:14,
