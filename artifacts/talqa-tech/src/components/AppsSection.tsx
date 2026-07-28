@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useIsMobile } from '../hooks/useIsMobile';
 import {
   Smartphone, Star, Gift, CalendarDays, ShoppingBag,
   Bell, BarChart3, ArrowUpRight, Check, Crown,
@@ -358,6 +359,7 @@ const APP_STATS = [
 export default function AppsSection() {
   const [activeId, setActiveId] = useState('loyalty');
   const active = SCREENS.find(s => s.id === activeId)!;
+  const m = useIsMobile();
 
   return (
     <section id="apps" style={{
@@ -539,7 +541,7 @@ export default function AppsSection() {
         </div>
 
         {/* ── 3-COL MAIN ── */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 32, alignItems: 'start', marginBottom: 64 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: m ? '1fr' : '1fr 1fr 1fr', gap: m ? 24 : 32, alignItems: 'start', marginBottom: 64 }}>
 
           {/* COL 1: Features */}
           <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }}
@@ -663,7 +665,7 @@ export default function AppsSection() {
           viewport={{ once: true }} transition={{ duration: 0.55 }}
           style={{ borderRadius: 22, overflow: 'hidden',
             background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
-            display: 'grid', gridTemplateColumns: 'repeat(4,1fr)' }}>
+            display: 'grid', gridTemplateColumns: m ? 'repeat(2,1fr)' : 'repeat(4,1fr)' }}>
           {APP_STATS.map(({ Icon: Ic, value, label, color }, i) => (
             <div key={i} style={{ padding: '28px 20px', textAlign: 'center',
               borderLeft: i > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}>

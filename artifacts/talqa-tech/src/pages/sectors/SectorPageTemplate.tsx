@@ -5,6 +5,7 @@ import {
   Smartphone, BarChart3, Bell, Star,
 } from 'lucide-react';
 import PageLayout from '../PageLayout';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 export interface SectorData {
   slug: string; icon: string; name: string; tagline: string;
@@ -49,7 +50,7 @@ const WA_SVG = (
 /* ────────────────────────────────────
    PHONE MOCKUP — premium floating glass
 ──────────────────────────────────── */
-function PhoneMockup({ d }: { d: SectorData }) {
+function PhoneMockup({ d, isMobile = false }: { d: SectorData; isMobile?: boolean }) {
   return (
     <div style={{ position: 'relative', width: 260 }}>
       {/* Outer ambient glow */}
@@ -60,54 +61,58 @@ function PhoneMockup({ d }: { d: SectorData }) {
       }}/>
 
       {/* Floating stat pill — top right */}
-      <motion.div
-        initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.7, duration: 0.5 }}
-        style={{
-          position: 'absolute', top: 40, right: -54, zIndex: 10,
-          background: 'rgba(10,10,30,0.85)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(129,140,248,0.25)',
-          borderRadius: 14, padding: '10px 16px',
-          display: 'flex', alignItems: 'center', gap: 10,
-          boxShadow: '0 16px 40px rgba(0,0,0,0.5)',
-        }}>
-        <div style={{ width: 28, height: 28, borderRadius: 8, background: C.inkSoft,
-          display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <BarChart3 size={14} strokeWidth={2} color={C.ink}/>
-        </div>
-        <div>
-          <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 900, fontSize: 15,
-            color: '#fff', lineHeight: 1 }}>{d.stats[0].n}</div>
-          <div style={{ fontFamily: 'Cairo,sans-serif', fontSize: 9, color: C.dim, marginTop: 2 }}>{d.stats[0].label}</div>
-        </div>
-      </motion.div>
+      {!isMobile && (
+        <motion.div
+          initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.7, duration: 0.5 }}
+          style={{
+            position: 'absolute', top: 40, right: -54, zIndex: 10,
+            background: 'rgba(10,10,30,0.85)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(129,140,248,0.25)',
+            borderRadius: 14, padding: '10px 16px',
+            display: 'flex', alignItems: 'center', gap: 10,
+            boxShadow: '0 16px 40px rgba(0,0,0,0.5)',
+          }}>
+          <div style={{ width: 28, height: 28, borderRadius: 8, background: C.inkSoft,
+            display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <BarChart3 size={14} strokeWidth={2} color={C.ink}/>
+          </div>
+          <div>
+            <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 900, fontSize: 15,
+              color: '#fff', lineHeight: 1 }}>{d.stats[0].n}</div>
+            <div style={{ fontFamily: 'Cairo,sans-serif', fontSize: 9, color: C.dim, marginTop: 2 }}>{d.stats[0].label}</div>
+          </div>
+        </motion.div>
+      )}
 
       {/* Floating notification pill — bottom left */}
-      <motion.div
-        initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.9, duration: 0.5 }}
-        style={{
-          position: 'absolute', bottom: 80, left: -60, zIndex: 10,
-          background: 'rgba(10,10,30,0.85)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(129,140,248,0.22)',
-          borderRadius: 14, padding: '10px 14px',
-          display: 'flex', alignItems: 'center', gap: 10,
-          boxShadow: '0 16px 40px rgba(0,0,0,0.5)',
-          maxWidth: 180,
-        }}>
-        <div style={{ width: 28, height: 28, borderRadius: 8,
-          background: 'rgba(16,185,129,0.15)', flexShrink: 0,
-          display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Bell size={13} strokeWidth={2} color="#10B981"/>
-        </div>
-        <div>
-          <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 800, fontSize: 10,
-            color: '#fff', lineHeight: 1.3 }}>إشعار جديد</div>
-          <div style={{ fontFamily: 'Cairo,sans-serif', fontSize: 8.5, color: '#10B981', marginTop: 2 }}>+٣٥ نقطة أُضيفت</div>
-        </div>
-      </motion.div>
+      {!isMobile && (
+        <motion.div
+          initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.9, duration: 0.5 }}
+          style={{
+            position: 'absolute', bottom: 80, left: -60, zIndex: 10,
+            background: 'rgba(10,10,30,0.85)',
+            backdropFilter: 'blur(20px)',
+            border: '1px solid rgba(129,140,248,0.22)',
+            borderRadius: 14, padding: '10px 14px',
+            display: 'flex', alignItems: 'center', gap: 10,
+            boxShadow: '0 16px 40px rgba(0,0,0,0.5)',
+            maxWidth: 180,
+          }}>
+          <div style={{ width: 28, height: 28, borderRadius: 8,
+            background: 'rgba(16,185,129,0.15)', flexShrink: 0,
+            display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Bell size={13} strokeWidth={2} color="#10B981"/>
+          </div>
+          <div>
+            <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 800, fontSize: 10,
+              color: '#fff', lineHeight: 1.3 }}>إشعار جديد</div>
+            <div style={{ fontFamily: 'Cairo,sans-serif', fontSize: 8.5, color: '#10B981', marginTop: 2 }}>+٣٥ نقطة أُضيفت</div>
+          </div>
+        </motion.div>
+      )}
 
       {/* Phone shell */}
       <motion.div
@@ -235,12 +240,13 @@ function SectionBadge({ label }: { label: string }) {
 /* ────────────────────────────────────
    BENTO FEATURES
 ──────────────────────────────────── */
-function BentoFeatures({ features }: { features: SectorData['features'] }) {
+function BentoFeatures({ features, isMobile = false }: { features: SectorData['features']; isMobile?: boolean }) {
+  const m = isMobile;
   // Layout: 1 large (span 2 cols) + 1 medium | then 3 equal
   return (
     <div>
       {/* Row 1 */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.7fr 1fr', gap: 12, marginBottom: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: m ? '1fr' : '1.7fr 1fr', gap: 12, marginBottom: 12 }}>
         {/* Large card */}
         <motion.div
           initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
@@ -295,7 +301,7 @@ function BentoFeatures({ features }: { features: SectorData['features'] }) {
       </div>
 
       {/* Row 2 — three equal */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: m ? '1fr' : 'repeat(3, 1fr)', gap: 12 }}>
         {features.slice(2, 5).map((f, i) => (
           <motion.div key={i}
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
@@ -351,6 +357,7 @@ function BentoFeatures({ features }: { features: SectorData['features'] }) {
    MAIN EXPORT
 ──────────────────────────────────── */
 export default function SectorPage({ d }: { d: SectorData }) {
+  const m = useIsMobile();
   const WA = `${WA_BASE}${encodeURIComponent(d.waMsg)}`;
 
   return (
@@ -361,9 +368,9 @@ export default function SectorPage({ d }: { d: SectorData }) {
       ═══════════════════════════════════════════ */}
       <section style={{
         minHeight: '100vh',
-        display: 'grid', gridTemplateColumns: '1fr 1fr',
+        display: 'grid', gridTemplateColumns: m ? '1fr' : '1fr 1fr',
         gap: 0, alignItems: 'center',
-        padding: 'clamp(100px,12vw,140px) clamp(24px,5vw,80px) 80px',
+        padding: m ? '100px 20px 60px' : 'clamp(100px,12vw,140px) clamp(24px,5vw,80px) 80px',
         maxWidth: 1280, margin: '0 auto',
         position: 'relative',
       }}>
@@ -379,7 +386,7 @@ export default function SectorPage({ d }: { d: SectorData }) {
         <motion.div
           initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          style={{ paddingLeft: 0, paddingRight: 48 }}>
+          style={{ paddingLeft: 0, paddingRight: m ? 0 : 48 }}>
 
           {/* Eyebrow */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 32 }}>
@@ -478,8 +485,8 @@ export default function SectorPage({ d }: { d: SectorData }) {
         <motion.div
           initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingLeft: 40 }}>
-          <PhoneMockup d={d}/>
+          style={{ display: m ? 'none' : 'flex', justifyContent: 'center', alignItems: 'center', paddingLeft: 40 }}>
+          <PhoneMockup d={d} isMobile={m}/>
         </motion.div>
       </section>
 
@@ -488,14 +495,17 @@ export default function SectorPage({ d }: { d: SectorData }) {
       ═══════════════════════════════════════════ */}
       <section style={{ borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 clamp(24px,5vw,80px)' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: m ? 'repeat(2,1fr)' : 'repeat(4, 1fr)' }}>
             {d.stats.map((s, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }} transition={{ delay: i * 0.10, duration: 0.5 }}
                 style={{
-                  padding: '52px 32px',
-                  borderRight: i < 3 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                  padding: m ? '32px 20px' : '52px 32px',
+                  borderRight: m
+                    ? (i % 2 === 0 ? '1px solid rgba(255,255,255,0.06)' : 'none')
+                    : (i < 3 ? '1px solid rgba(255,255,255,0.06)' : 'none'),
+                  borderBottom: m && i < 2 ? '1px solid rgba(255,255,255,0.06)' : 'none',
                   position: 'relative',
                 }}>
                 {/* Subtle top accent */}
@@ -534,7 +544,7 @@ export default function SectorPage({ d }: { d: SectorData }) {
             </p>
           </div>
 
-          <BentoFeatures features={d.features}/>
+          <BentoFeatures features={d.features} isMobile={m}/>
         </div>
       </section>
 
@@ -548,9 +558,9 @@ export default function SectorPage({ d }: { d: SectorData }) {
         borderBottom: '1px solid rgba(255,255,255,0.05)',
       }}>
         <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 80, alignItems: 'start' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: m ? '1fr' : '1fr 2fr', gap: m ? 32 : 80, alignItems: 'start' }}>
             {/* Left — heading */}
-            <div style={{ position: 'sticky', top: 120 }}>
+            <div style={{ position: m ? 'static' : 'sticky', top: 120 }}>
               <SectionBadge label="CHALLENGES"/>
               <h2 style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 900,
                 fontSize: 'clamp(2rem,3vw,2.8rem)', color: '#fff',
@@ -610,11 +620,11 @@ export default function SectorPage({ d }: { d: SectorData }) {
           </div>
 
           {/* Steps */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, position: 'relative' }}>
-            {/* Connector line */}
-            <div style={{ position: 'absolute', top: 38, left: '16.67%', right: '16.67%', height: 1,
+          <div style={{ display: 'grid', gridTemplateColumns: m ? '1fr' : 'repeat(3, 1fr)', gap: m ? 40 : 0, position: 'relative' }}>
+            {/* Connector line — desktop only */}
+            {!m && <div style={{ position: 'absolute', top: 38, left: '16.67%', right: '16.67%', height: 1,
               background: `linear-gradient(90deg, transparent, ${C.ink}55, ${C.ink}55, transparent)`,
-              pointerEvents: 'none' }}/>
+              pointerEvents: 'none' }}/>}
 
             {d.howItWorks.map((s, i) => (
               <motion.div key={i}
@@ -656,7 +666,7 @@ export default function SectorPage({ d }: { d: SectorData }) {
         overflow: 'hidden',
       }}>
         <div style={{ maxWidth: 1280, margin: '0 auto',
-          display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
+          display: 'grid', gridTemplateColumns: m ? '1fr' : '1fr 1fr', gap: m ? 40 : 80, alignItems: 'center' }}>
 
           {/* Left — text */}
           <motion.div initial={{ opacity: 0, x: -32 }} whileInView={{ opacity: 1, x: 0 }}
@@ -840,7 +850,7 @@ export default function SectorPage({ d }: { d: SectorData }) {
         </div>
 
         <div style={{ maxWidth: 1280, margin: '0 auto', position: 'relative' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 48, alignItems: 'center', flexWrap: 'wrap' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: m ? '1fr' : '1fr auto', gap: m ? 32 : 48, alignItems: 'center' }}>
             <div>
               <div style={{ fontFamily: 'sans-serif', fontWeight: 700, fontSize: 11,
                 color: C.ink, letterSpacing: 2.5, textTransform: 'uppercase', marginBottom: 20 }}>

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useCountUp } from '../hooks/useCountUp';
+import { useIsMobile } from '../hooks/useIsMobile';
 import { Star, Wifi, Calendar, CheckCircle2, ArrowDown } from 'lucide-react';
 
 const WA = 'https://wa.me/966551378531?text=السلام%20عليكم%2C%20أريد%20أبدأ%20مشروعي';
@@ -44,6 +45,7 @@ const words = ['نحوّل', 'أفكارك', 'إلى', 'منتجات'];
 const words2 = ['يعشقها', 'عملاؤك.'];
 
 export default function Hero() {
+  const m = useIsMobile();
   return (
     <section style={{
       position: 'relative', minHeight: '100dvh',
@@ -204,7 +206,7 @@ export default function Hero() {
 
       {/* Stats bar */}
       <div style={{ position: 'relative', zIndex: 2, width: '100%', borderTop: '1px solid var(--border)', background: 'rgba(255,255,255,0.02)', backdropFilter: 'blur(10px)' }}>
-        <div style={{ maxWidth: 720, margin: '0 auto', padding: '0 24px', display: 'grid', gridTemplateColumns: 'repeat(4,1fr)' }}>
+        <div style={{ maxWidth: 720, margin: '0 auto', padding: '0 24px', display: 'grid', gridTemplateColumns: m ? 'repeat(2,1fr)' : 'repeat(4,1fr)' }}>
           {[{ end: 14, label: 'مشروع مُنجز' }, { end: 3, label: 'قطاعات مخدومة' }, { end: 95, label: 'رضا العملاء', suffix: '٪' }, { end: 24, label: 'دعم فني', suffix: '/٧' }].map((s, i) => (
             <div key={s.label} style={{ borderLeft: i > 0 ? '1px solid var(--border)' : 'none' }}>
               <Stat end={s.end} label={s.label} suffix={s.suffix ?? ''} />

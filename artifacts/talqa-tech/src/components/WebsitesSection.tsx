@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useIsMobile } from '../hooks/useIsMobile';
 import {
   Globe, Zap, Smartphone, Search, ArrowUpRight, Check,
   ShoppingBag, HeartPulse, Utensils, Building2, Rocket,
@@ -255,6 +256,7 @@ const FEATURES = [
 export default function WebsitesSection() {
   const [activeId, setActiveId] = useState('restaurant');
   const active = SITES.find(s => s.id === activeId)!;
+  const m = useIsMobile();
 
   return (
     <section id="websites" style={{
@@ -406,7 +408,7 @@ export default function WebsitesSection() {
         </div>
 
         {/* ── 2-COL LAYOUT ── */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: 40, alignItems: 'start', marginBottom: 64 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: m ? '1fr' : '1.1fr 0.9fr', gap: m ? 24 : 40, alignItems: 'start', marginBottom: 64 }}>
 
           {/* LEFT: Browser */}
           <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }}
@@ -416,7 +418,7 @@ export default function WebsitesSection() {
             </AnimatePresence>
 
             {/* Metrics strip below browser */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10, marginTop: 14 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: m ? 'repeat(3,1fr)' : 'repeat(3,1fr)', gap: 10, marginTop: 14 }}>
               {METRICS.map(m => (
                 <div key={m.label} style={{
                   padding: '14px 12px', borderRadius: 12, textAlign: 'center',
