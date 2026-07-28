@@ -7,7 +7,7 @@ import {
   QrCode, Bell, BarChart3, Wallet, MapPin, Clock
 } from 'lucide-react';
 
-const WA = 'https://wa.me/966551378531?text=' + encodeURIComponent('السلام عليكم، أبي نظام تطبيق المطاعم والكافيهات بـ٤٩٩ ريال');
+const WA = 'https://wa.me/966551378531?text=' + encodeURIComponent('السلام عليكم، أبي نظام تطبيق المطاعم والكافيهات بـ٤٩٩ ريال شهرياً');
 
 const A = '#F59E0B';   // amber
 const A2 = '#EF4444';  // red
@@ -190,12 +190,12 @@ export default function FoodPage() {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 16, padding: '18px 28px', borderRadius: 20, background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.22)', marginBottom: 36, position: 'relative', overflow: 'hidden' }}>
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,rgba(245,158,11,0.05),transparent)', pointerEvents: 'none' }} />
             <div style={{ position: 'relative' }}>
-              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', fontFamily: 'Cairo,sans-serif', marginBottom: 2 }}>السعر الكامل</div>
+              <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', fontFamily: 'Cairo,sans-serif', marginBottom: 2 }}>الاشتراك الشهري</div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
                 <span style={{ fontSize: 42, fontWeight: 900, color: '#fff', letterSpacing: '-0.04em', lineHeight: 1 }}>٤٩٩</span>
-                <span style={{ fontSize: 16, color: 'rgba(255,255,255,0.5)', fontWeight: 600 }}>ريال</span>
+                <span style={{ fontSize: 16, color: 'rgba(255,255,255,0.5)', fontWeight: 600 }}>ريال/شهر</span>
               </div>
-              <div style={{ fontSize: 11, color: A, fontWeight: 700, fontFamily: 'Cairo,sans-serif', marginTop: 3 }}>دفعة واحدة · بلا رسوم شهرية</div>
+              <div style={{ fontSize: 11, color: A, fontWeight: 700, fontFamily: 'Cairo,sans-serif', marginTop: 3 }}>إلغاء في أي وقت · بدون عقود</div>
             </div>
             <div style={{ width: 1, height: 52, background: 'rgba(245,158,11,0.2)' }} />
             <div>
@@ -239,7 +239,7 @@ export default function FoodPage() {
               { n: '+١٢٠', l: 'كافيه ومطعم يستخدم نظامنا' },
               { n: '٣٥٪', l: 'زيادة في عودة العملاء' },
               { n: '١٤ يوم', l: 'وقت التسليم' },
-              { n: '٤٩٩', l: 'ريال فقط — دفعة واحدة' },
+              { n: '٤٩٩', l: 'ريال شهرياً فقط' },
             ].map((s, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}
@@ -359,9 +359,9 @@ export default function FoodPage() {
 
             <div style={{ marginBottom: 10 }}>
               <span style={{ fontSize: 72, fontWeight: 900, color: '#fff', letterSpacing: '-0.05em', lineHeight: 1, fontFamily: 'Cairo,sans-serif' }}>٤٩٩</span>
-              <span style={{ fontSize: 24, color: 'rgba(255,255,255,0.45)', fontWeight: 600, marginRight: 8 }}>ريال</span>
+              <span style={{ fontSize: 24, color: 'rgba(255,255,255,0.45)', fontWeight: 600, marginRight: 8 }}>ريال / شهر</span>
             </div>
-            <p style={{ color: 'rgba(255,255,255,0.4)', marginBottom: 36, fontSize: 14, fontFamily: 'Cairo,sans-serif' }}>دفعة واحدة · ملكيتك الكاملة · بلا رسوم شهرية</p>
+            <p style={{ color: 'rgba(255,255,255,0.4)', marginBottom: 36, fontSize: 14, fontFamily: 'Cairo,sans-serif' }}>اشتراك شهري · إلغاء في أي وقت · بدون عقود</p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 40, textAlign: 'right' }}>
               {[
