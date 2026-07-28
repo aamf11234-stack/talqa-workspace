@@ -426,6 +426,7 @@ function PaymentSheet({
 
 /* ── Booking Confirmation Card ───────────────────────────────── */
 function BookingCard({ b, onClose }: { b: Booking; onClose: () => void }) {
+  const { brand } = useBrand();
   const pkg = packages.find(p => p.id === b.pkgId);
   const ct  = celebTypes.find(c => c.id === b.celebType);
   const vat   = pkg ? Math.round(pkg.price * 0.15) : 0;
@@ -486,7 +487,7 @@ function BookingCard({ b, onClose }: { b: Booking; onClose: () => void }) {
               { l: 'التاريخ',       v: b.date },
               { l: 'الوقت',         v: b.time },
               { l: 'عدد الأشخاص',  v: `${b.guests} شخص` },
-              { l: 'الفرع',         v: 'براون دوز — صبيا' },
+              { l: 'الفرع',         v: brand.name },
               ...(b.type === 'celebration' && ct ? [{ l: 'المناسبة', v: `${ct.emoji} ${ct.label}` }] : []),
               ...(b.type === 'celebration' && pkg ? [{ l: 'الباقة', v: pkg.name }] : []),
               ...(b.pkgPrice ? [{ l: 'طريقة الدفع', v: b.payMethod === 'apple' ? 'Apple Pay' : b.payMethod === 'stc' ? 'STC Pay' : 'بطاقة بنكية' }] : []),
@@ -640,6 +641,7 @@ function MyBookings({ bookings, onClose }: { bookings: Booking[]; onClose: () =>
 
 /* ═══════════════════════════════════════════════════════════════ */
 export function ScreenReservations() {
+  const { brand } = useBrand();
   type BookType = 'table' | 'celebration';
 
   const [bookings,     setBookings]     = useState<Booking[]>([]);
@@ -758,11 +760,11 @@ export function ScreenReservations() {
               transition={{ type: 'spring', stiffness: 200, damping: 20 }} className="relative mb-3">
               <div className="absolute inset-0 rounded-[18px] blur-xl"
                 style={{ background: 'rgba(201,149,106,0.35)', transform: 'scale(1.4)' }} />
-              <img src={logoImg} alt="براون دوز"
+              <img src={logoImg} alt={brand.name}
                 className="relative w-14 h-14 rounded-[18px] object-cover"
                 style={{ border: '2px solid rgba(201,149,106,0.5)', boxShadow: '0 8px 28px rgba(0,0,0,0.5)' }} />
             </motion.div>
-            <p className="text-[8px] font-black text-[#C4783A] mb-1.5">براون دوز · جيزان</p>
+            <p className="text-[8px] font-black text-[#C4783A] mb-1.5">{brand.name} · نظام الولاء</p>
             <h1 className="text-[24px] font-black text-white leading-none mb-4">احجز مكانك</h1>
 
             {/* My bookings chip */}

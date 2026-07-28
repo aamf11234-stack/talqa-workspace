@@ -63,6 +63,7 @@ function OrderTracker({ step }: { step: number }) {
 
 /* ── Branch Sheet (in orders) ───────────────────────────────────── */
 function BranchSheet({ onClose }: { onClose: () => void }) {
+  const { brand } = useBrand();
   return (
     <>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -72,8 +73,8 @@ function BranchSheet({ onClose }: { onClose: () => void }) {
         className="absolute inset-x-0 bottom-0 z-50 rounded-t-[24px] bg-white overflow-hidden">
         <div className="flex items-center justify-between px-5 pt-5 pb-4 border-b border-[#F2F2F2]">
           <div>
-            <p className="text-[16px] font-black text-[#111]">فروع براون دوز</p>
-            <p className="text-[10px] text-[#AAA] mt-0.5">٣ فروع · صبيا، جيزان، ضمد</p>
+            <p className="text-[16px] font-black text-[#111]">فروع {brand.name}</p>
+            <p className="text-[10px] text-[#AAA] mt-0.5">فروع النشاط التجاري</p>
           </div>
           <button onClick={onClose} className="w-8 h-8 rounded-full bg-[#F5F4F2] flex items-center justify-center">
             <X size={14} className="text-[#888]" />
@@ -238,6 +239,7 @@ const PAY_LABELS: Record<string, string> = { apple: 'Apple Pay', stc: 'STC Pay',
 const TYPE_LABELS: Record<string, string> = { dine: 'جلسة داخلية', delivery: 'توصيل', pickup: 'استلام' };
 
 function InvoiceDetailSheet({ order, onClose }: { order: PastOrder; onClose: () => void }) {
+  const { brand } = useBrand();
   const d = order.dateObj ?? new Date();
   const base = order.basePrice;
   const vat  = order.vat ?? Math.round(base * 0.15);
@@ -280,7 +282,7 @@ function InvoiceDetailSheet({ order, onClose }: { order: PastOrder; onClose: () 
             <div>
               <p className="text-[10px] font-black text-[#6B3210]"
                 style={{ fontFamily: 'ui-monospace,monospace' }}>فاتورة ضريبية · <span className="tracking-widest">ZATCA</span></p>
-              <p className="text-[20px] font-black text-[#111] mt-0.5">براون دوز</p>
+              <p className="text-[20px] font-black text-[#111] mt-0.5">{brand.name}</p>
             </div>
             <div className="text-left">
               <p className="text-[9px] font-black text-[#AAA]" style={{ fontFamily: 'ui-monospace,monospace' }}>{order.id}</p>

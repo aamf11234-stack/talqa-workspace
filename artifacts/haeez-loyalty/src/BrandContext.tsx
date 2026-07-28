@@ -164,8 +164,21 @@ interface BrandCtx {
 
 const Ctx = createContext<BrandCtx>({ brand: RESTAURANT_BRAND, setBrand: () => {} });
 
-export function BrandProvider({ children }: { children: React.ReactNode }) {
-  const [brand, setBrand] = useState<BrandConfig>(BROWNDOSE_BRAND);
+export function BrandProvider({ children, overrideName }: { children: React.ReactNode; overrideName?: string }) {
+  const [brand, setBrand] = useState<BrandConfig>(() => {
+    const params = new URLSearchParams(window.location.search);
+    const urlType = params.get('type');
+    const base = urlType === 'restaurant' ? RESTAURANT_BRAND : BROWNDOSE_BRAND;
+    const urlName = overrideName || params.get('biz');
+    if (urlName) {
+      return {
+        ...base,
+        name: urlName,
+        memberCard: { ...base.memberCard, label: urlName },
+      };
+    }
+    return base;
+  });
   return <Ctx.Provider value={{ brand, setBrand }}>{children}</Ctx.Provider>;
 }
 

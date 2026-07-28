@@ -569,6 +569,7 @@ const SLOTS = [
 ];
 
 function QuickBookSheet({ onClose }: { onClose: () => void }) {
+  const { brand } = useBrand();
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [pax, setPax] = useState(2);
   const [done, setDone] = useState(false);
@@ -630,7 +631,7 @@ function QuickBookSheet({ onClose }: { onClose: () => void }) {
                 {[
                   { label: 'الموعد',       val: selectedSlot ?? '' },
                   { label: 'عدد الأشخاص', val: `${pax} أشخاص`    },
-                  { label: 'الفرع',        val: 'براون دوز — صبيا' },
+                  { label: 'الفرع',        val: brand.name },
                   { label: 'الحالة',       val: 'مؤكّد ✓', color: '#30D158' },
                 ].map((r, i) => (
                   <div key={i} className={`flex justify-between py-2.5 ${i < 3 ? 'border-b border-white/5' : ''}`}>
@@ -1230,7 +1231,7 @@ export function ScreenHome({ onShakeTrigger }: { onShakeTrigger?: () => void }) 
                   <p className="text-[8px] font-black mb-2"
                     style={{ color: 'rgba(201,149,106,0.5)', fontFamily: 'ui-monospace,monospace' }}>
                     <span className="tracking-[0.3em]">LOYALTY</span>
-                    <span className="tracking-normal"> · براون دوز</span>
+                    <span className="tracking-normal"> · {brand.name}</span>
                   </p>
                   <div className="flex items-baseline gap-2">
                     <span className="font-black leading-none tabular-nums"

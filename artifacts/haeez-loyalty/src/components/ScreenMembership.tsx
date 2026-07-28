@@ -43,6 +43,7 @@ function PassQR({ size = 72, dark = '#1A0804', light = 'white' }: { size?: numbe
 }
 
 function MembershipCard() {
+  const { brand } = useBrand();
   return (
     <motion.div
       whileHover={{ rotateY: 2, scale: 1.012 }}
@@ -124,9 +125,9 @@ function MembershipCard() {
           <div className="flex items-center justify-between rounded-[14px] overflow-hidden"
             style={{ background: 'white', padding: '10px 14px' }}>
             <div>
-              <p className="text-[#1A0804] text-[8px] font-black tracking-[0.18em] uppercase mb-0.5">Brown Dose</p>
+              <p className="text-[#1A0804] text-[8px] font-black tracking-[0.18em] uppercase mb-0.5">{brand.name}</p>
               <p className="text-[#888] text-[7px] font-inter">#BD-2024-8821</p>
-              <p className="text-[#555] text-[7px] font-inter mt-0.5">صبيا · جيزان · ضمد</p>
+              <p className="text-[#555] text-[7px] font-inter mt-0.5">نظام الولاء الرقمي</p>
             </div>
             <PassQR size={60} dark="#1A0804" light="white" />
           </div>
@@ -335,6 +336,7 @@ function WalletPassPreview({ compact = false }: { compact?: boolean }) {
 }
 
 function AppleWalletModal({ onClose }: { onClose: () => void }) {
+  const { brand } = useBrand();
   const [phase, setPhase] = useState<'preview' | 'adding' | 'done'>('preview');
 
   async function handleAdd() {
@@ -500,7 +502,7 @@ function AppleWalletModal({ onClose }: { onClose: () => void }) {
                     <div className="flex-1">
                       <p className="text-white/40 text-[7px] font-inter tracking-widest">MEMBER</p>
                       <p className="text-white text-[12px] font-bold">عبدالإله علي</p>
-                      <p className="text-[#C4783A] text-[9px] font-semibold mt-0.5">كلاسيك · براون دوز</p>
+                      <p className="text-[#C4783A] text-[9px] font-semibold mt-0.5">كلاسيك · {brand.name}</p>
                     </div>
                     <PassQR size={44} dark="#1A0804" light="rgba(255,255,255,0.9)" />
                   </div>
@@ -643,6 +645,7 @@ function GoogleWalletModal({ onClose }: { onClose: () => void }) {
 
 /* ── Gift toast ──────────────────────────────────────────────────── */
 function GiftToast({ msg, onDone }: { msg: string; onDone: () => void }) {
+  const { brand } = useBrand();
   useEffect(() => { const t = setTimeout(onDone, 2600); return () => clearTimeout(t); }, [onDone]);
   return (
     <motion.div
@@ -655,7 +658,7 @@ function GiftToast({ msg, onDone }: { msg: string; onDone: () => void }) {
       </div>
       <div>
         <p className="text-[12px] font-semibold">{msg}</p>
-        <p className="text-[10px] text-white/50 font-light mt-0.5">سيصله إشعار فوري من براون دوز 🎁</p>
+        <p className="text-[10px] text-white/50 font-light mt-0.5">سيصله إشعار فوري من {brand.name} 🎁</p>
       </div>
     </motion.div>
   );
@@ -822,6 +825,7 @@ function RedeemInvoiceSheet({
   remainingPoints: number;
   onClose: () => void;
 }) {
+  const { brand } = useBrand();
   const inv      = React.useMemo(() => invNum(), []);
   const now      = React.useMemo(() => nowAr(), []);
   const ptsCtr   = useCounter(pointsSpent, 1000, 500);
@@ -907,7 +911,7 @@ function RedeemInvoiceSheet({
             {item.emoji}
           </div>
           <div className="flex-1">
-            <p className="text-[15px] font-black text-[#111]">براون دوز</p>
+            <p className="text-[15px] font-black text-[#111]">{brand.name}</p>
             <p className="text-[10px] text-[#AAA] font-light">إيصال استبدال نقاط · Loyalty</p>
           </div>
           <div className="text-left">

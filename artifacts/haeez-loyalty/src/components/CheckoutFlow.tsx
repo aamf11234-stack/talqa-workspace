@@ -723,7 +723,7 @@ function PaymentSheet({ item, orderType, onPay, phase, depositAmt }: {
         <StepIndicator phase={phase} orderType={orderType} />
         <div className="px-5 pb-3">
           <p className="text-[18px] font-black text-[#111]">تفاصيل الطلب</p>
-          <p className="text-[11px] text-[#AAA] font-light">{orderLabel} · حساب براون دوز</p>
+          <p className="text-[11px] text-[#AAA] font-light">{orderLabel}</p>
         </div>
       </div>
 
@@ -748,7 +748,7 @@ function PaymentSheet({ item, orderType, onPay, phase, depositAmt }: {
           </div>
           <div className="flex-1">
             <p className="text-white text-[14px] font-bold">{item.name}</p>
-            <p className="text-white/35 text-[10px]">× ١ — براون دوز</p>
+            <p className="text-white/35 text-[10px]">× ١</p>
           </div>
           <p className="text-[#C4783A] text-[18px] font-black font-inter shrink-0">{item.price} <span className="text-[11px]">ر</span></p>
         </motion.div>
