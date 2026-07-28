@@ -3,15 +3,69 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Globe, Zap, Smartphone, Search, ArrowUpRight, Check,
   ShoppingBag, HeartPulse, Utensils, Building2, Rocket,
+  CreditCard, Wallet,
 } from 'lucide-react';
 
-const WA = 'https://wa.me/966551378531?text=السلام%20عليكم%2C%20أبي%20موقع%20احترافي';
+const WA = 'https://wa.me/966551378531?text=السلام%20عليكم%2C%20أبي%20موقع%20احترافي%20بـ99%20ريال';
 const WA_ICON = (
   <svg viewBox="0 0 24 24" width="16" height="16" fill="white" style={{ flexShrink: 0 }}>
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
     <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.852L.054 23.077a.75.75 0 00.917.944l5.453-1.426A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.715 9.715 0 01-4.978-1.371l-.357-.212-3.698.967.984-3.593-.232-.369A9.718 9.718 0 012.25 12C2.25 6.61 6.61 2.25 12 2.25S21.75 6.61 21.75 12 17.39 21.75 12 21.75z"/>
   </svg>
 );
+
+/* ══════════════════════════════════
+   PAYMENT METHODS
+══════════════════════════════════ */
+const PAYMENT_METHODS = [
+  {
+    label: 'Mada',
+    bg: '#1a6b3c',
+    logo: (
+      <svg viewBox="0 0 48 20" width="38" height="16">
+        <text x="0" y="15" fontFamily="Arial,sans-serif" fontWeight="900" fontSize="16" fill="white">mada</text>
+      </svg>
+    ),
+  },
+  {
+    label: 'Apple Pay',
+    bg: '#000',
+    logo: (
+      <svg viewBox="0 0 50 20" width="44" height="18">
+        <text x="0" y="15" fontFamily="-apple-system,sans-serif" fontWeight="600" fontSize="13" fill="white"> Pay</text>
+      </svg>
+    ),
+  },
+  {
+    label: 'STC Pay',
+    bg: '#6e1885',
+    logo: (
+      <svg viewBox="0 0 60 20" width="44" height="16">
+        <text x="0" y="14" fontFamily="Arial,sans-serif" fontWeight="900" fontSize="13" fill="white">STC Pay</text>
+      </svg>
+    ),
+  },
+  {
+    label: 'Visa',
+    bg: '#1a1f71',
+    logo: (
+      <svg viewBox="0 0 48 16" width="38" height="14">
+        <text x="0" y="13" fontFamily="Arial,sans-serif" fontWeight="900" fontSize="16" fill="white" letterSpacing="-1">VISA</text>
+      </svg>
+    ),
+  },
+  {
+    label: 'Mastercard',
+    bg: '#252525',
+    logo: (
+      <svg viewBox="0 0 36 24" width="30" height="20">
+        <circle cx="12" cy="12" r="11" fill="#EB001B"/>
+        <circle cx="24" cy="12" r="11" fill="#F79E1B"/>
+        <path d="M18 4.93A11 11 0 0 1 18 19.07 11 11 0 0 1 18 4.93z" fill="#FF5F00"/>
+      </svg>
+    ),
+  },
+];
 
 /* ══════════════════════════════════
    WEBSITE TYPES
@@ -88,7 +142,6 @@ function BrowserMockup({ site }: { site: SiteType }) {
         boxShadow: `0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.07)`,
         background: '#0a0a0f',
       }}>
-
       {/* Browser chrome */}
       <div style={{
         padding: '10px 16px', background: '#111118',
@@ -100,7 +153,6 @@ function BrowserMockup({ site }: { site: SiteType }) {
             <div key={c} style={{ width: 10, height: 10, borderRadius: '50%', background: c }}/>
           ))}
         </div>
-        {/* URL bar */}
         <div style={{
           flex: 1, height: 26, borderRadius: 6,
           background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)',
@@ -120,8 +172,6 @@ function BrowserMockup({ site }: { site: SiteType }) {
 
       {/* Website content */}
       <div style={{ background: site.bg, direction: 'rtl' }}>
-
-        {/* Site nav */}
         <div style={{
           padding: '10px 20px', display: 'flex', alignItems: 'center',
           justifyContent: 'space-between', borderBottom: `1px solid ${site.accent}15`,
@@ -141,7 +191,6 @@ function BrowserMockup({ site }: { site: SiteType }) {
           </div>
         </div>
 
-        {/* Hero */}
         <div style={{ padding: '24px 20px 20px', textAlign: 'center', position: 'relative' }}>
           <div style={{
             position: 'absolute', inset: 0,
@@ -162,7 +211,6 @@ function BrowserMockup({ site }: { site: SiteType }) {
           }}>{site.cta}</button>
         </div>
 
-        {/* Section */}
         <div style={{ padding: '0 20px 20px' }}>
           <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 800, fontSize: 11,
             color: 'rgba(255,255,255,0.6)', marginBottom: 10 }}>{site.sectionTitle}</div>
@@ -195,10 +243,10 @@ const METRICS = [
    FEATURES
 ══════════════════════════════════ */
 const FEATURES = [
-  { Icon: Zap,        title: 'سرعة خارقة',         body: 'Core Web Vitals ممتازة — يرضي Google ويُبهر الزوار.' },
-  { Icon: Search,     title: 'تحسين SEO كامل',      body: 'بنية صح من اليوم الأول — ظهور أعلى في نتائج البحث.' },
-  { Icon: Smartphone, title: 'تصميم Responsive',   body: 'يبدو مذهلاً على كل شاشة — جوال، تابلت، ديسكتوب.' },
-  { Icon: Globe,      title: 'نطاق .sa + SSL',      body: 'حماية كاملة وعنوان سعودي موثوق لعملائك.' },
+  { Icon: Zap,        title: 'سرعة خارقة',        body: 'Core Web Vitals ممتازة — يرضي Google ويُبهر الزوار.' },
+  { Icon: Search,     title: 'تحسين SEO كامل',     body: 'بنية صح من اليوم الأول — ظهور أعلى في نتائج البحث.' },
+  { Icon: Smartphone, title: 'تصميم Responsive',  body: 'يبدو مذهلاً على كل شاشة — جوال، تابلت، ديسكتوب.' },
+  { Icon: Globe,      title: 'نطاق .sa + SSL',     body: 'حماية كاملة وعنوان سعودي موثوق لعملائك.' },
 ];
 
 /* ══════════════════════════════════
@@ -237,7 +285,7 @@ export default function WebsitesSection() {
         {/* ── HEADER ── */}
         <motion.div initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }} transition={{ duration: 0.7 }}
-          style={{ textAlign: 'center', marginBottom: 60 }}>
+          style={{ textAlign: 'center', marginBottom: 48 }}>
 
           <div className="section-label" style={{
             color: '#3B82F6', borderColor: 'rgba(59,130,246,0.4)',
@@ -252,18 +300,85 @@ export default function WebsitesSection() {
             fontWeight: 900, fontSize: 'clamp(2.2rem,4.8vw,3.8rem)',
             letterSpacing: '-0.045em', lineHeight: 1.08, marginBottom: 18, color: '#fff',
           }}>
-            موقعك =
+            أي موقع تحتاجه
             <br/>
             <span style={{ background: 'linear-gradient(135deg,#3B82F6,#8B5CF6)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-              مندوب مبيعات يعمل ٢٤/٧
+              بـ 99 ريال — شامل كل شيء
             </span>
           </h2>
 
-          <p style={{ fontSize: 16.5, color: 'rgba(255,255,255,0.42)', maxWidth: 540,
-            margin: '0 auto', lineHeight: 1.8, fontFamily: 'Cairo,sans-serif' }}>
-            نصمم ونطلق مواقع تحوّل الزوار إلى عملاء — سريعة، محسّنة لـ SEO، وجاهزة للحجز والبيع.
+          <p style={{ fontSize: 16.5, color: 'rgba(255,255,255,0.42)', maxWidth: 560,
+            margin: '0 auto 32px', lineHeight: 1.8, fontFamily: 'Cairo,sans-serif' }}>
+            متجر إلكتروني، موقع خدمي، صفحة تسويقية، موقع شركة — أي نوع، سريع، محسّن لـ SEO، وجاهز للبيع.
           </p>
+
+          {/* ── PRICE + PAYMENT CARD ── */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }} transition={{ duration: 0.5 }}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 24, flexWrap: 'wrap', justifyContent: 'center',
+              padding: '20px 32px', borderRadius: 20,
+              background: 'linear-gradient(135deg, rgba(59,130,246,0.12), rgba(139,92,246,0.08))',
+              border: '1px solid rgba(59,130,246,0.30)',
+              boxShadow: '0 0 60px rgba(59,130,246,0.10)',
+            }}>
+            {/* Price */}
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontFamily: 'sans-serif', fontSize: 11, fontWeight: 700,
+                color: 'rgba(255,255,255,0.45)', letterSpacing: 2, textTransform: 'uppercase', marginBottom: 4 }}>
+                السعر الثابت
+              </div>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
+                <span style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 900, fontSize: 52,
+                  color: '#fff', letterSpacing: -2, lineHeight: 1 }}>99</span>
+                <span style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 700, fontSize: 18,
+                  color: '#60A5FA' }}>ريال</span>
+              </div>
+              <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 700, fontSize: 12,
+                color: 'rgba(255,255,255,0.4)', marginTop: 4 }}>لأي نوع من المواقع</div>
+            </div>
+
+            <div style={{ width: 1, height: 60, background: 'rgba(255,255,255,0.1)', flexShrink: 0 }}/>
+
+            {/* Included */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 7, textAlign: 'right' }}>
+              {['تصميم فريد بهويتك الكاملة', 'نطاق .sa أو .com + SSL', 'SEO أساسي من اليوم الأول', 'دعم ٣ أشهر بعد الإطلاق'].map(f => (
+                <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div style={{ width: 16, height: 16, borderRadius: 4, background: 'rgba(59,130,246,0.2)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <Check size={9} strokeWidth={3} color="#60A5FA"/>
+                  </div>
+                  <span style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 700, fontSize: 13,
+                    color: 'rgba(255,255,255,0.7)' }}>{f}</span>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ width: 1, height: 60, background: 'rgba(255,255,255,0.1)', flexShrink: 0 }}/>
+
+            {/* Payment methods */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 700, fontSize: 11,
+                color: 'rgba(255,255,255,0.35)', textAlign: 'center' }}>
+                وسائل الدفع المتاحة
+              </div>
+              <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap', justifyContent: 'center' }}>
+                {PAYMENT_METHODS.map(pm => (
+                  <div key={pm.label} title={pm.label} style={{
+                    padding: '5px 10px', borderRadius: 8,
+                    background: pm.bg,
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    minWidth: 50, height: 30,
+                  }}>
+                    {pm.logo}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
 
         {/* ── SITE TYPE TABS ── */}
@@ -410,7 +525,7 @@ export default function WebsitesSection() {
               }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ''; }}>
-              اطلب موقعك الآن
+              اطلب موقعك بـ 99 ريال
               <ArrowUpRight size={16} strokeWidth={2.5}/>
             </a>
 
@@ -435,33 +550,62 @@ export default function WebsitesSection() {
             padding: '28px 32px', borderRadius: 22,
             background: 'linear-gradient(135deg,rgba(59,130,246,0.07) 0%,rgba(139,92,246,0.07) 100%)',
             border: '1px solid rgba(59,130,246,0.18)',
-            display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 20,
           }}>
-          <div>
-            <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 900, fontSize: 18, color: '#fff', marginBottom: 6 }}>
-              كل موقع يشمل بالكامل
+          <div style={{
+            display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: 20,
+            marginBottom: 24,
+          }}>
+            <div>
+              <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 900, fontSize: 18, color: '#fff', marginBottom: 6 }}>
+                كل موقع يشمل بالكامل
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+                {['تصميم فريد','نطاق .sa أو .com','شهادة SSL','لوحة تحكم','SEO أساسي','نموذج تواصل','ربط جوجل Analytics','دعم ٣ أشهر'].map(t => (
+                  <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                    <Check size={11} strokeWidth={3} color="#10B981"/>
+                    <span style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 700, fontSize: 12,
+                      color: 'rgba(255,255,255,0.55)' }}>{t}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
-              {['تصميم فريد','نطاق .sa أو .com','شهادة SSL','لوحة تحكم','SEO أساسي','نموذج تواصل','ربط جوجل Analytics','دعم ٣ أشهر'].map(t => (
-                <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
-                  <Check size={11} strokeWidth={3} color="#10B981"/>
-                  <span style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 700, fontSize: 12,
-                    color: 'rgba(255,255,255,0.55)' }}>{t}</span>
+            <a href={WA} target="_blank" rel="noreferrer"
+              style={{
+                display: 'flex', alignItems: 'center', gap: 8,
+                padding: '12px 24px', borderRadius: 12, textDecoration: 'none',
+                background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.35)',
+                fontFamily: 'Cairo,sans-serif', fontWeight: 800, fontSize: 14, color: '#60A5FA',
+                whiteSpace: 'nowrap', flexShrink: 0,
+              }}>
+              اطلب موقعك الآن
+              <ArrowUpRight size={14} strokeWidth={2.5}/>
+            </a>
+          </div>
+
+          {/* Payment methods bar */}
+          <div style={{
+            paddingTop: 20, borderTop: '1px solid rgba(255,255,255,0.07)',
+            display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <CreditCard size={14} strokeWidth={1.75} color="rgba(255,255,255,0.4)"/>
+              <span style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 700, fontSize: 12,
+                color: 'rgba(255,255,255,0.35)' }}>وسائل الدفع:</span>
+            </div>
+            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+              {PAYMENT_METHODS.map(pm => (
+                <div key={pm.label} title={pm.label} style={{
+                  padding: '4px 10px', borderRadius: 7,
+                  background: pm.bg,
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  minWidth: 46, height: 26,
+                }}>
+                  {pm.logo}
                 </div>
               ))}
             </div>
           </div>
-          <a href={WA} target="_blank" rel="noreferrer"
-            style={{
-              display: 'flex', alignItems: 'center', gap: 8,
-              padding: '12px 24px', borderRadius: 12, textDecoration: 'none',
-              background: 'rgba(59,130,246,0.15)', border: '1px solid rgba(59,130,246,0.35)',
-              fontFamily: 'Cairo,sans-serif', fontWeight: 800, fontSize: 14, color: '#60A5FA',
-              whiteSpace: 'nowrap', flexShrink: 0,
-            }}>
-            اعرف أكثر
-            <ArrowUpRight size={14} strokeWidth={2.5}/>
-          </a>
         </motion.div>
 
       </div>

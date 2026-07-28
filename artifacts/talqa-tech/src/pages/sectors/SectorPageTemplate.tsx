@@ -1,5 +1,9 @@
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
+import {
+  ArrowUpLeft, CheckCircle2, MoveRight, Wallet,
+  Smartphone, BarChart3, Bell, Star,
+} from 'lucide-react';
 import PageLayout from '../PageLayout';
 
 export interface SectorData {
@@ -16,460 +20,888 @@ export interface SectorData {
   ctaLabel: string; waMsg: string;
 }
 
-function rgb(h: string) {
-  const r = parseInt(h.slice(1,3),16), g = parseInt(h.slice(3,5),16), b = parseInt(h.slice(5,7),16);
-  return isNaN(r) ? '139,92,246' : `${r},${g},${b}`;
-}
+/* ─── Design tokens ─── */
+const C = {
+  ink:       '#818CF8',   // indigo-400
+  ink2:      '#6366F1',   // indigo-500
+  inkSoft:   'rgba(129,140,248,0.10)',
+  inkBorder: 'rgba(129,140,248,0.18)',
+  inkGlow:   '0 0 80px rgba(99,102,241,0.25)',
+  white:     '#FFFFFF',
+  dim:       'rgba(255,255,255,0.50)',
+  dimmer:    'rgba(255,255,255,0.25)',
+  dimmest:   'rgba(255,255,255,0.10)',
+  surface:   'rgba(255,255,255,0.035)',
+  border:    'rgba(255,255,255,0.07)',
+  bg:        '#07071a',
+  bg2:       '#0b0b22',
+};
 
 const WA_BASE = 'https://wa.me/966551378531?text=';
 
-/* ─── Phone Mockup ─── */
+const WA_SVG = (
+  <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" style={{ flexShrink: 0 }}>
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.852L.054 23.077a.75.75 0 00.917.944l5.453-1.426A11.934 11.934 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.715 9.715 0 01-4.978-1.371l-.357-.212-3.698.967.984-3.593-.232-.369A9.718 9.718 0 012.25 12C2.25 6.61 6.61 2.25 12 2.25S21.75 6.61 21.75 12 17.39 21.75 12 21.75z"/>
+  </svg>
+);
+
+/* ────────────────────────────────────
+   PHONE MOCKUP — premium floating glass
+──────────────────────────────────── */
 function PhoneMockup({ d }: { d: SectorData }) {
-  const c = rgb(d.accent);
   return (
-    <div style={{ position: 'relative', width: 220, margin: '0 auto' }}>
-      {/* Glow */}
-      <div style={{ position: 'absolute', inset: -40,
-        background: `radial-gradient(circle, rgba(${c},0.30) 0%, transparent 70%)`,
-        pointerEvents: 'none', borderRadius: '50%' }} />
+    <div style={{ position: 'relative', width: 260 }}>
+      {/* Outer ambient glow */}
+      <div style={{
+        position: 'absolute', inset: -60,
+        background: 'radial-gradient(circle, rgba(99,102,241,0.30) 0%, transparent 65%)',
+        pointerEvents: 'none',
+      }}/>
+
+      {/* Floating stat pill — top right */}
+      <motion.div
+        initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.7, duration: 0.5 }}
+        style={{
+          position: 'absolute', top: 40, right: -54, zIndex: 10,
+          background: 'rgba(10,10,30,0.85)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(129,140,248,0.25)',
+          borderRadius: 14, padding: '10px 16px',
+          display: 'flex', alignItems: 'center', gap: 10,
+          boxShadow: '0 16px 40px rgba(0,0,0,0.5)',
+        }}>
+        <div style={{ width: 28, height: 28, borderRadius: 8, background: C.inkSoft,
+          display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <BarChart3 size={14} strokeWidth={2} color={C.ink}/>
+        </div>
+        <div>
+          <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 900, fontSize: 15,
+            color: '#fff', lineHeight: 1 }}>{d.stats[0].n}</div>
+          <div style={{ fontFamily: 'Cairo,sans-serif', fontSize: 9, color: C.dim, marginTop: 2 }}>{d.stats[0].label}</div>
+        </div>
+      </motion.div>
+
+      {/* Floating notification pill — bottom left */}
+      <motion.div
+        initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.9, duration: 0.5 }}
+        style={{
+          position: 'absolute', bottom: 80, left: -60, zIndex: 10,
+          background: 'rgba(10,10,30,0.85)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(129,140,248,0.22)',
+          borderRadius: 14, padding: '10px 14px',
+          display: 'flex', alignItems: 'center', gap: 10,
+          boxShadow: '0 16px 40px rgba(0,0,0,0.5)',
+          maxWidth: 180,
+        }}>
+        <div style={{ width: 28, height: 28, borderRadius: 8,
+          background: 'rgba(16,185,129,0.15)', flexShrink: 0,
+          display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Bell size={13} strokeWidth={2} color="#10B981"/>
+        </div>
+        <div>
+          <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 800, fontSize: 10,
+            color: '#fff', lineHeight: 1.3 }}>إشعار جديد</div>
+          <div style={{ fontFamily: 'Cairo,sans-serif', fontSize: 8.5, color: '#10B981', marginTop: 2 }}>+٣٥ نقطة أُضيفت</div>
+        </div>
+      </motion.div>
+
       {/* Phone shell */}
       <motion.div
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+        animate={{ y: [0, -12, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
         style={{
-          width: 220, height: 420, borderRadius: 38,
-          background: 'linear-gradient(160deg, #1a1a2e 0%, #0d0d1a 100%)',
-          border: '2px solid rgba(255,255,255,0.10)',
-          boxShadow: `0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05), 0 0 60px rgba(${c},0.20)`,
-          position: 'relative', overflow: 'hidden', padding: '14px 12px',
+          width: 260, height: 500, borderRadius: 44,
+          background: 'linear-gradient(160deg, #16163a 0%, #0a0a1e 100%)',
+          border: '1.5px solid rgba(129,140,248,0.20)',
+          boxShadow: [
+            '0 60px 120px rgba(0,0,0,0.70)',
+            '0 0 0 1px rgba(255,255,255,0.04)',
+            '0 0 100px rgba(99,102,241,0.22)',
+            'inset 0 1px 0 rgba(255,255,255,0.06)',
+          ].join(', '),
+          position: 'relative', overflow: 'hidden', padding: '16px 14px',
         }}>
+        {/* Internal glass sheen */}
+        <div style={{
+          position: 'absolute', top: 0, left: 0, right: 0, height: 200,
+          background: 'linear-gradient(180deg, rgba(129,140,248,0.08) 0%, transparent 100%)',
+          pointerEvents: 'none',
+        }}/>
         {/* Notch */}
-        <div style={{ width: 70, height: 22, borderRadius: 11,
-          background: '#000', margin: '0 auto 10px',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5 }}>
-          <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#1a1a1a', border: '1px solid #333' }} />
-          <div style={{ width: 30, height: 5, borderRadius: 3, background: '#111' }} />
+        <div style={{ width: 80, height: 24, borderRadius: 12, background: '#000',
+          margin: '0 auto 14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+          <div style={{ width: 9, height: 9, borderRadius: '50%', background: '#1c1c1c', border: '1px solid #333' }}/>
+          <div style={{ width: 34, height: 5, borderRadius: 3, background: '#111' }}/>
         </div>
+
         {/* App content */}
-        <div style={{ height: 340, borderRadius: 24,
-          background: `linear-gradient(160deg, rgba(${c},0.15) 0%, rgba(10,10,25,0.95) 100%)`,
-          border: `1px solid rgba(${c},0.18)`, overflow: 'hidden', padding: 14 }}>
+        <div style={{ height: 400, borderRadius: 28, overflow: 'hidden',
+          background: 'linear-gradient(160deg, rgba(129,140,248,0.12) 0%, rgba(8,8,28,0.98) 100%)',
+          border: '1px solid rgba(129,140,248,0.16)', padding: 16 }}>
+
+          {/* Status bar */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
+            <span style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,0.45)', fontFamily: 'monospace' }}>9:41</span>
+            <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+              {[1,2,3].map(i => <div key={i} style={{ width: 3, height: 3, borderRadius: '50%', background: 'rgba(255,255,255,0.35)' }}/>)}
+            </div>
+          </div>
+
           {/* App header */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-            <div style={{ width: 32, height: 32, borderRadius: 10,
-              background: `linear-gradient(135deg, ${d.accent}, ${d.accent2})`,
-              display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 18 }}>
+            <div style={{ width: 38, height: 38, borderRadius: 12,
+              background: `linear-gradient(135deg, ${C.ink}, ${C.ink2})`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 18, flexShrink: 0,
+              boxShadow: `0 6px 20px rgba(99,102,241,0.40)` }}>
               {d.icon}
             </div>
-            <div>
-              <div style={{ fontSize: 10, fontWeight: 800, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>{d.name}</div>
-              <div style={{ fontSize: 8, color: 'rgba(255,255,255,0.4)', fontFamily: 'Cairo,sans-serif' }}>تلقا تك</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 11, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>{d.name}</div>
+              <div style={{ fontSize: 8, color: C.dim, fontFamily: 'Cairo,sans-serif' }}>مدعوم بتلقا تك</div>
             </div>
-            <div style={{ marginRight: 'auto', width: 6, height: 6, borderRadius: '50%',
-              background: '#10B981', boxShadow: '0 0 6px #10B981' }} />
+            <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#10B981',
+              boxShadow: '0 0 8px rgba(16,185,129,0.8)' }}/>
           </div>
-          {/* Stats row */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 7, marginBottom: 12 }}>
-            {[d.stats[0], d.stats[1]].map((s, i) => (
-              <div key={i} style={{ padding: '8px 10px', borderRadius: 10,
-                background: `rgba(${c},0.12)`, border: `1px solid rgba(${c},0.20)` }}>
-                <div style={{ fontSize: 14, fontWeight: 900, color: d.accent, letterSpacing: -0.5 }}>{s.n}</div>
-                <div style={{ fontSize: 7.5, color: 'rgba(255,255,255,0.45)', fontFamily: 'Cairo,sans-serif', marginTop: 1 }}>{s.label}</div>
+
+          {/* Big stat hero */}
+          <div style={{ padding: '14px 14px', borderRadius: 16,
+            background: `linear-gradient(135deg, rgba(129,140,248,0.15), rgba(99,102,241,0.08))`,
+            border: '1px solid rgba(129,140,248,0.20)', marginBottom: 12 }}>
+            <div style={{ fontSize: 8, color: C.dim, fontFamily: 'Cairo,sans-serif', marginBottom: 4 }}>الإيراد هذا الشهر</div>
+            <div style={{ fontSize: 26, fontWeight: 900, color: '#fff', letterSpacing: -1, lineHeight: 1, fontFamily: 'Cairo,sans-serif' }}>
+              ٤٢,٣٠٠ ر
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 6 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 3, padding: '2px 7px', borderRadius: 99,
+                background: 'rgba(16,185,129,0.15)' }}>
+                <span style={{ fontSize: 8, color: '#10B981', fontWeight: 800 }}>↑٢٤٪</span>
               </div>
-            ))}
+              <span style={{ fontSize: 8, color: C.dim, fontFamily: 'Cairo,sans-serif' }}>مقارنة بالشهر الماضي</span>
+            </div>
           </div>
-          {/* Features mini-list */}
-          {d.features.slice(0, 4).map((f, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 7, marginBottom: 8,
-              padding: '7px 9px', borderRadius: 9,
-              background: i === 0 ? `rgba(${c},0.10)` : 'rgba(255,255,255,0.03)',
-              border: i === 0 ? `1px solid rgba(${c},0.20)` : '1px solid rgba(255,255,255,0.05)' }}>
-              <span style={{ fontSize: 12 }}>{f.icon}</span>
-              <span style={{ fontSize: 8.5, fontWeight: 700, color: i === 0 ? '#fff' : 'rgba(255,255,255,0.5)',
+
+          {/* Feature rows */}
+          {d.features.slice(0, 3).map((f, i) => (
+            <div key={i} style={{
+              display: 'flex', alignItems: 'center', gap: 9, marginBottom: 8,
+              padding: '8px 10px', borderRadius: 11,
+              background: i === 0 ? 'rgba(129,140,248,0.10)' : 'rgba(255,255,255,0.025)',
+              border: `1px solid ${i === 0 ? 'rgba(129,140,248,0.20)' : 'rgba(255,255,255,0.05)'}`,
+            }}>
+              <span style={{ fontSize: 13, flexShrink: 0 }}>{f.icon}</span>
+              <span style={{ fontSize: 9, fontWeight: 700,
+                color: i === 0 ? '#fff' : 'rgba(255,255,255,0.45)',
                 fontFamily: 'Cairo,sans-serif', flex: 1 }}>{f.title}</span>
-              {i === 0 && <div style={{ width: 5, height: 5, borderRadius: '50%',
-                background: d.accent, boxShadow: `0 0 5px ${d.accent}` }} />}
+              {i === 0 && (
+                <div style={{ width: 16, height: 16, borderRadius: '50%',
+                  background: 'rgba(16,185,129,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <CheckCircle2 size={9} strokeWidth={2.5} color="#10B981"/>
+                </div>
+              )}
             </div>
           ))}
         </div>
+
+        {/* Home bar */}
+        <div style={{ width: 80, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.14)', margin: '12px auto 0' }}/>
       </motion.div>
     </div>
   );
 }
 
-/* ─── Feature Card ─── */
-function FeatureCard({ f, accent, accent2, index }: { f: SectorData['features'][0]; accent: string; accent2: string; index: number }) {
-  const c = rgb(accent);
+/* ────────────────────────────────────
+   SECTION LABEL — brand-quality badge
+──────────────────────────────────── */
+function SectionBadge({ label }: { label: string }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.07, duration: 0.4 }}
-      whileHover={{ y: -4, boxShadow: `0 20px 48px rgba(${c},0.18)` }}
-      style={{
-        padding: '22px 20px', borderRadius: 18, cursor: 'default',
-        background: 'rgba(255,255,255,0.03)',
-        border: `1px solid rgba(${c},0.12)`,
-        transition: 'box-shadow 0.25s, transform 0.25s',
-        position: 'relative', overflow: 'hidden',
-      }}>
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-        background: `linear-gradient(90deg, ${accent}, ${accent2})`, opacity: 0.6 }} />
-      <div style={{ width: 44, height: 44, borderRadius: 14, marginBottom: 14,
-        background: `rgba(${c},0.12)`, border: `1px solid rgba(${c},0.20)`,
-        display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>
-        {f.icon}
-      </div>
-      <div style={{ fontSize: 14, fontWeight: 800, color: '#fff', marginBottom: 7 }}>{f.title}</div>
-      <div style={{ fontSize: 12.5, color: 'var(--text2)', lineHeight: 1.7 }}>{f.desc}</div>
-    </motion.div>
+    <div style={{
+      display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 24,
+    }}>
+      <div style={{ width: 6, height: 6, borderRadius: '50%', background: C.ink,
+        boxShadow: '0 0 8px rgba(129,140,248,0.7)' }}/>
+      <span style={{
+        fontFamily: 'sans-serif', fontWeight: 700, fontSize: 11,
+        color: C.ink, letterSpacing: 2.5, textTransform: 'uppercase',
+      }}>{label}</span>
+    </div>
   );
 }
 
+/* ────────────────────────────────────
+   BENTO FEATURES
+──────────────────────────────────── */
+function BentoFeatures({ features }: { features: SectorData['features'] }) {
+  // Layout: 1 large (span 2 cols) + 1 medium | then 3 equal
+  return (
+    <div>
+      {/* Row 1 */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1.7fr 1fr', gap: 12, marginBottom: 12 }}>
+        {/* Large card */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.5 }}
+          style={{
+            padding: '36px 32px', borderRadius: 24,
+            background: 'linear-gradient(135deg, rgba(129,140,248,0.12) 0%, rgba(6,6,20,0.95) 100%)',
+            border: '1px solid rgba(129,140,248,0.20)',
+            position: 'relative', overflow: 'hidden', minHeight: 220,
+          }}>
+          {/* Corner decoration */}
+          <div style={{ position: 'absolute', top: -40, right: -40, width: 150, height: 150,
+            borderRadius: '50%', background: 'radial-gradient(circle, rgba(129,140,248,0.12) 0%, transparent 70%)',
+            pointerEvents: 'none' }}/>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1,
+            background: 'linear-gradient(90deg, transparent, rgba(129,140,248,0.5), transparent)' }}/>
+
+          <div style={{ width: 52, height: 52, borderRadius: 16, marginBottom: 20,
+            background: 'rgba(129,140,248,0.12)', border: '1px solid rgba(129,140,248,0.20)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>
+            {features[0].icon}
+          </div>
+          <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 900, fontSize: 19,
+            color: '#fff', marginBottom: 10, lineHeight: 1.3 }}>
+            {features[0].title}
+          </div>
+          <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 600, fontSize: 13.5,
+            color: C.dim, lineHeight: 1.75 }}>{features[0].desc}</div>
+        </motion.div>
+
+        {/* Medium card */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.08 }}
+          style={{
+            padding: '32px 28px', borderRadius: 24,
+            background: C.surface, border: `1px solid ${C.border}`,
+            position: 'relative', overflow: 'hidden', minHeight: 220,
+          }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, width: 3, bottom: 0,
+            background: `linear-gradient(180deg, ${C.ink}, transparent)`, opacity: 0.5 }}/>
+          <div style={{ width: 46, height: 46, borderRadius: 14, marginBottom: 18,
+            background: C.inkSoft, border: `1px solid ${C.inkBorder}`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>
+            {features[1].icon}
+          </div>
+          <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 900, fontSize: 16,
+            color: '#fff', marginBottom: 8 }}>{features[1].title}</div>
+          <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 600, fontSize: 12.5,
+            color: C.dim, lineHeight: 1.75 }}>{features[1].desc}</div>
+        </motion.div>
+      </div>
+
+      {/* Row 2 — three equal */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+        {features.slice(2, 5).map((f, i) => (
+          <motion.div key={i}
+            initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.45, delay: i * 0.07 }}
+            style={{
+              padding: '26px 24px', borderRadius: 20,
+              background: C.surface, border: `1px solid ${C.border}`,
+              position: 'relative', overflow: 'hidden',
+            }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1,
+              background: `linear-gradient(90deg, transparent, rgba(129,140,248,0.35), transparent)` }}/>
+            <div style={{ width: 42, height: 42, borderRadius: 13, marginBottom: 16,
+              background: C.inkSoft, border: `1px solid ${C.inkBorder}`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>
+              {f.icon}
+            </div>
+            <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 800, fontSize: 14.5,
+              color: '#fff', marginBottom: 8 }}>{f.title}</div>
+            <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 600, fontSize: 12,
+              color: C.dim, lineHeight: 1.7 }}>{f.desc}</div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* If 6th feature */}
+      {features.length >= 6 && (
+        <motion.div
+          initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }} transition={{ duration: 0.45, delay: 0.2 }}
+          style={{ marginTop: 12, padding: '24px 28px', borderRadius: 20,
+            background: C.surface, border: `1px solid ${C.border}`,
+            display: 'flex', gap: 20, alignItems: 'center', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1,
+            background: `linear-gradient(90deg, transparent, rgba(129,140,248,0.30), transparent)` }}/>
+          <div style={{ width: 46, height: 46, borderRadius: 14, flexShrink: 0,
+            background: C.inkSoft, border: `1px solid ${C.inkBorder}`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>
+            {features[5].icon}
+          </div>
+          <div>
+            <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 800, fontSize: 15,
+              color: '#fff', marginBottom: 6 }}>{features[5].title}</div>
+            <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 600, fontSize: 13,
+              color: C.dim, lineHeight: 1.6 }}>{features[5].desc}</div>
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
+/* ────────────────────────────────────
+   MAIN EXPORT
+──────────────────────────────────── */
 export default function SectorPage({ d }: { d: SectorData }) {
   const WA = `${WA_BASE}${encodeURIComponent(d.waMsg)}`;
-  const c = rgb(d.accent), c2 = rgb(d.accent2);
 
   return (
-    <PageLayout accent={d.accent}>
+    <PageLayout accent={C.ink}>
 
-      {/* ══ HERO ══ */}
+      {/* ═══════════════════════════════════════════
+          HERO — full-screen editorial split
+      ═══════════════════════════════════════════ */}
       <section style={{
-        minHeight: '100vh', display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-        gap: 48, alignItems: 'center',
-        padding: 'clamp(100px,12vw,140px) clamp(20px,5vw,80px) 80px',
-        maxWidth: 1200, margin: '0 auto',
+        minHeight: '100vh',
+        display: 'grid', gridTemplateColumns: '1fr 1fr',
+        gap: 0, alignItems: 'center',
+        padding: 'clamp(100px,12vw,140px) clamp(24px,5vw,80px) 80px',
+        maxWidth: 1280, margin: '0 auto',
         position: 'relative',
       }}>
-        {/* Background */}
-        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, zIndex: -1, pointerEvents: 'none' }}>
-          <div style={{ position: 'absolute', top: '-10%', right: '-5%', width: 600, height: 600, borderRadius: '50%',
-            background: d.accent, filter: 'blur(200px)', opacity: 0.08 }} />
-          <div style={{ position: 'absolute', bottom: '-10%', left: '-5%', width: 500, height: 500, borderRadius: '50%',
-            background: d.accent2, filter: 'blur(180px)', opacity: 0.07 }} />
+        {/* Ambient blobs */}
+        <div style={{ position: 'fixed', inset: 0, zIndex: -1, pointerEvents: 'none' }}>
+          <div style={{ position: 'absolute', top: '-15%', right: '-5%', width: 700, height: 700,
+            borderRadius: '50%', background: C.ink, filter: 'blur(220px)', opacity: 0.06 }}/>
+          <div style={{ position: 'absolute', bottom: '-10%', left: '-5%', width: 600, height: 600,
+            borderRadius: '50%', background: C.ink2, filter: 'blur(200px)', opacity: 0.05 }}/>
         </div>
 
-        {/* Left — text */}
-        <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}>
-          {/* Tag */}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '8px 18px',
-            borderRadius: 24, background: `rgba(${c},0.10)`, border: `1px solid rgba(${c},0.28)`, marginBottom: 24 }}>
-            <span style={{ fontSize: 18 }}>{d.icon}</span>
-            <span style={{ fontSize: 12, fontWeight: 800, color: d.accent }}>{d.tagline}</span>
+        {/* LEFT — text */}
+        <motion.div
+          initial={{ opacity: 0, x: -40 }} animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          style={{ paddingLeft: 0, paddingRight: 48 }}>
+
+          {/* Eyebrow */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 32 }}>
+            <div style={{ width: 32, height: 32, borderRadius: 10, background: C.inkSoft,
+              border: `1px solid ${C.inkBorder}`, display: 'flex', alignItems: 'center',
+              justifyContent: 'center', fontSize: 17 }}>
+              {d.icon}
+            </div>
+            <span style={{ fontFamily: 'sans-serif', fontWeight: 700, fontSize: 11,
+              color: C.ink, letterSpacing: 2.5, textTransform: 'uppercase' }}>
+              {d.tagline}
+            </span>
           </div>
 
-          <h1 style={{ fontWeight: 900, fontSize: 'clamp(2.4rem,5vw,4rem)',
-            letterSpacing: '-0.04em', lineHeight: 1.05, marginBottom: 20 }}>
-            <span style={{ color: '#fff', display: 'block' }}>{d.headline[0]}</span>
-            <span style={{ background: `linear-gradient(135deg,${d.accent},${d.accent2})`,
-              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'block' }}>
-              {d.headline[1]}
-            </span>
+          {/* Giant headline */}
+          <h1 style={{
+            fontWeight: 900, fontSize: 'clamp(3rem,5.5vw,5rem)',
+            letterSpacing: '-0.045em', lineHeight: 1.0, marginBottom: 28,
+            fontFamily: 'Cairo,sans-serif',
+          }}>
+            <span style={{ display: 'block', color: '#fff' }}>{d.headline[0]}</span>
+            <span style={{
+              display: 'block',
+              background: `linear-gradient(135deg, ${C.ink} 0%, #a5b4fc 50%, ${C.ink2} 100%)`,
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+            }}>{d.headline[1]}</span>
           </h1>
 
-          <p style={{ fontSize: 15.5, color: 'var(--text2)', lineHeight: 1.8, marginBottom: 28, maxWidth: 480 }}>
+          <p style={{ fontSize: 16, color: C.dim, lineHeight: 1.85, marginBottom: 40,
+            maxWidth: 460, fontFamily: 'Cairo,sans-serif', fontWeight: 500 }}>
             {d.description}
           </p>
 
-          {/* Quick feature tags */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 32 }}>
+          {/* Feature chips */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 40 }}>
             {d.features.slice(0, 4).map((f, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 5,
-                padding: '6px 12px', borderRadius: 10,
-                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-                fontSize: 11.5, fontWeight: 700, color: 'rgba(255,255,255,0.7)' }}>
-                <span style={{ color: d.accent }}>✓</span> {f.title}
+              <div key={i} style={{
+                display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px',
+                borderRadius: 99, background: C.surface, border: `1px solid ${C.border}`,
+                fontFamily: 'Cairo,sans-serif', fontWeight: 700, fontSize: 12,
+                color: 'rgba(255,255,255,0.7)',
+              }}>
+                <div style={{ width: 5, height: 5, borderRadius: '50%', background: C.ink, flexShrink: 0 }}/>
+                {f.title}
               </div>
             ))}
           </div>
 
-          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+          {/* CTAs */}
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 48 }}>
             <motion.a href={WA} target="_blank" rel="noopener noreferrer"
-              whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '14px 32px',
-                borderRadius: 14, background: `linear-gradient(135deg,${d.accent},${d.accent2})`,
+              whileHover={{ scale: 1.03, boxShadow: '0 20px 50px rgba(99,102,241,0.45)' }}
+              whileTap={{ scale: 0.97 }}
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 10,
+                padding: '15px 32px', borderRadius: 14,
+                background: `linear-gradient(135deg, ${C.ink}, ${C.ink2})`,
                 color: '#fff', fontFamily: 'Cairo,sans-serif', fontSize: 15, fontWeight: 900,
-                textDecoration: 'none', boxShadow: `0 12px 36px rgba(${c},0.38)` }}>
-              {d.ctaLabel} ←
+                textDecoration: 'none',
+                boxShadow: '0 12px 36px rgba(99,102,241,0.35)',
+                transition: 'box-shadow 0.2s',
+              }}>
+              {d.ctaLabel}
+              <ArrowUpLeft size={16} strokeWidth={2.5}/>
             </motion.a>
-            <Link href="/projects" style={{ display: 'inline-flex', alignItems: 'center',
-              padding: '14px 24px', borderRadius: 14,
-              background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)',
-              color: 'var(--text2)', fontFamily: 'Cairo,sans-serif', fontSize: 14,
-              fontWeight: 700, textDecoration: 'none' }}>
-              شوف أعمالنا
-            </Link>
+
+            <a href={WA} target="_blank" rel="noreferrer"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 9,
+                padding: '15px 24px', borderRadius: 14,
+                background: 'rgba(37,211,102,0.10)', border: '1px solid rgba(37,211,102,0.25)',
+                color: '#25D366', fontFamily: 'Cairo,sans-serif', fontSize: 14, fontWeight: 800,
+                textDecoration: 'none',
+              }}>
+              {WA_SVG}
+              واتساب
+            </a>
           </div>
 
-          {/* Trust */}
-          <div style={{ display: 'flex', gap: 18, flexWrap: 'wrap', marginTop: 28 }}>
-            {['تسليم ٢ أسبوع', 'دعم ٣ أشهر مجاناً', 'بدون عقود', 'سعودي ١٠٠٪'].map((t, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 5,
-                fontSize: 11.5, color: 'rgba(255,255,255,0.32)', fontWeight: 600 }}>
-                <span style={{ color: d.accent }}>✓</span>{t}
+          {/* Trust strip */}
+          <div style={{ display: 'flex', gap: 0, paddingTop: 24,
+            borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            {['تسليم أسبوعين', 'دعم ٣ أشهر', 'بدون عقود'].map((t, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 7,
+                paddingRight: 24, marginRight: 24,
+                borderRight: i < 2 ? '1px solid rgba(255,255,255,0.07)' : 'none' }}>
+                <CheckCircle2 size={12} strokeWidth={2.5} color={C.ink}/>
+                <span style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 700, fontSize: 12,
+                  color: C.dimmer }}>{t}</span>
               </div>
             ))}
           </div>
         </motion.div>
 
-        {/* Right — phone */}
-        <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.1 }}>
-          <PhoneMockup d={d} />
+        {/* RIGHT — phone */}
+        <motion.div
+          initial={{ opacity: 0, x: 40 }} animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingLeft: 40 }}>
+          <PhoneMockup d={d}/>
         </motion.div>
       </section>
 
-      {/* ══ STATS ══ */}
-      <section style={{ padding: '48px 24px',
-        background: `linear-gradient(135deg,rgba(${c},0.07),rgba(${c2},0.04))`,
-        borderTop: `1px solid rgba(${c},0.12)`, borderBottom: `1px solid rgba(${c},0.12)` }}>
-        <div style={{ maxWidth: 960, margin: '0 auto',
-          display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-          {d.stats.map((s, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} transition={{ delay: i * 0.10 }}
-              style={{ flex: '1 1 140px', textAlign: 'center', padding: '16px 20px',
-                borderRight: i < d.stats.length - 1 ? '1px solid rgba(255,255,255,0.07)' : 'none' }}>
-              <div style={{ fontSize: 34, fontWeight: 900, color: d.accent, letterSpacing: -1, lineHeight: 1 }}>{s.n}</div>
-              <div style={{ fontSize: 12, color: 'var(--text2)', marginTop: 5 }}>{s.label}</div>
-            </motion.div>
-          ))}
+      {/* ═══════════════════════════════════════════
+          STATS — editorial large numbers
+      ═══════════════════════════════════════════ */}
+      <section style={{ borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 clamp(24px,5vw,80px)' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
+            {d.stats.map((s, i) => (
+              <motion.div key={i}
+                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ delay: i * 0.10, duration: 0.5 }}
+                style={{
+                  padding: '52px 32px',
+                  borderRight: i < 3 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                  position: 'relative',
+                }}>
+                {/* Subtle top accent */}
+                <div style={{ position: 'absolute', top: 0, left: 32, width: 28, height: 2,
+                  background: C.ink, borderRadius: 1 }}/>
+                <div style={{
+                  fontFamily: 'Cairo,sans-serif', fontWeight: 900,
+                  fontSize: 'clamp(2.8rem,3.5vw,4rem)',
+                  color: '#fff', letterSpacing: -2, lineHeight: 1, marginBottom: 10,
+                }}>{s.n}</div>
+                <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 600, fontSize: 13,
+                  color: C.dim }}>{s.label}</div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ══ التطبيق — ما الذي نبنيه لك ══ */}
-      <section style={{ padding: 'clamp(70px,9vw,110px) 24px', background: 'var(--bg2)' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            style={{ textAlign: 'center', marginBottom: 52 }}>
-            <div className="section-label" style={{ color: d.accent,
-              borderColor: `rgba(${c},0.3)`, background: `rgba(${c},0.08)`, marginBottom: 16 }}>
-              📱 التطبيق الذي نبنيه لك
+      {/* ═══════════════════════════════════════════
+          FEATURES — bento grid
+      ═══════════════════════════════════════════ */}
+      <section style={{ padding: 'clamp(80px,10vw,130px) clamp(24px,5vw,80px)' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 56, flexWrap: 'wrap', gap: 24 }}>
+            <div>
+              <SectionBadge label="FEATURES"/>
+              <h2 style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 900,
+                fontSize: 'clamp(2rem,3.5vw,3rem)', color: '#fff',
+                letterSpacing: '-0.04em', lineHeight: 1.1 }}>
+                منظومة رقمية<br/>متكاملة لـ{d.name}
+              </h2>
             </div>
-            <h2 style={{ fontWeight: 900, fontSize: 'clamp(1.8rem,4vw,2.8rem)', color: '#fff', marginBottom: 12 }}>
-              منظومة رقمية متكاملة لـ{d.name}
-            </h2>
-            <p style={{ color: 'var(--text2)', fontSize: 15, maxWidth: 500, margin: '0 auto' }}>
+            <p style={{ fontFamily: 'Cairo,sans-serif', fontSize: 15, color: C.dim,
+              maxWidth: 360, lineHeight: 1.8, fontWeight: 500 }}>
               مش مجرد تطبيق — نظام يشتغل وأنت نايم ويرجّع العميل تلقائياً.
             </p>
-          </motion.div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 14 }}>
-            {d.features.map((f, i) => (
-              <FeatureCard key={i} f={f} accent={d.accent} accent2={d.accent2} index={i} />
-            ))}
           </div>
+
+          <BentoFeatures features={d.features}/>
         </div>
       </section>
 
-      {/* ══ المشاكل التي نحلّها ══ */}
-      <section style={{ padding: 'clamp(70px,9vw,110px) 24px' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            style={{ textAlign: 'center', marginBottom: 48 }}>
-            <div className="section-label" style={{ color: d.accent,
-              borderColor: `rgba(${c},0.3)`, background: `rgba(${c},0.08)`, marginBottom: 16 }}>
-              🎯 التحديات التي نحلّها
+      {/* ═══════════════════════════════════════════
+          PROBLEMS — editorial numbered list
+      ═══════════════════════════════════════════ */}
+      <section style={{
+        padding: 'clamp(80px,10vw,130px) clamp(24px,5vw,80px)',
+        background: C.bg2,
+        borderTop: '1px solid rgba(255,255,255,0.05)',
+        borderBottom: '1px solid rgba(255,255,255,0.05)',
+      }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 80, alignItems: 'start' }}>
+            {/* Left — heading */}
+            <div style={{ position: 'sticky', top: 120 }}>
+              <SectionBadge label="CHALLENGES"/>
+              <h2 style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 900,
+                fontSize: 'clamp(2rem,3vw,2.8rem)', color: '#fff',
+                letterSpacing: '-0.04em', lineHeight: 1.15, marginBottom: 20 }}>
+                نفهم {d.name}<br/>قبل ما تشرح
+              </h2>
+              <p style={{ fontFamily: 'Cairo,sans-serif', fontSize: 14, color: C.dim,
+                lineHeight: 1.8, fontWeight: 500 }}>
+                المشاكل اللي تواجهها كل يوم — نحلّها من جذورها.
+              </p>
             </div>
-            <h2 style={{ fontWeight: 900, fontSize: 'clamp(1.8rem,4vw,2.8rem)', color: '#fff', marginBottom: 10 }}>
-              نفهم <span style={{ color: d.accent }}>{d.name}</span> قبل ما تشرح
-            </h2>
-          </motion.div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 14 }}>
-            {d.problems.map((p, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                style={{ padding: '22px 20px', borderRadius: 18,
-                  background: `linear-gradient(145deg,rgba(${c},0.06),rgba(255,255,255,0.02))`,
-                  border: `1px solid rgba(${c},0.12)`, position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-                  background: `linear-gradient(90deg,${d.accent},${d.accent2})`, opacity: 0.45 }} />
-                <div style={{ fontSize: 28, marginBottom: 12 }}>{p.icon}</div>
-                <div style={{ fontSize: 14, fontWeight: 800, color: '#fff', marginBottom: 7 }}>{p.title}</div>
-                <div style={{ fontSize: 12.5, color: 'var(--text2)', lineHeight: 1.7 }}>{p.desc}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══ كيف يدعم قطاعك ══ */}
-      <section style={{ padding: 'clamp(70px,9vw,110px) 24px', background: 'var(--bg2)' }}>
-        <div style={{ maxWidth: 860, margin: '0 auto' }}>
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            style={{ textAlign: 'center', marginBottom: 52 }}>
-            <div className="section-label" style={{ color: d.accent,
-              borderColor: `rgba(${c},0.3)`, background: `rgba(${c},0.08)`, marginBottom: 16 }}>
-              🚀 كيف يدعم قطاعك
-            </div>
-            <h2 style={{ fontWeight: 900, fontSize: 'clamp(1.8rem,4vw,2.8rem)', color: '#fff', marginBottom: 10 }}>
-              من واتساب إلى المنتج الحي
-            </h2>
-            <p style={{ color: 'var(--text2)', fontSize: 15 }}>
-              ٣ خطوات وعملك يشتغل رقمياً بالكامل
-            </p>
-          </motion.div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-            {d.howItWorks.map((s, i) => (
-              <motion.div key={i} initial={{ opacity: 0, x: i % 2 === 0 ? -24 : 24 }}
-                whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
-                transition={{ delay: i * 0.12, duration: 0.5 }}
-                style={{ display: 'flex', gap: 20, alignItems: 'center',
-                  padding: '24px 28px', borderRadius: 18,
-                  background: `rgba(${c},0.05)`, border: `1px solid rgba(${c},0.12)` }}>
-                <div style={{ width: 52, height: 52, borderRadius: '50%', flexShrink: 0,
-                  background: `linear-gradient(135deg,${d.accent},${d.accent2})`,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: 20, fontWeight: 900, color: '#fff',
-                  boxShadow: `0 8px 24px rgba(${c},0.40)` }}>{i + 1}</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: d.accent, marginBottom: 4,
-                    letterSpacing: 0.5 }}>{s.step}</div>
-                  <div style={{ fontSize: 15, fontWeight: 900, color: '#fff', marginBottom: 5 }}>{s.title}</div>
-                  <div style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.7 }}>{s.desc}</div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══ APPLE WALLET ══ */}
-      <section style={{ padding: 'clamp(70px,9vw,110px) 24px', overflow: 'hidden' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto',
-          display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))',
-          gap: 56, alignItems: 'center' }}>
-          <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }} transition={{ duration: 0.6 }}>
-            <div className="section-label" style={{ color: d.accent,
-              borderColor: `rgba(${c},0.3)`, background: `rgba(${c},0.08)`,
-              marginBottom: 20, display: 'inline-flex' }}>
-              💳 Apple & Google Wallet
-            </div>
-            <h2 style={{ fontWeight: 900, fontSize: 'clamp(1.6rem,3.5vw,2.5rem)',
-              color: '#fff', marginBottom: 16, lineHeight: 1.2 }}>{d.walletTitle}</h2>
-            <p style={{ fontSize: 15, color: 'var(--text2)', lineHeight: 1.8, marginBottom: 24 }}>{d.walletDesc}</p>
-            <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 28px',
-              display: 'flex', flexDirection: 'column', gap: 9 }}>
-              {d.walletFeatures.map((f, i) => (
-                <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 9,
-                  fontSize: 13.5, color: 'var(--text2)' }}>
-                  <span style={{ color: d.accent, flexShrink: 0, marginTop: 1 }}>✓</span>{f}
-                </li>
+            {/* Right — numbered problems */}
+            <div>
+              {d.problems.map((p, i) => (
+                <motion.div key={i}
+                  initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }} transition={{ delay: i * 0.08, duration: 0.5 }}
+                  style={{
+                    display: 'flex', gap: 32, alignItems: 'flex-start',
+                    padding: '36px 0',
+                    borderBottom: i < d.problems.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                  }}>
+                  {/* Number */}
+                  <div style={{
+                    fontFamily: 'sans-serif', fontWeight: 900,
+                    fontSize: 'clamp(2rem,2.5vw,2.8rem)',
+                    color: 'rgba(129,140,248,0.22)',
+                    letterSpacing: -1, lineHeight: 1, flexShrink: 0, width: 64,
+                  }}>0{i + 1}</div>
+                  {/* Content */}
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 900,
+                      fontSize: 18, color: '#fff', marginBottom: 10, lineHeight: 1.3 }}>{p.title}</div>
+                    <div style={{ fontFamily: 'Cairo,sans-serif', fontSize: 14, color: C.dim,
+                      lineHeight: 1.8, fontWeight: 500 }}>{p.desc}</div>
+                  </div>
+                </motion.div>
               ))}
-            </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════
+          HOW IT WORKS — dramatic timeline
+      ═══════════════════════════════════════════ */}
+      <section style={{ padding: 'clamp(80px,10vw,130px) clamp(24px,5vw,80px)' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: 72 }}>
+            <SectionBadge label="PROCESS"/>
+            <h2 style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 900,
+              fontSize: 'clamp(2rem,3.5vw,3rem)', color: '#fff',
+              letterSpacing: '-0.04em', lineHeight: 1.1 }}>
+              من اليوم الأول حتى الإطلاق
+            </h2>
+          </div>
+
+          {/* Steps */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0, position: 'relative' }}>
+            {/* Connector line */}
+            <div style={{ position: 'absolute', top: 38, left: '16.67%', right: '16.67%', height: 1,
+              background: `linear-gradient(90deg, transparent, ${C.ink}55, ${C.ink}55, transparent)`,
+              pointerEvents: 'none' }}/>
+
+            {d.howItWorks.map((s, i) => (
+              <motion.div key={i}
+                initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ delay: i * 0.15, duration: 0.6 }}
+                style={{ padding: '0 40px', textAlign: 'center', position: 'relative' }}>
+                {/* Step circle */}
+                <div style={{
+                  width: 76, height: 76, borderRadius: '50%', margin: '0 auto 32px',
+                  background: `linear-gradient(135deg, ${C.ink}, ${C.ink2})`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontFamily: 'sans-serif', fontSize: 28, fontWeight: 900, color: '#fff',
+                  boxShadow: `0 12px 36px rgba(99,102,241,0.40)`,
+                  position: 'relative', zIndex: 1,
+                }}>{i + 1}</div>
+
+                <div style={{ fontFamily: 'sans-serif', fontWeight: 700, fontSize: 10,
+                  color: C.ink, letterSpacing: 2.5, textTransform: 'uppercase', marginBottom: 12 }}>
+                  {s.step}
+                </div>
+                <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 900, fontSize: 18,
+                  color: '#fff', marginBottom: 14, lineHeight: 1.3 }}>{s.title}</div>
+                <div style={{ fontFamily: 'Cairo,sans-serif', fontSize: 13.5, color: C.dim,
+                  lineHeight: 1.8, fontWeight: 500 }}>{s.desc}</div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════
+          WALLET — premium split
+      ═══════════════════════════════════════════ */}
+      <section style={{
+        padding: 'clamp(80px,10vw,130px) clamp(24px,5vw,80px)',
+        background: C.bg2,
+        borderTop: '1px solid rgba(255,255,255,0.05)',
+        borderBottom: '1px solid rgba(255,255,255,0.05)',
+        overflow: 'hidden',
+      }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto',
+          display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
+
+          {/* Left — text */}
+          <motion.div initial={{ opacity: 0, x: -32 }} whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }} transition={{ duration: 0.6 }}>
+            <SectionBadge label="WALLET"/>
+            <h2 style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 900,
+              fontSize: 'clamp(1.8rem,3vw,2.6rem)', color: '#fff',
+              letterSpacing: '-0.04em', lineHeight: 1.15, marginBottom: 20 }}>
+              {d.walletTitle}
+            </h2>
+            <p style={{ fontFamily: 'Cairo,sans-serif', fontSize: 15, color: C.dim,
+              lineHeight: 1.85, marginBottom: 32, fontWeight: 500 }}>{d.walletDesc}</p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 36 }}>
+              {d.walletFeatures.map((f, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <CheckCircle2 size={15} strokeWidth={2.5} color={C.ink} style={{ flexShrink: 0 }}/>
+                  <span style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 600, fontSize: 14,
+                    color: C.dim }}>{f}</span>
+                </div>
+              ))}
+            </div>
+
             <a href={WA} target="_blank" rel="noopener noreferrer"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 26px',
-                borderRadius: 12, background: `rgba(${c},0.12)`, border: `1px solid rgba(${c},0.30)`,
-                color: d.accent, fontFamily: 'Cairo,sans-serif', fontSize: 14,
-                fontWeight: 700, textDecoration: 'none' }}>
-              اطلب بطاقتك الآن ←
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 9, padding: '13px 28px',
+                borderRadius: 12, background: C.inkSoft, border: `1px solid ${C.inkBorder}`,
+                color: C.ink, fontFamily: 'Cairo,sans-serif', fontSize: 14,
+                fontWeight: 800, textDecoration: 'none' }}>
+              اطلب بطاقتك الآن
+              <MoveRight size={15} strokeWidth={2.5}/>
             </a>
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, x: 24 }} whileInView={{ opacity: 1, x: 0 }}
+          {/* Right — wallet card visual */}
+          <motion.div initial={{ opacity: 0, x: 32 }} whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.6 }}
-            style={{ display: 'flex', justifyContent: 'center' }}>
-            <div style={{ position: 'relative', width: 290 }}>
-              <div style={{ position: 'absolute', inset: -40,
-                background: `radial-gradient(circle,rgba(${c},0.22) 0%,transparent 70%)`,
-                pointerEvents: 'none' }} />
-              <motion.div animate={{ y: [0, -10, 0], rotateY: [0, 5, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                style={{ width: 290, height: 175, borderRadius: 20,
-                  background: `linear-gradient(135deg,${d.accent}ee,${d.accent2}dd)`,
-                  boxShadow: `0 32px 72px rgba(${c},0.50)`,
-                  padding: '22px 24px', position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', top: -50, left: -50, width: 150, height: 150,
-                  borderRadius: '50%', background: 'rgba(255,255,255,0.1)', pointerEvents: 'none' }} />
-                <div style={{ display: 'flex', justifyContent: 'space-between',
-                  alignItems: 'flex-start', marginBottom: 24 }}>
-                  <span style={{ fontSize: 28 }}>{d.icon}</span>
-                  <div style={{ fontSize: 8.5, fontWeight: 800, color: 'rgba(255,255,255,0.65)',
-                    letterSpacing: 1, background: 'rgba(0,0,0,0.2)', padding: '3px 8px', borderRadius: 4 }}>
-                    APPLE WALLET
+            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16 }}>
+
+            <div style={{ position: 'relative', width: 320 }}>
+              {/* Glow */}
+              <div style={{ position: 'absolute', inset: -50,
+                background: 'radial-gradient(circle, rgba(99,102,241,0.28) 0%, transparent 65%)',
+                pointerEvents: 'none' }}/>
+
+              {/* Card */}
+              <motion.div
+                animate={{ y: [0, -12, 0], rotateZ: [0, 0.8, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+                style={{
+                  width: 320, height: 192, borderRadius: 24,
+                  background: `linear-gradient(135deg, ${C.ink}f2, ${C.ink2}e8)`,
+                  padding: '24px 28px', position: 'relative', overflow: 'hidden',
+                  boxShadow: `0 40px 80px rgba(99,102,241,0.50), inset 0 1px 0 rgba(255,255,255,0.20)`,
+                }}>
+                {/* Decorative circles */}
+                <div style={{ position: 'absolute', top: -60, left: -60, width: 180, height: 180,
+                  borderRadius: '50%', background: 'rgba(255,255,255,0.08)', pointerEvents: 'none' }}/>
+                <div style={{ position: 'absolute', bottom: -40, right: -40, width: 140, height: 140,
+                  borderRadius: '50%', background: 'rgba(255,255,255,0.06)', pointerEvents: 'none' }}/>
+                {/* Sheen */}
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '50%',
+                  background: 'linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 100%)',
+                  pointerEvents: 'none' }}/>
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start',
+                  marginBottom: 28, position: 'relative' }}>
+                  <div style={{ fontSize: 32 }}>{d.icon}</div>
+                  <div style={{ fontFamily: 'sans-serif', fontWeight: 800, fontSize: 9,
+                    color: 'rgba(255,255,255,0.70)', letterSpacing: 2,
+                    background: 'rgba(0,0,0,0.20)', padding: '4px 10px', borderRadius: 5 }}>
+                    WALLET
                   </div>
                 </div>
-                <div style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.6)', marginBottom: 3 }}>
-                  {d.walletCardLabel}
-                </div>
-                <div style={{ fontSize: 17, fontWeight: 900, color: '#fff', letterSpacing: -0.5 }}>
-                  تلقا تك · {d.name}
+
+                <div style={{ position: 'relative' }}>
+                  <div style={{ fontFamily: 'sans-serif', fontWeight: 600, fontSize: 10,
+                    color: 'rgba(255,255,255,0.60)', letterSpacing: 1, marginBottom: 5 }}>
+                    {d.walletCardLabel}
+                  </div>
+                  <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 900, fontSize: 18,
+                    color: '#fff', letterSpacing: -0.5 }}>
+                    تلقا تك · {d.name}
+                  </div>
                 </div>
               </motion.div>
-              <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
+
+              {/* Sub-card — NFC note */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }} transition={{ delay: 0.5 }}
-                style={{ marginTop: 14, padding: '10px 16px', borderRadius: 10,
-                  background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)',
-                  display: 'flex', alignItems: 'center', gap: 10 }}>
-                <span style={{ fontSize: 16 }}>📱</span>
-                <div>
-                  <div style={{ fontSize: 10, fontWeight: 800, color: '#fff' }}>تضاف لـ iPhone مباشرة</div>
-                  <div style={{ fontSize: 9, color: 'var(--text3)' }}>بدون App Store — مع NFC</div>
+                style={{
+                  marginTop: 14, padding: '14px 20px', borderRadius: 16,
+                  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)',
+                  display: 'flex', alignItems: 'center', gap: 14,
+                }}>
+                <div style={{ width: 36, height: 36, borderRadius: 10, background: C.inkSoft,
+                  border: `1px solid ${C.inkBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Smartphone size={16} strokeWidth={1.75} color={C.ink}/>
                 </div>
-                <div style={{ marginRight: 'auto', fontSize: 10, fontWeight: 700, color: d.accent,
-                  background: `rgba(${c},0.10)`, padding: '2px 8px', borderRadius: 8 }}>NFC ✓</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 800, fontSize: 12, color: '#fff' }}>
+                    تضاف لـ iPhone مباشرة
+                  </div>
+                  <div style={{ fontFamily: 'Cairo,sans-serif', fontSize: 10, color: C.dimmer, marginTop: 2 }}>
+                    بدون App Store — مع NFC
+                  </div>
+                </div>
+                <div style={{ fontFamily: 'sans-serif', fontWeight: 800, fontSize: 10,
+                  color: C.ink, background: C.inkSoft, border: `1px solid ${C.inkBorder}`,
+                  padding: '3px 10px', borderRadius: 8 }}>NFC</div>
               </motion.div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* ══ TESTIMONIAL ══ */}
+      {/* ═══════════════════════════════════════════
+          TESTIMONIAL — full-bleed quote
+      ═══════════════════════════════════════════ */}
       {d.testimonial && (
-        <section style={{ padding: '48px 24px', background: 'var(--bg2)' }}>
-          <div style={{ maxWidth: 640, margin: '0 auto', textAlign: 'center' }}>
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              style={{ padding: '36px 32px', borderRadius: 22,
-                background: `linear-gradient(145deg,rgba(${c},0.08),rgba(${c2},0.04))`,
-                border: `1px solid rgba(${c},0.20)` }}>
-              <div style={{ fontSize: 32, marginBottom: 14, color: d.accent }}>"</div>
-              <p style={{ fontSize: 16, color: '#fff', lineHeight: 1.85,
-                marginBottom: 22, fontWeight: 600 }}>{d.testimonial.text}</p>
-              <div style={{ fontSize: 13, fontWeight: 800, color: d.accent }}>{d.testimonial.name}</div>
-              <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 3 }}>{d.testimonial.role}</div>
+        <section style={{ padding: 'clamp(80px,10vw,130px) clamp(24px,5vw,80px)' }}>
+          <div style={{ maxWidth: 900, margin: '0 auto' }}>
+            <motion.div
+              initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }} transition={{ duration: 0.6 }}>
+
+              {/* Stars */}
+              <div style={{ display: 'flex', gap: 4, marginBottom: 28 }}>
+                {[1,2,3,4,5].map(i => (
+                  <Star key={i} size={18} strokeWidth={0} fill="#F59E0B" color="#F59E0B"/>
+                ))}
+              </div>
+
+              {/* Quote */}
+              <blockquote style={{ margin: 0 }}>
+                <p style={{
+                  fontFamily: 'Cairo,sans-serif', fontWeight: 800,
+                  fontSize: 'clamp(1.4rem,2.5vw,2rem)',
+                  color: '#fff', lineHeight: 1.6, marginBottom: 32,
+                  letterSpacing: '-0.02em',
+                }}>
+                  "{d.testimonial.text}"
+                </p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                  {/* Avatar placeholder */}
+                  <div style={{ width: 44, height: 44, borderRadius: '50%', flexShrink: 0,
+                    background: `linear-gradient(135deg, ${C.ink}, ${C.ink2})`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontFamily: 'Cairo,sans-serif', fontWeight: 900, fontSize: 16, color: '#fff' }}>
+                    {d.testimonial.name[0]}
+                  </div>
+                  <div>
+                    <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 800, fontSize: 15, color: '#fff' }}>
+                      {d.testimonial.name}
+                    </div>
+                    <div style={{ fontFamily: 'Cairo,sans-serif', fontSize: 12, color: C.dim, marginTop: 2 }}>
+                      {d.testimonial.role}
+                    </div>
+                  </div>
+                </div>
+              </blockquote>
             </motion.div>
           </div>
         </section>
       )}
 
-      {/* ══ FINAL CTA ══ */}
+      {/* ═══════════════════════════════════════════
+          CTA — full-bleed dramatic close
+      ═══════════════════════════════════════════ */}
       <section style={{
-        padding: 'clamp(80px,10vw,120px) 24px',
-        background: `radial-gradient(ellipse 70% 60% at 50% 50%,rgba(${c},0.10) 0%,transparent 70%)`,
-        textAlign: 'center',
+        padding: 'clamp(100px,12vw,160px) clamp(24px,5vw,80px)',
+        background: C.bg2,
+        borderTop: '1px solid rgba(255,255,255,0.05)',
+        position: 'relative', overflow: 'hidden',
       }}>
-        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-          <div style={{ fontSize: 52, marginBottom: 20 }}>{d.icon}</div>
-          <h2 style={{ fontWeight: 900, fontSize: 'clamp(1.8rem,4vw,3rem)', color: '#fff', marginBottom: 12 }}>
-            مستعد تطوّر {d.name}ك؟
-          </h2>
-          <p style={{ fontSize: 15.5, color: 'var(--text2)', marginBottom: 36, maxWidth: 400, margin: '0 auto 36px' }}>
-            تواصل معنا — نرد خلال ساعات ونبدأ بتحليل مشروعك مجاناً.
-          </p>
-          <div style={{ display: 'flex', gap: 14, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <motion.a href={WA} target="_blank" rel="noopener noreferrer"
-              whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 42px',
-                borderRadius: 16, background: `linear-gradient(135deg,${d.accent},${d.accent2})`,
-                color: '#fff', fontFamily: 'Cairo,sans-serif', fontSize: 16, fontWeight: 900,
-                textDecoration: 'none', boxShadow: `0 16px 48px rgba(${c},0.40)` }}>
-              ابدأ الآن على واتساب ←
-            </motion.a>
-            <Link href="/" style={{ display: 'inline-flex', alignItems: 'center',
-              padding: '16px 32px', borderRadius: 16,
-              background: 'rgba(255,255,255,0.05)', border: '1px solid var(--border)',
-              color: 'var(--text2)', fontFamily: 'Cairo,sans-serif', fontSize: 14,
-              fontWeight: 700, textDecoration: 'none' }}>
-              الرئيسية
-            </Link>
+        {/* Background glow */}
+        <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+          <div style={{ position: 'absolute', top: '50%', left: '50%',
+            transform: 'translate(-50%,-50%)', width: 800, height: 500, borderRadius: '50%',
+            background: 'radial-gradient(ellipse, rgba(99,102,241,0.10) 0%, transparent 65%)' }}/>
+        </div>
+
+        <div style={{ maxWidth: 1280, margin: '0 auto', position: 'relative' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 48, alignItems: 'center', flexWrap: 'wrap' }}>
+            <div>
+              <div style={{ fontFamily: 'sans-serif', fontWeight: 700, fontSize: 11,
+                color: C.ink, letterSpacing: 2.5, textTransform: 'uppercase', marginBottom: 20 }}>
+                ابدأ اليوم
+              </div>
+              <h2 style={{
+                fontFamily: 'Cairo,sans-serif', fontWeight: 900,
+                fontSize: 'clamp(2.4rem,4.5vw,4rem)',
+                color: '#fff', letterSpacing: '-0.045em', lineHeight: 1.05, marginBottom: 0,
+              }}>
+                مستعد تطوّر<br/>
+                <span style={{ color: C.ink }}>{d.name}</span>ك؟
+              </h2>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12, flexShrink: 0 }}>
+              <motion.a href={WA} target="_blank" rel="noopener noreferrer"
+                whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 12,
+                  padding: '18px 40px', borderRadius: 16,
+                  background: `linear-gradient(135deg, ${C.ink}, ${C.ink2})`,
+                  color: '#fff', fontFamily: 'Cairo,sans-serif', fontSize: 16, fontWeight: 900,
+                  textDecoration: 'none', whiteSpace: 'nowrap',
+                  boxShadow: '0 16px 48px rgba(99,102,241,0.40)',
+                }}>
+                ابدأ على واتساب
+                <ArrowUpLeft size={18} strokeWidth={2.5}/>
+              </motion.a>
+
+              <Link href="/" style={{
+                display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                padding: '14px 32px', borderRadius: 14,
+                background: C.surface, border: `1px solid ${C.border}`,
+                color: C.dim, fontFamily: 'Cairo,sans-serif', fontSize: 14,
+                fontWeight: 700, textDecoration: 'none',
+              }}>
+                الرئيسية
+              </Link>
+            </div>
           </div>
-        </motion.div>
+
+          {/* Bottom meta */}
+          <div style={{ marginTop: 56, paddingTop: 32,
+            borderTop: '1px solid rgba(255,255,255,0.06)',
+            display: 'flex', gap: 32, flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div style={{ fontFamily: 'Cairo,sans-serif', fontSize: 13, color: C.dimmer, fontWeight: 500 }}>
+              تلقا تك · نحوّل الأفكار التجارية إلى حلول رقمية
+            </div>
+            <div style={{ display: 'flex', gap: 24 }}>
+              {['تحليل مجاني', 'تسليم أسبوعين', 'دعم ٣ أشهر', 'بدون عقود'].map(t => (
+                <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <CheckCircle2 size={11} strokeWidth={2.5} color={C.ink}/>
+                  <span style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 600, fontSize: 12, color: C.dimmer }}>{t}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
+
     </PageLayout>
   );
 }

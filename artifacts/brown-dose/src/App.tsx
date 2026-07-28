@@ -92,7 +92,7 @@ function LandingPage() {
               transition={{ delay: 0.2 }}
               className="text-lg md:text-xl text-white/60 leading-relaxed mb-10 max-w-2xl mx-auto"
             >
-              نظام ولاء وطلب متكامل — نقاط وتوصيل واستلام ومحفظة رقمية. لا تطبيق خارجي. كل شيء لـ براون دوز.
+              نظام ولاء وطلب متكامل — نقاط وتوصيل واستلام ومحفظة رقمية. لا تطبيق خارجي. كل شيء لـ كافيهك.
             </motion.p>
             
             <motion.div 
@@ -133,7 +133,7 @@ function LandingPage() {
               { icon: Store, title: "فروع متعددة", desc: "صبيا وضمد في نظام واحد" },
               { icon: Bell, title: "إشعارات فورية", desc: "خصومات وعروض بزر واحد" },
               { icon: BarChart3, title: "إحصائيات المبيعات", desc: "اعرف أكثر صنف وأكثر ساعة" },
-              { icon: ShieldCheck, title: "هوية براون دوز كاملة", desc: "ألوانك، اسمك، منيوك" },
+              { icon: ShieldCheck, title: "هوية كافيهك كاملة", desc: "ألوانك، اسمك، منيوك" },
             ].map((feature, i) => (
               <motion.div 
                 key={i}
@@ -275,7 +275,7 @@ function LandingPage() {
             
             <div className="text-center mb-8 relative z-10">
               <div className="inline-block bg-primary/20 text-primary px-4 py-1.5 rounded-full text-sm font-bold mb-6">
-                باقة براون دوز الحصرية
+                باقة كافيهك الحصرية
               </div>
               <div className="flex items-center justify-center gap-2 mb-2">
                 <span className="text-6xl font-bold tracking-tighter">٢,٠٠٠</span>
@@ -317,7 +317,7 @@ function LandingPage() {
       {/* 7. Contact / CTA Section */}
       <section id="contact" className="py-24 bg-[#1A0510] border-t border-primary/10 relative overflow-hidden">
         <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold mb-8">جاهز تطلق براون دوز؟</h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-8">جاهز تطلق كافيهك؟</h2>
           
           <a 
             href="https://wa.me/966500000000" 

@@ -69,7 +69,7 @@ function PinGate({ onSuccess }: { onSuccess: () => void }) {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#0A0003] px-8">
-      <p className="text-amber-600 text-xs font-black tracking-widest mb-2" style={{ fontFamily:'ui-monospace,monospace' }}>OWNER · براون دوز</p>
+      <p className="text-amber-600 text-xs font-black tracking-widest mb-2" style={{ fontFamily:'ui-monospace,monospace' }}>OWNER · كافيهك</p>
       <h1 className="text-white text-2xl font-black mb-10">أدخل رمز الدخول</h1>
 
       <motion.div animate={err ? { x:[-10,10,-8,8,-4,4,0] } : {}} transition={{ duration:.45 }}
@@ -222,7 +222,7 @@ export function AdminScreen({ onClose }: { onClose: () => void }) {
       <div className="sticky top-0 z-20 flex items-center justify-between px-6 py-4 border-b border-white/10"
         style={{ background:'rgba(10,0,3,0.95)', backdropFilter:'blur(12px)' }}>
         <div>
-          <p className="text-amber-600 text-[10px] font-black tracking-widest" style={{ fontFamily:'ui-monospace,monospace' }}>OWNER PANEL · براون دوز</p>
+          <p className="text-amber-600 text-[10px] font-black tracking-widest" style={{ fontFamily:'ui-monospace,monospace' }}>OWNER PANEL · كافيهك</p>
           <h1 className="text-lg font-black text-white leading-none">لوحة التحكم</h1>
         </div>
         <div className="flex items-center gap-2">

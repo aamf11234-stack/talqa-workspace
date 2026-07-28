@@ -30,7 +30,7 @@ export const DEFAULT_DEALS: Deal[] = [
 ];
 
 export const DEFAULT_PRODUCTS: Product[] = [
-  { id:'p1', emoji:'☕', name:'قهوة تخصص براون دوز',  desc:'سبيشيالتي مقطّرة على الحجر',  price:22, orig:28,   color:'#7A3B18' },
+  { id:'p1', emoji:'☕', name:'قهوة تخصص كافيهك',  desc:'سبيشيالتي مقطّرة على الحجر',  price:22, orig:28,   color:'#7A3B18' },
   { id:'p2', emoji:'🥤', name:'كومبو المساء',          desc:'قهوة مثلجة + كيك شوكولاتة',   price:38, orig:52,   color:'#C4783A' },
   { id:'p3', emoji:'🍰', name:'كيك الشوكولاتة',        desc:'طازج يومياً من مطبخنا',         price:12, orig:null, color:'#6B3210' },
   { id:'p4', emoji:'🧋', name:'ماتشا لاتيه مثلج',      desc:'ماتشا يابانية أصلية',           price:18, orig:23,   color:'#2D7D46' },
