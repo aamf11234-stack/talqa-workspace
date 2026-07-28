@@ -113,12 +113,18 @@ export default function SectorsSection() {
         <p style={{ color:'var(--text2)', fontSize:14, marginBottom:20 }}>
           ما تجد قطاعك؟ تواصل معنا وسنبني لك الحل المناسب.
         </p>
-        <a href={WA} target="_blank" rel="noopener noreferrer"
-          style={{ display:'inline-flex', alignItems:'center', gap:8, padding:'13px 28px',
-            borderRadius:12, background:'rgba(139,92,246,0.12)', border:'1px solid rgba(139,92,246,0.3)',
-            color:'#A78BFA', fontFamily:'Cairo,sans-serif', fontSize:14, fontWeight:700, textDecoration:'none' }}>
-          تحدث معنا عن مشروعك ←
-        </a>
+        <div style={{ display:'flex', gap:12, flexWrap:'wrap', justifyContent:'center' }}>
+          <a href="/talqa-tech/sectors/restaurants"
+            style={{ display:'inline-flex', alignItems:'center', gap:8, padding:'13px 28px', borderRadius:12, background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.12)', color:'#fff', fontFamily:'inherit', fontSize:14, fontWeight:700, textDecoration:'none', transition:'all 0.2s' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='rgba(255,255,255,0.10)'; (e.currentTarget as HTMLElement).style.transform='translateY(-2px)'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='rgba(255,255,255,0.06)'; (e.currentTarget as HTMLElement).style.transform='none'; }}>
+            استكشف كل القطاعات ←
+          </a>
+          <a href={WA} target="_blank" rel="noopener noreferrer"
+            style={{ display:'inline-flex', alignItems:'center', gap:8, padding:'13px 28px', borderRadius:12, background:'rgba(139,92,246,0.12)', border:'1px solid rgba(139,92,246,0.3)', color:'#A78BFA', fontFamily:'Cairo,sans-serif', fontSize:14, fontWeight:700, textDecoration:'none' }}>
+            تحدث معنا عن مشروعك ←
+          </a>
+        </div>
       </motion.div>
     </section>
   );

@@ -137,6 +137,12 @@ export default function ClinicSection() {
               <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-ghost" style={{ fontSize: 14 }}>
                 احصل على عرض ←
               </a>
+              <a href="/talqa-tech/clinic"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '12px 22px', borderRadius: 12, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', fontFamily: 'inherit', fontWeight: 700, fontSize: 14, textDecoration: 'none', transition: 'all 0.2s' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='rgba(255,255,255,0.10)'; (e.currentTarget as HTMLElement).style.transform='translateY(-2px)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='rgba(255,255,255,0.06)'; (e.currentTarget as HTMLElement).style.transform='none'; }}>
+                صفحة العيادات ←
+              </a>
             </div>
           </motion.div>
         </div>
