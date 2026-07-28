@@ -7,9 +7,8 @@ import { logger } from "../lib/logger";
 
 const router = Router();
 
-/* ── Minimal PNG generator (no deps) ───────────────────────
-   Generates a solid-colour PNG from raw bytes using built-in
-   zlib. Used to embed the required icon.png inside the pass. */
+/* ── PNG generators (no deps) ──────────────────────────────
+   All built with raw bytes + built-in zlib.                 */
 const CRC_TABLE = (() => {
   const t = new Uint32Array(256);
   for (let i = 0; i < 256; i++) {
@@ -36,29 +35,54 @@ function chunk(type: string, data: Buffer): Buffer {
   return Buffer.concat([len, body, crc]);
 }
 
-function solidPng(w: number, h: number, r: number, g: number, b: number): Buffer {
-  const sig  = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
-  const ihdr = chunk("IHDR", Buffer.from([
-    0, 0, 0, w,   // width  (4 bytes big-endian)
-    0, 0, 0, h,   // height (4 bytes big-endian)
-    8,            // bit depth
-    2,            // color type: RGB
-    0, 0, 0,      // compression, filter, interlace
-  ]));
+/* Base PNG builder — correct 4-byte big-endian dimensions */
+function makePng(
+  w: number, h: number,
+  getPixel: (x: number, y: number) => [number, number, number],
+): Buffer {
+  const sig = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
+  const wBuf = Buffer.alloc(4); wBuf.writeUInt32BE(w);
+  const hBuf = Buffer.alloc(4); hBuf.writeUInt32BE(h);
+  const ihdr = chunk("IHDR", Buffer.concat([wBuf, hBuf, Buffer.from([8, 2, 0, 0, 0])]));
   const rows: Buffer[] = [];
   for (let y = 0; y < h; y++) {
     const row = Buffer.alloc(1 + w * 3);
-    row[0] = 0; // filter: None
+    row[0] = 0;
     for (let x = 0; x < w; x++) {
-      row[1 + x * 3 + 0] = r;
-      row[1 + x * 3 + 1] = g;
-      row[1 + x * 3 + 2] = b;
+      const [r, g, b] = getPixel(x, y);
+      row[1 + x * 3]     = Math.min(255, Math.max(0, r));
+      row[1 + x * 3 + 1] = Math.min(255, Math.max(0, g));
+      row[1 + x * 3 + 2] = Math.min(255, Math.max(0, b));
     }
     rows.push(row);
   }
   const idat = chunk("IDAT", deflateSync(Buffer.concat(rows)));
   const iend = chunk("IEND", Buffer.alloc(0));
   return Buffer.concat([sig, ihdr, idat, iend]);
+}
+
+/* Solid colour */
+function solidPng(w: number, h: number, r: number, g: number, b: number): Buffer {
+  return makePng(w, h, () => [r, g, b]);
+}
+
+/* Bilinear 4-corner gradient — creates beautiful diagonal sweeps */
+function gradientPng(
+  w: number, h: number,
+  tl: [number,number,number],
+  tr: [number,number,number],
+  bl: [number,number,number],
+  br: [number,number,number],
+): Buffer {
+  return makePng(w, h, (x, y) => {
+    const tx = x / Math.max(1, w - 1);
+    const ty = y / Math.max(1, h - 1);
+    return [
+      Math.round(tl[0]*(1-tx)*(1-ty) + tr[0]*tx*(1-ty) + bl[0]*(1-tx)*ty + br[0]*tx*ty),
+      Math.round(tl[1]*(1-tx)*(1-ty) + tr[1]*tx*(1-ty) + bl[1]*(1-tx)*ty + br[1]*tx*ty),
+      Math.round(tl[2]*(1-tx)*(1-ty) + tr[2]*tx*(1-ty) + bl[2]*(1-tx)*ty + br[2]*tx*ty),
+    ];
+  });
 }
 
 /* ── AI-generated strip images (loaded from assets) ─────── */
@@ -71,12 +95,10 @@ const BG_APPT       = readFileSync(join(ASSETS, "appt_bg.png"));
 const BG_APPT_2X    = readFileSync(join(ASSETS, "appt_bg@2x.png"));
 const STRIP_BD      = readFileSync(join(ASSETS, "strip_browndose.jpg"));
 
-/* ── Icons ──────────────────────────────────────────────── */
-
-/* Solid icons */
-const ICON    = solidPng(29, 29, 0, 122, 255);
-const ICON_2X = solidPng(58, 58, 0, 122, 255);
-const ICON_3X = solidPng(87, 87, 0, 122, 255);
+/* ── Icons — brand indigo ────────────────────────────────── */
+const ICON    = solidPng(29, 29, 99, 102, 241);
+const ICON_2X = solidPng(58, 58, 99, 102, 241);
+const ICON_3X = solidPng(87, 87, 99, 102, 241);
 
 /* ── Certificate loader ─────────────────────────────────── */
 function getCerts() {
@@ -481,79 +503,123 @@ async function serveBrownDoseUnsigned(
 }
 
 /* ══════════════════════════════════════════════════════════
-   تلقا تك – Showcase / Business Pass
+   تلقا تك – Premium Business Card Pass  v2
    GET /api/wallet/tlqa?name=...&role=...
+   ─────────────────────────────────────────────────────────
+   Strip: bilinear gradient — near-black top-left →
+          rich indigo bottom-right (diagonal sweep)
+   Background: #04020e — ultra-dark purple-black
+   Labels: brand indigo #818CF8
 ════════════════════════════════════════════════════════════ */
 router.get("/tlqa", async (req, res) => {
   const {
-    name  = "زائر تلقا",
-    role  = "عميل محتمل",
+    name   = "زائر تلقا",
+    role   = "عميل محتمل",
     serial = `TQ-${Date.now()}`,
   } = req.query as Record<string, string>;
 
-  /* Strip: deep purple + teal band */
-  const STRIP_TQ    = solidPng(375, 110, 26,  10, 53);   // #1a0a35
-  const STRIP_TQ_2X = solidPng(750, 220, 36,  16, 80);   // a touch lighter
+  /* ── Premium gradient strip ──
+     Top-left:     #05020f  (near-black)
+     Top-right:    #14093a  (dark violet)
+     Bottom-left:  #0b0525  (deep purple)
+     Bottom-right: #3730a3  (vivid indigo)          */
+  const STRIP_TQ    = gradientPng(375, 98,
+    [5,   2,  15], [20,  9,  58],
+    [11,  5,  37], [55, 48, 163],
+  );
+  const STRIP_TQ_2X = gradientPng(750, 196,
+    [5,   2,  15], [20,  9,  58],
+    [11,  5,  37], [55, 48, 163],
+  );
+
+  /* ── Logo: brand indigo square ── */
+  const LOGO    = solidPng(160, 50,  99, 102, 241);
+  const LOGO_2X = solidPng(320, 100, 99, 102, 241);
 
   const passJson = {
     formatVersion:      1,
     passTypeIdentifier: "pass.clinic.tlgaads.com",
     serialNumber:       serial,
     teamIdentifier:     "V96R57F6T3",
-    organizationName:   "تلقا البرمجية",
-    description:        "بطاقة تلقا تك — تحوّل أفكارك إلى منتجات",
+    organizationName:   "تلقا تك",
+    description:        "بطاقة تلقا تك التعريفية",
     logoText:           "تلقا تك",
 
-    backgroundColor: "rgb(26, 10, 53)",
-    foregroundColor: "rgb(255, 255, 255)",
-    labelColor:      "rgb(6, 182, 212)",
+    /* Ultra-dark purple-black — premium feel */
+    backgroundColor: "rgb(4, 2, 14)",
+    foregroundColor: "rgb(245, 243, 255)",
+    labelColor:      "rgb(129, 140, 248)",
 
     generic: {
       headerFields: [
         {
-          key:   "tag",
-          label: "TLQA TECH",
-          value: "🇸🇦 الرياض",
+          key:           "brand",
+          label:         "TLQA TECH",
+          value:         "🇸🇦 الرياض",
           textAlignment: "PKTextAlignmentRight",
         },
       ],
       primaryFields: [
-        { key: "holder", label: "الاسم", value: String(name) },
+        {
+          key:   "holder",
+          label: "الاسم",
+          value: String(name),
+        },
       ],
       secondaryFields: [
         {
-          key:   "role",
-          label: "الصفة",
-          value: String(role),
+          key:           "role",
+          label:         "الصفة",
+          value:         String(role),
           textAlignment: "PKTextAlignmentLeft",
         },
         {
-          key:   "phone",
-          label: "واتساب",
-          value: "966551378531+",
+          key:           "wa",
+          label:         "واتساب",
+          value:         "‎+966 55 137 8531",
           textAlignment: "PKTextAlignmentRight",
         },
       ],
       auxiliaryFields: [
         {
-          key:   "services",
-          label: "خدماتنا",
-          value: "تطبيقات · مواقع · Apple Wallet · AI",
+          key:           "services",
+          label:         "خدماتنا",
+          value:         "تطبيقات · مواقع · AI · Apple Wallet",
           textAlignment: "PKTextAlignmentLeft",
         },
         {
-          key:   "cr",
-          label: "س.ت",
-          value: "7054835322",
+          key:           "web",
+          label:         "الموقع",
+          value:         "talqa.tech",
           textAlignment: "PKTextAlignmentRight",
         },
       ],
       backFields: [
-        { key: "about",   label: "من نحن",          value: "تلقا البرمجية — شركة سعودية متخصصة في تطوير التطبيقات والمواقع وحلول Apple Wallet." },
-        { key: "web",     label: "الموقع",           value: "talqa.tech" },
-        { key: "wa",      label: "واتساب",            value: "966551378531+" },
-        { key: "riyadh",  label: "الموقع",           value: "الرياض، المملكة العربية السعودية" },
-        { key: "slogan",  label: "شعارنا",           value: "نحوّل أفكارك إلى منتجات يعشقها عملاؤك." },
+        {
+          key:   "slogan",
+          label: "شعارنا",
+          value: "نحوّل أفكارك إلى منتجات يعشقها عملاؤك.",
+        },
+        {
+          key:   "about",
+          label: "من نحن",
+          value: "تلقا البرمجية — شركة سعودية متخصصة في بناء التطبيقات والمواقع وحلول Apple Wallet والذكاء الاصطناعي.",
+        },
+        {
+          key:   "cr",
+          label: "السجل التجاري",
+          value: "7054835322",
+        },
+        {
+          key:   "city",
+          label: "المقر",
+          value: "الرياض، المملكة العربية السعودية",
+        },
+        {
+          key:   "note",
+          label: "للتواصل",
+          value: "افتح رمز QR أو راسلنا على واتساب +966551378531",
+        },
       ],
     },
 
@@ -563,6 +629,12 @@ router.get("/tlqa", async (req, res) => {
       messageEncoding: "iso-8859-1",
       altText:         "talqa.tech",
     }],
+
+    /* Geo — show pass when near Riyadh */
+    locations: [
+      { longitude: 46.6753, latitude: 24.7136, relevantText: "أنت قريب من مقر تلقا تك — الرياض" },
+    ],
+    maxDistance: 2000,
   };
 
   const certs = getCerts();
@@ -572,6 +644,8 @@ router.get("/tlqa", async (req, res) => {
       await buildPass(passJson, "talqa-tech.pkpass", certs, res, {
         "strip.png":    STRIP_TQ,
         "strip@2x.png": STRIP_TQ_2X,
+        "logo.png":     LOGO,
+        "logo@2x.png":  LOGO_2X,
       });
       logger.info({ name, role }, "tlqa pass generated (signed)");
       return;
@@ -582,17 +656,19 @@ router.get("/tlqa", async (req, res) => {
 
   /* ─ Unsigned fallback ─ */
   const { createZip } = await import("../lib/minizip");
-  const iconPurple    = solidPng(29, 29, 26, 10, 53);
-  const icon2xPurple  = solidPng(58, 58, 26, 10, 53);
+  const iconIndigo   = solidPng(29, 29, 99, 102, 241);
+  const icon2xIndigo = solidPng(58, 58, 99, 102, 241);
 
   const buf = await createZip({
-    "pass.json":    Buffer.from(JSON.stringify(passJson)),
-    "icon.png":     iconPurple,
-    "icon@2x.png":  icon2xPurple,
-    "strip.png":    STRIP_TQ,
-    "strip@2x.png": STRIP_TQ_2X,
+    "pass.json":     Buffer.from(JSON.stringify(passJson)),
+    "icon.png":      iconIndigo,
+    "icon@2x.png":   icon2xIndigo,
+    "strip.png":     STRIP_TQ,
+    "strip@2x.png":  STRIP_TQ_2X,
+    "logo.png":      LOGO,
+    "logo@2x.png":   LOGO_2X,
     "manifest.json": Buffer.from(JSON.stringify({
-      "pass.json": "tlqa", "icon.png": "0", "icon@2x.png": "0",
+      "pass.json": "tlqa-v2", "icon.png": "0", "icon@2x.png": "0",
     })),
     "signature": Buffer.alloc(0),
   });
