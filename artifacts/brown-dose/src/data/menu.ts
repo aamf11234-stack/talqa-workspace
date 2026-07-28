@@ -32,14 +32,14 @@ export const menuItems: MenuItem[] = [
   { id: 'c5', name: 'موهيتو باشن فروت', price: 18, category: 'cold' },
   { id: 'c6', name: 'كركديه', price: 18, category: 'cold' },
   { id: 'c7', name: 'ايس لاتيه', price: 18, category: 'cold' },
-  { id: 'c8', name: 'ايس ستفتشر براون', price: 19, category: 'cold', isSignature: true },
+  { id: 'c8', name: 'ايس ستريتشر', price: 19, category: 'cold', isSignature: true },
   { id: 'c9', name: 'اسبانيش لاتيه بارد', price: 19, category: 'cold' },
   { id: 'c10', name: 'ايس كراميل', price: 20, category: 'cold' },
   { id: 'c11', name: 'بستاشيو لاتيه بارد', price: 20, category: 'cold' },
   { id: 'c12', name: 'اسبرسو خوذ', price: 20, category: 'cold' },
   { id: 'c13', name: 'ايس يري', price: 19, category: 'cold' },
   { id: 'c14', name: 'ماتشا', price: 20, category: 'cold' },
-  { id: 'c15', name: 'افقاتو براون', price: 25, category: 'cold', isFeatured: true },
+  { id: 'c15', name: 'أفوغاتو سبيشل', price: 25, category: 'cold', isFeatured: true },
 
   // Filter
   { id: 'f1_h', name: 'أثيوبي هنيبلا', price: 17, category: 'filter', type: 'hot' },

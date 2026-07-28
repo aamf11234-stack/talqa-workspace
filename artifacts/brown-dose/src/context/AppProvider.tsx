@@ -40,24 +40,29 @@ interface AppContextState {
   setBusinessName: (name: string) => void;
   userName: string;
   setUserName: (name: string) => void;
+  cityName: string;
+  setCityName: (name: string) => void;
 }
 
 const AppContext = createContext<AppContextState | undefined>(undefined);
 
 export function AppProvider({
   children,
-  businessName: initialBusiness = 'كافيه النخبة',
-  userName: initialUser = 'سلطان الغامدي',
+  businessName: initialBusiness = 'نشاطك',
+  userName: initialUser = 'عميل مميز',
+  cityName: initialCity = 'الرياض',
 }: {
   children: ReactNode;
   businessName?: string;
   userName?: string;
+  cityName?: string;
 }) {
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [points, setPoints] = useState(340);
   const [businessName, setBusinessName] = useState(initialBusiness);
   const [userName, setUserName] = useState(initialUser);
+  const [cityName, setCityName] = useState(initialCity);
 
   const [isOrderFlowOpen, setOrderFlowOpen] = useState(false);
   const [orderFlowStep, setOrderFlowStep] = useState<OrderFlowStep>('type');
@@ -66,7 +71,7 @@ export function AppProvider({
   const [orders, setOrders] = useState<PastOrder[]>([
     {
       id: 'ORD-8492',
-      items: [{ item: { id: 'c8', name: 'ايس ستفتشر براون', price: 19, category: 'cold' }, quantity: 1 }],
+      items: [{ item: { id: 'c8', name: 'ايس ستريتشر', price: 19, category: 'cold' }, quantity: 1 }],
       type: 'pickup',
       date: 'اليوم، ٠٩:٣٠ ص',
       status: 'تم التسليم',
@@ -115,6 +120,7 @@ export function AppProvider({
       orderType, setOrderType,
       businessName, setBusinessName,
       userName, setUserName,
+      cityName, setCityName,
     }}>
       {children}
     </AppContext.Provider>

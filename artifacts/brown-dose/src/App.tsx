@@ -136,8 +136,10 @@ function PersonalizeCard({
 function LandingPage() {
   const [businessName, setBusinessName] = useState('');
   const [userName,     setUserName]     = useState('');
+  const [cityName,     setCityName]     = useState('');
   const [appliedBiz,   setAppliedBiz]   = useState('');
   const [appliedUser,  setAppliedUser]  = useState('');
+  const [appliedCity,  setAppliedCity]  = useState('الرياض');
   const [flashKey,     setFlashKey]     = useState(0);
   const [applied,      setApplied]      = useState(false);
 
@@ -145,6 +147,7 @@ function LandingPage() {
     if (!businessName.trim()) return;
     setAppliedBiz(businessName.trim());
     setAppliedUser(userName.trim() || 'عميل مميز');
+    setAppliedCity(cityName.trim() || 'الرياض');
     setFlashKey(k => k + 1);
     setApplied(true);
   };
@@ -240,9 +243,14 @@ function LandingPage() {
               <input value={businessName} onChange={e => setBusinessName(e.target.value)}
                 placeholder="اسم نشاطك (مثال: كافيه النخبة)"
                 style={{ padding: '11px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, color: '#fff', fontSize: 14, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif', outline: 'none', direction: 'rtl', width: '100%', boxSizing: 'border-box' }} />
-              <input value={userName} onChange={e => setUserName(e.target.value)}
-                placeholder="اسمك (مثال: سلطان الغامدي)"
-                style={{ padding: '11px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, color: '#fff', fontSize: 14, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif', outline: 'none', direction: 'rtl', width: '100%', boxSizing: 'border-box' }} />
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                <input value={userName} onChange={e => setUserName(e.target.value)}
+                  placeholder="اسمك"
+                  style={{ padding: '11px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, color: '#fff', fontSize: 14, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif', outline: 'none', direction: 'rtl', width: '100%', boxSizing: 'border-box' }} />
+                <input value={cityName} onChange={e => setCityName(e.target.value)}
+                  placeholder="مدينتك (الرياض)"
+                  style={{ padding: '11px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, color: '#fff', fontSize: 14, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif', outline: 'none', direction: 'rtl', width: '100%', boxSizing: 'border-box' }} />
+              </div>
             </div>
             <button onClick={applyPersonalization}
               disabled={!businessName.trim()}
@@ -273,7 +281,7 @@ function LandingPage() {
           transition={{ duration: 0.7, delay: 0.1, ease: [0.22,1,0.36,1] }}
           style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingRight: 20 }}>
           {applied ? (
-            <AppProvider businessName={appliedBiz} userName={appliedUser}>
+            <AppProvider businessName={appliedBiz} userName={appliedUser} cityName={appliedCity}>
               <MainApp />
             </AppProvider>
           ) : (
@@ -408,7 +416,11 @@ function AppModeInner() {
 
 export default function App() {
   const [showAdmin, setShowAdmin] = useState(false);
-  const isAppMode = new URLSearchParams(window.location.search).get('mode') === 'app';
+  const params = new URLSearchParams(window.location.search);
+  const isAppMode = params.get('mode') === 'app';
+  const urlBiz    = params.get('biz')  || undefined;
+  const urlUser   = params.get('user') || undefined;
+  const urlCity   = params.get('city') || undefined;
 
   useEffect(() => {
     (window as any).__bdAdmin = () => setShowAdmin(true);
@@ -418,7 +430,7 @@ export default function App() {
   if (isAppMode) {
     return (
       <div dir="rtl" style={{ width: '100%', height: '100dvh', background: 'hsl(var(--background))', overflow: 'hidden' }}>
-        <AppProvider>
+        <AppProvider businessName={urlBiz} userName={urlUser} cityName={urlCity}>
           <AppModeInner />
         </AppProvider>
       </div>

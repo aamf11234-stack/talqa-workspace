@@ -140,7 +140,7 @@ export function OrderFlow() {
                           <MapPin size={18} className="text-primary" />
                           <input 
                             type="text" 
-                            placeholder="مثال: ضمد — حي الورود"
+                            placeholder="مثال: الرياض — حي الورود"
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
                             className="bg-transparent border-none outline-none text-sm w-full font-sans"
