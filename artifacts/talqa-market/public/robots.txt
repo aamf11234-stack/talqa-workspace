@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://market.tlgaads.com/talqa-market/sitemap.xml
