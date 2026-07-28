@@ -1,5 +1,10 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Plane, Star, Hotel, Ticket, Train, Crown, HeartPulse, Tag,
+  MapPin, Bell, Nfc, Zap, ShieldCheck, WifiOff,
+  CreditCard, type LucideIcon,
+} from 'lucide-react';
 
 const WA_WALLET = 'https://wa.me/966551378531?text=السلام%20عليكم%2C%20أبي%20أضيف%20Apple%20Wallet%20لمشروعي';
 
@@ -7,7 +12,9 @@ const WA_WALLET = 'https://wa.me/966551378531?text=السلام%20عليكم%2C%
    PASS CARD DESIGNS — each mimics a real Apple Wallet pass
 ══════════════════════════════════════════════════════════ */
 
-function QR({ size = 44, color = '#fff', opacity = 0.8 }: { size?: number; color?: string; opacity?: number }) {
+/* ── All SVG pass-art components are memoised — they never need to re-render ── */
+
+const QR = React.memo(function QR({ size = 44, color = '#fff', opacity = 0.8 }: { size?: number; color?: string; opacity?: number }) {
   const rows = [[1,1,1,1,1,1,1],[1,0,0,0,0,0,1],[1,0,1,1,1,0,1],[1,0,1,0,1,0,1],[1,0,1,1,1,0,1],[1,0,0,0,0,0,1],[1,1,1,1,1,1,1]];
   const cs = size / 7;
   return (
@@ -16,9 +23,9 @@ function QR({ size = 44, color = '#fff', opacity = 0.8 }: { size?: number; color
       {[[4,4],[4,5],[5,4],[5,5],[3,5]].map(([r,c],i) => <rect key={`d${i}`} x={3.5*cs+c*cs*.38} y={3.5*cs+r*cs*.38} width={cs*.38} height={cs*.38} fill={color} rx={1} />)}
     </svg>
   );
-}
+});
 
-function Barcode({ width = 120, height = 32, color = 'rgba(255,255,255,0.8)' }: { width?: number; height?: number; color?: string }) {
+const Barcode = React.memo(function Barcode({ width = 120, height = 32, color = 'rgba(255,255,255,0.8)' }: { width?: number; height?: number; color?: string }) {
   const bars = [3,1,2,1,4,1,2,3,1,2,1,3,1,2,4,1,1,2,3,1,2,1,2,3,1,4,1,2,1,3];
   let x = 0;
   const totalW = bars.reduce((a, b) => a + b, 0);
@@ -29,80 +36,131 @@ function Barcode({ width = 120, height = 32, color = 'rgba(255,255,255,0.8)' }: 
       {bars.map((w) => { x += w; return null; })}
     </svg>
   );
-}
+});
 
-/* ── 1. BOARDING PASS ── */
+/* ── PDF417 — pre-computed path string (single <path> instead of 228 <rect>s) ── */
+const PDF417 = React.memo(function PDF417({ width=240, height=44 }: { width?: number; height?: number }) {
+  const rows = 6; const cols = 38;
+  const cw = width / cols; const ch = height / rows;
+  const cell = (r: number, c: number) => ((r * 7 + c * 13 + r * c * 3) % 5 !== 0);
+  // Build one SVG path for all filled cells
+  let d = '';
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (cell(r,c)) {
+        const x = c * cw; const y = r * ch + 1;
+        const w = cw - 0.4; const h = ch - 1.5;
+        d += `M${x},${y+0.5}h${w}v${h}h-${w}Z `;
+      }
+    }
+  }
+  return (
+    <svg width={width} height={height} style={{ display:'block' }}>
+      <path d={d} fill="rgba(255,255,255,0.82)" />
+    </svg>
+  );
+});
+
+/* ── 1. BOARDING PASS — portrait / tall format (Apple Wallet PKPassStyleBoardingPass) ── */
 function BoardingPass({ active }: { active: boolean }) {
   return (
-    <motion.div animate={active ? { y: [0,-4,0] } : {}} transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-      style={{ width:320, height:190, borderRadius:18, background:'linear-gradient(135deg,#0a1628 0%,#0d2444 50%,#0a1e38 100%)',
-        boxShadow:'0 28px 64px rgba(0,60,130,0.5)', position:'relative', overflow:'hidden',
-        fontFamily:'-apple-system,sans-serif', color:'#fff', direction:'ltr', flexShrink:0 }}>
-      {/* Sky gradient top */}
-      <div style={{ position:'absolute', top:0, left:0, right:0, height:80,
-        background:'linear-gradient(180deg,rgba(56,145,255,0.18) 0%,transparent 100%)' }} />
-      {/* Dashed divider */}
-      <div style={{ position:'absolute', top:0, bottom:0, left:185, borderLeft:'1.5px dashed rgba(255,255,255,0.15)' }} />
-      {/* Circles on divider */}
-      <div style={{ position:'absolute', top:'50%', left:178, transform:'translateY(-50%)', display:'flex', flexDirection:'column', gap:4 }}>
-        {[...Array(5)].map((_,i) => <div key={i} style={{ width:6, height:6, borderRadius:'50%', background:'rgba(255,255,255,0.2)' }} />)}
-      </div>
+    <motion.div animate={active ? { y:[0,-5,0] } : {}} transition={{ duration:4.5, repeat:Infinity, ease:'easeInOut' }}
+      style={{
+        width:290, borderRadius:22,
+        background:'linear-gradient(175deg,#06122e 0%,#0b1f4a 55%,#071530 100%)',
+        boxShadow:'0 32px 80px rgba(0,50,130,0.55)',
+        position:'relative', overflow:'hidden',
+        fontFamily:'-apple-system,sans-serif', color:'#fff', direction:'ltr', flexShrink:0,
+      }}>
 
-      <div style={{ padding:'14px 16px', height:'100%', boxSizing:'border-box', display:'flex', flexDirection:'column', justifyContent:'space-between' }}>
-        {/* Header */}
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-          <div style={{ display:'flex', alignItems:'center', gap:7 }}>
-            <div style={{ width:26, height:26, borderRadius:6, background:'linear-gradient(135deg,#1D4ED8,#3B82F6)',
-              display:'flex', alignItems:'center', justifyContent:'center', fontSize:13 }}>✈️</div>
-            <div>
-              <div style={{ fontSize:10, fontWeight:800, letterSpacing:.5 }}>SAUDI SKIES</div>
-              <div style={{ fontSize:7, color:'rgba(255,255,255,0.4)', letterSpacing:1.5 }}>BOARDING PASS</div>
-            </div>
-          </div>
-          <div style={{ textAlign:'right', fontSize:8, color:'rgba(255,255,255,0.4)' }}>
-            <div>FLIGHT</div>
-            <div style={{ fontSize:14, fontWeight:800, color:'#60A5FA' }}>SV 287</div>
-          </div>
-        </div>
+      {/* Sky shimmer at top */}
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:130,
+        background:'radial-gradient(ellipse 80% 120% at 50% -10%,rgba(56,145,255,0.22) 0%,transparent 70%)' }} />
 
-        {/* Route */}
-        <div style={{ display:'flex', alignItems:'center', gap:0 }}>
+      {/* ── Header ── */}
+      <div style={{ padding:'18px 20px 14px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+        <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+          <div style={{ width:30, height:30, borderRadius:8, background:'linear-gradient(135deg,#1D4ED8,#3B82F6)',
+            display:'flex', alignItems:'center', justifyContent:'center' }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M21 16v-2l-8-5V3.5A1.5 1.5 0 0011 2a1.5 1.5 0 00-1.5 1.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5L21 16z"/></svg>
+          </div>
           <div>
-            <div style={{ fontSize:28, fontWeight:900, letterSpacing:-1, color:'#fff' }}>RUH</div>
-            <div style={{ fontSize:8, color:'rgba(255,255,255,0.4)', letterSpacing:.5 }}>الرياض</div>
-          </div>
-          <div style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', gap:2, padding:'0 10px' }}>
-            <div style={{ fontSize:8, color:'rgba(255,255,255,0.3)', letterSpacing:1 }}>2H 45M</div>
-            <div style={{ width:'100%', height:1, background:'linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)', position:'relative' }}>
-              <div style={{ position:'absolute', right:-3, top:-5, fontSize:10 }}>✈</div>
-            </div>
-          </div>
-          <div style={{ textAlign:'right' }}>
-            <div style={{ fontSize:28, fontWeight:900, letterSpacing:-1, color:'#60A5FA' }}>DXB</div>
-            <div style={{ fontSize:8, color:'rgba(255,255,255,0.4)', letterSpacing:.5 }}>دبي</div>
+            <div style={{ fontSize:11, fontWeight:800, letterSpacing:.5 }}>SAUDI SKIES</div>
+            <div style={{ fontSize:7, color:'rgba(255,255,255,0.38)', letterSpacing:2, textTransform:'uppercase' }}>Boarding Pass</div>
           </div>
         </div>
-
-        {/* Footer */}
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:4 }}>
-          {[['PASSENGER','عبدالله المطيري'],['DATE','٢٤ يوليو'],['SEAT','14A']].map(([l,v],i) => (
-            <div key={i}>
-              <div style={{ fontSize:6.5, color:'rgba(255,255,255,0.35)', letterSpacing:1, textTransform:'uppercase' }}>{l}</div>
-              <div style={{ fontSize:10.5, fontWeight:700 }}>{v}</div>
-            </div>
-          ))}
+        <div style={{ textAlign:'right' }}>
+          <div style={{ fontSize:7, color:'rgba(255,255,255,0.35)', letterSpacing:1.5 }}>FLIGHT</div>
+          <div style={{ fontSize:16, fontWeight:900, color:'#60A5FA', letterSpacing:1 }}>SV 287</div>
         </div>
       </div>
 
-      {/* Right stub */}
-      <div style={{ position:'absolute', top:0, right:0, width:130, height:'100%', padding:'12px 10px', boxSizing:'border-box',
-        display:'flex', flexDirection:'column', justifyContent:'space-between', alignItems:'center' }}>
-        <div style={{ textAlign:'center' }}>
-          <div style={{ fontSize:7, color:'rgba(255,255,255,0.35)', letterSpacing:1 }}>GATE</div>
-          <div style={{ fontSize:18, fontWeight:900, color:'#60A5FA' }}>B22</div>
+      {/* ── Route ── */}
+      <div style={{ padding:'10px 20px 18px', display:'flex', alignItems:'center', gap:0 }}>
+        <div>
+          <div style={{ fontSize:42, fontWeight:900, letterSpacing:-2, lineHeight:1, color:'#fff' }}>RUH</div>
+          <div style={{ fontSize:9.5, color:'rgba(255,255,255,0.4)', marginTop:3 }}>الرياض · King Khalid</div>
         </div>
-        <Barcode width={100} height={28} color="rgba(255,255,255,0.6)" />
-        <div style={{ fontSize:7, color:'rgba(255,255,255,0.3)', letterSpacing:.5 }}>SV287 · TLGA</div>
+        <div style={{ flex:1, padding:'0 12px', display:'flex', flexDirection:'column', alignItems:'center', gap:5 }}>
+          <div style={{ fontSize:8.5, color:'rgba(255,255,255,0.28)', letterSpacing:1 }}>2H 45M</div>
+          <div style={{ width:'100%', position:'relative', display:'flex', alignItems:'center' }}>
+            <div style={{ flex:1, height:1, background:'rgba(255,255,255,0.2)' }} />
+            <div style={{ margin:'0 4px' }}>
+              <svg width="18" height="10" viewBox="0 0 24 12" fill="rgba(255,255,255,0.55)">
+                <path d="M21 6v-.5A1.5 1.5 0 0019.5 4H16L12 0H9l2 4H7L5 2H2l1 4-1 4h3l2-2h4l-2 4h3l4-4h3.5A1.5 1.5 0 0021 6.5V6z"/>
+              </svg>
+            </div>
+            <div style={{ flex:1, height:1, background:'rgba(255,255,255,0.2)' }} />
+          </div>
+          <div style={{ fontSize:7.5, color:'rgba(255,255,255,0.25)' }}>Direct</div>
+        </div>
+        <div style={{ textAlign:'right' }}>
+          <div style={{ fontSize:42, fontWeight:900, letterSpacing:-2, lineHeight:1, color:'#60A5FA' }}>DXB</div>
+          <div style={{ fontSize:9.5, color:'rgba(255,255,255,0.4)', marginTop:3 }}>دبي · Al Maktoum</div>
+        </div>
+      </div>
+
+      {/* ── Passenger info grid ── */}
+      <div style={{ padding:'0 20px 16px', display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:10 }}>
+        {[
+          ['PASSENGER','عبدالله المطيري'],
+          ['DATE','Mon 24 JUL'],
+          ['CLASS','Economy'],
+        ].map(([l,v],i) => (
+          <div key={i}>
+            <div style={{ fontSize:6.5, color:'rgba(255,255,255,0.3)', letterSpacing:1.2, textTransform:'uppercase', marginBottom:3 }}>{l}</div>
+            <div style={{ fontSize:10, fontWeight:700, lineHeight:1.3 }}>{v}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ padding:'0 20px 18px', display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:10 }}>
+        {[
+          ['BOARDING','15:20'],
+          ['GATE','B22'],
+          ['SEAT','14A'],
+        ].map(([l,v],i) => (
+          <div key={i}>
+            <div style={{ fontSize:6.5, color:'rgba(255,255,255,0.3)', letterSpacing:1.2, textTransform:'uppercase', marginBottom:3 }}>{l}</div>
+            <div style={{ fontSize:13, fontWeight:900, color: i===1 ? '#60A5FA' : '#fff' }}>{v}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* ── Tear perforation ── */}
+      <div style={{ position:'relative', height:18, display:'flex', alignItems:'center', margin:'0 -1px' }}>
+        <div style={{ flex:1, height:1.5, borderTop:'1.5px dashed rgba(255,255,255,0.12)' }} />
+        {[-14,14].map((side,i) => (
+          <div key={i} style={{ position:'absolute', [i===0?'left':'right']:-8, width:16, height:16, borderRadius:'50%',
+            background:'var(--bg2)', border:'1px solid rgba(255,255,255,0.06)' }} />
+        ))}
+      </div>
+
+      {/* ── Barcode stub ── */}
+      <div style={{ padding:'14px 20px 20px', display:'flex', flexDirection:'column', alignItems:'center', gap:8 }}>
+        <PDF417 width={248} height={50} />
+        <div style={{ fontSize:8, color:'rgba(255,255,255,0.22)', letterSpacing:3, fontFamily:'monospace' }}>
+          SV287 RUH→DXB 24JUL
+        </div>
       </div>
     </motion.div>
   );
@@ -112,8 +170,8 @@ function BoardingPass({ active }: { active: boolean }) {
 function LoyaltyCard({ active }: { active: boolean }) {
   const [pts, setPts] = useState(480);
   useEffect(() => {
-    if (!active) return;
-    const t = setInterval(() => setPts(p => p < 1200 ? p + 7 : 480), 60);
+    if (!active) { setPts(480); return; }
+    const t = setInterval(() => setPts(p => p < 1200 ? p + 12 : 480), 160);
     return () => clearInterval(t);
   }, [active]);
 
@@ -135,8 +193,7 @@ function LoyaltyCard({ active }: { active: boolean }) {
           </div>
           <div style={{ textAlign:'left' }}>
             <div style={{ fontSize:7, color:'rgba(255,255,255,0.35)', letterSpacing:1.5 }}>POINTS</div>
-            <motion.div key={pts} initial={{ scale:1.3, color:'#FCD34D' }} animate={{ scale:1, color:'#F59E0B' }}
-              style={{ fontSize:22, fontWeight:900, letterSpacing:-1 }}>{pts}</motion.div>
+            <div style={{ fontSize:22, fontWeight:900, letterSpacing:-1, color:'#F59E0B' }}>{pts}</div>
           </div>
         </div>
         <div>
@@ -201,44 +258,113 @@ function HotelCard({ active }: { active: boolean }) {
   );
 }
 
-/* ── 4. EVENT TICKET ── */
+/* ── 4. EVENT TICKET — with header strip image (Apple Wallet PKPassStyleEventTicket) ── */
 function EventTicket({ active }: { active: boolean }) {
   return (
-    <motion.div animate={active ? { y:[0,-4,0] } : {}} transition={{ duration:4.2, repeat:Infinity, ease:'easeInOut' }}
-      style={{ width:300, height:178, borderRadius:20, background:'linear-gradient(145deg,#1a0020,#2d0040)',
-        boxShadow:'0 24px 60px rgba(168,85,247,0.45)', position:'relative', overflow:'hidden',
-        fontFamily:'-apple-system,sans-serif', color:'#fff', direction:'ltr', flexShrink:0 }}>
-      <div style={{ position:'absolute', top:0, left:0, right:0, height:2.5, background:'linear-gradient(90deg,#EC4899,#A855F7,#EC4899)' }} />
-      {/* Stage lights */}
-      {[[20,0,'#EC489920'],[120,0,'#A855F720'],[220,0,'#8B5CF620']].map(([x,y,c],i)=>(
-        <div key={i} style={{ position:'absolute', top:0, left:x as number, width:60, height:80,
-          background:`linear-gradient(180deg,${c} 0%,transparent 100%)`, transform:'skewX(-10deg)' }} />
-      ))}
-      <div style={{ position:'absolute', right:100, top:0, bottom:0, borderLeft:'1.5px dashed rgba(255,255,255,0.12)' }} />
-      <div style={{ padding:'14px 16px', height:'100%', boxSizing:'border-box', display:'flex', flexDirection:'column', justifyContent:'space-between' }}>
-        <div>
-          <div style={{ fontSize:7.5, color:'#F472B6', letterSpacing:2, textTransform:'uppercase' }}>LIVE EVENT</div>
-          <div style={{ fontSize:16, fontWeight:900, letterSpacing:-.3, marginTop:2 }}>NOOR RIYADH</div>
-          <div style={{ fontSize:8, color:'rgba(255,255,255,0.4)' }}>King Abdullah Park · الرياض</div>
+    <motion.div animate={active ? { y:[0,-5,0] } : {}} transition={{ duration:4.2, repeat:Infinity, ease:'easeInOut' }}
+      style={{
+        width:300, borderRadius:22,
+        background:'#0e0014',
+        boxShadow:'0 32px 80px rgba(168,85,247,0.5)',
+        position:'relative', overflow:'hidden',
+        fontFamily:'-apple-system,sans-serif', color:'#fff', direction:'ltr', flexShrink:0,
+      }}>
+
+      {/* ══ STRIP IMAGE (header artwork — مميز Apple Wallet) ══ */}
+      <div style={{
+        width:'100%', height:136,
+        background:'linear-gradient(160deg,#1a0030 0%,#3b0066 35%,#1e0040 60%,#0a0020 100%)',
+        position:'relative', overflow:'hidden',
+      }}>
+        {/* Spotlight beams */}
+        {[30, 110, 190, 260].map((x,i) => (
+          <div key={i} style={{
+            position:'absolute', top:0, left:x,
+            width:40, height:136,
+            background:`linear-gradient(180deg,rgba(${i%2?'236,72,153':'168,85,247'},0.28) 0%,transparent 100%)`,
+            transform:'skewX(-8deg)',
+          }}/>
+        ))}
+        {/* Glitter dots */}
+        {[[20,30],[80,18],[155,50],[230,22],[270,45],[50,70],[190,80],[120,95]].map(([x,y],i)=>(
+          <div key={i} style={{
+            position:'absolute', left:x, top:y,
+            width:i%3===0?4:2.5, height:i%3===0?4:2.5,
+            borderRadius:'50%', background:'rgba(255,255,255,0.6)',
+            boxShadow:'0 0 6px rgba(255,255,255,0.8)',
+          }}/>
+        ))}
+        {/* Stage floor glow */}
+        <div style={{
+          position:'absolute', bottom:0, left:0, right:0, height:40,
+          background:'linear-gradient(0deg,rgba(168,85,247,0.3) 0%,transparent 100%)',
+        }}/>
+        {/* Event title overlay */}
+        <div style={{ position:'absolute', bottom:12, left:14, right:14 }}>
+          <div style={{ fontSize:7, color:'rgba(255,192,255,0.7)', letterSpacing:3, textTransform:'uppercase', marginBottom:3 }}>LIVE EVENT</div>
+          <div style={{ fontSize:22, fontWeight:900, letterSpacing:-0.5, lineHeight:1,
+            background:'linear-gradient(135deg,#fff,#E879F9)',
+            WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', backgroundClip:'text' }}>
+            NOOR RIYADH
+          </div>
         </div>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:6 }}>
-          {[['DATE','٢٨ سبتمبر'],['TIME','٨:٠٠ م'],['ZONE','A']].map(([l,v],i)=>(
+        {/* Logo badge top-right */}
+        <div style={{
+          position:'absolute', top:12, right:12,
+          width:32, height:32, borderRadius:8,
+          background:'linear-gradient(135deg,#A855F7,#EC4899)',
+          display:'flex', alignItems:'center', justifyContent:'center',
+        }}>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="white">
+            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+          </svg>
+        </div>
+      </div>
+
+      {/* ══ PASS BODY ══ */}
+      <div style={{ padding:'14px 16px 0' }}>
+        {/* Venue */}
+        <div style={{ fontSize:10, color:'rgba(255,255,255,0.42)', marginBottom:14 }}>
+          King Abdullah Park · الرياض
+        </div>
+
+        {/* Fields row */}
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr 1fr', gap:8, marginBottom:16 }}>
+          {[['DATE','٢٨ سبت'],['TIME','٨:٠٠ م'],['DOOR','7'],['ZONE','A']].map(([l,v],i)=>(
             <div key={i}>
-              <div style={{ fontSize:6.5, color:'rgba(255,255,255,0.35)', textTransform:'uppercase', letterSpacing:.8 }}>{l}</div>
-              <div style={{ fontSize:10.5, fontWeight:700 }}>{v}</div>
+              <div style={{ fontSize:6.5, color:'rgba(255,255,255,0.3)', textTransform:'uppercase', letterSpacing:1, marginBottom:3 }}>{l}</div>
+              <div style={{ fontSize:12, fontWeight:800, color: i===3 ? '#E879F9' : '#fff' }}>{v}</div>
             </div>
           ))}
         </div>
-        <Barcode width={165} height={26} color="rgba(255,255,255,0.55)" />
-      </div>
-      {/* Right stub */}
-      <div style={{ position:'absolute', top:0, right:0, width:96, height:'100%', padding:'12px 10px', boxSizing:'border-box',
-        display:'flex', flexDirection:'column', justifyContent:'space-between', alignItems:'center' }}>
-        <div style={{ textAlign:'center' }}>
-          <div style={{ fontSize:7, color:'rgba(255,255,255,0.3)', letterSpacing:.8 }}>SEAT</div>
-          <div style={{ fontSize:20, fontWeight:900, color:'#E879F9' }}>A14</div>
+
+        {/* Name */}
+        <div style={{ marginBottom:14 }}>
+          <div style={{ fontSize:6.5, color:'rgba(255,255,255,0.3)', textTransform:'uppercase', letterSpacing:1, marginBottom:3 }}>TICKET HOLDER</div>
+          <div style={{ fontSize:13, fontWeight:700 }}>محمد العنزي</div>
         </div>
-        <QR size={52} color="white" opacity={0.7} />
+      </div>
+
+      {/* ══ TEAR PERFORATION ══ */}
+      <div style={{ position:'relative', height:18, display:'flex', alignItems:'center', margin:'0 -1px' }}>
+        <div style={{ flex:1, borderTop:'1.5px dashed rgba(255,255,255,0.1)' }}/>
+        {[0,1].map(i=>(
+          <div key={i} style={{ position:'absolute', [i===0?'left':'right']:-8, width:16, height:16,
+            borderRadius:'50%', background:'var(--bg2)', border:'1px solid rgba(255,255,255,0.06)' }}/>
+        ))}
+      </div>
+
+      {/* ══ STUB — QR + SEAT ══ */}
+      <div style={{ padding:'14px 16px 18px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+        <div>
+          <div style={{ fontSize:6.5, color:'rgba(255,255,255,0.3)', letterSpacing:1, textTransform:'uppercase', marginBottom:4 }}>SEAT</div>
+          <div style={{ fontSize:26, fontWeight:900, color:'#E879F9', letterSpacing:-1, lineHeight:1 }}>A14</div>
+          <div style={{ fontSize:8, color:'rgba(255,255,255,0.25)', marginTop:4 }}>Row 3 · Front</div>
+        </div>
+        <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:4 }}>
+          <QR size={62} color="white" opacity={0.75}/>
+          <div style={{ fontSize:7, color:'rgba(255,255,255,0.2)', letterSpacing:2, fontFamily:'monospace' }}>NR2024-A14</div>
+        </div>
       </div>
     </motion.div>
   );
@@ -427,24 +553,28 @@ function CouponCard({ active }: { active: boolean }) {
 /* ══════════════════════════════════════════════════════════
    ALL PASSES DATA
 ══════════════════════════════════════════════════════════ */
-const PASSES = [
-  { id:'boarding',    label:'تذكرة طيران',   icon:'✈️', industry:'شركات الطيران',   component: BoardingPass   },
-  { id:'loyalty',     label:'ولاء ونقاط',    icon:'⭐', industry:'المطاعم والكافيهات', component: LoyaltyCard  },
-  { id:'hotel',       label:'مفتاح فندق',    icon:'🏨', industry:'الفنادق',          component: HotelCard     },
-  { id:'event',       label:'تذكرة فعالية',  icon:'🎟️', industry:'الفعاليات والحفلات', component: EventTicket  },
-  { id:'transit',     label:'تصريح مترو',    icon:'🚇', industry:'النقل العام',      component: TransitCard   },
-  { id:'membership',  label:'عضوية VIP',     icon:'👑', industry:'النوادي والصالات', component: MembershipCard },
-  { id:'medical',     label:'موعد طبي',      icon:'🏥', industry:'العيادات والمستشفيات', component: MedicalCard },
-  { id:'coupon',      label:'كوبون خصم',     icon:'🎁', industry:'التجارة الإلكترونية', component: CouponCard  },
+const PASSES: {
+  id: string; label: string; Icon: LucideIcon;
+  appleType: string; industry: string;
+  component: (p: { active: boolean }) => React.ReactElement;
+}[] = [
+  { id:'boarding',   label:'تذكرة طيران',  Icon: Plane,      appleType:'Boarding Pass', industry:'شركات الطيران',       component: BoardingPass   },
+  { id:'loyalty',    label:'ولاء ونقاط',   Icon: Star,       appleType:'Store Card',    industry:'المطاعم والكافيهات',  component: LoyaltyCard    },
+  { id:'hotel',      label:'مفتاح فندق',   Icon: Hotel,      appleType:'Generic Pass',  industry:'الفنادق',              component: HotelCard      },
+  { id:'event',      label:'تذكرة فعالية', Icon: Ticket,     appleType:'Event Ticket',  industry:'الفعاليات والحفلات',  component: EventTicket    },
+  { id:'transit',    label:'تصريح مترو',   Icon: Train,      appleType:'Transit Pass',  industry:'النقل العام',          component: TransitCard    },
+  { id:'membership', label:'عضوية VIP',    Icon: Crown,      appleType:'Store Card',    industry:'النوادي والصالات',    component: MembershipCard },
+  { id:'medical',    label:'موعد طبي',     Icon: HeartPulse, appleType:'Generic Pass',  industry:'العيادات والمستشفيات',component: MedicalCard    },
+  { id:'coupon',     label:'كوبون خصم',    Icon: Tag,        appleType:'Coupon',        industry:'التجارة الإلكترونية', component: CouponCard     },
 ];
 
-const TECH_FEATURES = [
-  { icon:'📍', title:'Location Awareness',    desc:'تنبيه الزبون تلقائياً لما يقرب الفرع' },
-  { icon:'🔔', title:'Push Notifications',    desc:'إشعار مباشر لكل حاملي البطاقة' },
-  { icon:'📶', title:'NFC & Contactless',     desc:'لمس لفتح الباب أو إتمام الدفع' },
-  { icon:'⚡', title:'OTA Updates',           desc:'تحديث البيانات من بُعد بدون إجراء' },
-  { icon:'🔐', title:'Apple Signed & Secure', desc:'توقيع رسمي بشهادة Apple Developer' },
-  { icon:'🌐', title:'No App Required',       desc:'يشتغل مباشرة من iOS بدون App Store' },
+const TECH_FEATURES: { Icon: LucideIcon; color: string; title: string; desc: string }[] = [
+  { Icon: MapPin,     color:'#34D399', title:'Location Awareness',    desc:'تنبيه الزبون تلقائياً لما يقرب الفرع' },
+  { Icon: Bell,       color:'#60A5FA', title:'Push Notifications',    desc:'إشعار مباشر لكل حاملي البطاقة' },
+  { Icon: Nfc,        color:'#A78BFA', title:'NFC & Contactless',     desc:'لمس لفتح الباب أو إتمام الدفع' },
+  { Icon: Zap,        color:'#FCD34D', title:'OTA Updates',           desc:'تحديث البيانات من بُعد بدون إجراء' },
+  { Icon: ShieldCheck,color:'#F9A8D4', title:'Apple Signed & Secure', desc:'توقيع رسمي بشهادة Apple Developer' },
+  { Icon: WifiOff,    color:'#FB923C', title:'No App Required',       desc:'يشتغل مباشرة من iOS بدون App Store' },
 ];
 
 /* ══════════════════════════════════════════════════════════
@@ -472,8 +602,9 @@ export default function WalletShowcase() {
         {/* ── Header ── */}
         <motion.div initial={{ opacity:0, y:24 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }}
           transition={{ duration:.7 }} style={{ textAlign:'center', marginBottom:52 }}>
-          <div className="section-label" style={{ color:'#8B5CF6', borderColor:'rgba(139,92,246,0.3)', background:'rgba(139,92,246,0.08)', marginBottom:16 }}>
-            💳 Apple & Google Wallet
+          <div className="section-label" style={{ color:'#8B5CF6', borderColor:'rgba(139,92,246,0.3)', background:'rgba(139,92,246,0.08)', marginBottom:16,
+            display:'inline-flex', alignItems:'center', gap:7 }}>
+            <CreditCard size={13} strokeWidth={2} /> Apple & Google Wallet
           </div>
           <h2 style={{ fontWeight:900, fontSize:'clamp(2rem,4.5vw,3.4rem)', letterSpacing:'-0.035em', lineHeight:1.1, marginBottom:16 }}>
             من الطيران إلى العيادات —{' '}
@@ -497,7 +628,7 @@ export default function WalletShowcase() {
                   color: active===i ? '#fff' : 'rgba(255,255,255,0.38)',
                   boxShadow: active===i ? '0 2px 14px rgba(139,92,246,0.3)' : 'none',
                 }}>
-                <span style={{ fontSize:14 }}>{p.icon}</span>
+                 <p.Icon size={13} strokeWidth={1.75} style={{ flexShrink:0 }} />
                 {p.label}
               </button>
             ))}
@@ -505,7 +636,7 @@ export default function WalletShowcase() {
         </div>
 
         {/* ── Main: featured pass + side grid ── */}
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:48, alignItems:'center', marginBottom:56 }}>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:48, alignItems:'flex-start', marginBottom:56 }}>
 
           {/* Left: active pass hero */}
           <motion.div initial={{ opacity:0, x:-24 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true }}
@@ -519,8 +650,12 @@ export default function WalletShowcase() {
                 style={{ display:'inline-flex', alignItems:'center', gap:7, padding:'6px 14px', borderRadius:20,
                   background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.1)',
                   fontSize:11.5, fontWeight:700, color:'rgba(255,255,255,0.6)', direction:'rtl' }}>
-                <span style={{ fontSize:14 }}>{PASSES[active]!.icon}</span>
+                {(() => { const P = PASSES[active]!; return <P.Icon size={13} strokeWidth={1.75} />; })()}
                 {PASSES[active]!.industry}
+                <span style={{ fontSize:9, fontWeight:600, color:'rgba(255,255,255,0.3)', padding:'2px 7px',
+                  borderRadius:8, background:'rgba(255,255,255,0.07)', marginRight:2 }}>
+                  {PASSES[active]!.appleType}
+                </span>
               </motion.div>
             </AnimatePresence>
 
@@ -566,10 +701,17 @@ export default function WalletShowcase() {
                     boxShadow: active===i ? '0 0 0 1px rgba(139,92,246,0.25)' : 'none',
                   }}>
                   <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:5 }}>
-                    <span style={{ fontSize:18 }}>{p.icon}</span>
-                    <span style={{ fontSize:12, fontWeight:800, color: active===i ? '#fff' : 'rgba(255,255,255,0.7)' }}>{p.label}</span>
+                    <div style={{ width:28, height:28, borderRadius:8, background:'rgba(139,92,246,0.15)',
+                      border:'1px solid rgba(139,92,246,0.25)', display:'flex', alignItems:'center', justifyContent:'center',
+                      color: active===i ? '#A78BFA' : 'rgba(255,255,255,0.4)', flexShrink:0 }}>
+                      <p.Icon size={14} strokeWidth={1.75} />
+                    </div>
+                    <div style={{ flex:1 }}>
+                      <div style={{ fontSize:12, fontWeight:800, color: active===i ? '#fff' : 'rgba(255,255,255,0.7)' }}>{p.label}</div>
+                      <div style={{ fontSize:9, color:'rgba(255,255,255,0.28)', marginTop:1 }}>{p.appleType}</div>
+                    </div>
                   </div>
-                  <div style={{ fontSize:10.5, color:'rgba(255,255,255,0.35)', lineHeight:1.4 }}>{p.industry}</div>
+                  <div style={{ fontSize:10, color:'rgba(255,255,255,0.3)', lineHeight:1.4 }}>{p.industry}</div>
                 </motion.button>
               ))}
             </div>
@@ -589,7 +731,9 @@ export default function WalletShowcase() {
               <motion.div key={i} initial={{ opacity:0, y:10 }} whileInView={{ opacity:1, y:0 }}
                 viewport={{ once:true }} transition={{ delay:.06*i }}
                 className="glass" style={{ padding:'16px 18px', borderRadius:12, direction:'rtl' }}>
-                <div style={{ fontSize:20, marginBottom:8 }}>{f.icon}</div>
+                <div style={{ marginBottom:10 }}>
+                  <f.Icon size={20} strokeWidth={1.75} style={{ color:f.color }} />
+                </div>
                 <div style={{ fontSize:11.5, fontWeight:800, color:'#fff', marginBottom:4 }}>{f.title}</div>
                 <div style={{ fontSize:11, color:'var(--text2)', lineHeight:1.5 }}>{f.desc}</div>
               </motion.div>

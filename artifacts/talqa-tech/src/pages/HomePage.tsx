@@ -3,6 +3,8 @@ import Hero from '../components/Hero';
 import Marquee from '../components/Marquee';
 import SectorsSection from '../components/SectorsSection';
 import HorizontalServices from '../components/HorizontalServices';
+import WebsitesSection from '../components/WebsitesSection';
+import AppsSection from '../components/AppsSection';
 import LiveDemo from '../components/LiveDemo';
 import BookingsSection from '../components/BookingsSection';
 import AiChat from '../components/AiChat';
@@ -26,6 +28,10 @@ export default function HomePage() {
       <SectorsSection />
       <div className="section-divider" />
       <HorizontalServices />
+      <div className="section-divider" />
+      <WebsitesSection />
+      <div className="section-divider" />
+      <AppsSection />
       <div className="section-divider" />
       <PlatformShowcase />
       <div className="section-divider" />
