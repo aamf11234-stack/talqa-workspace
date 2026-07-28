@@ -5,10 +5,10 @@ import { Smartphone, Globe, Wallet, Zap, CheckCircle2, RotateCcw, MessageCircle,
 const WA = 'https://wa.me/966551378531?text=';
 
 const types = [
-  { id: 'app',    Icon: Smartphone, title: 'تطبيق جوال',        sub: 'iOS & Android',      minP: 8000,  maxP: 22000, minW: 6,  maxW: 12, color: '#8B5CF6', emoji: '📱' },
-  { id: 'web',    Icon: Globe,      title: 'موقع / لوحة تحكم',  sub: 'Web Platform',        minP: 5000,  maxP: 15000, minW: 4,  maxW: 8,  color: '#3B82F6', emoji: '🌐' },
-  { id: 'wallet', Icon: Wallet,     title: 'Apple Wallet',       sub: 'بطاقة ولاء رقمية',  minP: 3000,  maxP: 8000,  minW: 2,  maxW: 4,  color: '#06B6D4', emoji: '💳' },
-  { id: 'custom', Icon: Zap,        title: 'حل مخصص / API',     sub: 'Automation',          minP: 6000,  maxP: 20000, minW: 4,  maxW: 10, color: '#EC4899', emoji: '⚡' },
+  { id: 'app',    Icon: Smartphone, title: 'تطبيق جوال',        sub: 'iOS & Android',      minP: 8000,  maxP: 22000, minW: 6,  maxW: 12, color: '#8B5CF6' },
+  { id: 'web',    Icon: Globe,      title: 'موقع / لوحة تحكم',  sub: 'Web Platform',        minP: 5000,  maxP: 15000, minW: 4,  maxW: 8,  color: '#3B82F6' },
+  { id: 'wallet', Icon: Wallet,     title: 'Apple Wallet',       sub: 'بطاقة ولاء رقمية',  minP: 3000,  maxP: 8000,  minW: 2,  maxW: 4,  color: '#06B6D4' },
+  { id: 'custom', Icon: Zap,        title: 'حل مخصص / API',     sub: 'Automation',          minP: 6000,  maxP: 20000, minW: 4,  maxW: 10, color: '#EC4899' },
 ];
 
 const addons = [
@@ -112,8 +112,8 @@ export default function Calculator() {
                           boxShadow: sel ? `0 0 24px ${pt.color}25` : 'none',
                           transition: 'all 0.2s', minHeight: 72,
                         }}>
-                        <div style={{ width: 44, height: 44, borderRadius: 12, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: sel ? `${pt.color}20` : 'rgba(255,255,255,0.05)', fontSize: 20, transition: 'all 0.2s' }}>
-                          {pt.emoji}
+                        <div style={{ width: 44, height: 44, borderRadius: 12, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: sel ? `${pt.color}20` : 'rgba(255,255,255,0.05)', transition: 'all 0.2s' }}>
+                          <pt.Icon size={20} strokeWidth={1.75} color={sel ? pt.color : 'rgba(255,255,255,0.35)'} />
                         </div>
                         <div style={{ flex: 1, textAlign: 'right' }}>
                           <div style={{ fontSize: 14, fontWeight: 800, color: sel ? '#fff' : 'rgba(255,255,255,0.7)', marginBottom: 3, transition: 'color 0.2s' }}>{pt.title}</div>
@@ -143,7 +143,9 @@ export default function Calculator() {
             {step === 1 && (
               <motion.div key="s1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
-                  <div style={{ width: 38, height: 38, borderRadius: 10, background: `${t?.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>{t?.emoji}</div>
+                  <div style={{ width: 38, height: 38, borderRadius: 10, background: `${t?.color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {t && <t.Icon size={18} strokeWidth={1.75} color={t.color}/>}
+                  </div>
                   <div>
                     <h3 style={{ fontSize: 16, fontWeight: 900, color: '#fff', letterSpacing: '-0.02em' }}>أي الإضافات تحتاجها؟</h3>
                     <p style={{ fontSize: 11, color: 'var(--text3)', fontWeight: 500 }}>اختياري — يمكنك تخطيها</p>
@@ -197,8 +199,8 @@ export default function Calculator() {
               <motion.div key="s2" initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }}>
                 <div style={{ textAlign: 'center', marginBottom: 28 }}>
                   <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 280, damping: 18, delay: 0.1 }}
-                    style={{ width: 56, height: 56, borderRadius: 16, margin: '0 auto 16px', background: `${t?.color}20`, border: `1px solid ${t?.color}40`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26 }}>
-                    {t?.emoji}
+                    style={{ width: 56, height: 56, borderRadius: 16, margin: '0 auto 16px', background: `${t?.color}20`, border: `1px solid ${t?.color}40`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    {t && <t.Icon size={26} strokeWidth={1.6} color={t.color}/>}
                   </motion.div>
                   <h3 style={{ fontSize: 18, fontWeight: 900, color: '#fff', letterSpacing: '-0.02em', marginBottom: 6 }}>التقدير الأولي</h3>
                   <p style={{ fontSize: 12, color: 'var(--text3)' }}>{t?.title}{aids.length > 0 ? ` · ${aids.length} إضافات` : ''}</p>

@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
 
 const REVIEWS = [
-  { name: 'أحمد القحطاني', role: 'صاحب Brown Dose', text: 'من أول يوم والتطبيق شغّال — عملاؤنا يضيفون البطاقة بأنفسهم ونشوف زيادة في الزيارات المتكررة.', stars: 5, color: '#F59E0B', emoji: '☕' },
-  { name: 'د. سارة الزهراني', role: 'عيادة صحة', text: 'وفّر علينا ساعات يومياً في إدارة المواعيد. النظام سهل جداً والدعم متوفر دائماً.', stars: 5, color: '#3B82F6', emoji: '🏥' },
-  { name: 'خالد العمري', role: 'مدير تسويق', text: 'فريق تلقا تك يفهم الفكرة من أول جلسة ويترجمها بشكل أفضل مما تخيّلته.', stars: 5, color: '#8B5CF6', emoji: '🚀' },
+  { name: 'أحمد القحطاني', role: 'صاحب Brown Dose', text: 'من أول يوم والتطبيق شغّال — عملاؤنا يضيفون البطاقة بأنفسهم ونشوف زيادة في الزيارات المتكررة.', stars: 5, color: '#F59E0B' },
+  { name: 'د. سارة الزهراني', role: 'عيادة صحة', text: 'وفّر علينا ساعات يومياً في إدارة المواعيد. النظام سهل جداً والدعم متوفر دائماً.', stars: 5, color: '#3B82F6' },
+  { name: 'خالد العمري', role: 'مدير تسويق', text: 'فريق تلقا تك يفهم الفكرة من أول جلسة ويترجمها بشكل أفضل مما تخيّلته.', stars: 5, color: '#8B5CF6' },
 ];
 
 export default function Testimonials() {
@@ -22,7 +22,7 @@ export default function Testimonials() {
         </motion.div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px,1fr))', gap: 20 }}>
-          {REVIEWS.map(({ name, role, text, stars, color, emoji }, i) => (
+          {REVIEWS.map(({ name, role, text, stars, color }, i) => (
             <motion.div key={name}
               initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.55 }}
@@ -40,13 +40,10 @@ export default function Testimonials() {
             >
               <div style={{ position: 'absolute', top: -20, right: -20, width: 80, height: 80, borderRadius: '50%', background: `${color}10`, filter: 'blur(20px)', pointerEvents: 'none' }} />
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                <div style={{ display: 'flex', gap: 3 }}>
-                  {Array.from({ length: stars }).map((_, j) => (
-                    <span key={j} style={{ color: '#F59E0B', fontSize: 14 }}>★</span>
-                  ))}
-                </div>
-                <span style={{ fontSize: 24 }}>{emoji}</span>
+              <div style={{ display: 'flex', gap: 3 }}>
+                {Array.from({ length: stars }).map((_, j) => (
+                  <span key={j} style={{ color: '#F59E0B', fontSize: 14 }}>★</span>
+                ))}
               </div>
 
               <p style={{ fontSize: 14, color: 'var(--text2)', lineHeight: 1.85, flex: 1 }}>"{text}"</p>

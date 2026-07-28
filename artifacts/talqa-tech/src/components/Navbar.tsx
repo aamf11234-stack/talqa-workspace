@@ -8,6 +8,7 @@ const WA = 'https://wa.me/966551378531';
 
 const LINKS = [
   { href: '/services',  label: 'الخدمات'      },
+  { href: '#apps',      label: 'التطبيقات',   isAnchor: true },
   { href: '/bookings',  label: 'الحجوزات'     },
   { href: '/wallet',    label: 'Digital Wallet' },
   { href: '/ai',        label: 'الذكاء الاصطناعي' },
@@ -16,6 +17,12 @@ const LINKS = [
   { href: '/projects',  label: 'مشاريعنا'     },
   { href: '/about',     label: 'من نحن'        },
 ];
+
+const scrollTo = (id: string, close?: () => void) => {
+  const el = document.getElementById(id);
+  if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); close?.(); }
+  else { window.location.href = `/#${id}`; }
+};
 
 interface Props { accent?: string }
 
@@ -65,15 +72,25 @@ export default function Navbar({ accent = '#8B5CF6' }: Props) {
           <nav className="nav-desktop" style={{ gap: 1 }}>
             {LINKS.map(l => {
               const active = loc === l.href;
+              const linkStyle: React.CSSProperties = {
+                padding: '7px 11px', borderRadius: 8,
+                fontSize: 12.5, fontWeight: active ? 700 : 600,
+                color: active ? '#fff' : 'var(--text2)',
+                textDecoration: 'none', transition: 'color 0.15s, background 0.15s',
+                background: active ? 'rgba(255,255,255,0.07)' : 'transparent',
+                borderBottom: active ? `2px solid ${accent}` : '2px solid transparent',
+                cursor: 'pointer',
+              };
+              if (l.isAnchor) return (
+                <a key={l.href} href={l.href} style={linkStyle}
+                  onClick={e => { e.preventDefault(); scrollTo('apps'); }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#fff'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.05)'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'var(--text2)'; (e.currentTarget as HTMLElement).style.background = 'transparent'; }}>
+                  {l.label}
+                </a>
+              );
               return (
-                <Link key={l.href} href={l.href} style={{
-                  padding: '7px 11px', borderRadius: 8,
-                  fontSize: 12.5, fontWeight: active ? 700 : 600,
-                  color: active ? '#fff' : 'var(--text2)',
-                  textDecoration: 'none', transition: 'color 0.15s, background 0.15s',
-                  background: active ? 'rgba(255,255,255,0.07)' : 'transparent',
-                  borderBottom: active ? `2px solid ${accent}` : '2px solid transparent',
-                }}
+                <Link key={l.href} href={l.href} style={linkStyle}
                   onMouseEnter={e => { if (!active) { (e.currentTarget as HTMLElement).style.color = '#fff'; (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.05)'; }}}
                   onMouseLeave={e => { if (!active) { (e.currentTarget as HTMLElement).style.color = 'var(--text2)'; (e.currentTarget as HTMLElement).style.background = 'transparent'; }}}>
                   {l.label}
@@ -118,19 +135,26 @@ export default function Navbar({ accent = '#8B5CF6' }: Props) {
             <nav style={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1, overflowY: 'auto' }}>
               {LINKS.map((l, i) => {
                 const active = loc === l.href;
+                const mobileStyle: React.CSSProperties = {
+                  display: 'block', padding: '15px 0', fontSize: 20, fontWeight: 800,
+                  color: active ? accent : '#fff', textDecoration: 'none',
+                  borderBottom: '1px solid var(--border)', transition: 'color 0.15s',
+                };
                 return (
                   <motion.div key={l.href}
                     initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.04 + i * 0.05 }}>
-                    <Link href={l.href}
-                      style={{
-                        display: 'block', padding: '15px 0', fontSize: 20, fontWeight: 800,
-                        color: active ? accent : '#fff', textDecoration: 'none',
-                        borderBottom: '1px solid var(--border)', transition: 'color 0.15s',
-                      }}>
-                      {l.label}
-                      {active && <span style={{ fontSize: 12, marginRight: 8, opacity: 0.6 }}>← أنت هنا</span>}
-                    </Link>
+                    {l.isAnchor ? (
+                      <a href={l.href} style={mobileStyle}
+                        onClick={e => { e.preventDefault(); scrollTo('apps', () => setOpen(false)); }}>
+                        {l.label}
+                      </a>
+                    ) : (
+                      <Link href={l.href} style={mobileStyle}>
+                        {l.label}
+                        {active && <span style={{ fontSize: 12, marginRight: 8, opacity: 0.6 }}>← أنت هنا</span>}
+                      </Link>
+                    )}
                   </motion.div>
                 );
               })}

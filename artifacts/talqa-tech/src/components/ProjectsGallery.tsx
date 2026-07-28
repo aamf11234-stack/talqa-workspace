@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ExternalLink, ArrowLeft } from 'lucide-react';
+import { ExternalLink, ArrowLeft, Coffee, HeartPulse, Gem } from 'lucide-react';
 
 const PROJECTS = [
   {
@@ -9,7 +9,7 @@ const PROJECTS = [
     tags: ['React Native', 'Apple Wallet', 'iOS / Android'],
     color: '#C8996C',
     grad: 'linear-gradient(135deg, #3D1F0A, #1a0e05)',
-    emoji: '☕',
+    Icon: Coffee,
     link: '/brown-dose/',
   },
   {
@@ -19,7 +19,7 @@ const PROJECTS = [
     tags: ['React', 'Node.js', 'تطبيق جوال'],
     color: '#3B82F6',
     grad: 'linear-gradient(135deg, #071835, #030d1a)',
-    emoji: '🏥',
+    Icon: HeartPulse,
     link: '/clinic-demo/',
   },
   {
@@ -29,7 +29,7 @@ const PROJECTS = [
     tags: ['Next.js', 'Membership', 'NFC'],
     color: '#A78BFA',
     grad: 'linear-gradient(135deg, #150830, #0a0318)',
-    emoji: '💎',
+    Icon: Gem,
     link: '/haeez-loyalty/',
   },
 ];
@@ -56,7 +56,7 @@ export default function ProjectsGallery() {
         </motion.div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px,1fr))', gap: 20 }}>
-          {PROJECTS.map(({ title, sub, desc, tags, color, grad, emoji, link }, i) => (
+          {PROJECTS.map(({ title, sub, desc, tags, color, grad, Icon, link }, i) => (
             <motion.div key={title}
               initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ delay: i * 0.1, duration: 0.55 }}
@@ -70,7 +70,9 @@ export default function ProjectsGallery() {
                 <div style={{ position: 'absolute', top: -30, right: -30, width: 140, height: 140, borderRadius: '50%', background: `${color}15` }} />
                 <div style={{ position: 'absolute', bottom: -20, left: 20, width: 80, height: 80, borderRadius: '50%', background: `${color}10` }} />
                 <div style={{ position: 'relative' }}>
-                  <div style={{ fontSize: 40, marginBottom: 14 }}>{emoji}</div>
+                  <div style={{ width: 52, height: 52, borderRadius: 15, background: `${color}18`, border: `1px solid ${color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
+                    <Icon size={26} strokeWidth={1.5} color={color} />
+                  </div>
                   <div style={{ fontSize: 20, fontWeight: 900, color: '#fff', marginBottom: 4 }}>{title}</div>
                   <div style={{ fontSize: 12, fontWeight: 700, color, letterSpacing: '0.06em', textTransform: 'uppercase' }}>{sub}</div>
                 </div>

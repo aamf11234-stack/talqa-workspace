@@ -4,6 +4,8 @@ import {
   Smartphone, Star, Gift, CalendarDays, ShoppingBag,
   Bell, BarChart3, ArrowUpRight, Check, Crown,
   Users, TrendingUp, Zap, Shield,
+  Coffee, UtensilsCrossed, GlassWater, Sandwich,
+  Tag, DollarSign, Trophy,
 } from 'lucide-react';
 
 const WA = 'https://wa.me/966551378531?text=السلام%20عليكم%2C%20أبي%20تطبيق%20جوال%20احترافي';
@@ -37,9 +39,10 @@ function LoyaltyScreen({ color }: { color: string }) {
       {/* Header */}
       <div style={{ textAlign: 'center', marginBottom: 14 }}>
         <div style={{ width: 44, height: 44, borderRadius: 14, background: `linear-gradient(135deg,${color},${color}88)`,
-          margin: '0 auto 7px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>☕</div>
+          margin: '0 auto 7px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Coffee size={20} strokeWidth={1.75} color="#fff"/></div>
         <div style={{ fontSize: 12, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>كافيهك</div>
-        <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.4)', fontFamily: 'Cairo,sans-serif' }}>مرحباً، أحمد 👋</div>
+        <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.4)', fontFamily: 'Cairo,sans-serif' }}>مرحباً، أحمد</div>
       </div>
       {/* Points card */}
       <div style={{ padding: '12px', borderRadius: 14, background: `linear-gradient(135deg,${color}22,${color}0d)`,
@@ -56,7 +59,9 @@ function LoyaltyScreen({ color }: { color: string }) {
         borderRadius: 11, background: 'rgba(255,193,7,0.1)', border: '1px solid rgba(255,193,7,0.25)' }}>
         <Crown size={14} color="#FFC107" strokeWidth={2}/>
         <div>
-          <div style={{ fontSize: 10, fontWeight: 900, color: '#FFC107', fontFamily: 'Cairo,sans-serif' }}>عضو ذهبي 🏆</div>
+          <div style={{ fontSize: 10, fontWeight: 900, color: '#FFC107', fontFamily: 'Cairo,sans-serif', display: 'flex', alignItems: 'center', gap: 4 }}>
+            <Trophy size={10} strokeWidth={2.2} color="#FFC107"/> عضو ذهبي
+          </div>
           <div style={{ fontSize: 8, color: 'rgba(255,255,255,0.35)', fontFamily: 'Cairo,sans-serif' }}>خصم ١٥٪ على كل طلباتك</div>
         </div>
       </div>
@@ -125,8 +130,8 @@ function StoreScreen({ color }: { color: string }) {
           <div key={i} style={{ borderRadius: 12, background: 'rgba(255,255,255,0.04)',
             border: '1px solid rgba(255,255,255,0.07)', overflow: 'hidden' }}>
             <div style={{ height: 44, background: `linear-gradient(135deg,${color}18,${color}08)`,
-              display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>
-              {['☕','🍰','🥤','🥪'][i]}
+              display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {[Coffee, UtensilsCrossed, GlassWater, Sandwich].map((Ic, j) => i === j ? <Ic key={j} size={16} strokeWidth={1.75} color={color}/> : null)}
             </div>
             <div style={{ padding: '7px 8px' }}>
               {p.badge && (
@@ -147,10 +152,10 @@ function StoreScreen({ color }: { color: string }) {
 
 function NotificationsScreen({ color }: { color: string }) {
   const notifs = [
-    { icon: '🎁', title: 'مكافأة خاصة!', body: 'ربحت قهوة مجانية لعيد ميلادك 🎂', time: 'الآن', hot: true },
-    { icon: '📅', title: 'تذكير موعدك', body: 'موعدك غداً الساعة ١٠ صباحاً', time: 'منذ ٢ س', hot: false },
-    { icon: '🏷️', title: 'عرض حصري', body: 'خصم ٣٠٪ على كل المشروبات اليوم فقط', time: 'منذ ٥ س', hot: false },
-    { icon: '⭐', title: 'وصلت الذهبي!', body: 'ترقيت لمستوى ذهبي — استمتع بمزاياك', time: 'أمس', hot: false },
+    { Icon: Gift,        title: 'مكافأة خاصة!', body: 'ربحت قهوة مجانية لعيد ميلادك', time: 'الآن', hot: true },
+    { Icon: CalendarDays,title: 'تذكير موعدك', body: 'موعدك غداً الساعة ١٠ صباحاً', time: 'منذ ٢ س', hot: false },
+    { Icon: Tag,         title: 'عرض حصري',    body: 'خصم ٣٠٪ على كل المشروبات اليوم فقط', time: 'منذ ٥ س', hot: false },
+    { Icon: Star,        title: 'وصلت الذهبي!', body: 'ترقيت لمستوى ذهبي — استمتع بمزاياك', time: 'أمس', hot: false },
   ];
   return (
     <div style={{ direction: 'rtl' }}>
@@ -166,7 +171,9 @@ function NotificationsScreen({ color }: { color: string }) {
           border: `1px solid ${n.hot ? color + '30' : 'rgba(255,255,255,0.06)'}` }}>
           <div style={{ width: 28, height: 28, borderRadius: 8, flexShrink: 0,
             background: n.hot ? `${color}20` : 'rgba(255,255,255,0.06)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13 }}>{n.icon}</div>
+            display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <n.Icon size={12} strokeWidth={1.75} color={n.hot ? color : 'rgba(255,255,255,0.4)'}/>
+          </div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ fontSize: 10, fontWeight: 800, color: n.hot ? color : '#fff',
               fontFamily: 'Cairo,sans-serif', marginBottom: 2 }}>{n.title}</div>
@@ -189,12 +196,12 @@ function AnalyticsScreen({ color }: { color: string }) {
       <div style={{ fontSize: 13, fontWeight: 900, color: '#fff', marginBottom: 12, fontFamily: 'Cairo,sans-serif' }}>تقاريرك</div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 7, marginBottom: 12 }}>
         {[
-          { icon: '💰', label: 'المبيعات', value: '٢٤,٥٠٠', change: '↑١٢٪' },
-          { icon: '👥', label: 'عملاء جدد', value: '٤٧', change: '↑٨٪' },
+          { Icon: DollarSign, label: 'المبيعات', value: '٢٤,٥٠٠', change: '↑١٢٪' },
+          { Icon: Users,      label: 'عملاء جدد', value: '٤٧', change: '↑٨٪' },
         ].map(s => (
           <div key={s.label} style={{ padding: '10px', borderRadius: 12,
             background: `${color}0f`, border: `1px solid ${color}22` }}>
-            <div style={{ fontSize: 14, marginBottom: 3 }}>{s.icon}</div>
+            <div style={{ marginBottom: 3 }}><s.Icon size={12} strokeWidth={1.75} color={color}/></div>
             <div style={{ fontSize: 13, fontWeight: 900, color: '#fff', lineHeight: 1, fontFamily: 'Cairo,sans-serif' }}>{s.value}</div>
             <div style={{ fontSize: 8, color: 'rgba(255,255,255,0.35)', fontFamily: 'Cairo,sans-serif', marginTop: 2 }}>{s.label}</div>
             <div style={{ fontSize: 8.5, color: '#10B981', fontWeight: 700, marginTop: 1 }}>{s.change}</div>

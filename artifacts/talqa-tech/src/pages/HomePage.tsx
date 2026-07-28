@@ -1,23 +1,26 @@
+import { lazy, Suspense } from 'react';
 import PageLayout from './PageLayout';
 import Hero from '../components/Hero';
 import Marquee from '../components/Marquee';
 import SectorsSection from '../components/SectorsSection';
 import HorizontalServices from '../components/HorizontalServices';
-import WebsitesSection from '../components/WebsitesSection';
-import AppsSection from '../components/AppsSection';
-import LiveDemo from '../components/LiveDemo';
-import BookingsSection from '../components/BookingsSection';
-import AiChat from '../components/AiChat';
-import WalletShowcase from '../components/WalletShowcase';
-import ClinicSection from '../components/ClinicSection';
-import WhyUs from '../components/WhyUs';
-import Process from '../components/Process';
-import RestaurantOffer from '../components/RestaurantOffer';
-import Calculator from '../components/Calculator';
-import ProjectsGallery from '../components/ProjectsGallery';
-import Testimonials from '../components/Testimonials';
-import FAQ from '../components/FAQ';
-import PlatformShowcase from '../components/PlatformShowcase';
+
+// Lazy-load everything below the fold — massive first-load win
+const WebsitesSection  = lazy(() => import('../components/WebsitesSection'));
+const AppsSection      = lazy(() => import('../components/AppsSection'));
+const PlatformShowcase = lazy(() => import('../components/PlatformShowcase'));
+const LiveDemo         = lazy(() => import('../components/LiveDemo'));
+const BookingsSection  = lazy(() => import('../components/BookingsSection'));
+const AiChat           = lazy(() => import('../components/AiChat'));
+const WalletShowcase   = lazy(() => import('../components/WalletShowcase'));
+const ClinicSection    = lazy(() => import('../components/ClinicSection'));
+const WhyUs            = lazy(() => import('../components/WhyUs'));
+const Process          = lazy(() => import('../components/Process'));
+const RestaurantOffer  = lazy(() => import('../components/RestaurantOffer'));
+const Calculator       = lazy(() => import('../components/Calculator'));
+const ProjectsGallery  = lazy(() => import('../components/ProjectsGallery'));
+const Testimonials     = lazy(() => import('../components/Testimonials'));
+const FAQ              = lazy(() => import('../components/FAQ'));
 
 export default function HomePage() {
   return (
@@ -29,35 +32,35 @@ export default function HomePage() {
       <div className="section-divider" />
       <HorizontalServices />
       <div className="section-divider" />
-      <WebsitesSection />
+      <Suspense fallback={null}><WebsitesSection /></Suspense>
       <div className="section-divider" />
-      <AppsSection />
+      <Suspense fallback={null}><AppsSection /></Suspense>
       <div className="section-divider" />
-      <PlatformShowcase />
+      <Suspense fallback={null}><PlatformShowcase /></Suspense>
       <div className="section-divider" />
-      <LiveDemo />
+      <Suspense fallback={null}><LiveDemo /></Suspense>
       <div className="section-divider" />
-      <BookingsSection />
+      <Suspense fallback={null}><BookingsSection /></Suspense>
       <div className="section-divider" />
-      <AiChat />
+      <Suspense fallback={null}><AiChat /></Suspense>
       <div className="section-divider" />
-      <WalletShowcase />
+      <Suspense fallback={null}><WalletShowcase /></Suspense>
       <div className="section-divider" />
-      <ClinicSection />
+      <Suspense fallback={null}><ClinicSection /></Suspense>
       <div className="section-divider" />
-      <WhyUs />
+      <Suspense fallback={null}><WhyUs /></Suspense>
       <div className="section-divider" />
-      <Process />
+      <Suspense fallback={null}><Process /></Suspense>
       <div className="section-divider" />
-      <RestaurantOffer />
+      <Suspense fallback={null}><RestaurantOffer /></Suspense>
       <div className="section-divider" />
-      <Calculator />
+      <Suspense fallback={null}><Calculator /></Suspense>
       <div className="section-divider" />
-      <ProjectsGallery />
+      <Suspense fallback={null}><ProjectsGallery /></Suspense>
       <div className="section-divider" />
-      <Testimonials />
+      <Suspense fallback={null}><Testimonials /></Suspense>
       <div className="section-divider" />
-      <FAQ />
+      <Suspense fallback={null}><FAQ /></Suspense>
     </PageLayout>
   );
 }

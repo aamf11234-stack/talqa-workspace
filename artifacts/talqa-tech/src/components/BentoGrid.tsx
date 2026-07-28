@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Wallet, Smartphone, LayoutDashboard, Zap, Bell, Star, Clock3 } from 'lucide-react';
+import { Wallet, Smartphone, LayoutDashboard, Zap, Bell, Star, Clock3, Gift, Tag, Gem } from 'lucide-react';
 
 /* ─── Animated gradient border card ─── */
 function GlowCard({ children, style, accent = '#4F8EFF', delay = 0, className = '' }: any) {
@@ -125,9 +125,9 @@ function StatsCard() {
 /* ─── Notification card ─── */
 function NotifCard() {
   const notifs = [
-    { icon: '🎉', title: 'عرض خاص!', sub: 'خصم ٢٠٪ لعملاء Gold', time: 'الآن', color: '#4F8EFF' },
-    { icon: '⭐', title: 'تهنئة!',   sub: 'وصلت لمستوى Platinum', time: '٢م',   color: '#A78BFA' },
-    { icon: '💎', title: '+٥٠ نقطة', sub: 'شكراً على زيارتك',    time: 'أمس',  color: '#34D399' },
+    { Icon: Gift, title: 'عرض خاص!', sub: 'خصم ٢٠٪ لعملاء Gold', time: 'الآن', color: '#4F8EFF' },
+    { Icon: Star, title: 'تهنئة!',   sub: 'وصلت لمستوى Platinum', time: '٢م',   color: '#A78BFA' },
+    { Icon: Gem,  title: '+٥٠ نقطة', sub: 'شكراً على زيارتك',    time: 'أمس',  color: '#34D399' },
   ];
   return (
     <div>
@@ -136,7 +136,9 @@ function NotifCard() {
         {notifs.map((n, i) => (
           <motion.div key={i} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15, duration: 0.5 }}
             style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '11px 13px', borderRadius: 12, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
-            <div style={{ width: 34, height: 34, borderRadius: 9, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, background: `${n.color}12`, border: `1px solid ${n.color}22` }}>{n.icon}</div>
+            <div style={{ width: 34, height: 34, borderRadius: 9, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: `${n.color}12`, border: `1px solid ${n.color}22` }}>
+              <n.Icon size={14} strokeWidth={1.75} color={n.color} />
+            </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontSize: 12, fontWeight: 800, color: '#fff', marginBottom: 2 }}>{n.title}</div>
               <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.32)' }}>{n.sub}</div>

@@ -140,7 +140,7 @@ export default function AppleSection() {
                 style={{ position: 'absolute', top: -16, left: -40, padding: '12px 14px', borderRadius: 14, background: '#0E0E14', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 8px 28px rgba(0,0,0,0.4)', display: 'flex', alignItems: 'center', gap: 10, zIndex: 5 }}>
                 <div style={{ width: 30, height: 30, borderRadius: 8, background: 'rgba(79,142,255,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Bell size={13} color="#4F8EFF" /></div>
                 <div>
-                  <div style={{ fontSize: 12, fontWeight: 800, color: '#fff', marginBottom: 2 }}>عرض خاص 🎉</div>
+                  <div style={{ fontSize: 12, fontWeight: 800, color: '#fff', marginBottom: 2 }}>عرض خاص</div>
                   <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.38)', fontWeight: 500 }}>خصم ٢٠٪ لعملاء Gold</div>
                 </div>
               </motion.div>

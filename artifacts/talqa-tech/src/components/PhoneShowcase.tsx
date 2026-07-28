@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Coffee, Coins, Gift } from 'lucide-react';
 
 const SCREENS = [
   {
@@ -15,13 +16,13 @@ const SCREENS = [
               <div style={{ fontSize: 8, color: 'rgba(200,153,108,0.5)', fontWeight: 700, letterSpacing: '0.1em', marginBottom: 4 }}>بطاقة الولاء</div>
               <div style={{ fontSize: 15, fontWeight: 900, color: '#fff' }}>Gold Member ✦</div>
             </div>
-            <div style={{ width: 32, height: 32, borderRadius: 9, background: 'rgba(200,153,108,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>☕</div>
+            <div style={{ width: 32, height: 32, borderRadius: 9, background: 'rgba(200,153,108,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Coffee size={15} strokeWidth={1.75} color="#C8996C"/></div>
           </div>
           <div style={{ fontSize: 22, fontWeight: 900, color: '#C8996C', letterSpacing: '-0.04em', marginBottom: 4 }}>٢٬٤٥٠</div>
           <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.3)', fontWeight: 600 }}>نقطة متاحة للاستبدال</div>
         </div>
         <div style={{ padding: '10px 12px', borderRadius: 10, background: 'rgba(200,153,108,0.08)', border: '1px solid rgba(200,153,108,0.15)', fontSize: 10, color: 'rgba(200,153,108,0.8)', fontWeight: 700 }}>
-          🎉 عرض خاص: -٢٠٪ على طلبك القادم
+          عرض خاص: -٢٠٪ على طلبك القادم
         </div>
       </div>
     ),
@@ -61,13 +62,13 @@ const SCREENS = [
       <div style={{ padding: '16px', height: '100%', background: 'linear-gradient(160deg,#091A0F,#050F08)' }}>
         <div style={{ fontSize: 9, fontWeight: 700, color: 'rgba(52,211,153,0.6)', letterSpacing: '0.12em', marginBottom: 14, textTransform: 'uppercase' }}>CLIENT APP</div>
         <div style={{ background: 'rgba(52,211,153,0.06)', borderRadius: 12, padding: '12px', border: '1px solid rgba(52,211,153,0.15)', marginBottom: 10, display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{ width: 32, height: 32, borderRadius: 9, background: 'rgba(52,211,153,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>🪙</div>
+          <div style={{ width: 32, height: 32, borderRadius: 9, background: 'rgba(52,211,153,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Coins size={15} strokeWidth={1.75} color="#34D399"/></div>
           <div>
             <div style={{ fontSize: 11, fontWeight: 800, color: '#fff' }}>+٥٠ نقطة</div>
             <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.35)' }}>أُضيفت بعد زيارتك</div>
           </div>
         </div>
-        {['عرض: قهوة مجانية 🎁', 'مستوى: Gold ✦', 'الزيارة القادمة: غداً'].map(t => (
+        {['عرض: قهوة مجانية', 'مستوى: Gold ✦', 'الزيارة القادمة: غداً'].map(t => (
           <div key={t} style={{ padding: '9px 12px', borderRadius: 8, marginBottom: 5, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)', fontSize: 10, color: 'rgba(255,255,255,0.5)', fontWeight: 600 }}>{t}</div>
         ))}
       </div>

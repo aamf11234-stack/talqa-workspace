@@ -1,22 +1,22 @@
 import { motion } from 'framer-motion';
 
 const STACK = [
-  { name: 'React Native', cat: 'Mobile', color: '#61DAFB', emoji: '⚛️' },
-  { name: 'iOS (Swift)', cat: 'Mobile', color: '#FF6B6B', emoji: '🍎' },
-  { name: 'Android (Kotlin)', cat: 'Mobile', color: '#A4C639', emoji: '🤖' },
-  { name: 'Apple PassKit', cat: 'Wallet', color: '#4F8EFF', emoji: '💳' },
-  { name: 'Push Notifications', cat: 'Wallet', color: '#A78BFA', emoji: '🔔' },
-  { name: 'Apple Watch', cat: 'Wallet', color: '#9CA3AF', emoji: '⌚' },
-  { name: 'Node.js', cat: 'Backend', color: '#68A063', emoji: '🟢' },
-  { name: 'PostgreSQL', cat: 'Backend', color: '#336791', emoji: '🐘' },
-  { name: 'Supabase', cat: 'Backend', color: '#3ECF8E', emoji: '⚡' },
-  { name: 'WhatsApp API', cat: 'Integration', color: '#25D366', emoji: '💬' },
-  { name: 'Next.js', cat: 'Frontend', color: '#ffffff', emoji: '▲' },
-  { name: 'TypeScript', cat: 'Frontend', color: '#3178C6', emoji: '📘' },
-  { name: 'Framer Motion', cat: 'Frontend', color: '#FF0066', emoji: '🎬' },
-  { name: 'REST API', cat: 'Integration', color: '#FB923C', emoji: '🔗' },
-  { name: 'Firebase', cat: 'Backend', color: '#FFCA28', emoji: '🔥' },
-  { name: 'AWS / Cloud', cat: 'DevOps', color: '#FF9900', emoji: '☁️' },
+  { name: 'React Native', cat: 'Mobile',      color: '#61DAFB', abbr: 'RN' },
+  { name: 'iOS (Swift)',  cat: 'Mobile',      color: '#FF6B6B', abbr: 'iOS' },
+  { name: 'Android',      cat: 'Mobile',      color: '#A4C639', abbr: 'AND' },
+  { name: 'Apple PassKit',cat: 'Wallet',      color: '#4F8EFF', abbr: 'PKT' },
+  { name: 'Push Notifications', cat: 'Wallet',color: '#A78BFA', abbr: 'PSH' },
+  { name: 'Apple Watch',  cat: 'Wallet',      color: '#9CA3AF', abbr: 'WCH' },
+  { name: 'Node.js',      cat: 'Backend',     color: '#68A063', abbr: 'NOD' },
+  { name: 'PostgreSQL',   cat: 'Backend',     color: '#336791', abbr: 'SQL' },
+  { name: 'Supabase',     cat: 'Backend',     color: '#3ECF8E', abbr: 'SUP' },
+  { name: 'WhatsApp API', cat: 'Integration', color: '#25D366', abbr: 'WA'  },
+  { name: 'Next.js',      cat: 'Frontend',    color: '#ffffff', abbr: '▲'   },
+  { name: 'TypeScript',   cat: 'Frontend',    color: '#3178C6', abbr: 'TS'  },
+  { name: 'Framer Motion',cat: 'Frontend',    color: '#FF0066', abbr: 'FM'  },
+  { name: 'REST API',     cat: 'Integration', color: '#FB923C', abbr: 'API' },
+  { name: 'Firebase',     cat: 'Backend',     color: '#FFCA28', abbr: 'FB'  },
+  { name: 'AWS / Cloud',  cat: 'DevOps',      color: '#FF9900', abbr: 'AWS' },
 ];
 
 const CATS = ['الكل', 'Mobile', 'Wallet', 'Backend', 'Frontend', 'Integration', 'DevOps'];
@@ -62,7 +62,9 @@ export default function TechStack() {
             >
               <div style={{ position: 'absolute', top: 0, inset: '0 0 auto', height: 2, background: s.color, borderRadius: '16px 16px 0 0', opacity: 0.5 }} />
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: 24 }}>{s.emoji}</span>
+                <div style={{ width: 34, height: 34, borderRadius: 9, background: `${s.color}15`, border: `1px solid ${s.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span style={{ fontSize: 10, fontWeight: 900, color: s.color, letterSpacing: -0.5, fontFamily: 'monospace' }}>{s.abbr}</span>
+                </div>
                 <span style={{ fontSize: 9, fontWeight: 700, padding: '3px 7px', borderRadius: 5, background: `${s.color}12`, color: s.color, letterSpacing: '0.08em' }}>{s.cat}</span>
               </div>
               <div style={{ fontSize: 13, fontWeight: 800, color: '#fff', letterSpacing: '-0.01em' }}>{s.name}</div>
