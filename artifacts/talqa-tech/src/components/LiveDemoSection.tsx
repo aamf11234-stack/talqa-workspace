@@ -12,95 +12,117 @@ function buildUrl(biz: string) {
 
 /* ─── iPhone 17 Frame ─────────────────────────────────────────── */
 function IPhone17({ src, iframeKey }: { src: string; iframeKey: number }) {
-  // iPhone 17 proportions ~393×852 → scaled: 320×694
-  const W = 320, H = 694;
-  const BEZEL = 14;        // ultra-thin bezel
-  const RADIUS = 56;       // corner radius
-  const DI_W = 120, DI_H = 34; // dynamic island
+  // iPhone 17: ~393×852px device → scaled ×0.82 → 322×699
+  const W = 322;
+  const H = 699;
+  // Titanium band: 10px each side, screen fills the rest
+  const BAND = 10;
+  const R_OUT = 52;   // outer corner radius
+  const R_IN  = 44;   // inner screen radius
+
+  // Screen area dimensions
+  const SW = W - BAND * 2;   // 302
+  const SH = H - BAND * 2;   // 679
 
   return (
     <motion.div
-      animate={{ y: [0, -7, 0] }}
+      animate={{ y: [0, -8, 0] }}
       transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
       style={{ position: 'relative', width: W, flexShrink: 0 }}
     >
-      {/* Outer glow */}
-      <div style={{ position: 'absolute', inset: -60, borderRadius: '50%', background: 'radial-gradient(ellipse,rgba(99,102,241,0.25) 0%,transparent 65%)', pointerEvents: 'none', zIndex: 0 }} />
+      {/* Ambient glow beneath phone */}
+      <div style={{ position: 'absolute', bottom: -40, left: '50%', transform: 'translateX(-50%)', width: 260, height: 80, borderRadius: '50%', background: 'rgba(99,102,241,0.35)', filter: 'blur(40px)', pointerEvents: 'none', zIndex: 0 }} />
 
-      {/* Action button — left side */}
-      <div style={{ position: 'absolute', left: -4, top: 110, width: 4, height: 38, borderRadius: '3px 0 0 3px', background: 'linear-gradient(180deg,#2a2740,#1a1530)', zIndex: 10 }} />
-      {/* Volume buttons — left */}
-      <div style={{ position: 'absolute', left: -4, top: 166, width: 4, height: 58, borderRadius: '3px 0 0 3px', background: 'linear-gradient(180deg,#2a2740,#1a1530)', zIndex: 10 }} />
-      <div style={{ position: 'absolute', left: -4, top: 234, width: 4, height: 58, borderRadius: '3px 0 0 3px', background: 'linear-gradient(180deg,#2a2740,#1a1530)', zIndex: 10 }} />
-      {/* Power button — right */}
-      <div style={{ position: 'absolute', right: -4, top: 168, width: 4, height: 76, borderRadius: '0 3px 3px 0', background: 'linear-gradient(180deg,#2a2740,#1a1530)', zIndex: 10 }} />
+      {/* — Side buttons — exact iPhone 17 placement */}
+      {/* Action button — left top */}
+      <div style={{ position: 'absolute', left: -3, top: 98, width: 3, height: 32,  borderRadius: '2px 0 0 2px', background: 'linear-gradient(180deg,#9a9a9f,#636366,#9a9a9f)', zIndex: 20 }} />
+      {/* Volume up — left */}
+      <div style={{ position: 'absolute', left: -3, top: 148, width: 3, height: 56, borderRadius: '2px 0 0 2px', background: 'linear-gradient(180deg,#9a9a9f,#636366,#9a9a9f)', zIndex: 20 }} />
+      {/* Volume down — left */}
+      <div style={{ position: 'absolute', left: -3, top: 214, width: 3, height: 56, borderRadius: '2px 0 0 2px', background: 'linear-gradient(180deg,#9a9a9f,#636366,#9a9a9f)', zIndex: 20 }} />
+      {/* Power — right */}
+      <div style={{ position: 'absolute', right: -3, top: 160, width: 3, height: 72, borderRadius: '0 2px 2px 0', background: 'linear-gradient(180deg,#9a9a9f,#636366,#9a9a9f)', zIndex: 20 }} />
 
-      {/* Phone body */}
+      {/* — Outer titanium frame — */}
       <div style={{
-        width: W,
-        height: H,
-        borderRadius: RADIUS,
-        position: 'relative',
-        zIndex: 1,
-        background: 'linear-gradient(170deg,#1e1b38 0%,#0d0b1e 50%,#060412 100%)',
+        width: W, height: H,
+        borderRadius: R_OUT,
+        position: 'relative', zIndex: 1,
+        background: [
+          'linear-gradient(145deg,',
+          '#d1d1d6 0%,',
+          '#aeaeb2 8%,',
+          '#8e8e93 22%,',
+          '#636366 45%,',
+          '#48484a 60%,',
+          '#636366 78%,',
+          '#8e8e93 90%,',
+          '#aeaeb2 100%)',
+        ].join(''),
         boxShadow: [
-          `0 0 0 1.5px rgba(129,140,248,0.25)`,     // inner stroke
-          `0 0 0 2.5px rgba(0,0,0,0.9)`,             // gap
-          `0 0 0 4px rgba(80,74,140,0.18)`,           // outer ring
-          `0 40px 120px rgba(0,0,0,0.85)`,
-          `0 0 90px rgba(99,102,241,0.20)`,
-          `inset 0 1px 0 rgba(255,255,255,0.10)`,
-          `inset 0 -1px 0 rgba(0,0,0,0.6)`,
+          '0 0 0 0.5px rgba(255,255,255,0.55)',       // top highlight
+          '0 50px 130px rgba(0,0,0,0.90)',
+          '0 20px 60px rgba(0,0,0,0.70)',
+          '0 0 80px rgba(99,102,241,0.22)',
+          'inset 0 1px 0 rgba(255,255,255,0.65)',
+          'inset 0 -1px 0 rgba(0,0,0,0.35)',
         ].join(','),
-        overflow: 'hidden',
-        padding: `${BEZEL}px ${BEZEL - 2}px ${BEZEL - 2}px`,
+        padding: `${BAND}px`,
         boxSizing: 'border-box',
+        overflow: 'hidden',
       }}>
 
-        {/* Top sheen reflection */}
-        <div style={{ position: 'absolute', top: 0, insetInline: 0, height: '38%', background: 'linear-gradient(180deg,rgba(255,255,255,0.05) 0%,transparent 100%)', pointerEvents: 'none', zIndex: 6, borderRadius: `${RADIUS}px ${RADIUS}px 0 0` }} />
-
-        {/* Dynamic Island */}
+        {/* — Glass screen surface — */}
         <div style={{
-          width: DI_W, height: DI_H,
-          borderRadius: DI_H / 2,
-          background: '#000',
-          margin: '0 auto',
-          marginBottom: 8,
-          position: 'relative', zIndex: 7,
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-          boxShadow: '0 2px 12px rgba(0,0,0,0.8)',
-        }}>
-          {/* front camera */}
-          <div style={{ width: 11, height: 11, borderRadius: '50%', background: 'radial-gradient(circle at 35% 35%,#1c2a3a,#0a0f14)', border: '1px solid rgba(255,255,255,0.06)', boxShadow: 'inset 0 0 4px rgba(0,100,200,0.3)' }} />
-          {/* face id sensor strip */}
-          <div style={{ width: 52, height: 8, borderRadius: 4, background: '#0d0d0d' }} />
-        </div>
-
-        {/* Screen — iframe */}
-        <div style={{
-          height: H - BEZEL * 2 - DI_H - 8 - 20,
-          borderRadius: RADIUS - BEZEL + 4,
+          width: SW, height: SH,
+          borderRadius: R_IN,
           overflow: 'hidden',
-          background: '#F8F6F2',
-          position: 'relative', zIndex: 2,
+          position: 'relative',
+          background: '#000',
+          boxShadow: 'inset 0 0 0 0.5px rgba(0,0,0,0.8)',
         }}>
-          <AnimatePresence mode="wait">
-            <motion.iframe
-              key={iframeKey}
-              src={src}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4 }}
-              style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
-              title="Live Demo — حيز"
-            />
-          </AnimatePresence>
+
+          {/* Screen glass reflection — top */}
+          <div style={{ position: 'absolute', top: 0, insetInline: 0, height: '35%', background: 'linear-gradient(180deg,rgba(255,255,255,0.07) 0%,transparent 100%)', zIndex: 10, pointerEvents: 'none', borderRadius: `${R_IN}px ${R_IN}px 0 0` }} />
+
+          {/* Status bar area */}
+          <div style={{ height: 52, background: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', zIndex: 8 }}>
+            {/* Dynamic Island — pill */}
+            <div style={{
+              width: 124, height: 34,
+              borderRadius: 17,
+              background: '#000',
+              border: '1px solid rgba(255,255,255,0.06)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+              boxShadow: '0 0 0 1px rgba(255,255,255,0.04), 0 4px 16px rgba(0,0,0,1)',
+            }}>
+              <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'radial-gradient(circle at 35% 30%,#1a2836,#060d14)', boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.05), 0 0 6px rgba(0,80,180,0.4)' }} />
+              <div style={{ width: 48, height: 7, borderRadius: 4, background: '#0a0a0a' }} />
+            </div>
+          </div>
+
+          {/* iframe — the live app */}
+          <div style={{ height: SH - 52, overflow: 'hidden', position: 'relative', zIndex: 2 }}>
+            <AnimatePresence mode="wait">
+              <motion.iframe
+                key={iframeKey}
+                src={src}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+                style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
+                title="Live Demo — حيز"
+              />
+            </AnimatePresence>
+          </div>
+
+          {/* Home indicator */}
+          <div style={{ position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)', width: 120, height: 5, borderRadius: 3, background: 'rgba(255,255,255,0.22)', zIndex: 9 }} />
         </div>
 
-        {/* Home indicator */}
-        <div style={{ width: 110, height: 5, borderRadius: 3, background: 'rgba(255,255,255,0.18)', margin: '10px auto 0', position: 'relative', zIndex: 7 }} />
+        {/* Frame edge specular highlight */}
+        <div style={{ position: 'absolute', inset: 0, borderRadius: R_OUT, pointerEvents: 'none', background: 'linear-gradient(135deg,rgba(255,255,255,0.25) 0%,transparent 40%,rgba(0,0,0,0.12) 100%)' }} />
       </div>
     </motion.div>
   );
