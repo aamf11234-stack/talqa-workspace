@@ -652,7 +652,8 @@ router.get("/tlqa", async (req, res) => {
     foregroundColor: "rgb(255, 255, 255)",
     labelColor:      "rgb(160, 130, 255)",
 
-    generic: {
+    /* storeCard — الـ strip يملأ وسط البطاقة والاسم يُطبع فوقه بخط ضخم */
+    storeCard: {
       headerFields: [
         {
           key:           "brand",
@@ -664,20 +665,20 @@ router.get("/tlqa", async (req, res) => {
       primaryFields: [
         {
           key:   "holder",
-          label: "الاسم",
+          label: "CARDHOLDER",
           value: String(name),
         },
       ],
       secondaryFields: [
         {
           key:           "role",
-          label:         "الصفة",
+          label:         "ROLE",
           value:         String(role),
           textAlignment: "PKTextAlignmentLeft",
         },
         {
           key:           "wa",
-          label:         "واتساب",
+          label:         "WHATSAPP",
           value:         "‎+966 55 137 8531",
           textAlignment: "PKTextAlignmentRight",
         },
@@ -685,13 +686,13 @@ router.get("/tlqa", async (req, res) => {
       auxiliaryFields: [
         {
           key:           "services",
-          label:         "خدماتنا",
-          value:         "تطبيقات · مواقع · AI · Apple Wallet",
+          label:         "SERVICES",
+          value:         "Apps · Web · AI · Wallet",
           textAlignment: "PKTextAlignmentLeft",
         },
         {
           key:           "web",
-          label:         "الموقع",
+          label:         "WEBSITE",
           value:         "talqa.tech",
           textAlignment: "PKTextAlignmentRight",
         },
