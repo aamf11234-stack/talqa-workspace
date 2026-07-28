@@ -1,48 +1,56 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Check } from 'lucide-react';
+import { Check, Zap } from 'lucide-react';
 
 const WA = 'https://wa.me/966551378531';
 
 const PLANS = [
   {
-    name: 'الأساسية',
-    monthlyPrice: 99,
-    yearlyPrice: 990,
+    name: 'الانطلاق',
+    monthlyPrice: 199,
+    yearlyPrice: 1990,
+    desc: 'للأعمال التي تبدأ رحلتها الرقمية',
     features: [
-      'موقع واحد',
-      '5 صفحات',
-      'SSL مجاني',
-      'دعم واتساب',
+      'موقع احترافي كامل',
+      'تطبيق iOS + Android',
+      'نظام حجوزات',
+      'دعم فني ٣ أشهر',
     ],
     cta: 'ابدأ الآن',
     featured: false,
+    color: '#3B82F6',
   },
   {
     name: 'الأعمال',
-    monthlyPrice: 249,
-    yearlyPrice: 2490,
+    monthlyPrice: 349,
+    yearlyPrice: 3490,
+    desc: 'الأكثر طلباً من الأعمال المتنامية',
     features: [
-      'كل القطاعات',
-      'تطبيق جوال',
-      'AI Builder',
-      'دومين مجاني',
+      'كل مزايا الانطلاق',
+      'Apple & Google Wallet',
+      'AI مساعد ذكي',
+      'لوحة إدارة متقدمة',
+      'دعم فني ٦ أشهر',
     ],
     cta: 'ابدأ الآن',
     featured: true,
     badge: 'الأكثر طلباً',
+    color: '#8B5CF6',
   },
   {
-    name: 'المتقدمة',
-    monthlyPrice: 499,
-    yearlyPrice: 4990,
+    name: 'المؤسسي',
+    monthlyPrice: 0,
+    yearlyPrice: 0,
+    desc: 'حلول مخصصة للمؤسسات الكبرى',
     features: [
-      'مواقع غير محدودة',
-      'API مخصص',
-      'مدير حساب',
+      'كل شيء في الأعمال',
+      'تكاملات API مخصصة',
+      'SLA مضمون',
+      'مدير حساب مخصص',
     ],
     cta: 'تواصل معنا',
     featured: false,
+    color: '#06B6D4',
   },
 ];
 
@@ -51,97 +59,88 @@ export default function LandingPricing() {
 
   return (
     <section style={{
-      background: '#FAF8F5',
-      paddingTop: 112,
-      paddingBottom: 112,
+      background: 'var(--bg)',
+      paddingTop: 96,
+      paddingBottom: 96,
       paddingInline: 24,
-      direction: 'rtl'
+      direction: 'rtl',
     }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: 64 }}>
+        <div style={{ textAlign: 'center', marginBottom: 56 }}>
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}>
-            <p style={{ 
-              fontSize: 14, 
-              fontWeight: 500, 
-              color: '#9C8F85', 
-              marginBottom: 16,
+            <span style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              padding: '5px 16px', borderRadius: 99,
+              border: '1px solid rgba(139,92,246,0.25)',
+              background: 'rgba(139,92,246,0.08)',
+              fontSize: 12, fontWeight: 700,
+              color: 'rgba(167,139,250,0.9)', letterSpacing: '0.05em',
+              marginBottom: 20,
             }}>
               تسعير شفاف بلا مفاجآت
-            </p>
-            <h2 style={{ 
-              fontSize: 'clamp(2rem, 4vw, 3.2rem)', 
-              fontWeight: 700, 
-              color: '#1A1208',
-              lineHeight: 1.2,
-              marginBottom: 40,
+            </span>
+            <h2 style={{
+              fontSize: 'clamp(1.8rem, 4vw, 3rem)',
+              fontWeight: 900, color: '#fff',
+              lineHeight: 1.2, letterSpacing: '-0.03em',
+              marginBottom: 16,
             }}>
-              خطط تبدأ من يومك الأول
+              استثمر في{' '}<span className="grad">نمو عملك</span>
             </h2>
+            <p style={{
+              fontSize: 16, color: 'var(--text2)',
+              lineHeight: 1.7, maxWidth: 420, margin: '0 auto 36px',
+            }}>
+              ادفع مرة واحدة، وامتلك مشروعك كاملاً — بلا رسوم خفية.
+            </p>
 
             {/* Toggle */}
             <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              padding: 6,
-              background: '#EAE3D2',
+              display: 'inline-flex', alignItems: 'center',
+              padding: 4, background: 'var(--bg3)',
+              border: '1px solid var(--border)',
               borderRadius: 9999,
-              position: 'relative'
             }}>
-              <button
-                onClick={() => setYearly(false)}
-                style={{
-                  padding: '10px 28px',
-                  borderRadius: 9999,
-                  border: 'none',
-                  background: !yearly ? '#FFFFFF' : 'transparent',
-                  color: !yearly ? '#1A1208' : '#5C524E',
-                  fontFamily: 'Tajawal, sans-serif',
-                  fontSize: 15,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  boxShadow: !yearly ? '0 2px 8px rgba(44,34,30,0.05)' : 'none',
-                }}
-                data-testid="toggle-monthly">
+              <button onClick={() => setYearly(false)} style={{
+                padding: '9px 24px', borderRadius: 9999,
+                border: 'none', cursor: 'pointer',
+                fontFamily: 'Cairo, sans-serif', fontSize: 14, fontWeight: 700,
+                transition: 'all 0.2s ease',
+                background: !yearly ? 'rgba(139,92,246,0.2)' : 'transparent',
+                color: !yearly ? 'var(--purple2)' : 'var(--text3)',
+              }}>
                 شهري
               </button>
-              <button
-                onClick={() => setYearly(true)}
-                style={{
-                  padding: '10px 28px',
-                  borderRadius: 9999,
-                  border: 'none',
-                  background: yearly ? '#FFFFFF' : 'transparent',
-                  color: yearly ? '#1A1208' : '#5C524E',
-                  fontFamily: 'Tajawal, sans-serif',
-                  fontSize: 15,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                  boxShadow: yearly ? '0 2px 8px rgba(44,34,30,0.05)' : 'none',
-                  display: 'flex', alignItems: 'center', gap: 8
-                }}
-                data-testid="toggle-yearly">
+              <button onClick={() => setYearly(true)} style={{
+                padding: '9px 24px', borderRadius: 9999,
+                border: 'none', cursor: 'pointer',
+                fontFamily: 'Cairo, sans-serif', fontSize: 14, fontWeight: 700,
+                transition: 'all 0.2s ease',
+                background: yearly ? 'rgba(139,92,246,0.2)' : 'transparent',
+                color: yearly ? 'var(--purple2)' : 'var(--text3)',
+                display: 'flex', alignItems: 'center', gap: 8,
+              }}>
                 سنوي
                 <span style={{
-                  background: '#2C221E', color: '#FAF8F5', fontSize: 11, padding: '2px 8px', borderRadius: 99
+                  background: 'linear-gradient(135deg,var(--purple),var(--blue))',
+                  color: '#fff', fontSize: 10, padding: '2px 8px', borderRadius: 99,
+                  fontWeight: 700,
                 }}>وفّر ٢٠٪</span>
               </button>
             </div>
           </motion.div>
         </div>
 
-        {/* Pricing cards */}
+        {/* Cards */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: 24,
-          alignItems: 'stretch',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))',
+          gap: 20, alignItems: 'stretch',
         }}>
           {PLANS.map((plan, i) => (
             <motion.div
@@ -149,98 +148,103 @@ export default function LandingPricing() {
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.5, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
               style={{
-                background: '#FFFFFF',
+                background: plan.featured
+                  ? 'linear-gradient(135deg, rgba(139,92,246,0.12), rgba(59,130,246,0.08))'
+                  : 'var(--bg2)',
                 borderRadius: 24,
-                padding: 40,
-                border: plan.featured ? '2px solid #2C221E' : '1px solid #EAE3D2',
-                boxShadow: plan.featured ? '0 24px 64px rgba(44,34,30,0.12)' : '0 8px 32px rgba(44,34,30,0.04)',
+                padding: '36px 32px',
+                border: plan.featured
+                  ? '1px solid rgba(139,92,246,0.4)'
+                  : '1px solid var(--border)',
+                boxShadow: plan.featured
+                  ? '0 0 60px rgba(139,92,246,0.12), inset 0 1px 0 rgba(255,255,255,0.06)'
+                  : 'none',
                 position: 'relative',
                 display: 'flex', flexDirection: 'column',
-              }}
-              data-testid={`card-pricing-${i}`}>
-              
+                overflow: 'hidden',
+              }}>
+
+              {/* Glow */}
+              {plan.featured && (
+                <div style={{
+                  position: 'absolute', top: -40, right: -40,
+                  width: 200, height: 200, borderRadius: '50%',
+                  background: 'rgba(139,92,246,0.12)', filter: 'blur(60px)',
+                  pointerEvents: 'none',
+                }} />
+              )}
+
               {/* Badge */}
               {plan.badge && (
                 <div style={{
-                  position: 'absolute',
-                  top: -14,
-                  left: '50%',
+                  position: 'absolute', top: -1, left: '50%',
                   transform: 'translateX(-50%)',
-                  padding: '6px 16px',
-                  background: '#2C221E',
-                  color: '#FAF8F5',
-                  fontSize: 12,
-                  fontWeight: 700,
-                  borderRadius: 9999,
-                  whiteSpace: 'nowrap',
+                  display: 'flex', alignItems: 'center', gap: 5,
+                  padding: '5px 14px',
+                  background: 'linear-gradient(135deg,var(--purple),var(--blue))',
+                  fontSize: 11, fontWeight: 800, color: '#fff',
+                  borderRadius: '0 0 12px 12px',
                 }}>
+                  <Zap size={11} fill="#fff" color="#fff" />
                   {plan.badge}
                 </div>
               )}
 
               {/* Plan name */}
-              <h3 style={{
-                fontSize: 24,
-                fontWeight: 700,
-                color: '#1A1208',
-                marginBottom: 16,
-              }}>
-                {plan.name}
-              </h3>
+              <div style={{ marginBottom: 20, paddingTop: plan.badge ? 24 : 0 }}>
+                <h3 style={{
+                  fontSize: 22, fontWeight: 900, color: '#fff', marginBottom: 8,
+                }}>
+                  {plan.name}
+                </h3>
+                <p style={{ fontSize: 13, color: 'var(--text3)', lineHeight: 1.5 }}>
+                  {plan.desc}
+                </p>
+              </div>
 
               {/* Price */}
-              <div style={{ marginBottom: 32 }}>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'baseline',
-                  gap: 6,
-                }}>
-                  <span style={{
-                    fontSize: '3rem',
-                    fontWeight: 800,
-                    color: '#1A1208',
-                    letterSpacing: '-0.03em',
-                  }}>
-                    {yearly ? plan.yearlyPrice : plan.monthlyPrice}
-                  </span>
-                  <span style={{
-                    fontSize: 16,
-                    fontWeight: 500,
-                    color: '#5C524E',
-                  }}>
-                    ريال / {yearly ? 'سنة' : 'شهر'}
-                  </span>
-                </div>
+              <div style={{ marginBottom: 28 }}>
+                {plan.monthlyPrice === 0 ? (
+                  <div style={{ fontSize: 28, fontWeight: 900, color: plan.color }}>
+                    حسب المشروع
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+                    <span style={{
+                      fontSize: '2.8rem', fontWeight: 900, color: '#fff',
+                      letterSpacing: '-0.04em', lineHeight: 1,
+                    }}>
+                      {yearly ? plan.yearlyPrice.toLocaleString('ar-SA') : plan.monthlyPrice}
+                    </span>
+                    <span style={{ fontSize: 14, color: 'var(--text3)', fontWeight: 500 }}>
+                      ريال / {yearly ? 'سنة' : 'شهر'}
+                    </span>
+                  </div>
+                )}
               </div>
+
+              {/* Divider */}
+              <div style={{ height: 1, background: 'var(--border)', marginBottom: 24 }} />
 
               {/* Features */}
               <ul style={{
-                listStyle: 'none',
-                padding: 0,
-                margin: '0 0 40px 0',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 16,
-                flex: 1,
+                listStyle: 'none', padding: 0, margin: '0 0 32px 0',
+                display: 'flex', flexDirection: 'column', gap: 14, flex: 1,
               }}>
-                {plan.features.map(feature => (
-                  <li key={feature} style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 12,
-                  }}>
+                {plan.features.map(f => (
+                  <li key={f} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <div style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
+                      width: 20, height: 20, borderRadius: '50%', flexShrink: 0,
+                      background: plan.color + '20',
+                      border: `1px solid ${plan.color}40`,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>
-                      <Check size={18} color="#2C221E" strokeWidth={2.5} />
+                      <Check size={11} color={plan.color} strokeWidth={3} />
                     </div>
-                    <span style={{ fontSize: '1.1rem', fontWeight: 400, color: '#5C524E' }}>
-                      {feature}
+                    <span style={{ fontSize: 14, color: 'var(--text2)', fontWeight: 500 }}>
+                      {f}
                     </span>
                   </li>
                 ))}
@@ -251,42 +255,25 @@ export default function LandingPricing() {
                 href={WA}
                 target="_blank"
                 rel="noopener noreferrer"
+                className={plan.featured ? 'btn-purple' : 'btn-ghost'}
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '14px 24px',
-                  borderRadius: 9999,
-                  fontSize: 16,
-                  fontWeight: 600,
-                  textDecoration: 'none',
-                  transition: 'all 0.25s ease',
-                  background: plan.featured ? '#2C221E' : 'transparent',
-                  color: plan.featured ? '#FAF8F5' : '#2C221E',
-                  border: plan.featured ? 'none' : '2px solid #2C221E',
-                }}
-                onMouseEnter={e => {
-                  if (plan.featured) {
-                    (e.currentTarget as HTMLElement).style.background = '#3D2E28';
-                  } else {
-                    (e.currentTarget as HTMLElement).style.background = '#F0EBE3';
-                  }
-                  (e.currentTarget as HTMLElement).style.transform = 'scale(1.02)';
-                }}
-                onMouseLeave={e => {
-                  if (plan.featured) {
-                    (e.currentTarget as HTMLElement).style.background = '#2C221E';
-                  } else {
-                    (e.currentTarget as HTMLElement).style.background = 'transparent';
-                  }
-                  (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
-                }}
-                data-testid={`button-cta-${plan.name}`}>
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  padding: '13px 24px', borderRadius: 12,
+                  fontSize: 15, fontWeight: 700, textDecoration: 'none',
+                }}>
                 {plan.cta}
               </a>
             </motion.div>
           ))}
         </div>
+
+        {/* Footnote */}
+        <p style={{
+          textAlign: 'center', marginTop: 32,
+          fontSize: 13, color: 'var(--text3)', lineHeight: 1.6,
+        }}>
+          كل الباقات تشمل ضمان ٣ أشهر · دفع مرة واحدة بلا اشتراك شهري
+        </p>
       </div>
     </section>
   );
