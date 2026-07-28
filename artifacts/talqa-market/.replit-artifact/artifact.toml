@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/talqa-market/"
+title = "تلقا ماركت — منصة القوالب"
+version = "1.0.0"
+id = "artifacts/talqa-market"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/talqa-market/" ]
+localPort = 24713
+
+[services.development]
+run = "pnpm --filter @workspace/talqa-market run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/talqa-market", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/talqa-market/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24713"
+BASE_PATH = "/talqa-market/"
