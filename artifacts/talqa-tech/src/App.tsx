@@ -1,38 +1,39 @@
-import { useCallback, useEffect } from 'react';
+import { lazy, Suspense, useCallback, useEffect } from 'react';
 import { Router, Switch, Route } from 'wouter';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import SplashScreen, { useSplash } from './components/SplashScreen';
 
-import HomePage       from './pages/HomePage';
-import ServicesPage   from './pages/ServicesPage';
-import WalletPage     from './pages/WalletPage';
-import BookingsPage   from './pages/BookingsPage';
-import AiPage         from './pages/AiPage';
-import ClinicPage     from './pages/ClinicPage';
-import PricingPage    from './pages/PricingPage';
-import ProjectsPage   from './pages/ProjectsPage';
-import AboutPage      from './pages/AboutPage';
-import FaqPage        from './pages/FaqPage';
-
-// Sector pages
-import CafesPage        from './pages/sectors/CafesPage';
-import RestaurantsPage  from './pages/sectors/RestaurantsPage';
-import ClinicsPage      from './pages/sectors/ClinicsPage';
-import BeautyPage       from './pages/sectors/BeautyPage';
-import GymsPage         from './pages/sectors/GymsPage';
-import HotelsPage       from './pages/sectors/HotelsPage';
-import PharmaciesPage   from './pages/sectors/PharmaciesPage';
-import EducationPage    from './pages/sectors/EducationPage';
-import StoresPage       from './pages/sectors/StoresPage';
-import CarsPage         from './pages/sectors/CarsPage';
-import CarePage         from './pages/sectors/CarePage';
-import TrainingPage     from './pages/sectors/TrainingPage';
-import WellnessPage     from './pages/sectors/WellnessPage';
-import StudiosPage      from './pages/sectors/StudiosPage';
-import OfficesPage      from './pages/sectors/OfficesPage';
-import PetsPage         from './pages/sectors/PetsPage';
-
+import HomePage from './pages/HomePage';
 import CustomCursor from './components/CustomCursor';
+
+// Main pages — lazy loaded
+const ServicesPage  = lazy(() => import('./pages/ServicesPage'));
+const WalletPage    = lazy(() => import('./pages/WalletPage'));
+const BookingsPage  = lazy(() => import('./pages/BookingsPage'));
+const AiPage        = lazy(() => import('./pages/AiPage'));
+const ClinicPage    = lazy(() => import('./pages/ClinicPage'));
+const PricingPage   = lazy(() => import('./pages/PricingPage'));
+const ProjectsPage  = lazy(() => import('./pages/ProjectsPage'));
+const AboutPage     = lazy(() => import('./pages/AboutPage'));
+const FaqPage       = lazy(() => import('./pages/FaqPage'));
+
+// Sector pages — all lazy loaded (16 pages, heavy bundle)
+const CafesPage       = lazy(() => import('./pages/sectors/CafesPage'));
+const RestaurantsPage = lazy(() => import('./pages/sectors/RestaurantsPage'));
+const ClinicsPage     = lazy(() => import('./pages/sectors/ClinicsPage'));
+const BeautyPage      = lazy(() => import('./pages/sectors/BeautyPage'));
+const GymsPage        = lazy(() => import('./pages/sectors/GymsPage'));
+const HotelsPage      = lazy(() => import('./pages/sectors/HotelsPage'));
+const PharmaciesPage  = lazy(() => import('./pages/sectors/PharmaciesPage'));
+const EducationPage   = lazy(() => import('./pages/sectors/EducationPage'));
+const StoresPage      = lazy(() => import('./pages/sectors/StoresPage'));
+const CarsPage        = lazy(() => import('./pages/sectors/CarsPage'));
+const CarePage        = lazy(() => import('./pages/sectors/CarePage'));
+const TrainingPage    = lazy(() => import('./pages/sectors/TrainingPage'));
+const WellnessPage    = lazy(() => import('./pages/sectors/WellnessPage'));
+const StudiosPage     = lazy(() => import('./pages/sectors/StudiosPage'));
+const OfficesPage     = lazy(() => import('./pages/sectors/OfficesPage'));
+const PetsPage        = lazy(() => import('./pages/sectors/PetsPage'));
 
 const qc = new QueryClient();
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -54,38 +55,40 @@ export default function App() {
       <Router base={BASE}>
         <CustomCursor />
         <div id="app-ambient"><span /><span /><span /></div>
-        <Switch>
-          {/* Main pages */}
-          <Route path="/services"  component={ServicesPage}  />
-          <Route path="/wallet"    component={WalletPage}    />
-          <Route path="/bookings"  component={BookingsPage}  />
-          <Route path="/ai"        component={AiPage}        />
-          <Route path="/clinic"    component={ClinicPage}    />
-          <Route path="/pricing"   component={PricingPage}   />
-          <Route path="/projects"  component={ProjectsPage}  />
-          <Route path="/about"     component={AboutPage}     />
-          <Route path="/faq"       component={FaqPage}       />
+        <Suspense fallback={null}>
+          <Switch>
+            {/* Main pages */}
+            <Route path="/services"  component={ServicesPage}  />
+            <Route path="/wallet"    component={WalletPage}    />
+            <Route path="/bookings"  component={BookingsPage}  />
+            <Route path="/ai"        component={AiPage}        />
+            <Route path="/clinic"    component={ClinicPage}    />
+            <Route path="/pricing"   component={PricingPage}   />
+            <Route path="/projects"  component={ProjectsPage}  />
+            <Route path="/about"     component={AboutPage}     />
+            <Route path="/faq"       component={FaqPage}       />
 
-          {/* Sector pages */}
-          <Route path="/sectors/cafes"       component={CafesPage}       />
-          <Route path="/sectors/restaurants" component={RestaurantsPage}  />
-          <Route path="/sectors/clinics"     component={ClinicsPage}      />
-          <Route path="/sectors/beauty"      component={BeautyPage}       />
-          <Route path="/sectors/gyms"        component={GymsPage}         />
-          <Route path="/sectors/hotels"      component={HotelsPage}       />
-          <Route path="/sectors/pharmacies"  component={PharmaciesPage}   />
-          <Route path="/sectors/education"   component={EducationPage}    />
-          <Route path="/sectors/stores"      component={StoresPage}       />
-          <Route path="/sectors/cars"        component={CarsPage}         />
-          <Route path="/sectors/care"        component={CarePage}         />
-          <Route path="/sectors/training"    component={TrainingPage}     />
-          <Route path="/sectors/wellness"    component={WellnessPage}     />
-          <Route path="/sectors/studios"     component={StudiosPage}      />
-          <Route path="/sectors/offices"     component={OfficesPage}      />
-          <Route path="/sectors/pets"        component={PetsPage}         />
+            {/* Sector pages */}
+            <Route path="/sectors/cafes"       component={CafesPage}       />
+            <Route path="/sectors/restaurants" component={RestaurantsPage}  />
+            <Route path="/sectors/clinics"     component={ClinicsPage}      />
+            <Route path="/sectors/beauty"      component={BeautyPage}       />
+            <Route path="/sectors/gyms"        component={GymsPage}         />
+            <Route path="/sectors/hotels"      component={HotelsPage}       />
+            <Route path="/sectors/pharmacies"  component={PharmaciesPage}   />
+            <Route path="/sectors/education"   component={EducationPage}    />
+            <Route path="/sectors/stores"      component={StoresPage}       />
+            <Route path="/sectors/cars"        component={CarsPage}         />
+            <Route path="/sectors/care"        component={CarePage}         />
+            <Route path="/sectors/training"    component={TrainingPage}     />
+            <Route path="/sectors/wellness"    component={WellnessPage}     />
+            <Route path="/sectors/studios"     component={StudiosPage}      />
+            <Route path="/sectors/offices"     component={OfficesPage}      />
+            <Route path="/sectors/pets"        component={PetsPage}         />
 
-          <Route component={HomePage} />
-        </Switch>
+            <Route component={HomePage} />
+          </Switch>
+        </Suspense>
       </Router>
     </QueryClientProvider>
   );
