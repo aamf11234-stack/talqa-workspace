@@ -4,62 +4,62 @@
 
   <!-- Core pages -->
   <url>
-    <loc>https://tlgaads.com/talqa-tech/</loc>
+    <loc>https://tech.tlgaa.com/</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="ar" href="https://tlgaads.com/talqa-tech/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://tech.tlgaa.com/"/>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/services</loc>
+    <loc>https://tech.tlgaa.com/services</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/pricing</loc>
+    <loc>https://tech.tlgaa.com/pricing</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/projects</loc>
+    <loc>https://tech.tlgaa.com/projects</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/about</loc>
+    <loc>https://tech.tlgaa.com/about</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/bookings</loc>
+    <loc>https://tech.tlgaa.com/bookings</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/wallet</loc>
+    <loc>https://tech.tlgaa.com/wallet</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/ai</loc>
+    <loc>https://tech.tlgaa.com/ai</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/clinic</loc>
+    <loc>https://tech.tlgaa.com/clinic</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/faq</loc>
+    <loc>https://tech.tlgaa.com/faq</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -67,97 +67,97 @@
 
   <!-- Sector pages — high keyword value -->
   <url>
-    <loc>https://tlgaads.com/talqa-tech/sectors/restaurants</loc>
+    <loc>https://tech.tlgaa.com/sectors/restaurants</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/sectors/cafes</loc>
+    <loc>https://tech.tlgaa.com/sectors/cafes</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/sectors/clinics</loc>
+    <loc>https://tech.tlgaa.com/sectors/clinics</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/sectors/gyms</loc>
+    <loc>https://tech.tlgaa.com/sectors/gyms</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/sectors/stores</loc>
+    <loc>https://tech.tlgaa.com/sectors/stores</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/sectors/beauty</loc>
+    <loc>https://tech.tlgaa.com/sectors/beauty</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/sectors/hotels</loc>
+    <loc>https://tech.tlgaa.com/sectors/hotels</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/sectors/pharmacies</loc>
+    <loc>https://tech.tlgaa.com/sectors/pharmacies</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/sectors/education</loc>
+    <loc>https://tech.tlgaa.com/sectors/education</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/sectors/offices</loc>
+    <loc>https://tech.tlgaa.com/sectors/offices</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/sectors/cars</loc>
+    <loc>https://tech.tlgaa.com/sectors/cars</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/sectors/training</loc>
+    <loc>https://tech.tlgaa.com/sectors/training</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/sectors/wellness</loc>
+    <loc>https://tech.tlgaa.com/sectors/wellness</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/sectors/studios</loc>
+    <loc>https://tech.tlgaa.com/sectors/studios</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/sectors/care</loc>
+    <loc>https://tech.tlgaa.com/sectors/care</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tlgaads.com/talqa-tech/sectors/pets</loc>
+    <loc>https://tech.tlgaa.com/sectors/pets</loc>
     <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

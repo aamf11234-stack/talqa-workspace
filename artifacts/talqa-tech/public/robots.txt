@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tlgaads.com/talqa-tech/sitemap.xml
+Sitemap: https://tech.tlgaa.com/sitemap.xml
