@@ -1,226 +1,340 @@
 import { motion } from 'framer-motion';
-import { useCountUp } from '../hooks/useCountUp';
-import { useIsMobile } from '../hooks/useIsMobile';
-import { Star, Wifi, Calendar, CheckCircle2, ArrowDown } from 'lucide-react';
 
-const WA = 'https://wa.me/966551378531?text=السلام%20عليكم%2C%20أريد%20أبدأ%20مشروعي';
-
-function Stat({ end, label, suffix = '' }: { end: number; label: string; suffix?: string }) {
-  const { count, ref } = useCountUp(end, 1800);
-  return (
-    <div ref={ref} style={{ textAlign: 'center', padding: '24px 12px' }}>
-      <div style={{ fontSize: 'clamp(1.8rem,2.8vw,2.4rem)', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1 }} className="grad">
-        {count.toLocaleString('ar-SA')}{suffix}<span style={{ opacity: 0.7 }}>+</span>
-      </div>
-      <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text3)', marginTop: 6 }}>{label}</div>
-    </div>
-  );
-}
-
-/* ── Floating mini-cards ── */
-function FloatingCard({ children, style }: { children: React.ReactNode; style: React.CSSProperties }) {
-  return (
-    <motion.div
-      className="floating-card"
-      animate={{ y: [0, -10, 0] }}
-      transition={{ duration: 4 + Math.random() * 2, repeat: Infinity, ease: 'easeInOut' }}
-      style={{
-        position: 'absolute', zIndex: 1,
-        backdropFilter: 'blur(20px)',
-        WebkitBackdropFilter: 'blur(20px)',
-        background: 'rgba(255,255,255,0.06)',
-        border: '1px solid rgba(255,255,255,0.12)',
-        borderRadius: 16,
-        padding: '12px 16px',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
-        pointerEvents: 'none',
-        ...style,
-      }}>
-      {children}
-    </motion.div>
-  );
-}
-
-const words = ['نحوّل', 'أفكارك', 'إلى', 'منتجات'];
-const words2 = ['يعشقها', 'عملاؤك.'];
+const WA = 'https://wa.me/966551378531';
 
 export default function Hero() {
-  const m = useIsMobile();
   return (
     <section style={{
-      position: 'relative', minHeight: '100dvh',
+      position: 'relative', minHeight: '100vh',
       display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'center',
-      paddingTop: 80, background: 'var(--bg)', overflow: 'hidden',
+      paddingTop: 128, paddingBottom: 96,
+      background: 'var(--bg)',
+      overflow: 'hidden',
     }}>
-      {/* ── Animated mesh background ── */}
-      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
-        <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.15, 0.22, 0.15] }} transition={{ duration: 9, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ position: 'absolute', top: '-20%', right: '-15%', width: 700, height: 700, borderRadius: '50%', background: 'radial-gradient(circle, #8B5CF6, transparent 70%)', filter: 'blur(80px)' }} />
-        <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.1, 0.18, 0.1] }} transition={{ duration: 11, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
-          style={{ position: 'absolute', bottom: '0%', left: '-10%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle, #3B82F6, transparent 70%)', filter: 'blur(80px)' }} />
-        <motion.div animate={{ scale: [1, 1.3, 1], opacity: [0.07, 0.14, 0.07] }} transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-          style={{ position: 'absolute', top: '50%', left: '45%', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, #06B6D4, transparent 70%)', filter: 'blur(60px)' }} />
-
-        {/* Grid */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: `linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)`,
-          backgroundSize: '60px 60px',
-          maskImage: 'radial-gradient(ellipse 70% 60% at 50% 45%, black 30%, transparent 100%)',
-          WebkitMaskImage: 'radial-gradient(ellipse 70% 60% at 50% 45%, black 30%, transparent 100%)',
-        }} />
-      </div>
-
-      {/* ── Floating Cards ── */}
-      {/* Wallet card — top right */}
-      <FloatingCard style={{ top: '18%', right: '8%', minWidth: 180 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-          <div style={{ width: 28, height: 28, borderRadius: 7, background: 'linear-gradient(135deg,#F59E0B,#EF4444)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14 }}>☕</div>
-          <div>
-            <div style={{ fontSize: 11, fontWeight: 800, color: '#fff' }}>Apple & Google Wallet</div>
-            <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.4)' }}>تُضاف بضغطة واحدة</div>
-          </div>
-        </div>
-        <div style={{ display: 'flex', gap: 3 }}>
-          {[...Array(5)].map((_,i) => <Star key={i} size={10} fill="#F59E0B" color="#F59E0B" />)}
-        </div>
-      </FloatingCard>
-
-      {/* Booking card — top left */}
-      <FloatingCard style={{ top: '22%', left: '7%', minWidth: 160 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-          <div style={{ width: 24, height: 24, borderRadius: 6, background: 'rgba(16,185,129,0.2)', border: '1px solid rgba(16,185,129,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Calendar size={12} color="#10B981" />
-          </div>
-          <span style={{ fontSize: 11, fontWeight: 800, color: '#fff' }}>حجز جديد</span>
-        </div>
-        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)', marginBottom: 4 }}>أحمد العمري — ٣:٠٠ م</div>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '3px 8px', borderRadius: 99, background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)' }}>
-          <CheckCircle2 size={9} color="#10B981" />
-          <span style={{ fontSize: 9, fontWeight: 700, color: '#10B981' }}>مؤكد</span>
-        </div>
-      </FloatingCard>
-
-      {/* NFC card — bottom right */}
-      <FloatingCard style={{ bottom: '22%', right: '6%', minWidth: 150 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{ width: 26, height: 26, borderRadius: 6, background: 'rgba(139,92,246,0.2)', border: '1px solid rgba(139,92,246,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Wifi size={12} color="#8B5CF6" style={{ transform: 'rotate(90deg)' }} />
-          </div>
-          <div>
-            <div style={{ fontSize: 11, fontWeight: 800, color: '#fff' }}>NFC جاهز</div>
-            <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.4)' }}>لمس واقرأ</div>
-          </div>
-        </div>
-      </FloatingCard>
-
-      {/* Points card — bottom left */}
-      <FloatingCard style={{ bottom: '24%', left: '6%', minWidth: 140 }}>
-        <div style={{ fontSize: 9, fontWeight: 700, color: 'rgba(255,255,255,0.4)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.08em' }}>نقاط العميل</div>
-        <div style={{ fontSize: 26, fontWeight: 900, color: '#F59E0B', letterSpacing: '-0.04em', lineHeight: 1 }}>٢٤٧</div>
-        <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.3)', marginTop: 3 }}>نقطة ولاء</div>
-      </FloatingCard>
-
-      {/* ── Main Content ── */}
+      {/* Warm glow backdrop */}
       <div style={{
-        position: 'relative', zIndex: 2,
-        width: '100%', maxWidth: 860, margin: '0 auto',
-        padding: '0 24px', textAlign: 'center',
-        flex: 1, display: 'flex', flexDirection: 'column',
-        alignItems: 'center', justifyContent: 'center',
-      }}>
-        {/* Badge */}
-        <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-          style={{ marginBottom: 36 }}>
+        position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
+        width: '100vw', height: '100vh',
+        background: 'radial-gradient(ellipse at 50% 0%, rgba(216,203,181,0.35) 0%, transparent 65%)',
+        pointerEvents: 'none', zIndex: 0,
+      }} />
+
+      {/* Main Content */}
+      <motion.div 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={{
+          visible: { transition: { staggerChildren: 0.15 } }
+        }}
+        style={{
+          position: 'relative', zIndex: 2,
+          width: '100%', maxWidth: 1000, margin: '0 auto',
+          padding: '0 24px', textAlign: 'center',
+        }}>
+        
+        {/* Top Badge */}
+        <motion.div 
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16,1,0.3,1] } }
+          }}
+          style={{ marginBottom: 32, display: 'flex', justifyContent: 'center' }}>
           <span style={{
-            display: 'inline-flex', alignItems: 'center', gap: 8,
-            padding: '7px 18px', borderRadius: 99,
-            border: '1px solid rgba(139,92,246,0.3)',
-            background: 'rgba(139,92,246,0.08)',
-            fontSize: 12, fontWeight: 700,
-            color: 'rgba(167,139,250,0.9)', letterSpacing: '0.05em',
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            padding: '6px 20px', borderRadius: 9999,
+            border: '1px solid #D4C9B5',
+            background: '#EAE3D2',
+            fontSize: 14, fontWeight: 500,
+            color: '#5C524E',
           }}>
-            <span className="pulse-dot" style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--purple)', flexShrink: 0 }} />
-            تلقا تك · الرياض، المملكة العربية السعودية
+            ✦ الجيل الجديد من منصات الأعمال العربية
           </span>
         </motion.div>
 
         {/* Headline */}
-        <h1 style={{ fontWeight: 900, lineHeight: 1.05, fontSize: 'clamp(2.8rem,8vw,6.5rem)', letterSpacing: '-0.035em', marginBottom: 24 }}>
-          <span style={{ display: 'block', overflow: 'hidden' }}>
-            {words.map((w, i) => (
-              <motion.span key={w} initial={{ y: 90, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.75, delay: i * 0.08, ease: [0.22,1,0.36,1] }}
-                style={{ display: 'inline-block', marginLeft: '0.22em' }}>{w}</motion.span>
-            ))}
-          </span>
-          <span style={{ display: 'block', overflow: 'hidden' }}>
-            {words2.map((w, i) => (
-              <motion.span key={w} className="grad" initial={{ y: 90, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.75, delay: 0.32 + i * 0.09, ease: [0.22,1,0.36,1] }}
-                style={{ display: 'inline-block', marginLeft: '0.22em' }}>{w}</motion.span>
-            ))}
-          </span>
+        <h1 style={{ 
+          margin: '0 0 24px 0',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8
+        }}>
+          <motion.span 
+            variants={{
+              hidden: { opacity: 0, y: 24 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16,1,0.3,1] } }
+            }}
+            style={{ 
+              fontWeight: 400, 
+              color: '#5C524E',
+              fontSize: 'clamp(2rem, 3.5vw, 3rem)',
+            }}>
+            المنصة الواحدة لكل
+          </motion.span>
+          <motion.span 
+            variants={{
+              hidden: { opacity: 0, y: 24 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16,1,0.3,1] } }
+            }}
+            style={{ 
+              fontWeight: 800, 
+              lineHeight: 1.15, 
+              fontSize: 'clamp(2.8rem, 5.5vw, 5rem)', 
+              letterSpacing: '-0.03em', 
+              color: '#1A1208',
+            }}>
+            مطعم، نادي، فعالية، متجر
+          </motion.span>
         </h1>
 
-        {/* Sub */}
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.55, duration: 0.7 }}
-          style={{ fontSize: 'clamp(15px,1.9vw,18px)', fontWeight: 500, color: 'var(--text2)', lineHeight: 1.85, maxWidth: 500, margin: '0 auto 48px' }}>
-          تطبيقات جوال · Apple & Google Wallet · مواقع · أتمتة
-          <br />نبني معك ما يجعل عميلك يعود دائماً.
+        {/* Subheadline */}
+        <motion.p 
+          variants={{
+            hidden: { opacity: 0, y: 24 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16,1,0.3,1] } }
+          }}
+          style={{ 
+            fontSize: '1.15rem', 
+            fontWeight: 400, 
+            color: '#5C524E', 
+            lineHeight: 1.8, 
+            maxWidth: 520, 
+            margin: '0 auto 40px',
+          }}>
+          أطلق موقعك أو تطبيقك في دقائق — بدون خبرة تقنية. ادفع مرة، امتلك إلى الأبد.
         </motion.p>
 
         {/* CTAs */}
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65, duration: 0.5 }}
-          style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12, marginBottom: 60 }}>
-          <a href="#live-demo" className="btn-purple" style={{ fontSize: 'clamp(14px,1.6vw,16px)', padding: '14px 32px' }}>
-            شوف الديمو مباشرة ←
+        <motion.div 
+          variants={{
+            hidden: { opacity: 0, y: 24 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16,1,0.3,1] } }
+          }}
+          style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 16, marginBottom: 24 }}>
+          <a href={WA} target="_blank" rel="noopener noreferrer"
+            style={{ 
+              background: '#2C221E', color: '#FAF8F5', 
+              padding: '14px 28px', borderRadius: 9999, fontSize: 16, fontWeight: 600, 
+              textDecoration: 'none', transition: 'transform 0.25s ease, background 0.25s ease',
+            }}
+            onMouseEnter={e => { 
+              (e.currentTarget as HTMLElement).style.background = '#3D2E28';
+              (e.currentTarget as HTMLElement).style.transform = 'scale(1.03)';
+            }}
+            onMouseLeave={e => { 
+              (e.currentTarget as HTMLElement).style.background = '#2C221E';
+              (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
+            }}
+            data-testid="button-cta-start">
+            ابدأ مشروعك مجاناً
           </a>
-          <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-ghost" style={{ fontSize: 'clamp(14px,1.6vw,16px)', padding: '14px 28px' }}>
-            تحدث معنا الآن
+          <a href="#demo" 
+            style={{ 
+              background: 'transparent', color: '#2C221E', border: '2px solid #2C221E',
+              padding: '12px 28px', borderRadius: 9999, fontSize: 16, fontWeight: 600, 
+              textDecoration: 'none', transition: 'transform 0.25s ease, background 0.25s ease',
+            }}
+            onMouseEnter={e => { 
+              (e.currentTarget as HTMLElement).style.background = '#F0EBE3';
+              (e.currentTarget as HTMLElement).style.transform = 'scale(1.03)';
+            }}
+            onMouseLeave={e => { 
+              (e.currentTarget as HTMLElement).style.background = 'transparent';
+              (e.currentTarget as HTMLElement).style.transform = 'scale(1)';
+            }}
+            data-testid="button-demo">
+            شاهد كيف تعمل
           </a>
         </motion.div>
 
-        {/* Trust pills */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
-          style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 8 }}>
-          {['✓ تسليم في الموعد', '✓ دعم ٢٤/٧', '✓ كود نظيف ١٠٠٪', '✓ ضمان ٣ أشهر'].map(t => (
-            <span key={t} style={{
-              padding: '5px 14px', borderRadius: 99,
-              background: 'rgba(255,255,255,0.04)',
-              border: '1px solid rgba(255,255,255,0.08)',
-              fontSize: 12, fontWeight: 600, color: 'var(--text3)',
-            }}>{t}</span>
-          ))}
+        {/* Trust row */}
+        <motion.div 
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { duration: 0.7 } }
+          }}
+          style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            gap: 12,
+            marginTop: 24,
+            marginBottom: 64,
+            color: '#9C8F85',
+            fontSize: 13,
+            fontWeight: 500,
+          }}>
+          <span>٢٠٠+ مشروع مُنجز</span>
+          <span>·</span>
+          <span>٩٨٪ رضا العملاء</span>
+          <span>·</span>
+          <span>دعم ٢٤/٧</span>
         </motion.div>
-      </div>
 
-      {/* Scroll indicator */}
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}
-        style={{ position: 'absolute', bottom: 100, left: '50%', transform: 'translateX(-50%)', zIndex: 2, textAlign: 'center' }}>
-        <motion.div animate={{ y: [0, 6, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}>
-          <ArrowDown size={18} color="rgba(255,255,255,0.2)" />
+        {/* Device Mockup Showcase */}
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 40 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.16,1,0.3,1] } }
+          }}
+          style={{ 
+            position: 'relative',
+            height: 460,
+            maxWidth: 800,
+            margin: '0 auto',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+          }}>
+          
+          {/* CARD 2 - Left (Fitness) */}
+          <motion.div
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+            style={{
+              position: 'absolute', left: '10%', top: 60,
+              width: 260, height: 320,
+              background: '#FFFFFF',
+              borderRadius: 24,
+              border: '1px solid #EAE3D2',
+              boxShadow: '0 24px 64px rgba(44,34,30,0.08)',
+              transform: 'rotate(-8deg)',
+              zIndex: 1,
+              overflow: 'hidden',
+            }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '12px 16px', borderBottom: '1px solid #EAE3D2' }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#ff5f56' }} />
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#ffbd2e' }} />
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#27c93f' }} />
+            </div>
+            <div style={{ padding: 16 }}>
+              <div style={{ height: 60, borderRadius: 12, background: 'linear-gradient(135deg, #E8E0D0 0%, #D4C9B5 100%)', marginBottom: 12 }} />
+              <div style={{ height: 40, borderRadius: 8, background: '#F5F2EB', marginBottom: 8 }} />
+              <div style={{ height: 40, borderRadius: 8, background: '#F5F2EB', marginBottom: 8 }} />
+              <div style={{ height: 40, borderRadius: 8, background: '#F5F2EB' }} />
+            </div>
+          </motion.div>
+
+          {/* CARD 3 - Right (Events) */}
+          <motion.div
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+            style={{
+              position: 'absolute', right: '10%', top: 80,
+              width: 240, height: 280,
+              background: '#FFFFFF',
+              borderRadius: 24,
+              border: '1px solid #EAE3D2',
+              boxShadow: '0 24px 64px rgba(44,34,30,0.08)',
+              transform: 'rotate(6deg)',
+              zIndex: 1,
+              overflow: 'hidden',
+            }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '12px 16px', borderBottom: '1px solid #EAE3D2' }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#ff5f56' }} />
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#ffbd2e' }} />
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#27c93f' }} />
+            </div>
+            <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
+              <div style={{ height: 80, borderRadius: 12, background: 'linear-gradient(135deg, #F5F2EB 0%, #EAE3D2 100%)' }} />
+              <div style={{ display: 'flex', gap: 8 }}>
+                <div style={{ flex: 1, height: 60, borderRadius: 8, background: '#F5F2EB' }} />
+                <div style={{ flex: 1, height: 60, borderRadius: 8, background: '#F5F2EB' }} />
+              </div>
+            </div>
+          </motion.div>
+
+          {/* CARD 1 - Main Center */}
+          <motion.div
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+            style={{
+              position: 'relative', zIndex: 3,
+              width: 420, height: 420,
+              background: '#FFFFFF',
+              borderRadius: 28,
+              border: '1px solid #EAE3D2',
+              boxShadow: '0 32px 80px rgba(44,34,30,0.14)',
+              overflow: 'hidden',
+              display: 'flex', flexDirection: 'column',
+            }}>
+            {/* Fake browser chrome */}
+            <div style={{ 
+              display: 'flex', alignItems: 'center', padding: '16px 20px', 
+              borderBottom: '1px solid #EAE3D2', gap: 16 
+            }}>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#ff5f56' }} />
+                <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#ffbd2e' }} />
+                <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#27c93f' }} />
+              </div>
+              <div style={{ 
+                flex: 1, height: 6, background: '#F5F2EB', borderRadius: 99, 
+                maxWidth: 140, margin: '0 auto' 
+              }} />
+            </div>
+            
+            {/* Fake restaurant app */}
+            <div style={{ flex: 1, background: '#FAF8F5', padding: 16 }}>
+              {/* Header strip */}
+              <div style={{ 
+                height: 40, background: '#EAE3D2', borderRadius: '8px 8px 0 0', 
+                display: 'flex', alignItems: 'center', justifyContent: 'center' 
+              }}>
+                <div style={{ width: 96, height: 12, background: '#D4C9B5', borderRadius: 6 }} />
+              </div>
+              
+              {/* Hero image block */}
+              <div style={{ 
+                height: 112, background: 'linear-gradient(135deg, #EAE3D2 0%, #D8CBB5 100%)', 
+                borderRadius: 16, margin: '12px 16px',
+              }} />
+
+              {/* Two product cards */}
+              <div style={{ display: 'flex', gap: 12, padding: '0 16px' }}>
+                <div style={{ 
+                  flex: 1, background: '#FFFFFF', borderRadius: 12, padding: 12, 
+                  border: '1px solid #EAE3D2' 
+                }}>
+                  <div style={{ height: 48, background: '#F0EBE3', borderRadius: 8, marginBottom: 8 }} />
+                  <div style={{ height: 8, width: 64, background: '#EAE3D2', borderRadius: 4, marginBottom: 4 }} />
+                  <div style={{ height: 8, width: 40, background: '#EAE3D2', borderRadius: 4 }} />
+                </div>
+                <div style={{ 
+                  flex: 1, background: '#FFFFFF', borderRadius: 12, padding: 12, 
+                  border: '1px solid #EAE3D2' 
+                }}>
+                  <div style={{ height: 48, background: '#F0EBE3', borderRadius: 8, marginBottom: 8 }} />
+                  <div style={{ height: 8, width: 64, background: '#EAE3D2', borderRadius: 4, marginBottom: 4 }} />
+                  <div style={{ height: 8, width: 40, background: '#EAE3D2', borderRadius: 4 }} />
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom nav */}
+            <div style={{ 
+              height: 64, background: '#FFFFFF', borderTop: '1px solid #EAE3D2',
+              display: 'flex', alignItems: 'center', justifyContent: 'space-around',
+              padding: '0 24px'
+            }}>
+              {[1, 2, 3, 4].map(i => (
+                <div key={i} style={{ width: 20, height: 20, borderRadius: '50%', background: '#EAE3D2' }} />
+              ))}
+            </div>
+          </motion.div>
+
         </motion.div>
       </motion.div>
 
-      {/* Stats bar */}
-      <div style={{ position: 'relative', zIndex: 2, width: '100%', borderTop: '1px solid var(--border)', background: 'rgba(255,255,255,0.02)', backdropFilter: 'blur(10px)' }}>
-        <div style={{ maxWidth: 720, margin: '0 auto', padding: '0 24px', display: 'grid', gridTemplateColumns: m ? 'repeat(2,1fr)' : 'repeat(4,1fr)' }}>
-          {[{ end: 14, label: 'مشروع مُنجز' }, { end: 3, label: 'قطاعات مخدومة' }, { end: 95, label: 'رضا العملاء', suffix: '٪' }, { end: 24, label: 'دعم فني', suffix: '/٧' }].map((s, i) => (
-            <div key={s.label} style={{ borderLeft: i > 0 ? '1px solid var(--border)' : 'none' }}>
-              <Stat end={s.end} label={s.label} suffix={s.suffix ?? ''} />
-            </div>
-          ))}
-        </div>
-      </div>
-
       <style>{`
         @media(max-width:768px) {
-          .floating-card { display: none !important; }
-        }
-        @media(max-width:520px) {
-          h1 { font-size: clamp(2.4rem,12vw,3.8rem) !important; }
+          section > div > div:last-child > div:nth-child(1),
+          section > div > div:last-child > div:nth-child(2) {
+            display: none !important;
+          }
+          section > div > div:last-child > div:nth-child(3) {
+            width: 100% !important;
+            max-width: 320px !important;
+          }
         }
       `}</style>
     </section>

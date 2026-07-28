@@ -59,7 +59,7 @@ export default function SplashScreen({ onDone }: { onDone: () => void }) {
       ref={elRef}
       style={{
         position: 'fixed', inset: 0, zIndex: 9999,
-        background: '#07070f',
+        background: '#FAF8F5',
         display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center',
         overflow: 'hidden',
@@ -72,7 +72,7 @@ export default function SplashScreen({ onDone }: { onDone: () => void }) {
         position: 'absolute', top: '50%', left: '50%',
         transform: 'translate(-50%,-50%)',
         width: 480, height: 480, borderRadius: '50%',
-        background: 'radial-gradient(circle,rgba(124,58,237,0.14) 0%,transparent 70%)',
+        background: 'radial-gradient(circle,rgba(216,203,181,0.5) 0%,transparent 70%)',
         pointerEvents: 'none',
       }} />
 
@@ -83,8 +83,8 @@ export default function SplashScreen({ onDone }: { onDone: () => void }) {
 
       {/* Brand name */}
       <div style={{
-        fontSize: 27, fontWeight: 900, color: '#fff',
-        fontFamily: 'Cairo,sans-serif', letterSpacing: '-0.03em',
+        fontSize: 27, fontWeight: 900, color: '#1A1208',
+        fontFamily: 'Tajawal,sans-serif', letterSpacing: '-0.03em',
         marginBottom: 8,
         animation: 'splash-fade 0.4s 0.2s ease both',
       }}>
@@ -93,8 +93,8 @@ export default function SplashScreen({ onDone }: { onDone: () => void }) {
 
       {/* Subtitle — static */}
       <div style={{
-        fontSize: 13, fontWeight: 600, color: 'rgba(167,139,250,0.75)',
-        fontFamily: 'Cairo,sans-serif', marginBottom: 32,
+        fontSize: 13, fontWeight: 600, color: '#9C8F85',
+        fontFamily: 'Tajawal,sans-serif', marginBottom: 32,
         animation: 'splash-fade 0.4s 0.35s ease both',
       }}>
         تطبيقات · مواقع · Apple Wallet
