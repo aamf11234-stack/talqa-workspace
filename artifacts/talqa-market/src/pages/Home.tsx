@@ -1,322 +1,246 @@
-import { useState } from "react";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { 
-  CheckCircle2, 
-  Store, 
-  Stethoscope, 
-  UtensilsCrossed, 
-  Coffee, 
-  Briefcase, 
-  Building2, 
-  HeartHandshake, 
-  UserCircle 
-} from "lucide-react";
-import { categoriesRecord } from "@/data/templates";
-
-const categoriesIcons: Record<string, React.ElementType> = {
-  store: Store,
-  clinic: Stethoscope,
-  restaurant: UtensilsCrossed,
-  cafe: Coffee,
-  office: Briefcase,
-  realestate: Building2,
-  loyalty: HeartHandshake,
-  personal: UserCircle
-};
+import { UtensilsCrossed, Stethoscope, Dumbbell, ShoppingBag } from "lucide-react";
 
 export default function Home() {
-  const [aiQuery, setAiQuery] = useState("");
-  const [isGenerating, setIsGenerating] = useState(false);
-
-  const handleGenerate = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!aiQuery.trim()) return;
-    setIsGenerating(true);
-    setTimeout(() => {
-      setIsGenerating(false);
-      setAiQuery("");
-    }, 3000);
-  };
-
   return (
-    <div className="flex flex-col w-full overflow-hidden">
-      {/* Hero Section */}
-      <section className="relative pt-24 pb-32 px-4 flex flex-col items-center justify-center text-center">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/20 via-background to-background -z-10" />
+    <div className="flex flex-col min-h-screen">
+      {/* HERO SECTION */}
+      <section className="relative min-h-[100dvh] flex flex-col items-center justify-center pt-32 pb-24 px-6 overflow-hidden bg-bg">
+        {/* Warm radial glow */}
+        <div 
+          className="absolute inset-0 z-0 pointer-events-none" 
+          style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(216,203,181,0.35) 0%, transparent 65%)" }} 
+        />
         
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto space-y-8"
-        >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4 border border-primary/20">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+        <div className="relative z-10 flex flex-col items-center text-center w-full max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="bg-[#EAE3D2] border border-[#D4C9B5] text-[#5C524E] rounded-full px-4 py-1.5 text-sm font-medium mb-8"
+          >
+            ✦ منصة القوالب العربية الأولى
+          </motion.div>
+
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-6 flex flex-col gap-2"
+          >
+            <span className="text-[#5C524E] font-normal tracking-normal text-[clamp(2.2rem,4vw,3.5rem)] leading-tight">
+              قوالب جاهزة لكل
             </span>
-            الجيل الجديد من منصات الأعمال
-          </div>
-          
-          <h1 className="text-5xl md:text-7xl font-black leading-tight tracking-tight text-foreground">
-            أطلق مشروعك اليوم <br />
-            <span className="text-gradient">لكل القطاعات، ليس فقط المتاجر</span>
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            المنصة العربية الأولى التي تمنحك الحرية لبناء متجر، عيادة، مطعم، أو مكتبك الخاص بضغطة زر. لا تكتفِ بمنصات المتاجر التقليدية.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
-            <Button size="lg" className="w-full sm:w-auto text-lg h-14 px-8 font-bold" asChild>
-              <a href="https://wa.me/966551378531" target="_blank" rel="noreferrer" data-testid="hero-cta-whatsapp">
-                ابدأ مشروعك الآن مجاناً
-              </a>
-            </Button>
-            <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg h-14 px-8" asChild>
-              <Link href="/templates" data-testid="hero-cta-templates">
-                تصفح القوالب
-              </Link>
-            </Button>
-          </div>
-        </motion.div>
-      </section>
+            <span className="text-[#1A1208] font-[800]">
+              مطعم، عيادة، نادي، متجر
+            </span>
+          </motion.h1>
 
-      {/* Comparison Section */}
-      <section className="py-24 px-4 bg-card border-y border-border">
-        <div className="container mx-auto max-w-5xl">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">ما الذي يجعلنا مختلفين؟</h2>
-            <p className="text-muted-foreground text-lg">منصات التجارة الإلكترونية صُممت لبيع المنتجات المادية. نحن صممنا منصة تخدم طبيعة عملك، أياً كانت.</p>
-          </div>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="text-[#5C524E] max-w-[520px] mx-auto text-lg md:text-xl mb-10 leading-[1.8]"
+          >
+            اختر قالبك، خصّصه، وأطلق مشروعك في دقائق — بدون خبرة تقنية
+          </motion.p>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            <Card className="border-border bg-background relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-full h-1 bg-muted" />
-              <CardContent className="p-8">
-                <h3 className="text-xl font-bold text-muted-foreground mb-6 flex items-center gap-2">
-                  <XIcon className="text-muted-foreground/50 w-6 h-6" /> منصات المتاجر التقليدية (سلة / شوبيفاي)
-                </h3>
-                <ul className="space-y-4">
-                  {[
-                    "مصممة حصرياً للمنتجات المادية",
-                    "قوالب متشابهة لا تناسب العيادات أو المطاعم",
-                    "نظام الحجوزات أو المواعيد يتطلب إضافات مكلفة",
-                    "تكاليف إضافية لكل تطبيق وميزة جديدة"
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-muted-foreground">
-                      <span className="mt-1 w-2 h-2 rounded-full bg-muted-foreground/30 shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
+          >
+            <Link 
+              href="/templates"
+              className="bg-[#2C221E] text-[#FAF8F5] rounded-full px-7 py-3.5 font-semibold text-lg hover:scale-105 hover:bg-[#3D2E28] transition-all duration-250 flex-1 sm:flex-none text-center"
+            >
+              تصفح القوالب
+            </Link>
+            <a 
+              href="https://wa.me/966551378531"
+              target="_blank"
+              rel="noreferrer"
+              className="border border-[#2C221E] text-[#2C221E] bg-transparent rounded-full px-7 py-3.5 font-semibold text-lg hover:scale-105 transition-all duration-250 flex-1 sm:flex-none text-center"
+            >
+              شاهد كيف يعمل
+            </a>
+          </motion.div>
 
-            <Card className="border-primary/50 bg-primary/5 relative overflow-hidden shadow-[0_0_40px_-15px_rgba(234,179,8,0.3)]">
-              <div className="absolute top-0 right-0 w-full h-1 bg-primary" />
-              <CardContent className="p-8">
-                <h3 className="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
-                  <div className="w-6 h-6 bg-primary rounded flex items-center justify-center text-primary-foreground font-black text-sm">ت</div> تلقا ماركت
-                </h3>
-                <ul className="space-y-4">
-                  {[
-                    "قوالب مبنية خصيصاً لكل قطاع (مطاعم، عيادات، عقار)",
-                    "أنظمة حجوزات، قوائم طعام، واستشارات مدمجة مجاناً",
-                    "تصاميم عربية أصيلة وليست معربة",
-                    "تكلفة واحدة تشمل جميع الميزات الأساسية للقطاع"
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-foreground font-medium">
-                      <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="flex items-center justify-center gap-4 mt-8 text-[#9C8F85] text-xs font-medium tracking-wide"
+          >
+            <span>١٢+ قالب جاهز</span>
+            <span className="w-1 h-1 rounded-full bg-[#D4C9B5]" />
+            <span>٤ قطاعات</span>
+            <span className="w-1 h-1 rounded-full bg-[#D4C9B5]" />
+            <span>دعم فوري</span>
+          </motion.div>
         </div>
-      </section>
 
-      {/* Verticals Showcase */}
-      <section className="py-24 px-4 bg-background">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">قالب لكل قطاع أعمال</h2>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">مهما كان نشاطك التجاري، ستجد لدينا البنية التحتية الجاهزة للانطلاق في دقائق.</p>
-          </div>
+        {/* MOCKUP SHOWCASE */}
+        <div className="relative z-10 mt-20 md:mt-32 w-full max-w-4xl mx-auto flex justify-center items-center h-[320px] md:h-[400px]">
+          
+          {/* Card 2 (Left/Behind) */}
+          <motion.div
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute left-[5%] md:left-[10%] w-[220px] md:w-[260px] h-[300px] md:h-[340px] bg-white rounded-3xl border border-[#EAE3D2] shadow-xl rotate-[-8deg] z-0 overflow-hidden flex flex-col pointer-events-none"
+          >
+            <div className="h-8 border-b border-[#EAE3D2] flex items-center px-4 gap-1.5 bg-[#F5F2EB]/50">
+               <div className="w-2 h-2 rounded-full bg-[#EAE3D2]" />
+               <div className="w-2 h-2 rounded-full bg-[#EAE3D2]" />
+            </div>
+            <div className="p-4 flex-1 flex flex-col gap-3">
+              <div className="w-full h-24 bg-[#EAE3D2] rounded-xl" />
+              <div className="w-3/4 h-4 bg-[#F5F2EB] rounded-md" />
+              <div className="w-1/2 h-4 bg-[#F5F2EB] rounded-md" />
+              <div className="grid grid-cols-2 gap-2 mt-auto">
+                <div className="h-16 bg-[#F5F2EB] rounded-lg" />
+                <div className="h-16 bg-[#F5F2EB] rounded-lg" />
+              </div>
+            </div>
+          </motion.div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {Object.entries(categoriesRecord).map(([key, label], index) => {
-              const Icon = categoriesIcons[key];
-              return (
-                <motion.div
-                  key={key}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ y: -5 }}
-                >
-                  <Link href={`/templates?category=${key}`}>
-                    <Card className="cursor-pointer group hover:border-primary/50 transition-colors h-full">
-                      <CardContent className="p-6 flex flex-col items-center justify-center text-center gap-4 h-full min-h-[160px]">
-                        <div className="p-4 rounded-full bg-secondary group-hover:bg-primary/10 transition-colors">
-                          <Icon className="w-8 h-8 text-foreground group-hover:text-primary transition-colors" />
-                        </div>
-                        <h3 className="font-bold text-lg">{label}</h3>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* AI Builder Teaser */}
-      <section className="py-24 px-4 bg-secondary border-y border-border overflow-hidden">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">ابنِ موقعك بالذكاء الاصطناعي</h2>
-          <p className="text-muted-foreground text-lg mb-10 max-w-2xl mx-auto">
-            فقط أخبرنا عن مشروعك، وسيقوم الذكاء الاصطناعي بتوليد الموقع بالكامل مع النصوص والصور المتناسبة مع هويتك.
-          </p>
-
-          <Card className="bg-background border-border/50 shadow-2xl p-2 relative">
-            <form onSubmit={handleGenerate} className="flex gap-2 relative z-10">
-              <input 
-                type="text" 
-                value={aiQuery}
-                onChange={(e) => setAiQuery(e.target.value)}
-                placeholder="مثال: أريد إنشاء موقع لعيادة أسنان في الرياض باسم ابتسامة متألقة..."
-                className="flex-1 bg-transparent border-none outline-none px-4 text-lg placeholder:text-muted-foreground/50 focus:ring-0"
-                disabled={isGenerating}
-                data-testid="ai-input"
-              />
-              <Button 
-                type="submit" 
-                disabled={!aiQuery.trim() || isGenerating}
-                className="gap-2 px-6"
-                data-testid="ai-submit"
-              >
-                {isGenerating ? (
-                  <span className="flex items-center gap-2">
-                    <span className="animate-spin w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full" />
-                    جاري البناء...
-                  </span>
-                ) : (
-                  "توليد السحر"
-                )}
-              </Button>
-            </form>
-
-            {isGenerating && (
-              <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-20 flex items-center justify-center rounded-lg">
-                <div className="flex flex-col items-center gap-4">
-                  <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-                  <p className="text-primary font-bold animate-pulse">يقوم الذكاء الاصطناعي بصناعة موقعك...</p>
+          {/* Card 3 (Right/Behind) */}
+          <motion.div
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute right-[5%] md:right-[10%] w-[200px] md:w-[240px] h-[280px] md:h-[320px] bg-white rounded-3xl border border-[#EAE3D2] shadow-xl rotate-[6deg] z-0 overflow-hidden flex flex-col pointer-events-none"
+          >
+            <div className="h-8 border-b border-[#EAE3D2] flex items-center px-4 gap-1.5 bg-[#F5F2EB]/50 justify-end">
+               <div className="w-2 h-2 rounded-full bg-[#EAE3D2]" />
+               <div className="w-2 h-2 rounded-full bg-[#EAE3D2]" />
+            </div>
+            <div className="p-4 flex-1 flex flex-col gap-3">
+              <div className="flex gap-3">
+                <div className="w-12 h-12 rounded-full bg-[#EAE3D2]" />
+                <div className="flex-1 flex flex-col justify-center gap-2">
+                   <div className="w-full h-3 bg-[#F5F2EB] rounded-md" />
+                   <div className="w-2/3 h-3 bg-[#F5F2EB] rounded-md" />
                 </div>
               </div>
-            )}
-          </Card>
-        </div>
-      </section>
+              <div className="w-full h-32 bg-[#F5F2EB] rounded-xl mt-2" />
+            </div>
+          </motion.div>
 
-      {/* How it works */}
-      <section className="py-24 px-4 bg-background">
-        <div className="container mx-auto max-w-5xl">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">كيف تعمل المنصة؟</h2>
-            <p className="text-muted-foreground text-lg">ثلاث خطوات بسيطة تفصلك عن إطلاق مشروعك الرقمي بنجاح.</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 relative">
-            <div className="hidden md:block absolute top-1/2 left-1/4 right-1/4 h-0.5 bg-border -z-10 -translate-y-1/2" />
+          {/* Card 1 (Main/Front) */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="relative z-10 w-[280px] md:w-[400px] bg-white rounded-3xl shadow-[0_32px_80px_rgba(44,34,30,0.12)] border border-[#EAE3D2] overflow-hidden flex flex-col pointer-events-none"
+          >
+            {/* Chrome bar */}
+            <div className="h-10 border-b border-[#EAE3D2] flex items-center px-4 justify-between bg-white">
+              <div className="flex gap-1.5">
+                <div className="w-2 h-2 rounded-full bg-[#EF4444]" />
+                <div className="w-2 h-2 rounded-full bg-[#F59E0B]" />
+                <div className="w-2 h-2 rounded-full bg-[#10B981]" />
+              </div>
+              <div className="w-24 md:w-32 h-2 bg-[#F5F2EB] rounded-full mx-auto" />
+              <div className="w-6" /> {/* Spacer */}
+            </div>
             
-            {[
-              { num: "01", title: "اختر قالبك", desc: "تصفح القوالب المصممة خصيصاً لقطاعك واختر ما يناسب هويتك." },
-              { num: "02", title: "خصّصه", desc: "أضف شعارك، ألوانك، وخدماتك باستخدام لوحة تحكم سهلة باللغة العربية." },
-              { num: "03", title: "انطلق فوراً", desc: "استقبل عملائك، أدر حجوزاتك، وضاعف مبيعاتك عبر منصة مستقرة وآمنة." }
-            ].map((step, i) => (
-              <div key={i} className="flex flex-col items-center text-center bg-background">
-                <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center text-2xl font-black text-primary border-[6px] border-background mb-6 shadow-sm">
-                  {step.num}
-                </div>
-                <h3 className="text-xl font-bold mb-3">{step.title}</h3>
-                <p className="text-muted-foreground">{step.desc}</p>
+            {/* App Layout */}
+            <div className="flex flex-col pb-4">
+              <div className="h-8 md:h-10 bg-[#EAE3D2] w-full" />
+              <div className="h-20 md:h-28 mx-4 mt-3 rounded-2xl bg-gradient-to-br from-[#EAE3D2] to-[#D8CBB5]" />
+              
+              <div className="grid grid-cols-2 gap-3 px-4 mt-4">
+                {[1, 2].map(i => (
+                  <div key={i} className="bg-white rounded-xl border border-[#EAE3D2] p-2 md:p-3 flex flex-col gap-2 shadow-sm">
+                    <div className="h-10 md:h-12 bg-[#F0EBE3] rounded-lg w-full" />
+                    <div className="w-3/4 h-2 bg-[#EAE3D2] rounded-full" />
+                    <div className="w-1/2 h-2 bg-[#F5F2EB] rounded-full" />
+                  </div>
+                ))}
               </div>
+
+              <div className="flex justify-center gap-4 mt-6">
+                {[1, 2, 3, 4].map(i => (
+                  <div key={i} className="w-4 h-4 md:w-5 md:h-5 rounded-full bg-[#EAE3D2]" />
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+        </div>
+      </section>
+
+      {/* SECTORS SECTION */}
+      <section className="bg-[#F5F2EB] py-28 px-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <h3 className="text-[#9C8F85] text-sm font-bold uppercase tracking-wide mb-3">
+              القطاعات المدعومة
+            </h3>
+            <h2 className="text-[#1A1208]">
+              قالب لكل نوع أعمال
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              {
+                title: "المطاعم والكافيهات",
+                desc: "قائمة QR، طلبات أونلاين، ولاء، حجوزات",
+                icon: UtensilsCrossed,
+              },
+              {
+                title: "العيادات والصحة",
+                desc: "حجز مواعيد، ملف مريض، Apple Wallet",
+                icon: Stethoscope,
+              },
+              {
+                title: "النوادي الرياضية",
+                desc: "اشتراكات، جداول، بطاقات عضوية رقمية",
+                icon: Dumbbell,
+              },
+              {
+                title: "المتاجر والمكاتب",
+                desc: "متجر كامل، دفع إلكتروني، تقارير مبيعات",
+                icon: ShoppingBag,
+              }
+            ].map((sector, i) => (
+              <motion.div
+                key={i}
+                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 24 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="bg-white rounded-2xl p-8 border border-[#EAE3D2] hover:border-[#2C221E] hover:shadow-[0_16px_48px_rgba(44,34,30,0.10)] hover:-translate-y-1.5 transition-all duration-300 cursor-default"
+              >
+                <div className="w-12 h-12 bg-[#F5F2EB] rounded-2xl flex items-center justify-center mb-6">
+                  <sector.icon size={22} className="text-[#2C221E]" />
+                </div>
+                <h3 className="text-xl font-bold text-[#1A1208] mb-2">{sector.title}</h3>
+                <p className="text-[#5C524E] text-lg">{sector.desc}</p>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Pricing Preview */}
-      <section className="py-24 px-4 bg-card border-y border-border">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">باقات تناسب طموحك</h2>
-          <p className="text-muted-foreground text-lg mb-10 max-w-2xl mx-auto">
-            أسعار شفافة بدون عمولات مخفية. ادفع اشتراكاً واحداً واحصل على كل ما تحتاجه للنجاح.
-          </p>
-          <div className="flex justify-center mb-10">
-             <div className="inline-flex items-center p-1 bg-secondary rounded-lg border border-border">
-                <div className="px-6 py-2 bg-primary text-primary-foreground rounded-md font-bold shadow-sm">
-                  الأساسية: 99 ريال / شهر
-                </div>
-                <div className="px-6 py-2 text-muted-foreground font-medium">
-                  البروفيشنال: 299 ريال / شهر
-                </div>
-             </div>
-          </div>
-          <Button asChild size="lg" className="h-12 px-8">
-            <Link href="/pricing" data-testid="home-pricing-link">عـرض تـفـاصيـل الـبـاقـات</Link>
-          </Button>
-        </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="py-32 px-4 relative overflow-hidden bg-primary text-primary-foreground">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay" />
-        <div className="container mx-auto max-w-3xl text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl font-black mb-6">مستعد للخطوة التالية؟</h2>
-          <p className="text-xl mb-10 opacity-90">
-            تحدث معنا مباشرة عبر الواتساب لاختيار الباقة الأنسب وطلب تجهيز منصتك.
-          </p>
-          <Button 
-            size="lg" 
-            variant="secondary" 
-            className="h-16 px-10 text-xl font-black rounded-full hover:scale-105 transition-transform shadow-xl"
-            asChild
-          >
-            <a href="https://wa.me/966551378531" target="_blank" rel="noreferrer" data-testid="final-cta-whatsapp">
-              تواصل معنا عبر الواتساب
-            </a>
-          </Button>
-        </div>
+      {/* CTA STRIP */}
+      <section className="bg-[#FAF8F5] py-28 px-6 text-center flex flex-col items-center justify-center">
+        <h2 className="text-[#1A1208] mb-4">جاهز تطلق مشروعك؟</h2>
+        <p className="text-[#5C524E] text-xl mb-10 max-w-md mx-auto">
+          اختر قالبك واشتغل من اليوم الأول
+        </p>
+        <a
+          href="https://wa.me/966551378531"
+          target="_blank"
+          rel="noreferrer"
+          className="bg-[#2C221E] text-[#FAF8F5] rounded-full px-10 py-4 text-xl font-bold hover:bg-[#3D2E28] hover:scale-105 transition-all shadow-lg shadow-[#2C221E]/10"
+        >
+          ابدأ مجاناً
+        </a>
       </section>
     </div>
   );
-}
-
-function XIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M18 6 6 18" />
-      <path d="m6 6 12 12" />
-    </svg>
-  )
 }

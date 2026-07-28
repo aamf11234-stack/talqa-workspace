@@ -1,153 +1,125 @@
-import { useState, useMemo, useEffect } from "react";
-import { useLocation } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
-import { templates, categoriesRecord, Category } from "@/data/templates";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Check, Eye, MessageCircle } from "lucide-react";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { UtensilsCrossed, Stethoscope, Dumbbell, ShoppingBag } from "lucide-react";
+
+type Category = "كل القوالب" | "مطاعم" | "عيادات" | "نوادي" | "متاجر";
+
+const templates = [
+  { id:1, name:"مطعم كلاسيك", sector:"مطاعم", price:"٩٩", badge:"الأكثر طلباً" },
+  { id:2, name:"كافيه مودرن", sector:"مطاعم", price:"٩٩", badge:null },
+  { id:3, name:"مطعم فاخر", sector:"مطاعم", price:"١٤٩", badge:"جديد" },
+  { id:4, name:"عيادة طبية", sector:"عيادات", price:"١٢٩", badge:"الأكثر طلباً" },
+  { id:5, name:"مركز صحي", sector:"عيادات", price:"١٢٩", badge:null },
+  { id:6, name:"عيادة أسنان", sector:"عيادات", price:"١٤٩", badge:null },
+  { id:7, name:"نادي رياضي", sector:"نوادي", price:"١١٩", badge:"جديد" },
+  { id:8, name:"جيم مودرن", sector:"نوادي", price:"١١٩", badge:null },
+  { id:9, name:"يوغا وسبا", sector:"نوادي", price:"٩٩", badge:null },
+  { id:10, name:"متجر ملابس", sector:"متاجر", price:"٩٩", badge:null },
+  { id:11, name:"متجر إلكترونيات", sector:"متاجر", price:"١٢٩", badge:null },
+  { id:12, name:"مكتب خدمات", sector:"متاجر", price:"٩٩", badge:null },
+];
+
+const categoryTabs: Category[] = ["كل القوالب", "مطاعم", "عيادات", "نوادي", "متاجر"];
+
+const getSectorIcon = (sector: string) => {
+  switch(sector) {
+    case "مطاعم": return <UtensilsCrossed size={32} className="text-[#5C524E]" />;
+    case "عيادات": return <Stethoscope size={32} className="text-[#5C524E]" />;
+    case "نوادي": return <Dumbbell size={32} className="text-[#5C524E]" />;
+    case "متاجر": return <ShoppingBag size={32} className="text-[#5C524E]" />;
+    default: return <ShoppingBag size={32} className="text-[#5C524E]" />;
+  }
+};
 
 export default function Templates() {
-  const [location] = useLocation();
-  const [activeCategory, setActiveCategory] = useState<Category | "all">("all");
+  const [activeTab, setActiveTab] = useState<Category>("كل القوالب");
 
-  // Handle URL query params manually since wouter doesn't have useSearchParams built-in
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const categoryParam = searchParams.get("category") as Category;
-    if (categoryParam && Object.keys(categoriesRecord).includes(categoryParam)) {
-      setActiveCategory(categoryParam);
-    }
-  }, [location]);
-
-  const filteredTemplates = useMemo(() => {
-    if (activeCategory === "all") return templates;
-    return templates.filter((t) => t.category === activeCategory);
-  }, [activeCategory]);
+  const filteredTemplates = activeTab === "كل القوالب" 
+    ? templates 
+    : templates.filter(t => t.sector === activeTab);
 
   return (
-    <div className="min-h-screen pb-24">
-      {/* Header */}
-      <div className="bg-secondary/50 border-b border-border py-16 px-4">
-        <div className="container mx-auto text-center max-w-3xl">
-          <h1 className="text-4xl md:text-5xl font-black mb-6">مكتبة القوالب</h1>
-          <p className="text-lg text-muted-foreground">
-            اكتشف مجموعة متكاملة من التصاميم الجاهزة المبنية لخدمة أهدافك التجارية بأعلى معايير الجودة وتجربة المستخدم.
-          </p>
-        </div>
-      </div>
-
-      {/* Filter Bar (Sticky) */}
-      <div className="sticky top-16 z-40 bg-background/95 backdrop-blur border-b border-border shadow-sm">
-        <div className="container mx-auto px-4">
-          <div className="flex overflow-x-auto py-4 gap-2 no-scrollbar" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            <button
-              onClick={() => setActiveCategory("all")}
-              className={`whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold transition-all ${
-                activeCategory === "all" 
-                  ? "bg-primary text-primary-foreground shadow-md" 
-                  : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-              }`}
-              data-testid="filter-all"
-            >
-              الكل
-            </button>
-            {Object.entries(categoriesRecord).map(([key, label]) => (
-              <button
-                key={key}
-                onClick={() => setActiveCategory(key as Category)}
-                className={`whitespace-nowrap px-5 py-2.5 rounded-full text-sm font-bold transition-all ${
-                  activeCategory === key 
-                    ? "bg-primary text-primary-foreground shadow-md" 
-                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                }`}
-                data-testid={`filter-${key}`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Grid */}
-      <div className="container mx-auto px-4 py-12">
-        <motion.div 
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredTemplates.map((template) => (
-              <motion.div
-                key={template.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Card className="h-full flex flex-col overflow-hidden border-border hover:border-primary/50 transition-colors group">
-                  {/* Image Placeholder */}
-                  <div 
-                    className="h-48 w-full relative flex items-center justify-center overflow-hidden"
-                    style={{ background: template.imageGradient }}
-                  >
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
-                    <span className="text-white/80 font-black text-2xl tracking-wider opacity-50 rotate-[-10deg] scale-150">
-                      {template.name}
-                    </span>
-                    <Badge className="absolute top-4 right-4 bg-background/80 backdrop-blur text-foreground hover:bg-background/90 border-none">
-                      {categoriesRecord[template.category]}
-                    </Badge>
-                  </div>
-                  
-                  <CardHeader className="pb-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-bold text-xl">{template.name}</h3>
-                      <div className="text-left">
-                        <span className="text-lg font-black text-primary">{template.price}</span>
-                        <span className="text-xs text-muted-foreground block">ريال / شهر</span>
-                      </div>
-                    </div>
-                    <p className="text-sm text-muted-foreground line-clamp-2">
-                      {template.description}
-                    </p>
-                  </CardHeader>
-                  
-                  <CardContent className="pb-6 flex-grow">
-                    <ul className="space-y-2">
-                      {template.features.slice(0, 3).map((feature, idx) => (
-                        <li key={idx} className="flex items-center gap-2 text-sm text-foreground/80">
-                          <Check className="w-4 h-4 text-primary shrink-0" />
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                  
-                  <CardFooter className="pt-0 flex gap-3 border-t border-border mt-auto p-4 bg-secondary/20">
-                    <Button variant="default" className="flex-1 gap-2 font-bold" asChild>
-                      <a href={`https://wa.me/966551378531?text=أريد طلب قالب: ${template.name}`} target="_blank" rel="noreferrer" data-testid={`order-${template.id}`}>
-                        <MessageCircle className="w-4 h-4" /> اطلب الآن
-                      </a>
-                    </Button>
-                    <Button variant="outline" className="flex-1 gap-2" asChild>
-                      <a href={template.demoUrl} onClick={(e) => e.preventDefault()} data-testid={`demo-${template.id}`}>
-                        <Eye className="w-4 h-4" /> معاينة
-                      </a>
-                    </Button>
-                  </CardFooter>
-                </Card>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+    <div className="min-h-screen bg-[#FAF8F5] pt-32 pb-20 px-6">
+      <div className="max-w-6xl mx-auto">
         
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h2 className="text-[#1A1208] mb-4">اختر قالبك</h2>
+          <p className="text-[#5C524E] text-xl">١٢+ قالب جاهز لكل قطاع</p>
+        </div>
+
+        {/* Filter Tabs */}
+        <div className="flex overflow-x-auto gap-3 pb-4 mb-12 justify-start md:justify-center no-scrollbar" style={{ scrollbarWidth: 'none' }}>
+          {categoryTabs.map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`whitespace-nowrap px-6 py-2.5 rounded-full text-base font-semibold transition-all duration-200 ${
+                activeTab === tab
+                  ? "bg-[#2C221E] text-[#FAF8F5]"
+                  : "border border-[#EAE3D2] text-[#5C524E] hover:bg-[#F5F2EB] bg-transparent"
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredTemplates.map((template, i) => (
+            <motion.div
+              key={template.id}
+              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 24 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: (i % 6) * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-white rounded-2xl border border-[#EAE3D2] overflow-hidden group hover:shadow-[0_8px_32px_rgba(44,34,30,0.10)] hover:-translate-y-1 transition-all duration-300 relative flex flex-col"
+            >
+              {/* Preview Block */}
+              <div className="h-48 w-full bg-gradient-to-br from-[#EAE3D2] to-[#D8CBB5] flex items-center justify-center relative">
+                {getSectorIcon(template.sector)}
+                {template.badge && (
+                  <span className="absolute top-3 right-3 bg-[#2C221E] text-[#FAF8F5] text-xs font-bold rounded-full px-3 py-1">
+                    {template.badge}
+                  </span>
+                )}
+              </div>
+
+              {/* Body */}
+              <div className="p-5 flex flex-col flex-1">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="font-[600] text-[#1A1208] text-xl">{template.name}</h3>
+                  <span className="bg-[#F5F2EB] text-[#9C8F85] text-xs font-medium rounded-full px-3 py-1">
+                    {template.sector}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between mt-auto pt-4 border-t border-[#EAE3D2]/50">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-[#2C221E] font-bold text-2xl">{template.price}</span>
+                    <span className="text-[#9C8F85] text-sm font-medium">ريال/شهر</span>
+                  </div>
+                  <a
+                    href="https://wa.me/966551378531"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="bg-[#2C221E] text-[#FAF8F5] text-sm font-semibold rounded-full px-5 py-2 hover:bg-[#3D2E28] transition-colors"
+                  >
+                    اختر القالب
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
         {filteredTemplates.length === 0 && (
-          <div className="text-center py-24 text-muted-foreground">
-            لا توجد قوالب متوفرة في هذا التصنيف حالياً.
+          <div className="text-center py-20 text-[#9C8F85] text-lg">
+            لا توجد قوالب متوفرة حالياً في هذا القسم.
           </div>
         )}
+
       </div>
     </div>
   );
