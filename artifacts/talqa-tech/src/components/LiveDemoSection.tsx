@@ -153,70 +153,105 @@ export default function LiveDemoSection() {
             </motion.a>
           </motion.div>
 
-          {/* phone frame */}
+          {/* phone frame column */}
           <motion.div initial={{opacity:0,y:24}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:0.65, delay:0.08}}
-            style={{ display:'flex', justifyContent:'center', position:'relative' }}>
+            style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:20 }}>
 
-            {/* glow behind phone */}
-            <div style={{ position:'absolute', inset:-60, borderRadius:'50%', background:'radial-gradient(ellipse,rgba(99,102,241,0.18) 0%,transparent 65%)', pointerEvents:'none' }} />
+            {/* floating chips above phone — safe on all widths */}
+            <div style={{ display:'flex', gap:12, justifyContent:'center', flexWrap:'wrap' }}>
+              <motion.div animate={{ y:[0,-4,0] }} transition={{ duration:2.8, repeat:Infinity, ease:'easeInOut' }}
+                style={{ background:'rgba(8,8,24,0.9)', backdropFilter:'blur(16px)', border:'1px solid rgba(129,140,248,0.28)', borderRadius:99, padding:'8px 16px', boxShadow:'0 8px 28px rgba(0,0,0,0.5)', display:'flex', alignItems:'center', gap:8 }}>
+                <span style={{ width:6, height:6, borderRadius:'50%', background:'#818CF8', boxShadow:'0 0 8px #818CF8', flexShrink:0 }} />
+                <span style={{ fontFamily:'Cairo,sans-serif', fontSize:12, fontWeight:800, color:'#fff' }}>تطبيق حي — قابل للتفاعل</span>
+              </motion.div>
+              <motion.div animate={{ y:[0,4,0] }} transition={{ duration:3.2, repeat:Infinity, ease:'easeInOut', delay:0.4 }}
+                style={{ background:'rgba(8,8,24,0.9)', backdropFilter:'blur(16px)', border:'1px solid rgba(16,185,129,0.28)', borderRadius:99, padding:'8px 16px', boxShadow:'0 8px 28px rgba(0,0,0,0.5)', display:'flex', alignItems:'center', gap:8 }}>
+                <span style={{ width:6, height:6, borderRadius:'50%', background:'#10B981', boxShadow:'0 0 8px #10B981', flexShrink:0 }} />
+                <span style={{ fontFamily:'Cairo,sans-serif', fontSize:12, fontWeight:800, color:'#10B981' }}>+٣٥٪ عودة عملاء</span>
+              </motion.div>
+            </div>
 
-            {/* floating badge — points */}
-            <motion.div animate={{ y:[0,-7,0] }} transition={{ duration:3, repeat:Infinity, ease:'easeInOut' }}
-              style={{ position:'absolute', top:36, right:'calc(50% + 130px)', zIndex:10, background:'rgba(8,8,20,0.92)', backdropFilter:'blur(20px)', border:'1px solid rgba(129,140,248,0.22)', borderRadius:16, padding:'10px 16px', boxShadow:'0 14px 36px rgba(0,0,0,0.55)', whiteSpace:'nowrap', display:'flex', flexDirection:'column', gap:3 }}>
-              <div style={{ fontFamily:'Cairo,sans-serif', fontSize:11, fontWeight:800, color:'#fff' }}>تطبيق حي ✦</div>
-              <div style={{ fontFamily:'Cairo,sans-serif', fontSize:10, color:'#818CF8' }}>قابل للتفاعل الكامل</div>
-            </motion.div>
+            {/* phone shell — iPhone proportions */}
+            <div style={{ position:'relative' }}>
 
-            {/* floating badge — retention */}
-            <motion.div animate={{ y:[0,7,0] }} transition={{ duration:3.5, repeat:Infinity, ease:'easeInOut', delay:0.6 }}
-              style={{ position:'absolute', bottom:100, right:'calc(50% + 128px)', zIndex:10, background:'rgba(8,8,20,0.92)', backdropFilter:'blur(20px)', border:'1px solid rgba(16,185,129,0.22)', borderRadius:16, padding:'10px 14px', boxShadow:'0 14px 36px rgba(0,0,0,0.55)', whiteSpace:'nowrap', display:'flex', flexDirection:'column', gap:3 }}>
-              <div style={{ fontFamily:'Cairo,sans-serif', fontSize:11, fontWeight:800, color:'#10B981' }}>+٣٥٪ عودة عملاء</div>
-              <div style={{ fontFamily:'Cairo,sans-serif', fontSize:10, color:'rgba(255,255,255,0.4)' }}>متوسط نتائجنا</div>
-            </motion.div>
+              {/* outer glow */}
+              <div style={{ position:'absolute', inset:-48, borderRadius:'50%', background:'radial-gradient(ellipse,rgba(99,102,241,0.22) 0%,transparent 65%)', pointerEvents:'none', zIndex:0 }} />
 
-            {/* phone shell */}
-            <motion.div animate={{ y:[0,-7,0] }} transition={{ duration:6, repeat:Infinity, ease:'easeInOut' }}
-              style={{ width:290, height:590, borderRadius:50, background:'linear-gradient(160deg,#12102a 0%,#070516 100%)', border:'1.5px solid rgba(129,140,248,0.20)', boxShadow:'0 60px 140px rgba(0,0,0,0.75), 0 0 80px rgba(99,102,241,0.15), inset 0 1px 0 rgba(255,255,255,0.05)', position:'relative', overflow:'hidden', padding:'14px 10px 12px' }}>
+              {/* side buttons */}
+              <div style={{ position:'absolute', left:-4, top:90, width:4, height:36, borderRadius:'4px 0 0 4px', background:'rgba(129,140,248,0.25)' }} />
+              <div style={{ position:'absolute', left:-4, top:138, width:4, height:56, borderRadius:'4px 0 0 4px', background:'rgba(129,140,248,0.25)' }} />
+              <div style={{ position:'absolute', left:-4, top:204, width:4, height:56, borderRadius:'4px 0 0 4px', background:'rgba(129,140,248,0.25)' }} />
+              <div style={{ position:'absolute', right:-4, top:130, width:4, height:72, borderRadius:'0 4px 4px 0', background:'rgba(129,140,248,0.25)' }} />
 
-              {/* top sheen */}
-              <div style={{ position:'absolute', top:0, insetInline:0, height:160, background:'linear-gradient(180deg,rgba(129,140,248,0.06) 0%,transparent 100%)', pointerEvents:'none', zIndex:3 }} />
+              <motion.div
+                animate={{ y:[0,-6,0] }}
+                transition={{ duration:6, repeat:Infinity, ease:'easeInOut' }}
+                style={{
+                  width: 300,
+                  height: 640,
+                  borderRadius: 54,
+                  background: 'linear-gradient(170deg,#1a1630 0%,#0a0818 60%,#060412 100%)',
+                  border: '1.5px solid rgba(129,140,248,0.22)',
+                  boxShadow: [
+                    '0 0 0 1px rgba(0,0,0,0.8)',
+                    '0 40px 100px rgba(0,0,0,0.8)',
+                    '0 0 80px rgba(99,102,241,0.18)',
+                    'inset 0 1px 0 rgba(255,255,255,0.08)',
+                    'inset 0 -1px 0 rgba(255,255,255,0.03)',
+                  ].join(', '),
+                  position: 'relative',
+                  zIndex: 1,
+                  overflow: 'hidden',
+                  padding: '16px 12px 14px',
+                  boxSizing: 'border-box',
+                }}>
 
-              {/* notch */}
-              <div style={{ width:86, height:24, borderRadius:12, background:'#000', margin:'0 auto 8px', display:'flex', alignItems:'center', justifyContent:'center', gap:6, position:'relative', zIndex:4 }}>
-                <div style={{ width:9, height:9, borderRadius:'50%', background:'#1a1a1a', border:'1px solid #2a2a2a' }} />
-                <div style={{ width:34, height:4, borderRadius:3, background:'#111' }} />
-              </div>
+                {/* screen edge sheen */}
+                <div style={{ position:'absolute', top:0, insetInline:0, height:'40%', background:'linear-gradient(180deg,rgba(255,255,255,0.04) 0%,transparent 100%)', pointerEvents:'none', zIndex:5, borderRadius:'54px 54px 0 0' }} />
 
-              {/* iframe */}
-              <div style={{ height:508, borderRadius:36, overflow:'hidden', background:'#F8F6F2', position:'relative' }}>
-                <AnimatePresence mode="wait">
-                  <motion.iframe
-                    key={iframeKey}
-                    src={demoUrl}
-                    initial={{ opacity:0 }}
-                    animate={{ opacity:1 }}
-                    exit={{ opacity:0 }}
-                    transition={{ duration:0.35 }}
-                    style={{ width:'100%', height:'100%', border:'none', display:'block' }}
-                    title="Live Demo — حيز"
-                  />
-                </AnimatePresence>
-              </div>
+                {/* dynamic island */}
+                <div style={{ width:110, height:30, borderRadius:20, background:'#000', margin:'0 auto 10px', display:'flex', alignItems:'center', justifyContent:'center', gap:10, position:'relative', zIndex:6 }}>
+                  <div style={{ width:10, height:10, borderRadius:'50%', background:'#1c1c1e' }} />
+                  <div style={{ width:44, height:10, borderRadius:5, background:'#1a1a1a' }} />
+                </div>
 
-              {/* home bar */}
-              <div style={{ width:86, height:4, borderRadius:2, background:'rgba(255,255,255,0.12)', margin:'8px auto 0', position:'relative', zIndex:4 }} />
-            </motion.div>
+                {/* screen content — iframe */}
+                <div style={{
+                  height: 556,
+                  borderRadius: 40,
+                  overflow: 'hidden',
+                  background: '#F8F6F2',
+                  position: 'relative',
+                  zIndex: 2,
+                }}>
+                  <AnimatePresence mode="wait">
+                    <motion.iframe
+                      key={iframeKey}
+                      src={demoUrl}
+                      initial={{ opacity:0 }}
+                      animate={{ opacity:1 }}
+                      exit={{ opacity:0 }}
+                      transition={{ duration:0.4 }}
+                      style={{ width:'100%', height:'100%', border:'none', display:'block' }}
+                      title="Live Demo — حيز"
+                    />
+                  </AnimatePresence>
+                </div>
+
+                {/* home indicator */}
+                <div style={{ width:100, height:5, borderRadius:3, background:'rgba(255,255,255,0.15)', margin:'10px auto 0', position:'relative', zIndex:6 }} />
+              </motion.div>
+            </div>
           </motion.div>
         </div>
       </div>
 
-      {/* responsive CSS injected inline */}
       <style>{`
-        @media (min-width: 900px) {
+        @media (min-width: 960px) {
           .demo-grid {
             grid-template-columns: minmax(0,1fr) auto !important;
-            gap: 56px !important;
-            align-items: center;
+            gap: 60px !important;
+            align-items: start;
           }
         }
       `}</style>
