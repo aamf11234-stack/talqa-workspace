@@ -85,56 +85,114 @@ function gradientPng(
   });
 }
 
-/* ── TLQA Premium Strip — Aurora / Orb / Scanline effect ──────────
-   Renders per-pixel:
-   1. Horizontal gradient base: deep indigo → vivid violet
-   2. Aurora shimmer: overlapping sine waves vertically
-   3. Diagonal scanlines: subtle repeating bright stripes
-   4. Two glowing orbs: violet top-right + indigo bottom-left     */
+/* ══════════════════════════════════════════════════════════════
+   TLQA Aurora Strip — near-BLACK base so neon orbs pop hard
+   ─────────────────────────────────────────────────────────────
+   Layer stack (per-pixel):
+   1. Near-black base (#080614 → #1e1b4b) — left to right
+   2. Sine-wave shimmer bands (aurora feel)
+   3. Diagonal scanlines @ 45° — subtle texture
+   4. Violet neon orb   — top-right   (dominant glow)
+   5. Indigo soft orb   — bottom-left
+   6. Bright white spark — top-left corner
+   7. Magenta accent orb — center-top  (extra dimension)
+══════════════════════════════════════════════════════════════ */
 function tlqaAuroraStrip(w: number, h: number): Buffer {
   const PI = Math.PI;
   return makePng(w, h, (x, y) => {
-    const tx = x / Math.max(1, w - 1);   // 0→1 left to right
-    const ty = y / Math.max(1, h - 1);   // 0→1 top to bottom
+    const tx = x / Math.max(1, w - 1);
+    const ty = y / Math.max(1, h - 1);
 
-    // 1. Base: #1e1b4b → #7c3aed  (deep indigo → vivid violet)
-    let r = 30  + tx * 94;
-    let g = 27  + tx *  6;
-    let b = 75  + tx * 157;
+    // 1. Near-black base → dark indigo
+    let r =  8 + tx * 22;   //   8 → 30
+    let g =  6 + tx * 21;   //   6 → 27
+    let b = 20 + tx * 55;   //  20 → 75
 
-    // 2. Aurora shimmer — two offset sine waves × each other
-    const w1 = (Math.sin(ty * PI * 5 - 0.8) + 1) * 0.5;
-    const w2 = (Math.sin(ty * PI * 2.5 + 1.2) + 1) * 0.5;
-    const aurora = w1 * w2 * 0.35;
-    r += aurora * 45;
-    g += aurora * 20;
-    b += aurora * 130;
+    // 2. Aurora shimmer
+    const aw1 = (Math.sin(ty * PI * 5 - 0.8) + 1) * 0.5;
+    const aw2 = (Math.sin(ty * PI * 2.5 + 1.2) + 1) * 0.5;
+    const aurora = aw1 * aw2 * 0.5;
+    r += aurora * 30;   g += aurora * 10;   b += aurora * 100;
 
-    // 3. Diagonal scanlines — 45° stripes, very thin
-    const diag = ((x + y) % 16);
-    const line  = diag < 1.2 ? 0.16 : 0;
-    r += line * 70;   g += line * 50;   b += line * 160;
+    // 3. Diagonal scanlines
+    const line = (x + y) % 16 < 1.2 ? 0.18 : 0;
+    r += line * 60;   g += line * 40;   b += line * 140;
 
-    // 4a. Glowing violet orb — top-right
-    const d1 = Math.sqrt((x - w * 0.80) ** 2 + (y - h * 0.20) ** 2);
-    const g1 = Math.max(0, 1 - d1 / (w * 0.32)) ** 2;
-    r += g1 * 130;   g += g1 * 55;    b += g1 * 240;
+    // 4. Vivid violet neon orb — top-right (main hero glow)
+    const d1 = Math.sqrt((x - w * 0.78) ** 2 + (y - h * 0.22) ** 2);
+    const o1 = Math.max(0, 1 - d1 / (w * 0.38)) ** 1.8;
+    r += o1 * 140;   g += o1 *  40;   b += o1 * 255;
 
-    // 4b. Soft indigo orb — bottom-left
-    const d2 = Math.sqrt((x - w * 0.15) ** 2 + (y - h * 0.80) ** 2);
-    const g2 = Math.max(0, 1 - d2 / (w * 0.26)) ** 2;
-    r += g2 * 60;    g += g2 * 40;    b += g2 * 190;
+    // 5. Indigo orb — bottom-left
+    const d2 = Math.sqrt((x - w * 0.14) ** 2 + (y - h * 0.82) ** 2);
+    const o2 = Math.max(0, 1 - d2 / (w * 0.28)) ** 2;
+    r += o2 *  70;   g += o2 *  40;   b += o2 * 210;
 
-    // 4c. Tiny bright spark — top-left corner
-    const d3 = Math.sqrt((x - w * 0.08) ** 2 + (y - h * 0.18) ** 2);
-    const g3 = Math.max(0, 1 - d3 / (w * 0.14)) ** 3;
-    r += g3 * 180;   g += g3 * 160;   b += g3 * 255;
+    // 6. White spark — top-left corner
+    const d3 = Math.sqrt((x - w * 0.06) ** 2 + (y - h * 0.15) ** 2);
+    const o3 = Math.max(0, 1 - d3 / (w * 0.12)) ** 3;
+    r += o3 * 230;   g += o3 * 200;   b += o3 * 255;
+
+    // 7. Magenta accent — center-top (depth layer)
+    const d4 = Math.sqrt((x - w * 0.50) ** 2 + (y - h * 0.10) ** 2);
+    const o4 = Math.max(0, 1 - d4 / (w * 0.22)) ** 2.5;
+    r += o4 * 180;   g += o4 *  30;   b += o4 * 160;
 
     return [
       Math.min(255, Math.max(0, Math.round(r))),
       Math.min(255, Math.max(0, Math.round(g))),
       Math.min(255, Math.max(0, Math.round(b))),
     ];
+  });
+}
+
+/* ══════════════════════════════════════════════════════════════
+   TLQA Signal-Bars Logo Mark
+   ─────────────────────────────────────────────────────────────
+   4 rounded bars of increasing height, gradient purple→white
+   (تلقا = استقبال = signal reception)
+   Background matches pass backgroundColor so it's seamless.
+══════════════════════════════════════════════════════════════ */
+function tlqaSignalLogo(w: number, h: number): Buffer {
+  const BG: [number, number, number] = [8, 6, 20]; // matches pass bg
+  const barW = Math.round(w * 0.062);  // ~10px @ 160w
+  const gap   = Math.round(w * 0.038); //  ~6px gap
+  const totalW = 4 * barW + 3 * gap;
+  const startX = Math.floor((w - totalW) / 2);
+  const bottom = h - Math.floor(h * 0.10);
+  const avail  = bottom - Math.floor(h * 0.06);
+  const heights = [
+    Math.round(avail * 0.32),
+    Math.round(avail * 0.52),
+    Math.round(avail * 0.72),
+    Math.round(avail * 0.94),
+  ];
+  // Gradient: purple → lavender → white
+  const barColors: [number, number, number][] = [
+    [110,  80, 230],
+    [150, 120, 255],
+    [195, 165, 255],
+    [255, 255, 255],
+  ];
+  const radius = Math.floor(barW / 2);
+
+  return makePng(w, h, (x, y) => {
+    for (let i = 0; i < 4; i++) {
+      const bx   = startX + i * (barW + gap);
+      const barH = heights[i]!;
+      const topY = bottom - barH;
+      if (x < bx || x >= bx + barW) continue;
+      if (y < topY || y > bottom) continue;
+      const relX = x - bx;
+      const relY = y - topY;
+      // Rounded top cap
+      if (relY < radius) {
+        const dist = Math.sqrt((relX - radius + 0.5) ** 2 + (relY - radius) ** 2);
+        if (dist > radius - 0.5) continue;
+      }
+      return barColors[i]!;
+    }
+    return BG;
   });
 }
 
@@ -571,13 +629,13 @@ router.get("/tlqa", async (req, res) => {
     serial = `TQ-${Date.now()}`,
   } = req.query as Record<string, string>;
 
-  /* ── Aurora strip — generated per-pixel with orbs + shimmer ── */
+  /* ── Aurora strip — near-black base, neon orbs pop ── */
   const STRIP_TQ    = tlqaAuroraStrip(375, 98);
   const STRIP_TQ_2X = tlqaAuroraStrip(750, 196);
 
-  /* ── Logo: brand indigo ── */
-  const LOGO    = solidPng(160, 50,  99, 102, 241);
-  const LOGO_2X = solidPng(320, 100, 99, 102, 241);
+  /* ── Signal-bars logo mark (تلقا = استقبال) ── */
+  const LOGO    = tlqaSignalLogo(160,  50);
+  const LOGO_2X = tlqaSignalLogo(320, 100);
 
   const passJson = {
     formatVersion:      1,
@@ -588,10 +646,10 @@ router.get("/tlqa", async (req, res) => {
     description:        "بطاقة تلقا تك التعريفية",
     logoText:           "تلقا تك",
 
-    /* Deep vivid indigo — the whole card is branded, not just the strip */
-    backgroundColor: "rgb(55, 48, 163)",
+    /* Near-black canvas — aurora strip + neon logo pop against it */
+    backgroundColor: "rgb(8, 6, 20)",
     foregroundColor: "rgb(255, 255, 255)",
-    labelColor:      "rgb(196, 181, 253)",
+    labelColor:      "rgb(160, 130, 255)",
 
     generic: {
       headerFields: [
