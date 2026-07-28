@@ -205,6 +205,7 @@ const STRIP_APPT_2X = readFileSync(join(ASSETS, "strip_appt@2x.png"));
 const BG_APPT       = readFileSync(join(ASSETS, "appt_bg.png"));
 const BG_APPT_2X    = readFileSync(join(ASSETS, "appt_bg@2x.png"));
 const STRIP_BD      = readFileSync(join(ASSETS, "strip_browndose.jpg"));
+const STRIP_TLQA    = readFileSync(join(ASSETS, "strip_tlqa.jpg"));
 
 /* ── Icons — brand indigo ────────────────────────────────── */
 const ICON    = solidPng(29, 29, 99, 102, 241);
@@ -629,9 +630,9 @@ router.get("/tlqa", async (req, res) => {
     serial = `TQ-${Date.now()}`,
   } = req.query as Record<string, string>;
 
-  /* ── Aurora strip — near-black base, neon orbs pop ── */
-  const STRIP_TQ    = tlqaAuroraStrip(375, 98);
-  const STRIP_TQ_2X = tlqaAuroraStrip(750, 196);
+  /* ── Real photo strip: Riyadh tech office + Kingdom Tower ── */
+  const STRIP_TQ    = STRIP_TLQA;
+  const STRIP_TQ_2X = STRIP_TLQA;
 
   /* ── Signal-bars logo mark (تلقا = استقبال) ── */
   const LOGO    = tlqaSignalLogo(160,  50);
