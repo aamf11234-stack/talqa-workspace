@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
 import {
   ArrowUpLeft, CheckCircle2, MoveRight, Wallet,
-  Smartphone, BarChart3, Bell, Star,
+  Smartphone, BarChart3, Bell, Star, PlayCircle,
 } from 'lucide-react';
 import PageLayout from '../PageLayout';
 import { useIsMobile } from '../../hooks/useIsMobile';
@@ -350,6 +351,151 @@ function BentoFeatures({ features, isMobile = false }: { features: SectorData['f
         </motion.div>
       )}
     </div>
+  );
+}
+
+/* ────────────────────────────────────
+   DEMO BANNER — maps slug → live demo
+──────────────────────────────────── */
+const DEMO_MAP: Record<string, { url: string; label: string; hasInput?: boolean }> = {
+  cafes:       { url: '/brown-dose/?mode=app', label: 'جرّب تطبيق الكافيه الآن', hasInput: true },
+  restaurants: { url: '/brown-dose/?mode=app', label: 'جرّب تطبيق المطعم الآن', hasInput: true },
+  clinics:     { url: '/clinic-demo/',         label: 'جرّب ديمو نظام العيادة' },
+  hotels:      { url: '/clinic-demo/',         label: 'جرّب الديمو التجريبي' },
+};
+
+function DemoBanner({ slug, name, accent, accent2, isMobile }: {
+  slug: string; name: string; accent: string; accent2: string; isMobile: boolean;
+}) {
+  const [bizName, setBizName] = useState('');
+  const demo = DEMO_MAP[slug];
+  if (!demo) return null;
+
+  const finalUrl = demo.hasInput && bizName.trim()
+    ? `${demo.url}&biz=${encodeURIComponent(bizName.trim())}`
+    : demo.url;
+
+  return (
+    <section style={{
+      margin: '0', padding: 'clamp(64px,8vw,100px) clamp(24px,5vw,80px)',
+      background: `linear-gradient(135deg,${accent}12 0%,${C.bg2} 50%,${accent2}08 100%)`,
+      borderTop: '1px solid rgba(255,255,255,0.05)',
+      borderBottom: '1px solid rgba(255,255,255,0.05)',
+      position: 'relative', overflow: 'hidden',
+    }}>
+      {/* Glow */}
+      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 800, height: 400, borderRadius: '50%', background: `radial-gradient(ellipse,${accent}18 0%,transparent 65%)`, pointerEvents: 'none' }} />
+
+      <div style={{ maxWidth: 1280, margin: '0 auto', position: 'relative' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 32 : 64, alignItems: 'center' }}>
+
+          {/* Text side */}
+          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 14px', borderRadius: 99, background: `${accent}18`, border: `1px solid ${accent}33`, marginBottom: 24 }}>
+              <div style={{ width: 7, height: 7, borderRadius: '50%', background: accent, animation: 'tmpl-pulse 2s infinite' }} />
+              <span style={{ fontWeight: 800, fontSize: 11, color: accent, letterSpacing: 1.5 }}>ديمو حي — جرّب قبل ما تقرر</span>
+            </div>
+
+            <h2 style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 900, fontSize: 'clamp(1.8rem,3.5vw,3rem)', color: '#fff', letterSpacing: '-0.04em', lineHeight: 1.1, marginBottom: 14 }}>
+              شوف كيف سيبدو نظام <span style={{ background: `linear-gradient(135deg,${accent},${accent2})`, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>{name}</span>ك
+            </h2>
+            <p style={{ fontFamily: 'Cairo,sans-serif', fontSize: 15, color: C.dim, lineHeight: 1.8, marginBottom: 28 }}>
+              ديمو تفاعلي حي — جرّب كل الميزات الآن بدون تسجيل أو بطاقة بنكية.
+            </p>
+
+            {/* Input if applicable */}
+            {demo.hasInput && (
+              <div style={{ display: 'flex', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
+                <input
+                  value={bizName}
+                  onChange={e => setBizName(e.target.value)}
+                  onKeyDown={e => { if (e.key === 'Enter' && bizName.trim()) window.open(finalUrl, '_blank'); }}
+                  placeholder={`اسم ${name}ك… مثال: بيت الأصيل`}
+                  style={{ flex: 1, minWidth: 180, padding: '14px 18px', borderRadius: 13, background: 'rgba(255,255,255,0.06)', border: `1px solid ${bizName ? accent+'55' : 'rgba(255,255,255,0.12)'}`, color: '#fff', fontFamily: 'Cairo,sans-serif', fontSize: 14, fontWeight: 600, outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.2s', direction: 'rtl' }}
+                />
+              </div>
+            )}
+
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              <a href={finalUrl} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 32px', borderRadius: 14, background: `linear-gradient(135deg,${accent},${accent2})`, color: '#fff', fontFamily: 'Cairo,sans-serif', fontSize: 15, fontWeight: 900, textDecoration: 'none', boxShadow: `0 10px 36px ${accent}40` }}>
+                <PlayCircle size={18} strokeWidth={2} />
+                {demo.label}
+              </a>
+            </div>
+
+            <div style={{ display: 'flex', gap: 16, marginTop: 20, flexWrap: 'wrap' }}>
+              {['بدون تسجيل', 'بدون بطاقة بنكية', 'مجاني تماماً'].map(t => (
+                <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <CheckCircle2 size={12} strokeWidth={2.5} color={accent} />
+                  <span style={{ fontFamily: 'Cairo,sans-serif', fontSize: 12, fontWeight: 700, color: C.dimmer }}>{t}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Visual side */}
+          {!isMobile && (
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+              style={{ display: 'flex', justifyContent: 'center', gap: 20, alignItems: 'center' }}>
+
+              {/* Role cards for clinics */}
+              {slug === 'clinics' ? (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  {[
+                    { role: 'المالك', icon: '👑', url: '/clinic-demo/owner', color: '#F59E0B', desc: 'إيرادات، أداء، قرارات' },
+                    { role: 'الطبيب', icon: '🩺', url: '/clinic-demo/doctor', color: '#10B981', desc: 'مرضى، وصفات، مواعيد' },
+                    { role: 'الاستقبال', icon: '💁', url: '/clinic-demo/reception', color: accent, desc: 'حجوزات، تسجيل، انتظار' },
+                  ].map(r => (
+                    <a key={r.role} href={r.url} target="_blank" rel="noopener noreferrer"
+                      style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '16px 20px', borderRadius: 16, background: `${r.color}12`, border: `1px solid ${r.color}28`, textDecoration: 'none', transition: 'all 0.2s', width: 280 }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background=`${r.color}20`; (e.currentTarget as HTMLElement).style.borderColor=`${r.color}50`; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background=`${r.color}12`; (e.currentTarget as HTMLElement).style.borderColor=`${r.color}28`; }}>
+                      <div style={{ width: 44, height: 44, borderRadius: 14, background: `${r.color}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>{r.icon}</div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontFamily: 'Cairo,sans-serif', fontWeight: 900, fontSize: 15, color: '#fff', marginBottom: 3 }}>دخول كـ {r.role}</div>
+                        <div style={{ fontFamily: 'Cairo,sans-serif', fontSize: 11.5, color: C.dim }}>{r.desc}</div>
+                      </div>
+                      <ArrowUpLeft size={14} strokeWidth={2} color={r.color} />
+                    </a>
+                  ))}
+                </div>
+              ) : (
+                /* Phone mockup for other demos */
+                <motion.div animate={{ y: [0,-10,0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+                  style={{ width: 220, height: 440, borderRadius: 38, background: 'linear-gradient(160deg,#141428,#07071a)', border: `1.5px solid ${accent}30`, boxShadow: [`0 50px 100px rgba(0,0,0,0.7)`, `0 0 60px ${accent}18`].join(','), padding: '14px 12px', position: 'relative', overflow: 'hidden' }}>
+                  <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 150, background: `linear-gradient(180deg,${accent}14,transparent)`, pointerEvents: 'none' }} />
+                  <div style={{ width: 68, height: 20, borderRadius: 10, background: '#000', margin: '0 auto 12px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 5 }}>
+                    <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#1c1c1c', border: '1px solid #333' }} />
+                    <div style={{ width: 28, height: 4, borderRadius: 2, background: '#111' }} />
+                  </div>
+                  <div style={{ height: 350, borderRadius: 24, background: `linear-gradient(160deg,${accent}15,rgba(7,7,26,0.98))`, border: `1px solid ${accent}18`, padding: 12, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+                      <div style={{ width: 32, height: 32, borderRadius: 10, background: `linear-gradient(135deg,${accent},${accent2})`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>✨</div>
+                      <div style={{ fontSize: 11, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>{bizName || `${name}ك`}</div>
+                    </div>
+                    <div style={{ borderRadius: 12, background: `${accent}20`, border: `1px solid ${accent}30`, padding: '12px' }}>
+                      <div style={{ fontSize: 8, color: C.dim, fontFamily: 'Cairo,sans-serif', marginBottom: 4 }}>رصيد نقاطك</div>
+                      <div style={{ fontSize: 22, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif', lineHeight: 1 }}>٢٤٠ نقطة</div>
+                    </div>
+                    {['خدمة ١', 'خدمة ٢', 'خدمة ٣'].map((s, i) => (
+                      <div key={i} style={{ padding: '9px 11px', borderRadius: 11, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)', fontSize: 10, color: 'rgba(255,255,255,0.5)', fontFamily: 'Cairo,sans-serif', display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <div style={{ width: 5, height: 5, borderRadius: '50%', background: accent, flexShrink: 0 }} />{s}
+                      </div>
+                    ))}
+                    <div style={{ marginTop: 'auto', padding: '11px', borderRadius: 12, background: `linear-gradient(135deg,${accent},${accent2})`, textAlign: 'center', fontSize: 10, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>
+                      {demo.label} ←
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </motion.div>
+          )}
+        </div>
+      </div>
+      <style>{`@keyframes tmpl-pulse { 0%,100%{opacity:1}50%{opacity:0.4} }`}</style>
+    </section>
   );
 }
 
@@ -832,6 +978,11 @@ export default function SectorPage({ d }: { d: SectorData }) {
           </div>
         </section>
       )}
+
+      {/* ═══════════════════════════════════════════
+          LIVE DEMO BANNER
+      ═══════════════════════════════════════════ */}
+      <DemoBanner slug={d.slug} name={d.name} accent={C.ink} accent2={C.ink2} isMobile={m} />
 
       {/* ═══════════════════════════════════════════
           CTA — full-bleed dramatic close

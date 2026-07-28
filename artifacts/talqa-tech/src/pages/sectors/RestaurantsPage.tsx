@@ -599,6 +599,167 @@ function FeatureCard({ f, i }: { f: typeof FEATURES[0]; i: number }) {
   );
 }
 
+/* ─────────────────────────────────────
+   LIVE DEMO SECTION — try with your name
+───────────────────────────────────── */
+function RestaurantDemoSection({ isMobile }: { isMobile: boolean }) {
+  const [bizName, setBizName] = useState('');
+  const demoBase = '/brown-dose/';
+  const demoUrl = bizName.trim()
+    ? `${demoBase}?mode=app&biz=${encodeURIComponent(bizName.trim())}`
+    : `${demoBase}?mode=app`;
+
+  return (
+    <section style={{ position: 'relative', overflow: 'hidden', padding: 'clamp(80px,10vw,120px) clamp(24px,5vw,80px)', background: R.bg2, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+
+      {/* Glow */}
+      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+        <div style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%,-50%)', width: 900, height: 600, borderRadius: '50%', background: `radial-gradient(ellipse,${R.glow} 0%,transparent 60%)`, opacity: 0.35 }} />
+      </div>
+
+      <div style={{ maxWidth: 1280, margin: '0 auto', position: 'relative' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 48 : 80, alignItems: 'center' }}>
+
+          {/* LEFT — text + input */}
+          <motion.div initial={{ opacity: 0, x: -32 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}>
+
+            {/* Badge */}
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 14px', borderRadius: 99, background: `${R.red}18`, border: `1px solid ${R.border}`, marginBottom: 28 }}>
+              <div style={{ width: 7, height: 7, borderRadius: '50%', background: R.red, boxShadow: `0 0 8px ${R.red}`, animation: 'pulse 2s infinite' }} />
+              <span style={{ fontWeight: 800, fontSize: 11, color: R.orange, letterSpacing: 1.5 }}>ديمو حي — جاهز الآن</span>
+            </div>
+
+            <h2 style={{ fontFamily: 'Cairo, sans-serif', fontWeight: 900, fontSize: 'clamp(2rem,4vw,3.2rem)', color: '#fff', letterSpacing: '-0.04em', lineHeight: 1.1, marginBottom: 16 }}>
+              شوف مطعمك<br />
+              <span style={{ background: R.grad, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                قبل ما تدفع ريال
+              </span>
+            </h2>
+
+            <p style={{ fontFamily: 'Cairo, sans-serif', fontSize: 16, color: R.dim, lineHeight: 1.8, marginBottom: 36 }}>
+              اكتب اسم مطعمك وجرّب النظام بنفسك — تطبيق ولاء حقيقي، قائمة طعام، حجوزات، كل شيء.
+            </p>
+
+            {/* Input + button */}
+            <div style={{ display: 'flex', gap: 10, marginBottom: 24, flexWrap: 'wrap' }}>
+              <div style={{ flex: 1, minWidth: 200, position: 'relative' }}>
+                <input
+                  value={bizName}
+                  onChange={e => setBizName(e.target.value)}
+                  onKeyDown={e => { if (e.key === 'Enter' && bizName.trim()) window.open(demoUrl, '_blank'); }}
+                  placeholder="اسم مطعمك… مثال: بيت الأصيل"
+                  style={{ width: '100%', padding: '16px 20px', borderRadius: 14, background: 'rgba(255,255,255,0.06)', border: `1px solid ${bizName ? R.border : 'rgba(255,255,255,0.12)'}`, color: '#fff', fontFamily: 'Cairo, sans-serif', fontSize: 15, fontWeight: 600, outline: 'none', boxSizing: 'border-box', transition: 'border-color 0.2s', direction: 'rtl' }}
+                  onFocus={e => { (e.target as HTMLInputElement).style.borderColor = R.orange; }}
+                  onBlur={e => { (e.target as HTMLInputElement).style.borderColor = bizName ? R.border : 'rgba(255,255,255,0.12)'; }}
+                />
+              </div>
+              <a href={demoUrl} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '16px 28px', borderRadius: 14, background: R.grad, color: '#fff', fontFamily: 'Cairo, sans-serif', fontSize: 15, fontWeight: 900, textDecoration: 'none', whiteSpace: 'nowrap', boxShadow: `0 8px 32px ${R.glow}`, flexShrink: 0 }}>
+                جرّب الآن ←
+              </a>
+            </div>
+
+            {/* Trust note */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+              {['بدون تسجيل', 'بدون بطاقة بنكية', 'مجاني تماماً'].map(t => (
+                <div key={t} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <CheckCircle2 size={13} strokeWidth={2.5} color={R.orange} />
+                  <span style={{ fontFamily: 'Cairo, sans-serif', fontSize: 13, fontWeight: 700, color: R.dimmer }}>{t}</span>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* RIGHT — phone preview */}
+          <motion.div initial={{ opacity: 0, x: 32 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+            style={{ display: isMobile ? 'none' : 'flex', justifyContent: 'center', position: 'relative' }}>
+
+            {/* Ambient */}
+            <div style={{ position: 'absolute', inset: -80, background: `radial-gradient(circle,${R.glow} 0%,transparent 65%)`, opacity: 0.5, pointerEvents: 'none' }} />
+
+            <motion.div
+              animate={{ y: [0, -12, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+              style={{ width: 260, height: 520, borderRadius: 44, background: 'linear-gradient(160deg,#1a0a05,#0a0400)', border: `1.5px solid ${R.border}`, boxShadow: [`0 60px 120px rgba(0,0,0,0.75)`, `0 0 80px ${R.glow}`, 'inset 0 1px 0 rgba(255,255,255,0.05)'].join(','), padding: '16px 14px', position: 'relative', overflow: 'hidden' }}>
+
+              {/* Glow overlay */}
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 180, background: `linear-gradient(180deg,${R.red}18 0%,transparent 100%)`, pointerEvents: 'none' }} />
+
+              {/* Notch */}
+              <div style={{ width: 80, height: 24, borderRadius: 12, background: '#000', margin: '0 auto 14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                <div style={{ width: 9, height: 9, borderRadius: '50%', background: '#1c1c1c', border: '1px solid #333' }} />
+                <div style={{ width: 34, height: 5, borderRadius: 3, background: '#111' }} />
+              </div>
+
+              {/* App preview */}
+              <div style={{ height: 430, borderRadius: 28, overflow: 'hidden', background: 'linear-gradient(160deg,rgba(220,38,38,0.10),rgba(10,4,0,0.98))', border: '1px solid rgba(220,38,38,0.15)', padding: 14, position: 'relative' }}>
+
+                {/* Status bar */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}>
+                  <span style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,0.4)', fontFamily: 'monospace' }}>9:41</span>
+                  <div style={{ display: 'flex', gap: 3, alignItems: 'center' }}>
+                    {[1,2,3].map(i => <div key={i} style={{ width: 3, height: 3, borderRadius: '50%', background: 'rgba(255,255,255,0.3)' }} />)}
+                  </div>
+                </div>
+
+                {/* Header */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+                  <div style={{ width: 38, height: 38, borderRadius: 12, background: R.grad, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>🍽️</div>
+                  <div>
+                    <div style={{ fontSize: 12, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>{bizName || 'مطعمك'}</div>
+                    <div style={{ fontSize: 8.5, color: 'rgba(255,255,255,0.38)', fontFamily: 'Cairo,sans-serif' }}>مدعوم بتلقا تك</div>
+                  </div>
+                  <div style={{ marginRight: 'auto', display: 'flex', gap: 5, alignItems: 'center' }}>
+                    <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 6px #10B981' }} />
+                  </div>
+                </div>
+
+                {/* Points card */}
+                <div style={{ borderRadius: 14, background: `linear-gradient(135deg,${R.red}35,${R.orange}18)`, border: `1px solid ${R.border}`, padding: '14px', marginBottom: 12 }}>
+                  <div style={{ fontSize: 8.5, color: 'rgba(255,255,255,0.45)', fontFamily: 'Cairo,sans-serif', marginBottom: 4 }}>رصيد نقاطك</div>
+                  <div style={{ fontSize: 26, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif', lineHeight: 1 }}>٢٤٠ نقطة</div>
+                  <div style={{ fontSize: 8, color: R.orange, marginTop: 5, fontFamily: 'Cairo,sans-serif', fontWeight: 700 }}>٦٠ نقطة للجائزة التالية 🎁</div>
+                </div>
+
+                {/* Menu items */}
+                {[
+                  { name: 'كبسة لحم ملكية', price: '٥٥' },
+                  { name: 'مشاوي مشكلة', price: '٨٩' },
+                  { name: 'أم علي بالقشطة', price: '٢٨' },
+                ].map((item, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 11px', borderRadius: 12, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)', marginBottom: 7 }}>
+                    <span style={{ fontSize: 16, flexShrink: 0 }}>🍖</span>
+                    <div style={{ flex: 1, fontSize: 10, fontWeight: 800, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>{item.name}</div>
+                    <div style={{ fontSize: 11, fontWeight: 900, color: R.orange, fontFamily: 'Cairo,sans-serif' }}>{item.price} ر</div>
+                  </div>
+                ))}
+
+                {/* CTA inside phone */}
+                <div style={{ marginTop: 8, padding: '12px', borderRadius: 13, background: R.grad, textAlign: 'center', fontSize: 10, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif', boxShadow: `0 4px 20px ${R.glow}` }}>
+                  اطلب من طاولتك الآن 🛎️
+                </div>
+              </div>
+
+              <div style={{ width: 80, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.12)', margin: '10px auto 0' }} />
+            </motion.div>
+
+            {/* Label below phone */}
+            <div style={{ position: 'absolute', bottom: -36, left: '50%', transform: 'translateX(-50%)', whiteSpace: 'nowrap', padding: '5px 16px', borderRadius: 99, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)', fontSize: 11, fontWeight: 700, color: R.dim }}>
+              هذا ما سيراه عملاء مطعمك
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
+      <style>{`
+        @keyframes pulse {
+          0%,100% { box-shadow: 0 0 8px ${R.red}; }
+          50% { box-shadow: 0 0 16px ${R.red}, 0 0 24px ${R.orange}; }
+        }
+      `}</style>
+    </section>
+  );
+}
+
 export default function RestaurantsPage() {
   const m = useIsMobile();
 
@@ -1011,6 +1172,11 @@ export default function RestaurantsPage() {
           </div>
         </div>
       </section>
+
+      {/* ══════════════════════════════════
+          LIVE DEMO — try it now
+      ══════════════════════════════════ */}
+      <RestaurantDemoSection isMobile={m} />
 
       {/* ══════════════════════════════════
           FINAL CTA
