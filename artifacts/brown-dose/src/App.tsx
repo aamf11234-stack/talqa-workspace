@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AppProvider, useAppContext } from './context/AppProvider';
 import { PhoneFrame } from './components/PhoneFrame';
 import { BottomNav } from './components/BottomNav';
@@ -9,18 +9,21 @@ import { OrdersScreen } from './screens/Orders';
 import { CardScreen } from './screens/Card';
 import { AdminScreen } from './screens/Admin';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Coffee, Smartphone, CreditCard, Store, Bell, BarChart3, ShieldCheck, CheckCircle2, Navigation, MessageCircle, ArrowLeft } from 'lucide-react';
+import {
+  Coffee, Smartphone, CreditCard, Store, Bell, BarChart3,
+  ShieldCheck, CheckCircle2, MessageCircle, ArrowDown, Sparkles, Pencil
+} from 'lucide-react';
 
+/* ─── Inner app shell ─── */
 function MainApp() {
   const { activeTab } = useAppContext();
-
   return (
     <PhoneFrame>
       <AnimatePresence mode="wait">
-        {activeTab === 'home' && <HomeScreen key="home" />}
-        {activeTab === 'menu' && <MenuScreen key="menu" />}
+        {activeTab === 'home'   && <HomeScreen   key="home" />}
+        {activeTab === 'menu'   && <MenuScreen   key="menu" />}
         {activeTab === 'orders' && <OrdersScreen key="orders" />}
-        {activeTab === 'card' && <CardScreen key="card" />}
+        {activeTab === 'card'   && <CardScreen   key="card" />}
       </AnimatePresence>
       <BottomNav />
       <OrderFlow />
@@ -28,368 +31,397 @@ function MainApp() {
   );
 }
 
-function LandingPage() {
+/* ─── Personalization input card ─── */
+function PersonalizeCard({
+  businessName, setBusinessName,
+  userName, setUserName,
+  onApply,
+}: {
+  businessName: string; setBusinessName: (v: string) => void;
+  userName: string; setUserName: (v: string) => void;
+  onApply: () => void;
+}) {
   return (
-    <div className="min-h-screen bg-[#1A0510] text-white selection:bg-primary/30 selection:text-white font-sans overflow-x-hidden">
-      
-      {/* 1. Header / Navbar */}
-      <header className="fixed top-0 inset-x-0 z-50 bg-[#1A0510]/80 backdrop-blur-xl border-b border-primary/20">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="flex flex-col">
-              <span className="text-xl font-bold tracking-wider text-white">BROWN DOSE</span>
-              <span className="text-xs text-primary font-medium">نظام الولاء والطلب</span>
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+      style={{
+        background: 'rgba(255,255,255,0.04)',
+        border: '1px solid rgba(255,255,255,0.10)',
+        borderRadius: 24, padding: '28px 28px 24px',
+        width: '100%', maxWidth: 360,
+        direction: 'rtl',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
+        <div style={{
+          width: 32, height: 32, borderRadius: 10,
+          background: 'linear-gradient(135deg,#8B5CF6,#3B82F6)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          <Pencil size={15} color="#fff" />
+        </div>
+        <div>
+          <div style={{ fontSize: 14, fontWeight: 800, color: '#fff' }}>خصّص الديمو باسمك</div>
+          <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>شوف تطبيقك قبل ما تطلبه</div>
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 16 }}>
+        <div>
+          <label style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', marginBottom: 6, display: 'block', fontWeight: 600 }}>
+            اسم نشاطك التجاري
+          </label>
+          <input
+            value={businessName}
+            onChange={e => setBusinessName(e.target.value)}
+            placeholder="مثال: كافيه النخبة"
+            style={{
+              width: '100%', padding: '11px 14px',
+              background: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.12)',
+              borderRadius: 12, color: '#fff',
+              fontSize: 14, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif',
+              outline: 'none', direction: 'rtl',
+              boxSizing: 'border-box',
+            }}
+          />
+        </div>
+        <div>
+          <label style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', marginBottom: 6, display: 'block', fontWeight: 600 }}>
+            اسمك
+          </label>
+          <input
+            value={userName}
+            onChange={e => setUserName(e.target.value)}
+            placeholder="مثال: سلطان الغامدي"
+            style={{
+              width: '100%', padding: '11px 14px',
+              background: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.12)',
+              borderRadius: 12, color: '#fff',
+              fontSize: 14, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif',
+              outline: 'none', direction: 'rtl',
+              boxSizing: 'border-box',
+            }}
+          />
+        </div>
+      </div>
+
+      <button
+        onClick={onApply}
+        style={{
+          width: '100%', padding: '13px',
+          background: 'linear-gradient(135deg,#8B5CF6,#3B82F6)',
+          border: 'none', borderRadius: 12,
+          color: '#fff', fontSize: 14, fontWeight: 800,
+          cursor: 'pointer', display: 'flex', alignItems: 'center',
+          justifyContent: 'center', gap: 8,
+          fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif',
+          boxShadow: '0 8px 24px rgba(139,92,246,0.35)',
+          transition: 'opacity 0.2s',
+        }}
+        onMouseEnter={e => (e.currentTarget.style.opacity = '0.88')}
+        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+      >
+        <Sparkles size={16} />
+        طبّق على الديمو
+      </button>
+    </motion.div>
+  );
+}
+
+/* ─── Landing Page ─── */
+function LandingPage() {
+  const demoRef = useRef<HTMLDivElement>(null);
+
+  /* Demo state — lifted here so PersonalizeCard and AppProvider stay in sync */
+  const [businessName, setBusinessName] = useState('كافيه النخبة');
+  const [userName,     setUserName]     = useState('سلطان الغامدي');
+  const [appliedBiz,   setAppliedBiz]   = useState('كافيه النخبة');
+  const [appliedUser,  setAppliedUser]  = useState('سلطان الغامدي');
+  const [flashKey,     setFlashKey]     = useState(0);
+
+  const applyPersonalization = () => {
+    setAppliedBiz(businessName   || 'كافيه النخبة');
+    setAppliedUser(userName      || 'سلطان الغامدي');
+    setFlashKey(k => k + 1);
+    demoRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  const FEATURES = [
+    { icon: Coffee,      title: 'قائمة QR تفاعلية',       desc: 'منيو رقمي يُحدَّث فوراً بدون طباعة' },
+    { icon: CreditCard,  title: 'Apple & Google Wallet',  desc: 'بطاقة ولاء رقمية بلمسة واحدة' },
+    { icon: CheckCircle2,title: 'نقاط ولاء تلقائية',      desc: 'كل طلب يكسب نقاطاً قابلة للاستبدال' },
+    { icon: Smartphone,  title: 'تطبيق بهويتك',           desc: 'ألوانك، اسمك، منيوك — لا تطبيق خارجي' },
+    { icon: Store,       title: 'إدارة الفروع',            desc: 'كل فروعك في لوحة تحكم واحدة' },
+    { icon: Bell,        title: 'إشعارات مباشرة',         desc: 'خصومات وعروض بزر واحد لكل عملائك' },
+    { icon: BarChart3,   title: 'إحصائيات مبيعات',        desc: 'اعرف أكثر صنف وأكثر وقت طلب' },
+    { icon: ShieldCheck, title: 'أمان وخصوصية',           desc: 'بيانات عملائك محمية بأعلى المعايير' },
+  ];
+
+  return (
+    <div style={{ minHeight: '100vh', background: '#0d0518', color: '#fff', direction: 'rtl', overflowX: 'hidden', fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif' }}>
+
+      {/* ── Header ── */}
+      <header style={{
+        position: 'fixed', top: 0, insetInline: 0, zIndex: 50,
+        background: 'rgba(13,5,24,0.85)', backdropFilter: 'blur(20px)',
+        borderBottom: '1px solid rgba(139,92,246,0.15)',
+        height: 68, display: 'flex', alignItems: 'center',
+      }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{
+              width: 36, height: 36, borderRadius: 10,
+              background: 'linear-gradient(135deg,#8B5CF6,#3B82F6)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: 16, fontWeight: 900, color: '#fff',
+            }}>ت</div>
+            <div>
+              <div style={{ fontSize: 16, fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>تلقا البرمجية</div>
+              <div style={{ fontSize: 10, color: 'rgba(167,139,250,0.8)', letterSpacing: '0.04em' }}>نظام الولاء الرقمي</div>
             </div>
           </div>
-          
-          <div className="flex items-center gap-4">
-            <div className="hidden md:flex items-center gap-2 bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary/70 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-              </span>
-              <span className="text-xs font-medium text-white/70">متاح الآن · جيزان</span>
-            </div>
-            <a 
-              href="#contact"
-              className="bg-primary/20 hover:bg-primary/30 transition-colors text-primary-foreground text-sm font-medium px-5 py-2.5 rounded-full"
-            >
-              تواصل معنا
-            </a>
-          </div>
+
+          <a href="https://wa.me/966551378531?text=ابغى%20نظام%20ولاء%20لنشاطي"
+            target="_blank" rel="noopener noreferrer"
+            style={{
+              background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.3)',
+              color: '#C4B5FD', padding: '8px 18px', borderRadius: 99,
+              fontSize: 13, fontWeight: 700, textDecoration: 'none',
+              transition: 'background 0.2s',
+            }}>
+            تواصل معنا
+          </a>
         </div>
       </header>
 
-      {/* 2. Hero Section */}
-      <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden bg-gradient-to-b from-[#2E0D22] to-[#1A0510]">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22 opacity=%220.03%22/%3E%3C/svg%3E')] opacity-50 mix-blend-overlay"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/20 blur-[120px] rounded-full pointer-events-none"></div>
-        
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 text-primary px-4 py-2 rounded-full text-sm font-medium mb-8"
-            >
-              <span>✦</span>
-              <span>حصري لكافيهات جيزان</span>
-            </motion.div>
-            
-            <motion.h1 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="text-5xl md:text-7xl font-bold leading-tight mb-6"
-            >
-              زبائنك يستحقون<br />
-              تجربة <span className="text-primary">أذكى</span>
-            </motion.h1>
-            
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="text-lg md:text-xl text-white/60 leading-relaxed mb-10 max-w-2xl mx-auto"
-            >
-              نظام ولاء وطلب متكامل — نقاط وتوصيل واستلام ومحفظة رقمية. لا تطبيق خارجي. كل شيء لـ كافيهك.
-            </motion.p>
-            
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
-            >
-              <a 
-                href="#demo"
-                className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-full font-bold text-lg transition-all flex items-center justify-center gap-2"
-              >
-                جرّب الديمو
-                <ArrowLeft size={20} className="-rotate-90" />
-              </a>
-              <div className="w-full sm:w-auto px-8 py-4 rounded-full font-bold text-lg border border-primary/30 text-white/90 bg-primary/5 backdrop-blur-sm text-center">
-                ٢,٠٠٠ ريال فقط
-              </div>
-            </motion.div>
-          </div>
+      {/* ── Hero ── */}
+      <section style={{
+        position: 'relative', paddingTop: 140, paddingBottom: 80,
+        overflow: 'hidden', background: 'linear-gradient(180deg, #160824 0%, #0d0518 100%)',
+      }}>
+        {/* Glow blobs */}
+        <div style={{ position: 'absolute', top: -100, right: -100, width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle,rgba(139,92,246,0.18),transparent 65%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', bottom: -80, left: -80,  width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle,rgba(59,130,246,0.12),transparent 65%)', pointerEvents: 'none' }} />
+
+        <div style={{ maxWidth: 800, margin: '0 auto', padding: '0 24px', textAlign: 'center', position: 'relative', zIndex: 2 }}>
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 16px', borderRadius: 99, border: '1px solid rgba(139,92,246,0.3)', background: 'rgba(139,92,246,0.1)', fontSize: 12, fontWeight: 700, color: 'rgba(196,181,253,0.9)', marginBottom: 28 }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#8B5CF6', flexShrink: 0, animation: 'pulse 2s infinite' }} />
+            نظام ولاء رقمي للأعمال السعودية
+          </motion.div>
+
+          <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.6 }}
+            style={{ fontSize: 'clamp(2.4rem,7vw,5rem)', fontWeight: 900, lineHeight: 1.1, letterSpacing: '-0.03em', marginBottom: 20 }}>
+            عملاؤك يستحقون
+            <br />
+            <span style={{ background: 'linear-gradient(135deg,#8B5CF6,#3B82F6,#06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              تجربة تعيّدهم
+            </span>
+          </motion.h1>
+
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.25, duration: 0.6 }}
+            style={{ fontSize: 'clamp(15px,2vw,18px)', color: 'rgba(255,255,255,0.55)', lineHeight: 1.8, maxWidth: 540, margin: '0 auto 36px' }}>
+            تطبيق بهوية نشاطك · Apple & Google Wallet · نقاط ولاء · طلب توصيل واستلام
+            <br />كل شيء في منصة واحدة تُسلَّم في ٦٠ يوم.
+          </motion.p>
+
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.5 }}
+            style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12 }}>
+            <a href="#personalize"
+              style={{
+                background: 'linear-gradient(135deg,#8B5CF6,#3B82F6)', color: '#fff',
+                padding: '14px 32px', borderRadius: 14, fontWeight: 800, fontSize: 16,
+                textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8,
+                boxShadow: '0 8px 32px rgba(139,92,246,0.4)',
+              }}>
+              <Sparkles size={18} />
+              جرّب الديمو بإسمك
+            </a>
+            <a href="https://wa.me/966551378531?text=ابغى%20نظام%20ولاء%20لنشاطي"
+              target="_blank" rel="noopener noreferrer"
+              style={{
+                background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)',
+                color: '#fff', padding: '14px 28px', borderRadius: 14,
+                fontWeight: 700, fontSize: 15, textDecoration: 'none',
+              }}>
+              تحدث معنا على واتساب
+            </a>
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+            style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 10, marginTop: 28 }}>
+            {['✓ تسليم في ٦٠ يوم', '✓ بدون رسوم شهرية', '✓ دعم واتساب مباشر'].map(t => (
+              <span key={t} style={{ padding: '5px 14px', borderRadius: 99, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.45)' }}>{t}</span>
+            ))}
+          </motion.div>
         </div>
+
+        {/* Scroll hint */}
+        <motion.div animate={{ y: [0, 6, 0] }} transition={{ duration: 2, repeat: Infinity }}
+          style={{ display: 'flex', justifyContent: 'center', marginTop: 48, color: 'rgba(255,255,255,0.2)' }}>
+          <ArrowDown size={20} />
+        </motion.div>
       </section>
 
-      {/* 3. Features Grid */}
-      <section className="py-24 bg-[#1E0814] relative border-t border-primary/10">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">كل شيء يحتاجه كافيهك</h2>
-            <p className="text-white/50 text-lg">ميزات صُممت خصيصاً لقطاع القهوة المختصة</p>
+      {/* ── Features Grid ── */}
+      <section style={{ padding: '80px 24px', background: '#0f061e', borderTop: '1px solid rgba(139,92,246,0.1)' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: 52 }}>
+            <h2 style={{ fontSize: 'clamp(1.8rem,4vw,2.8rem)', fontWeight: 900, letterSpacing: '-0.03em', marginBottom: 12 }}>
+              كل شيء يحتاجه نشاطك
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 16 }}>
+              ميزات صُممت للأعمال السعودية
+            </p>
           </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: Coffee, title: "طلب من المنيو", desc: "حار، بارد، مقطرة — كل شيء في يد الزبون" },
-              { icon: Navigation, title: "توصيل وطلب استلام", desc: "الزبون يختار كيف يستلم" },
-              { icon: CheckCircle2, title: "نقاط ولاء", desc: "كل طلب يكسب نقاط، النقاط تُبدّل مكافآت" },
-              { icon: CreditCard, title: "Apple Pay & STC Pay", desc: "دفع في ثانية — بدون كاش" },
-              { icon: Store, title: "فروع متعددة", desc: "صبيا وضمد في نظام واحد" },
-              { icon: Bell, title: "إشعارات فورية", desc: "خصومات وعروض بزر واحد" },
-              { icon: BarChart3, title: "إحصائيات المبيعات", desc: "اعرف أكثر صنف وأكثر ساعة" },
-              { icon: ShieldCheck, title: "هوية كافيهك كاملة", desc: "ألوانك، اسمك، منيوك" },
-            ].map((feature, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-primary/5 border border-primary/20 rounded-3xl p-6 hover:bg-primary/10 transition-colors"
-              >
-                <div className="w-12 h-12 bg-primary/20 rounded-2xl flex items-center justify-center text-primary mb-6">
-                  <feature.icon size={24} />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(230px,1fr))', gap: 16 }}>
+            {FEATURES.map((f, i) => (
+              <motion.div key={i}
+                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ delay: i * 0.06 }}
+                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18, padding: '22px 20px' }}>
+                <div style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
+                  <f.icon size={20} color="#A78BFA" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                <p className="text-white/60 text-sm leading-relaxed">{feature.desc}</p>
+                <h3 style={{ fontSize: 15, fontWeight: 800, marginBottom: 6 }}>{f.title}</h3>
+                <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', lineHeight: 1.65 }}>{f.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* 4. Phone Demo Section */}
-      <section id="demo" className="py-24 md:py-32 relative bg-[#240A1A]">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1E0814] to-[#240A1A] pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto px-0 md:px-6 relative z-10">
-          <div className="text-center mb-12 md:mb-20 px-6">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4">جرّب التطبيق الحين</h2>
-            <p className="text-primary text-lg font-medium">كل زر شغّال — اطلب، ادفع، اكسب نقاط</p>
+      {/* ── Personalize + Live Demo ── */}
+      <section id="personalize" style={{ padding: '80px 24px', background: '#0d0518', position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 700, height: 700, borderRadius: '50%', background: 'radial-gradient(circle,rgba(139,92,246,0.07),transparent 65%)', pointerEvents: 'none' }} />
+
+        <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 2 }}>
+          <div style={{ textAlign: 'center', marginBottom: 52 }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 16px', borderRadius: 99, border: '1px solid rgba(139,92,246,0.25)', background: 'rgba(139,92,246,0.08)', fontSize: 12, fontWeight: 700, color: 'rgba(196,181,253,0.9)', marginBottom: 16 }}>
+              ✦ ديمو حي وتفاعلي
+            </span>
+            <h2 style={{ fontSize: 'clamp(1.8rem,4vw,2.8rem)', fontWeight: 900, letterSpacing: '-0.03em', marginBottom: 12 }}>
+              شوف تطبيقك قبل ما تطلبه
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 16, maxWidth: 440, margin: '0 auto' }}>
+              حط اسم نشاطك واسمك — البطاقة والتطبيق تتحدث أمامك لحظياً
+            </p>
           </div>
-          
-          <div className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-24">
-            
-            {/* Desktop Highlights (Hidden on mobile) */}
-            <div className="hidden md:flex flex-col gap-8 max-w-sm">
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                className="bg-primary/5 border border-primary/20 rounded-2xl p-6"
-              >
-                <div className="w-10 h-10 bg-secondary/20 rounded-xl flex items-center justify-center text-secondary mb-4">
-                  <Coffee size={20} />
-                </div>
-                <h3 className="text-lg font-bold mb-2">تصفح المنيو</h3>
-                <p className="text-white/60 text-sm">جرب إضافة "افقاتو براون" للسلة وتغيير الكمية.</p>
-              </motion.div>
-              
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="bg-primary/5 border border-primary/20 rounded-2xl p-6"
-              >
-                <div className="w-10 h-10 bg-primary/20 rounded-xl flex items-center justify-center text-primary mb-4">
-                  <Smartphone size={20} />
-                </div>
-                <h3 className="text-lg font-bold mb-2">إتمام الطلب</h3>
-                <p className="text-white/60 text-sm">اختر استلام أو توصيل، وجرب تدفق الدفع السلس.</p>
-              </motion.div>
-              
-              <motion.div 
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                className="bg-primary/5 border border-primary/20 rounded-2xl p-6"
-              >
-                <div className="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center text-green-400 mb-4">
-                  <CheckCircle2 size={20} />
-                </div>
-                <h3 className="text-lg font-bold mb-2">نقاط الولاء</h3>
-                <p className="text-white/60 text-sm">شاهد كيف تزيد النقاط بعد كل طلب في الرئيسية.</p>
-              </motion.div>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'flex-start', gap: 40 }}>
+            {/* Personalize Card */}
+            <div>
+              <PersonalizeCard
+                businessName={businessName} setBusinessName={setBusinessName}
+                userName={userName}         setUserName={setUserName}
+                onApply={applyPersonalization}
+              />
+
+              {/* How it works */}
+              <div style={{ marginTop: 24, maxWidth: 360 }}>
+                {[
+                  { n: '١', t: 'حط اسمك', d: 'اسم نشاطك واسمك الشخصي' },
+                  { n: '٢', t: 'شاهد التطبيق', d: 'بطاقة Wallet وشاشة الرئيسية بهويتك' },
+                  { n: '٣', t: 'تواصل معنا', d: 'نبني نسختك الحقيقية في ٦٠ يوم' },
+                ].map(s => (
+                  <div key={s.n} style={{ display: 'flex', gap: 14, marginBottom: 16, direction: 'rtl' }}>
+                    <div style={{ width: 32, height: 32, borderRadius: 10, background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 900, color: '#A78BFA', flexShrink: 0 }}>{s.n}</div>
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 800, color: '#fff', marginBottom: 2 }}>{s.t}</div>
+                      <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>{s.d}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-            
-            {/* Interactive Demo */}
-            <motion.div 
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="w-full md:w-auto flex justify-center"
-            >
-              <AppProvider>
+
+            {/* Live Demo Phone */}
+            <motion.div key={flashKey} ref={demoRef}
+              initial={{ opacity: 0.7, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4 }}
+              style={{ display: 'flex', justifyContent: 'center' }}>
+              <AppProvider businessName={appliedBiz} userName={appliedUser}>
                 <MainApp />
               </AppProvider>
             </motion.div>
-            
           </div>
         </div>
       </section>
 
-      {/* 5. How It Works */}
-      <section className="py-24 bg-[#1E0814] border-t border-primary/10">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">كيف يشتغل؟</h2>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-            <div className="hidden md:block absolute top-1/2 left-[10%] right-[10%] h-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent -translate-y-1/2" />
-            
-            {[
-              { emoji: "🛠️", title: "إعداد النظام", desc: "نربط هويتك وقائمتك خلال ٧ أيام" },
-              { emoji: "📲", title: "يطلق الزبون التطبيق", desc: "يطلب، يدفع، ويكسب نقاط تلقائياً" },
-              { emoji: "📈", title: "أنت تكسب زبائن راجعين", desc: "نقاط = عودة مضمونة" }
-            ].map((step, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="relative bg-[#1A0510] border border-primary/20 rounded-3xl p-8 text-center z-10"
-              >
-                <div className="w-16 h-16 mx-auto bg-primary/10 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-xl border border-primary/20">
-                  {step.emoji}
-                </div>
-                <h3 className="text-xl font-bold mb-3">{step.title}</h3>
-                <p className="text-white/60">{step.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── Pricing ── */}
+      <section style={{ padding: '80px 24px', background: '#0f061e', borderTop: '1px solid rgba(139,92,246,0.1)' }}>
+        <div style={{ maxWidth: 480, margin: '0 auto', textAlign: 'center' }}>
+          <motion.div initial={{ opacity: 0, scale: 0.96 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
+            style={{ background: 'linear-gradient(135deg,rgba(139,92,246,0.12),rgba(59,130,246,0.08))', border: '1px solid rgba(139,92,246,0.3)', borderRadius: 32, padding: '44px 36px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: -60, right: -60, width: 220, height: 220, borderRadius: '50%', background: 'rgba(139,92,246,0.1)', filter: 'blur(50px)', pointerEvents: 'none' }} />
 
-      {/* 6. Pricing Section */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-primary/5"></div>
-        <div className="max-w-7xl mx-auto px-6 relative z-10 flex justify-center">
-          
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="w-full max-w-lg bg-[#2E0D22] rounded-[40px] p-8 md:p-12 border border-primary/30 shadow-2xl shadow-primary/20 relative overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 blur-[80px] rounded-full pointer-events-none"></div>
-            
-            <div className="text-center mb-8 relative z-10">
-              <div className="inline-block bg-primary/20 text-primary px-4 py-1.5 rounded-full text-sm font-bold mb-6">
-                باقة كافيهك الحصرية
-              </div>
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <span className="text-6xl font-bold tracking-tighter">٢,٠٠٠</span>
-                <span className="text-2xl text-white/60 font-medium mt-4">ريال</span>
-              </div>
-              <p className="text-white/60 font-medium">دفعة واحدة · لا رسوم شهرية</p>
+            <div style={{ display: 'inline-block', background: 'linear-gradient(135deg,#8B5CF6,#3B82F6)', color: '#fff', padding: '5px 16px', borderRadius: 99, fontSize: 12, fontWeight: 800, marginBottom: 20 }}>
+              باقة كاملة — دفعة واحدة
             </div>
-            
-            <div className="space-y-4 mb-10 relative z-10">
+
+            <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 8, marginBottom: 6 }}>
+              <span style={{ fontSize: 64, fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1 }}>٢,٠٠٠</span>
+              <span style={{ fontSize: 22, color: 'rgba(255,255,255,0.5)', fontWeight: 500 }}>ريال</span>
+            </div>
+            <p style={{ color: 'rgba(255,255,255,0.4)', marginBottom: 32, fontSize: 14 }}>لا رسوم شهرية · ملكيتك الكاملة</p>
+
+            <div style={{ textAlign: 'right', marginBottom: 32 }}>
               {[
-                "تطبيق ويب كامل بهويتك",
-                "طلب توصيل واستلام",
-                "نظام نقاط ولاء",
-                "Apple Pay & STC Pay",
-                "فروع صبيا وضمد",
-                "إحصائيات المبيعات",
-                "دعم مباشر على واتساب"
-              ].map((feature, i) => (
-                <div key={i} className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-full bg-primary/20 text-primary flex items-center justify-center shrink-0">
-                    <CheckCircle2 size={14} strokeWidth={3} />
+                'تطبيق ويب كامل بهوية نشاطك',
+                'نظام نقاط ولاء تلقائي',
+                'Apple & Google Wallet',
+                'طلب توصيل واستلام',
+                'لوحة تحكم + إحصائيات',
+                'دعم واتساب ٦ أشهر',
+              ].map((f, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, direction: 'rtl' }}>
+                  <div style={{ width: 22, height: 22, borderRadius: '50%', background: 'rgba(139,92,246,0.2)', border: '1px solid rgba(139,92,246,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <CheckCircle2 size={12} color="#A78BFA" strokeWidth={3} />
                   </div>
-                  <span className="text-white/80 font-medium">{feature}</span>
+                  <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.75)', fontWeight: 500 }}>{f}</span>
                 </div>
               ))}
             </div>
-            
-            <a 
-              href="#contact"
-              className="block w-full bg-primary hover:bg-primary/90 text-white text-center py-4 rounded-2xl font-bold text-lg transition-all relative z-10 shadow-xl shadow-primary/25"
-            >
-              احجز الآن
+
+            <a href="https://wa.me/966551378531?text=ابغى%20نظام%20ولاء%20لنشاطي"
+              target="_blank" rel="noopener noreferrer"
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                background: 'linear-gradient(135deg,#8B5CF6,#3B82F6)', color: '#fff',
+                padding: '15px 24px', borderRadius: 14, fontWeight: 800, fontSize: 16,
+                textDecoration: 'none', boxShadow: '0 8px 28px rgba(139,92,246,0.35)',
+              }}>
+              <MessageCircle size={18} />
+              احجز مشروعك الآن
             </a>
           </motion.div>
-          
         </div>
       </section>
 
-      {/* 7. Contact / CTA Section */}
-      <section id="contact" className="py-24 bg-[#1A0510] border-t border-primary/10 relative overflow-hidden">
-        <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold mb-8">جاهز تطلق كافيهك؟</h2>
-          
-          <a 
-            href="https://wa.me/966500000000" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-3 bg-[#25D366] hover:bg-[#20bd5a] text-white px-8 py-5 rounded-full font-bold text-xl transition-all shadow-xl shadow-[#25D366]/20 mb-6"
-          >
-            <MessageCircle size={28} />
-            تواصل على واتساب
-          </a>
-          
-          <div className="flex items-center justify-center gap-4 text-white/50 text-sm font-medium">
-            <span>رد خلال ساعة</span>
-            <span className="w-1 h-1 rounded-full bg-primary/50"></span>
-            <span>جيزان</span>
-            <span className="w-1 h-1 rounded-full bg-primary/50"></span>
-            <span>صبيا وضمد</span>
-          </div>
-        </div>
-      </section>
-
-      {/* 8. Footer */}
-      <footer className="py-8 bg-[#13030A] border-t border-primary/10 text-center">
-        <p className="text-white/40 text-sm font-medium tracking-wide">
-          BROWN DOSE × تلقا تك · ٢٠٢٥ · جيزان
+      {/* ── Footer ── */}
+      <footer style={{ padding: '28px 24px', background: '#080313', borderTop: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>
+        <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: 13, fontWeight: 600 }}>
+          تلقا البرمجية · نظام الولاء الرقمي · ٢٠٢٥
         </p>
-        <button
-          onClick={() => (window as any).__bdAdmin?.()}
-          className="mt-3 text-white/10 hover:text-white/25 text-xs transition-colors select-none"
-        >
-          ⚙
-        </button>
+        <button onClick={() => (window as any).__bdAdmin?.()}
+          className="mt-3 text-white/10 hover:text-white/25 text-xs transition-colors select-none">⚙</button>
       </footer>
-      
+
+      <style>{`
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        * { box-sizing: border-box; }
+        input::placeholder { color: rgba(255,255,255,0.25); }
+        input:focus { border-color: rgba(139,92,246,0.5) !important; box-shadow: 0 0 0 3px rgba(139,92,246,0.12); }
+      `}</style>
     </div>
   );
 }
 
-function App() {
-  const [showAdmin, setShowAdmin] = useState(false);
-  const isAppMode = new URLSearchParams(window.location.search).get('mode') === 'app';
-
-  useEffect(() => {
-    (window as any).__bdAdmin = () => setShowAdmin(true);
-    return () => { delete (window as any).__bdAdmin; };
-  }, []);
-
-  // ?mode=app → show the interactive app directly, no landing page
-  if (isAppMode) {
-    return (
-      <div dir="rtl" style={{ width: '100%', height: '100dvh', background: 'hsl(var(--background))', overflow: 'hidden' }}>
-        <AppProvider>
-          <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', overflow: 'hidden', position: 'relative' }}>
-            <AnimatePresence mode="wait">
-              {/* re-use useAppContext inside a child */}
-            </AnimatePresence>
-            <AppModeInner />
-          </div>
-        </AppProvider>
-      </div>
-    );
-  }
-
-  return (
-    <div dir="rtl">
-      {showAdmin
-        ? <AdminScreen onClose={() => setShowAdmin(false)} />
-        : <LandingPage />}
-    </div>
-  );
-}
-
+/* ─── App mode (full-screen, no landing) ─── */
 function AppModeInner() {
   const { activeTab } = useAppContext();
   return (
@@ -406,4 +438,30 @@ function AppModeInner() {
   );
 }
 
-export default App;
+export default function App() {
+  const [showAdmin, setShowAdmin] = useState(false);
+  const isAppMode = new URLSearchParams(window.location.search).get('mode') === 'app';
+
+  useEffect(() => {
+    (window as any).__bdAdmin = () => setShowAdmin(true);
+    return () => { delete (window as any).__bdAdmin; };
+  }, []);
+
+  if (isAppMode) {
+    return (
+      <div dir="rtl" style={{ width: '100%', height: '100dvh', background: 'hsl(var(--background))', overflow: 'hidden' }}>
+        <AppProvider>
+          <AppModeInner />
+        </AppProvider>
+      </div>
+    );
+  }
+
+  return (
+    <div dir="rtl">
+      {showAdmin
+        ? <AdminScreen onClose={() => setShowAdmin(false)} />
+        : <LandingPage />}
+    </div>
+  );
+}

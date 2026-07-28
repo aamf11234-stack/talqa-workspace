@@ -6,6 +6,7 @@ import LandingPricing from '../components/LandingPricing';
 
 // Lazy-load below-the-fold sections
 const Marquee            = lazy(() => import('../components/Marquee'));
+const SectorsSection     = lazy(() => import('../components/SectorsSection'));
 const HorizontalServices = lazy(() => import('../components/HorizontalServices'));
 const AppsSection        = lazy(() => import('../components/AppsSection'));
 const WalletShowcase     = lazy(() => import('../components/WalletShowcase'));
@@ -29,9 +30,13 @@ export default function HomePage() {
       <S />
       <Suspense fallback={null}><HorizontalServices /></Suspense>
 
-      {/* 4 — قطاعات نخدمها */}
+      {/* 4 — قطاعات نخدمها (grid عام) */}
       <S />
       <LandingSectors />
+
+      {/* 5 — قطاعات تفاعلية مع روابط لصفحات كل قطاع */}
+      <S />
+      <Suspense fallback={null}><SectorsSection /></Suspense>
 
       {/* 5 — تطبيقات جوال */}
       <S />

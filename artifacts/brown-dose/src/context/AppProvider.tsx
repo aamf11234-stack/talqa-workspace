@@ -36,15 +36,29 @@ interface AppContextState {
   setOrderFlowStep: (step: OrderFlowStep) => void;
   orderType: OrderType;
   setOrderType: (type: OrderType) => void;
+  businessName: string;
+  setBusinessName: (name: string) => void;
+  userName: string;
+  setUserName: (name: string) => void;
 }
 
 const AppContext = createContext<AppContextState | undefined>(undefined);
 
-export function AppProvider({ children }: { children: ReactNode }) {
+export function AppProvider({
+  children,
+  businessName: initialBusiness = 'كافيه النخبة',
+  userName: initialUser = 'سلطان الغامدي',
+}: {
+  children: ReactNode;
+  businessName?: string;
+  userName?: string;
+}) {
   const [activeTab, setActiveTab] = useState<TabType>('home');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [points, setPoints] = useState(340);
-  
+  const [businessName, setBusinessName] = useState(initialBusiness);
+  const [userName, setUserName] = useState(initialUser);
+
   const [isOrderFlowOpen, setOrderFlowOpen] = useState(false);
   const [orderFlowStep, setOrderFlowStep] = useState<OrderFlowStep>('type');
   const [orderType, setOrderType] = useState<OrderType>('pickup');
@@ -52,49 +66,41 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [orders, setOrders] = useState<PastOrder[]>([
     {
       id: 'ORD-8492',
-      items: [
-        { item: { id: 'c8', name: 'ايس ستفتشر براون', price: 19, category: 'cold' }, quantity: 1 }
-      ],
+      items: [{ item: { id: 'c8', name: 'ايس ستفتشر براون', price: 19, category: 'cold' }, quantity: 1 }],
       type: 'pickup',
       date: 'اليوم، ٠٩:٣٠ ص',
       status: 'تم التسليم',
-      total: 19
+      total: 19,
     },
     {
       id: 'ORD-7381',
       items: [
         { item: { id: 'h7', name: 'فلات وايت', price: 16, category: 'hot' }, quantity: 1 },
-        { item: { id: 'h11', name: 'بستاشيو لاتيه', price: 20, category: 'hot' }, quantity: 1 }
+        { item: { id: 'h11', name: 'بستاشيو لاتيه', price: 20, category: 'hot' }, quantity: 1 },
       ],
       type: 'delivery',
       date: 'أمس، ٠٤:١٥ م',
       status: 'تم التسليم',
-      total: 41
-    }
+      total: 41,
+    },
   ]);
 
   const addToCart = (item: MenuItem) => {
     setCart(prev => {
       const existing = prev.find(i => i.item.id === item.id);
-      if (existing) {
-        return prev.map(i => i.item.id === item.id ? { ...i, quantity: i.quantity + 1 } : i);
-      }
+      if (existing) return prev.map(i => i.item.id === item.id ? { ...i, quantity: i.quantity + 1 } : i);
       return [...prev, { item, quantity: 1 }];
     });
   };
 
   const updateQuantity = (itemId: string, delta: number) => {
-    setCart(prev => prev.map(i => {
-      if (i.item.id === itemId) {
-        const newQ = Math.max(0, i.quantity + delta);
-        return { ...i, quantity: newQ };
-      }
-      return i;
-    }).filter(i => i.quantity > 0));
+    setCart(prev =>
+      prev.map(i => i.item.id === itemId ? { ...i, quantity: Math.max(0, i.quantity + delta) } : i)
+          .filter(i => i.quantity > 0)
+    );
   };
 
   const clearCart = () => setCart([]);
-  
   const addOrder = (order: PastOrder) => setOrders(prev => [order, ...prev]);
   const addPoints = (amount: number) => setPoints(prev => prev + amount);
 
@@ -106,7 +112,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
       points, addPoints,
       isOrderFlowOpen, setOrderFlowOpen,
       orderFlowStep, setOrderFlowStep,
-      orderType, setOrderType
+      orderType, setOrderType,
+      businessName, setBusinessName,
+      userName, setUserName,
     }}>
       {children}
     </AppContext.Provider>
@@ -114,9 +122,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 }
 
 export const useAppContext = () => {
-  const context = useContext(AppContext);
-  if (context === undefined) {
-    throw new Error('useAppContext must be used within an AppProvider');
-  }
-  return context;
+  const ctx = useContext(AppContext);
+  if (!ctx) throw new Error('useAppContext must be used within AppProvider');
+  return ctx;
 };

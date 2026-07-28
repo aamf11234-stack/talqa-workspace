@@ -19,6 +19,7 @@ const SEO: Record<string, { title: string; desc: string }> = {
   '/ai':                  { title: 'الذكاء الاصطناعي | تلقا تك', desc: 'حلول ذكاء اصطناعي مخصصة: شاتبوت، تحليل بيانات، وأتمتة العمليات.' },
   '/clinic':              { title: 'نظام العيادات | تلقا تك', desc: 'حل رقمي متكامل للعيادات الطبية: ملفات مرضى، مواعيد، ولوحة تحكم.' },
   '/faq':                 { title: 'الأسئلة الشائعة | تلقا تك', desc: 'إجابات على أكثر الأسئلة شيوعاً حول خدمات ومنتجات تلقا تك.' },
+  '/food':                { title: 'تطبيق المطاعم والكافيهات | تلقا تك — ٤٩٩ ريال', desc: 'تطبيق جوال كامل للمطاعم والكافيهات: Apple Wallet، قائمة QR، طلب وتوصيل، نقاط ولاء — بـ٤٩٩ ريال دفعة واحدة.' },
   '/sectors/restaurants': { title: 'مواقع المطاعم | تلقا تك', desc: 'حلول رقمية متكاملة للمطاعم: قائمة QR، حجوزات، طلبات أونلاين، ونظام ولاء.' },
   '/sectors/cafes':       { title: 'مواقع الكافيهات | تلقا تك', desc: 'تطبيقات وبطاقات ولاء مخصصة للكافيهات — احجز طاولتك وتتبّع نقاطك.' },
   '/sectors/clinics':     { title: 'مواقع العيادات | تلقا تك', desc: 'مواقع احترافية للعيادات والمستشفيات مع نظام مواعيد وملفات مرضى رقمية.' },
@@ -70,6 +71,7 @@ const AboutPage     = lazy(() => import('./pages/AboutPage'));
 const FaqPage       = lazy(() => import('./pages/FaqPage'));
 
 // Sector pages — all lazy loaded (16 pages, heavy bundle)
+const FoodPage        = lazy(() => import('./pages/FoodPage'));
 const CafesPage       = lazy(() => import('./pages/sectors/CafesPage'));
 const RestaurantsPage = lazy(() => import('./pages/sectors/RestaurantsPage'));
 const ClinicsPage     = lazy(() => import('./pages/sectors/ClinicsPage'));
@@ -120,6 +122,9 @@ export default function App() {
             <Route path="/projects"  component={ProjectsPage}  />
             <Route path="/about"     component={AboutPage}     />
             <Route path="/faq"       component={FaqPage}       />
+
+            {/* Food landing */}
+            <Route path="/food"            component={FoodPage}          />
 
             {/* Sector pages */}
             <Route path="/sectors/cafes"       component={CafesPage}       />
