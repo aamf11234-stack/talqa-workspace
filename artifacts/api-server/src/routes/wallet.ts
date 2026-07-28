@@ -85,6 +85,59 @@ function gradientPng(
   });
 }
 
+/* ── TLQA Premium Strip — Aurora / Orb / Scanline effect ──────────
+   Renders per-pixel:
+   1. Horizontal gradient base: deep indigo → vivid violet
+   2. Aurora shimmer: overlapping sine waves vertically
+   3. Diagonal scanlines: subtle repeating bright stripes
+   4. Two glowing orbs: violet top-right + indigo bottom-left     */
+function tlqaAuroraStrip(w: number, h: number): Buffer {
+  const PI = Math.PI;
+  return makePng(w, h, (x, y) => {
+    const tx = x / Math.max(1, w - 1);   // 0→1 left to right
+    const ty = y / Math.max(1, h - 1);   // 0→1 top to bottom
+
+    // 1. Base: #1e1b4b → #7c3aed  (deep indigo → vivid violet)
+    let r = 30  + tx * 94;
+    let g = 27  + tx *  6;
+    let b = 75  + tx * 157;
+
+    // 2. Aurora shimmer — two offset sine waves × each other
+    const w1 = (Math.sin(ty * PI * 5 - 0.8) + 1) * 0.5;
+    const w2 = (Math.sin(ty * PI * 2.5 + 1.2) + 1) * 0.5;
+    const aurora = w1 * w2 * 0.35;
+    r += aurora * 45;
+    g += aurora * 20;
+    b += aurora * 130;
+
+    // 3. Diagonal scanlines — 45° stripes, very thin
+    const diag = ((x + y) % 16);
+    const line  = diag < 1.2 ? 0.16 : 0;
+    r += line * 70;   g += line * 50;   b += line * 160;
+
+    // 4a. Glowing violet orb — top-right
+    const d1 = Math.sqrt((x - w * 0.80) ** 2 + (y - h * 0.20) ** 2);
+    const g1 = Math.max(0, 1 - d1 / (w * 0.32)) ** 2;
+    r += g1 * 130;   g += g1 * 55;    b += g1 * 240;
+
+    // 4b. Soft indigo orb — bottom-left
+    const d2 = Math.sqrt((x - w * 0.15) ** 2 + (y - h * 0.80) ** 2);
+    const g2 = Math.max(0, 1 - d2 / (w * 0.26)) ** 2;
+    r += g2 * 60;    g += g2 * 40;    b += g2 * 190;
+
+    // 4c. Tiny bright spark — top-left corner
+    const d3 = Math.sqrt((x - w * 0.08) ** 2 + (y - h * 0.18) ** 2);
+    const g3 = Math.max(0, 1 - d3 / (w * 0.14)) ** 3;
+    r += g3 * 180;   g += g3 * 160;   b += g3 * 255;
+
+    return [
+      Math.min(255, Math.max(0, Math.round(r))),
+      Math.min(255, Math.max(0, Math.round(g))),
+      Math.min(255, Math.max(0, Math.round(b))),
+    ];
+  });
+}
+
 /* ── AI-generated strip images (loaded from assets) ─────── */
 const ASSETS = join(__dirname, "../assets");
 const STRIP_CARD    = readFileSync(join(ASSETS, "strip_card.png"));
@@ -518,21 +571,11 @@ router.get("/tlqa", async (req, res) => {
     serial = `TQ-${Date.now()}`,
   } = req.query as Record<string, string>;
 
-  /* ── Premium gradient strip ──
-     Top-left:     #05020f  (near-black)
-     Top-right:    #14093a  (dark violet)
-     Bottom-left:  #0b0525  (deep purple)
-     Bottom-right: #3730a3  (vivid indigo)          */
-  const STRIP_TQ    = gradientPng(375, 98,
-    [5,   2,  15], [20,  9,  58],
-    [11,  5,  37], [55, 48, 163],
-  );
-  const STRIP_TQ_2X = gradientPng(750, 196,
-    [5,   2,  15], [20,  9,  58],
-    [11,  5,  37], [55, 48, 163],
-  );
+  /* ── Aurora strip — generated per-pixel with orbs + shimmer ── */
+  const STRIP_TQ    = tlqaAuroraStrip(375, 98);
+  const STRIP_TQ_2X = tlqaAuroraStrip(750, 196);
 
-  /* ── Logo: brand indigo square ── */
+  /* ── Logo: brand indigo ── */
   const LOGO    = solidPng(160, 50,  99, 102, 241);
   const LOGO_2X = solidPng(320, 100, 99, 102, 241);
 
@@ -545,10 +588,10 @@ router.get("/tlqa", async (req, res) => {
     description:        "بطاقة تلقا تك التعريفية",
     logoText:           "تلقا تك",
 
-    /* Ultra-dark purple-black — premium feel */
-    backgroundColor: "rgb(4, 2, 14)",
-    foregroundColor: "rgb(245, 243, 255)",
-    labelColor:      "rgb(129, 140, 248)",
+    /* Deep vivid indigo — the whole card is branded, not just the strip */
+    backgroundColor: "rgb(55, 48, 163)",
+    foregroundColor: "rgb(255, 255, 255)",
+    labelColor:      "rgb(196, 181, 253)",
 
     generic: {
       headerFields: [
