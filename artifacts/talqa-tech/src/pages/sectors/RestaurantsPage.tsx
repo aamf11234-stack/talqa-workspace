@@ -1266,6 +1266,178 @@ export default function RestaurantsPage() {
       <RestaurantDemoSection isMobile={m} />
 
       {/* ══════════════════════════════════
+          499 OFFER SECTION
+      ══════════════════════════════════ */}
+      <section style={{ padding: 'clamp(80px,10vw,130px) clamp(24px,5vw,80px)', background: R.bg, borderTop: '1px solid rgba(255,255,255,0.05)', position: 'relative', overflow: 'hidden' }}>
+        {/* Background glow */}
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 900, height: 600, background: 'radial-gradient(ellipse,rgba(220,38,38,0.07) 0%,transparent 65%)', pointerEvents: 'none' }} />
+
+        <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative' }}>
+
+          {/* Section label */}
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
+            style={{ textAlign: 'center', marginBottom: 56 }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 18 }}>
+              <div style={{ width: 6, height: 6, borderRadius: '50%', background: R.red, boxShadow: `0 0 8px ${R.glow}` }} />
+              <span style={{ fontWeight: 700, fontSize: 11, color: R.orange, letterSpacing: 2.5, textTransform: 'uppercase' }}>عرض الإطلاق</span>
+            </div>
+            <h2 style={{ fontFamily: 'Cairo, sans-serif', fontWeight: 900, fontSize: 'clamp(2rem,4vw,3.2rem)', color: '#fff', letterSpacing: '-0.04em', lineHeight: 1.1, marginBottom: 14 }}>
+              تطبيقك جاهز — ابدأ بـ ٤٩٩ ريال
+            </h2>
+            <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.45)', maxWidth: 460, margin: '0 auto', lineHeight: 1.8, fontFamily: 'Cairo, sans-serif' }}>
+              تطبيق كامل لمطعمك — حجوزات، طلبات، ولاء، لوحة تحكم — كل شيء يعمل من اليوم الأول.
+            </p>
+          </motion.div>
+
+          {/* Main card */}
+          <motion.div initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
+            style={{ borderRadius: 28, background: 'rgba(255,255,255,0.03)', border: `1px solid ${R.border}`, overflow: 'hidden', position: 'relative' }}>
+
+            {/* Top red line */}
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: R.grad }} />
+
+            {/* Badge */}
+            <div style={{ position: 'absolute', top: 24, left: '50%', transform: 'translateX(-50%)', background: R.grad, color: '#fff', fontSize: 10, fontWeight: 900, padding: '5px 16px', borderRadius: 99, letterSpacing: '0.08em', whiteSpace: 'nowrap', boxShadow: `0 4px 20px ${R.glow}` }}>
+              ⚡ عرض محدود
+            </div>
+
+            <div style={{ display: m ? 'block' : 'grid', gridTemplateColumns: '1fr 1fr', gap: 0 }}>
+
+              {/* LEFT — price + features */}
+              <div style={{ padding: 'clamp(48px,6vw,64px) clamp(32px,5vw,56px)', borderRight: m ? 'none' : '1px solid rgba(255,255,255,0.06)', borderBottom: m ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
+                <div style={{ marginBottom: 32, marginTop: 24 }}>
+                  <div style={{ fontFamily: 'Cairo, sans-serif', fontWeight: 700, fontSize: 14, color: 'rgba(255,255,255,0.45)', marginBottom: 10 }}>سعر الإطلاق الشهري</div>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 8 }}>
+                    <div style={{ fontFamily: 'Cairo, sans-serif', fontWeight: 900, fontSize: 'clamp(4rem,8vw,6rem)', lineHeight: 1, background: R.grad, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>٤٩٩</div>
+                    <div>
+                      <div style={{ fontFamily: 'Cairo, sans-serif', fontWeight: 900, fontSize: 22, color: '#fff' }}>ريال</div>
+                      <div style={{ fontFamily: 'Cairo, sans-serif', fontWeight: 600, fontSize: 13, color: 'rgba(255,255,255,0.40)' }}>/ شهرياً</div>
+                    </div>
+                  </div>
+                  {/* Strike-through original price */}
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '4px 12px', borderRadius: 99, background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.18)' }}>
+                    <span style={{ fontFamily: 'Cairo, sans-serif', fontSize: 12, color: 'rgba(255,255,255,0.35)', textDecoration: 'line-through' }}>٩٩٩ ريال</span>
+                    <span style={{ fontSize: 11, fontWeight: 800, color: R.orange, fontFamily: 'Cairo, sans-serif' }}>وفّر ٥٠٪</span>
+                  </div>
+                </div>
+
+                {/* Features list */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 13, marginBottom: 36 }}>
+                  {[
+                    { icon: '📱', text: 'تطبيق عميل كامل — قائمة + طلب + تتبع' },
+                    { icon: '🗓️', text: 'نظام حجوزات ذكي مع تأكيد فوري' },
+                    { icon: '🛵', text: 'توصيل وطلبات كيرينج مع خريطة حية' },
+                    { icon: '⭐', text: 'بطاقة ولاء Apple & Google Wallet' },
+                    { icon: '📊', text: 'لوحة تحكم المالك + تقارير يومية' },
+                    { icon: '💬', text: 'إشعارات واتساب تلقائية للعملاء' },
+                    { icon: '🎉', text: 'إدارة فعاليات وحجوزات VIP' },
+                    { icon: '🔧', text: 'إعداد كامل + دعم فني ٣ أشهر' },
+                  ].map((f, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                      <div style={{ width: 32, height: 32, borderRadius: 10, background: `${R.red}15`, border: `1px solid ${R.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15, flexShrink: 0 }}>{f.icon}</div>
+                      <span style={{ fontFamily: 'Cairo, sans-serif', fontWeight: 600, fontSize: 14, color: 'rgba(255,255,255,0.78)', lineHeight: 1.5 }}>{f.text}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* CTA buttons */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  <motion.a href={WA} target="_blank" rel="noopener noreferrer"
+                    whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, padding: '18px 32px', borderRadius: 16, background: R.grad, color: '#fff', fontFamily: 'Cairo, sans-serif', fontSize: 16, fontWeight: 900, textDecoration: 'none', boxShadow: `0 12px 40px ${R.glow}` }}>
+                    {WA_SVG} ابدأ الآن بـ ٤٩٩ ريال
+                  </motion.a>
+                  <div style={{ textAlign: 'center', fontSize: 12, color: 'rgba(255,255,255,0.28)', fontFamily: 'Cairo, sans-serif' }}>
+                    بدون عقد طويل · إلغاء في أي وقت
+                  </div>
+                </div>
+              </div>
+
+              {/* RIGHT — phone preview */}
+              <div style={{ padding: 'clamp(48px,6vw,64px) clamp(32px,5vw,56px)', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 28, background: 'rgba(220,38,38,0.03)' }}>
+
+                {/* Mini phone mockup */}
+                <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}
+                  style={{ position: 'relative', width: 200, height: 400 }}>
+                  {/* Shell */}
+                  <div style={{ width: '100%', height: '100%', borderRadius: 36, background: 'linear-gradient(160deg,#2a2a2a,#111)', boxShadow: `0 40px 90px rgba(0,0,0,0.70), 0 0 60px ${R.glow}, inset 0 1px 0 rgba(255,255,255,0.12)`, padding: 5, boxSizing: 'border-box' }}>
+                    <div style={{ width: '100%', height: '100%', borderRadius: 32, overflow: 'hidden', background: '#0a0300', position: 'relative' }}>
+                      {/* Dynamic island */}
+                      <div style={{ position: 'absolute', top: 9, left: '50%', transform: 'translateX(-50%)', width: 66, height: 20, background: '#000', borderRadius: 14, zIndex: 20 }} />
+                      {/* Screen content */}
+                      <div style={{ paddingTop: 36, padding: '36px 10px 10px', height: '100%', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 6 }}>
+                        {/* Header */}
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+                          <div style={{ width: 26, height: 26, borderRadius: 8, background: R.grad, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12 }}>🍽️</div>
+                          <div style={{ flex: 1 }}>
+                            <div style={{ fontSize: 8.5, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>بيت الأصيل</div>
+                            <div style={{ fontSize: 6.5, color: 'rgba(255,255,255,0.38)', fontFamily: 'Cairo,sans-serif' }}>مطعم سعودي فاخر</div>
+                          </div>
+                          <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 5px #10B981' }} />
+                        </div>
+                        {/* Points card */}
+                        <div style={{ borderRadius: 11, background: `linear-gradient(135deg,${R.red},#7C1010)`, padding: '10px 12px', position: 'relative', overflow: 'hidden' }}>
+                          <div style={{ position: 'absolute', top: -12, right: -12, width: 44, height: 44, borderRadius: '50%', background: 'rgba(255,255,255,0.08)' }} />
+                          <div style={{ fontSize: 6.5, color: 'rgba(255,255,255,0.65)', fontFamily: 'Cairo,sans-serif' }}>رصيد نقاطك</div>
+                          <div style={{ fontSize: 18, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif', lineHeight: 1.2 }}>٢٤٠ نقطة</div>
+                          <div style={{ height: 3, borderRadius: 99, background: 'rgba(255,255,255,0.25)', marginTop: 5 }}>
+                            <div style={{ width: '80%', height: '100%', background: '#fff', borderRadius: 99 }} />
+                          </div>
+                        </div>
+                        {/* Categories */}
+                        <div style={{ display: 'flex', gap: 4 }}>
+                          {['🔥 الأكثر','🥩 مشاوي','🥗 مقبلات'].map((c,i) => (
+                            <div key={i} style={{ flex: 1, padding: '4px 0', borderRadius: 8, background: i === 0 ? R.red : 'rgba(255,255,255,0.06)', textAlign: 'center', fontSize: 6.5, fontWeight: 700, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>{c}</div>
+                          ))}
+                        </div>
+                        {/* Items */}
+                        {[
+                          { name: 'كبسة لحم ملكية', price: '٥٥', e: '🍖' },
+                          { name: 'مشاوي مشكلة', price: '٨٩', e: '🥩' },
+                          { name: 'أم علي بالقشطة', price: '٢٨', e: '🍮' },
+                        ].map((item,i) => (
+                          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 8px', borderRadius: 10, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                            <div style={{ width: 24, height: 24, borderRadius: 7, background: `${R.red}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, flexShrink: 0 }}>{item.e}</div>
+                            <div style={{ flex: 1, fontSize: 7.5, fontWeight: 800, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>{item.name}</div>
+                            <div style={{ fontSize: 8.5, fontWeight: 900, color: R.orange, fontFamily: 'Cairo,sans-serif' }}>{item.price}</div>
+                          </div>
+                        ))}
+                        {/* Order btn */}
+                        <div style={{ marginTop: 'auto', padding: '10px', borderRadius: 11, background: R.grad, textAlign: 'center', fontSize: 8, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif', boxShadow: `0 4px 16px ${R.glow}` }}>
+                          اطلب من طاولتك 🛎️
+                        </div>
+                      </div>
+                      {/* Home bar */}
+                      <div style={{ position: 'absolute', bottom: 7, left: '50%', transform: 'translateX(-50%)', width: 60, height: 3, borderRadius: 99, background: 'rgba(255,255,255,0.25)' }} />
+                    </div>
+                  </div>
+                  {/* Side buttons */}
+                  <div style={{ position: 'absolute', top: 90, left: -2.5, width: 2.5, height: 22, borderRadius: '2px 0 0 2px', background: 'rgba(255,255,255,0.12)' }} />
+                  <div style={{ position: 'absolute', top: 120, left: -2.5, width: 2.5, height: 22, borderRadius: '2px 0 0 2px', background: 'rgba(255,255,255,0.12)' }} />
+                  <div style={{ position: 'absolute', top: 105, right: -2.5, width: 2.5, height: 44, borderRadius: '0 2px 2px 0', background: 'rgba(255,255,255,0.12)' }} />
+                </motion.div>
+
+                {/* Trust badges */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, width: '100%', maxWidth: 260 }}>
+                  {[
+                    { icon: '⚡', label: 'إعداد كامل خلال أسبوعين' },
+                    { icon: '🛡️', label: 'ضمان استرجاع ١٤ يوم' },
+                    { icon: '🎓', label: 'تدريب مجاني للفريق' },
+                    { icon: '📞', label: 'دعم فني مباشر ٧/٢٤' },
+                  ].map((b, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 12, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                      <span style={{ fontSize: 16, flexShrink: 0 }}>{b.icon}</span>
+                      <span style={{ fontFamily: 'Cairo, sans-serif', fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.68)' }}>{b.label}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════
           FINAL CTA
       ══════════════════════════════════ */}
       <section style={{ padding: 'clamp(100px,12vw,160px) clamp(24px,5vw,80px)', background: R.bg, position: 'relative', overflow: 'hidden' }}>
