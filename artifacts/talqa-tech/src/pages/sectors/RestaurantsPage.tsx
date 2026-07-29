@@ -118,196 +118,323 @@ const TABS = [
 
 /* ── Phone screen content per tab ── */
 function PhoneScreen({ screen, color }: { screen: string; color: string }) {
+
+  /* ── shared micro-helpers ── */
+  const F = 'Cairo,sans-serif';
+  const pill = (label: string, c: string, active = false) => (
+    <div style={{ padding: '4px 11px', borderRadius: 99, background: active ? c : 'rgba(255,255,255,0.07)', border: `1px solid ${active ? c : 'rgba(255,255,255,0.10)'}`, fontSize: 8.5, color: active ? '#fff' : 'rgba(255,255,255,0.55)', fontFamily: F, fontWeight: 700, flexShrink: 0 }}>{label}</div>
+  );
+
+  /* ── bar chart mini ── */
+  const bars = [55, 78, 62, 90, 74, 88, 100];
+  const BarMini = ({ c }: { c: string }) => (
+    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 3, height: 28 }}>
+      {bars.map((h, i) => (
+        <div key={i} style={{ flex: 1, borderRadius: 3, background: i === 6 ? c : `${c}40`, height: `${h}%`, transition: 'height .3s' }} />
+      ))}
+    </div>
+  );
+
   const screens: Record<string, JSX.Element> = {
+
+    /* ══════════════════════════════════════════
+       SCREEN 1 — تطبيق العميل  (Deliveroo-tier)
+    ══════════════════════════════════════════ */
     app: (
-      <div style={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 8 }}>
-        {/* App header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '4px 0 8px' }}>
-          <div style={{ width: 36, height: 36, borderRadius: 12, background: `linear-gradient(135deg,${color},${color}99)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>🍽️</div>
-          <div>
-            <div style={{ fontSize: 11, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>بيت الأصيل</div>
-            <div style={{ fontSize: 8, color: 'rgba(255,255,255,0.4)', fontFamily: 'Cairo,sans-serif' }}>مطعم سعودي فاخر</div>
+      <div style={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 0, background: 'transparent' }}>
+
+        {/* Hero banner */}
+        <div style={{ borderRadius: 16, background: `linear-gradient(135deg,${color} 0%,#7C1010 100%)`, padding: '14px 16px 18px', marginBottom: 10, position: 'relative', overflow: 'hidden' }}>
+          {/* decorative circles */}
+          <div style={{ position: 'absolute', top: -18, right: -18, width: 70, height: 70, borderRadius: '50%', background: 'rgba(255,255,255,0.08)' }} />
+          <div style={{ position: 'absolute', bottom: -22, right: 10, width: 50, height: 50, borderRadius: '50%', background: 'rgba(255,255,255,0.05)' }} />
+          <div style={{ fontSize: 7.5, color: 'rgba(255,255,255,0.65)', fontFamily: F, marginBottom: 4, letterSpacing: 1 }}>رصيد نقاطك الآن</div>
+          <div style={{ fontSize: 26, fontWeight: 900, color: '#fff', fontFamily: F, lineHeight: 1, marginBottom: 6 }}>٢٤٠ نقطة</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div style={{ flex: 1, height: 5, borderRadius: 99, background: 'rgba(255,255,255,0.20)', overflow: 'hidden' }}>
+              <div style={{ width: '80%', height: '100%', background: '#fff', borderRadius: 99 }} />
+            </div>
+            <span style={{ fontSize: 7.5, color: 'rgba(255,255,255,0.75)', fontFamily: F, fontWeight: 700 }}>٦٠↑ للجائزة</span>
           </div>
-          <div style={{ marginRight: 'auto', width: 7, height: 7, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 6px #10B981' }} />
         </div>
-        {/* Banner */}
-        <div style={{ borderRadius: 14, background: `linear-gradient(135deg,${color}33,${color}11)`, border: `1px solid ${color}33`, padding: '12px 14px' }}>
-          <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.45)', fontFamily: 'Cairo,sans-serif', marginBottom: 4 }}>رصيد نقاطك</div>
-          <div style={{ fontSize: 22, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif', lineHeight: 1 }}>٢٤٠ نقطة</div>
-          <div style={{ fontSize: 8, color: color, marginTop: 4, fontFamily: 'Cairo,sans-serif', fontWeight: 700 }}>٦٠ نقطة فقط للجائزة التالية 🎁</div>
+
+        {/* Category row */}
+        <div style={{ display: 'flex', gap: 5, marginBottom: 10, overflowX: 'auto' }}>
+          {['🔥 الأكثر طلبا', '🥩 المشويات', '🥗 المقبلات', '🍹 مشروبات'].map((c, i) => pill(c, color, i === 0))}
         </div>
-        {/* Category pills */}
-        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-          {['المشويات', 'المقبلات', 'المشروبات', 'الحلويات'].map((c, i) => (
-            <div key={c} style={{ padding: '4px 10px', borderRadius: 99, background: i === 0 ? color : 'rgba(255,255,255,0.06)', border: `1px solid ${i === 0 ? color : 'rgba(255,255,255,0.10)'}`, fontSize: 8.5, color: '#fff', fontFamily: 'Cairo,sans-serif', fontWeight: 700 }}>{c}</div>
-          ))}
-        </div>
+
         {/* Menu items */}
         {[
-          { name: 'كبسة لحم ملكية', price: '٥٥', cal: '٨٢٠ سعرة' },
-          { name: 'مشاوي مشكلة', price: '٨٩', cal: '١٢٠٠ سعرة' },
+          { name: 'كبسة لحم ملكية', sub: 'أرز بسمتي • لحم عجل • زعفران', price: '٥٥', tag: '🔥 الأكثر طلباً', rating: '٤.٩' },
+          { name: 'مشاوي مشكلة فاخرة', sub: 'دجاج • لحم • كباب • خضار', price: '٨٩', tag: 'جديد', rating: '٤.٧' },
         ].map((item, i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', borderRadius: 13, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
-            <div style={{ width: 40, height: 40, borderRadius: 10, background: `${color}22`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>🍖</div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 10, fontWeight: 800, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>{item.name}</div>
-              <div style={{ fontSize: 8, color: 'rgba(255,255,255,0.35)', fontFamily: 'Cairo,sans-serif', marginTop: 2 }}>{item.cal}</div>
+          <div key={i} style={{ display: 'flex', gap: 10, padding: '10px 12px', borderRadius: 14, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)', marginBottom: 7 }}>
+            {/* Food image placeholder */}
+            <div style={{ width: 46, height: 46, borderRadius: 12, background: `linear-gradient(135deg,${color}40,${color}18)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>
+              {i === 0 ? '🍖' : '🥩'}
             </div>
-            <div style={{ fontSize: 11, fontWeight: 900, color: color, fontFamily: 'Cairo,sans-serif' }}>{item.price} ر</div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 4 }}>
+                <div style={{ fontSize: 10, fontWeight: 900, color: '#fff', fontFamily: F, lineHeight: 1.3 }}>{item.name}</div>
+                <div style={{ fontSize: 11, fontWeight: 900, color: color, fontFamily: F, flexShrink: 0 }}>{item.price}<span style={{ fontSize: 7 }}> ر</span></div>
+              </div>
+              <div style={{ fontSize: 7.5, color: 'rgba(255,255,255,0.38)', fontFamily: F, marginTop: 2, marginBottom: 5 }}>{item.sub}</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span style={{ padding: '2px 8px', borderRadius: 99, background: `${color}25`, fontSize: 7, fontWeight: 800, color: color, fontFamily: F }}>{item.tag}</span>
+                <span style={{ fontSize: 7.5, color: 'rgba(255,255,255,0.45)', fontFamily: F }}>⭐ {item.rating}</span>
+              </div>
+            </div>
           </div>
         ))}
-        {/* Order button */}
-        <div style={{ marginTop: 'auto', padding: '12px', borderRadius: 13, background: `linear-gradient(135deg,${color},${color}bb)`, textAlign: 'center', fontSize: 10, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>
-          اطلب من طاولتك الآن
+
+        {/* QR table button */}
+        <div style={{ marginTop: 'auto', display: 'flex', gap: 7 }}>
+          <div style={{ flex: 1, padding: '11px 0', borderRadius: 13, background: `linear-gradient(135deg,${color},#9A1515)`, textAlign: 'center', fontSize: 10, fontWeight: 900, color: '#fff', fontFamily: F, boxShadow: `0 6px 24px ${color}55` }}>
+            اطلب من طاولتك 🛎️
+          </div>
+          <div style={{ width: 42, borderRadius: 13, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>
+            📷
+          </div>
         </div>
       </div>
     ),
 
+    /* ══════════════════════════════════════════
+       SCREEN 2 — الحجوزات  (OpenTable-tier)
+    ══════════════════════════════════════════ */
     booking: (
-      <div style={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <div style={{ fontSize: 11, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif', padding: '4px 0 8px' }}>احجز طاولتك 🗓️</div>
-        {/* Date picker row */}
-        <div style={{ display: 'flex', gap: 5, overflowX: 'auto', paddingBottom: 4 }}>
-          {['الثلاثاء\n٢٩', 'الأربعاء\n٣٠', 'الخميس\n٣١', 'الجمعة\n١', 'السبت\n٢'].map((d, i) => (
-            <div key={i} style={{ minWidth: 44, padding: '8px 6px', borderRadius: 12, background: i === 2 ? color : 'rgba(255,255,255,0.05)', border: `1px solid ${i === 2 ? color : 'rgba(255,255,255,0.08)'}`, textAlign: 'center', flexShrink: 0 }}>
-              {d.split('\n').map((line, j) => (
-                <div key={j} style={{ fontSize: j === 0 ? 7.5 : 11, fontWeight: j === 1 ? 900 : 600, color: '#fff', fontFamily: 'Cairo,sans-serif', lineHeight: 1.4 }}>{line}</div>
-              ))}
+      <div style={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 9 }}>
+
+        {/* Header */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <div style={{ fontSize: 11.5, fontWeight: 900, color: '#fff', fontFamily: F }}>احجز طاولتك</div>
+            <div style={{ fontSize: 8, color: 'rgba(255,255,255,0.40)', fontFamily: F }}>تأكيد فوري ٢٤/٧</div>
+          </div>
+          <div style={{ padding: '5px 10px', borderRadius: 99, background: `${color}22`, border: `1px solid ${color}44`, fontSize: 8, fontWeight: 800, color: color, fontFamily: F }}>٣ طاولات متاحة</div>
+        </div>
+
+        {/* Date carousel */}
+        <div style={{ display: 'flex', gap: 5 }}>
+          {[['ثلاثاء','٢٩'],['أربعاء','٣٠'],['خميس','٣١'],['جمعة','١'],['سبت','٢']].map(([day, num], i) => (
+            <div key={i} style={{ flex: 1, padding: '8px 4px', borderRadius: 13, background: i === 2 ? `linear-gradient(135deg,${color},#9A1515)` : 'rgba(255,255,255,0.05)', border: `1px solid ${i === 2 ? 'transparent' : 'rgba(255,255,255,0.08)'}`, textAlign: 'center', boxShadow: i === 2 ? `0 4px 16px ${color}44` : 'none' }}>
+              <div style={{ fontSize: 7, fontWeight: 600, color: i === 2 ? 'rgba(255,255,255,0.75)' : 'rgba(255,255,255,0.35)', fontFamily: F }}>{day}</div>
+              <div style={{ fontSize: 13, fontWeight: 900, color: '#fff', fontFamily: F, lineHeight: 1.4 }}>{num}</div>
             </div>
           ))}
         </div>
-        {/* Time slots */}
-        <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.4)', fontFamily: 'Cairo,sans-serif', marginTop: 4 }}>الأوقات المتاحة</div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 6 }}>
-          {['٧:٠٠ م','٧:٣٠ م','٨:٠٠ م','٨:٣٠ م','٩:٠٠ م','٩:٣٠ م'].map((t, i) => (
-            <div key={i} style={{ padding: '8px 4px', borderRadius: 10, background: i === 1 ? color : 'rgba(255,255,255,0.04)', border: `1px solid ${i === 1 ? color : 'rgba(255,255,255,0.08)'}`, textAlign: 'center', fontSize: 9, fontWeight: 700, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>{t}</div>
-          ))}
-        </div>
-        {/* Guests */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 12px', borderRadius: 13, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-          <span style={{ fontSize: 14 }}>👥</span>
-          <div style={{ flex: 1, fontSize: 9.5, fontWeight: 700, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>عدد الأشخاص</div>
-          <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-            <div style={{ width: 22, height: 22, borderRadius: 7, background: 'rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, color: '#fff' }}>−</div>
-            <span style={{ fontSize: 13, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif', width: 16, textAlign: 'center' }}>٤</span>
-            <div style={{ width: 22, height: 22, borderRadius: 7, background: color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, color: '#fff' }}>+</div>
+
+        {/* Time grid */}
+        <div>
+          <div style={{ fontSize: 8.5, color: 'rgba(255,255,255,0.40)', fontFamily: F, marginBottom: 6, fontWeight: 700 }}>الأوقات المتاحة — ٣١ يوليو</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 5 }}>
+            {[['٧:٠٠ م',false],['٧:٣٠ م',true],['٨:٠٠ م',false],['٨:٣٠ م',false],['٩:٠٠ م',false],['٩:٣٠ م',false]].map(([t, active], i) => (
+              <div key={i} style={{ padding: '9px 4px', borderRadius: 11, background: active ? `linear-gradient(135deg,${color},#9A1515)` : 'rgba(255,255,255,0.04)', border: `1px solid ${active ? 'transparent' : 'rgba(255,255,255,0.08)'}`, textAlign: 'center', fontSize: 9.5, fontWeight: 800, color: active ? '#fff' : 'rgba(255,255,255,0.60)', fontFamily: F, boxShadow: active ? `0 3px 12px ${color}44` : 'none' }}>{t as string}</div>
+            ))}
           </div>
         </div>
-        {/* Confirm */}
-        <div style={{ marginTop: 'auto', padding: '12px', borderRadius: 13, background: `linear-gradient(135deg,${color},${color}bb)`, textAlign: 'center', fontSize: 10, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>
-          تأكيد الحجز — تأكيد فوري ✓
+
+        {/* Guests + section */}
+        <div style={{ display: 'flex', gap: 7 }}>
+          <div style={{ flex: 1, padding: '10px 12px', borderRadius: 13, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 16 }}>👥</span>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 7.5, color: 'rgba(255,255,255,0.38)', fontFamily: F }}>أشخاص</div>
+              <div style={{ fontSize: 13, fontWeight: 900, color: '#fff', fontFamily: F }}>٤</div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <div style={{ width: 18, height: 18, borderRadius: 6, background: color, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, color: '#fff', fontWeight: 900 }}>+</div>
+              <div style={{ width: 18, height: 18, borderRadius: 6, background: 'rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, color: '#fff', fontWeight: 900 }}>−</div>
+            </div>
+          </div>
+          <div style={{ flex: 1, padding: '10px 12px', borderRadius: 13, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.09)' }}>
+            <div style={{ fontSize: 7.5, color: 'rgba(255,255,255,0.38)', fontFamily: F, marginBottom: 4 }}>القسم</div>
+            <div style={{ display: 'flex', gap: 4 }}>
+              {['داخلي','خارجي'].map((s,i) => (
+                <div key={i} style={{ flex: 1, padding: '5px 0', borderRadius: 8, background: i === 0 ? `${color}33` : 'transparent', border: `1px solid ${i === 0 ? color : 'rgba(255,255,255,0.08)'}`, textAlign: 'center', fontSize: 8, fontWeight: 800, color: i === 0 ? color : 'rgba(255,255,255,0.40)', fontFamily: F }}>{s}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div style={{ marginTop: 'auto', padding: '12px', borderRadius: 14, background: `linear-gradient(135deg,${color},#9A1515)`, textAlign: 'center', fontSize: 10.5, fontWeight: 900, color: '#fff', fontFamily: F, boxShadow: `0 6px 24px ${color}55`, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+          <span>تأكيد الحجز</span>
+          <div style={{ width: 18, height: 18, borderRadius: '50%', background: 'rgba(255,255,255,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9 }}>✓</div>
         </div>
       </div>
     ),
 
+    /* ══════════════════════════════════════════
+       SCREEN 3 — الطلبات والتوصيل  (Uber Eats-tier)
+    ══════════════════════════════════════════ */
     orders: (
-      <div style={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <div style={{ fontSize: 11, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif', padding: '4px 0 8px' }}>طلبك في الطريق 🛵</div>
-        {/* Status track */}
-        <div style={{ padding: '14px', borderRadius: 14, background: `${color}18`, border: `1px solid ${color}30` }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
-            {['تم الطلب', 'يُحضَّر', 'في الطريق', 'وصل'].map((s, i) => (
-              <div key={i} style={{ textAlign: 'center' }}>
-                <div style={{ width: 26, height: 26, borderRadius: '50%', background: i <= 2 ? color : 'rgba(255,255,255,0.10)', margin: '0 auto 4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10 }}>
-                  {i <= 2 ? '✓' : ''}
+      <div style={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 9 }}>
+
+        {/* Live ETA card */}
+        <div style={{ borderRadius: 16, background: `linear-gradient(135deg,${color}22,${color}08)`, border: `1px solid ${color}35`, padding: '14px 16px', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg,${color},transparent)` }} />
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+            <div>
+              <div style={{ fontSize: 7.5, color: 'rgba(255,255,255,0.45)', fontFamily: F, marginBottom: 2 }}>وقت الوصول المتوقع</div>
+              <div style={{ fontSize: 22, fontWeight: 900, color: '#fff', fontFamily: F, lineHeight: 1 }}>٨ دقائق</div>
+              <div style={{ fontSize: 8, color: color, fontFamily: F, fontWeight: 700, marginTop: 3 }}>السائق على بعد ١.٢ كم</div>
+            </div>
+            <div style={{ width: 52, height: 52, borderRadius: '50%', background: `${color}20`, border: `2px solid ${color}50`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>🛵</div>
+          </div>
+          {/* Progress stepper */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
+            {['تم','يُحضَّر','الطريق','وصل'].map((s, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', flex: i < 3 ? 1 : 0 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+                  <div style={{ width: 22, height: 22, borderRadius: '50%', background: i <= 2 ? color : 'rgba(255,255,255,0.10)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, color: '#fff', fontWeight: 900, boxShadow: i === 2 ? `0 0 10px ${color}` : 'none' }}>
+                    {i <= 2 ? '✓' : ''}
+                  </div>
+                  <div style={{ fontSize: 6.5, color: i <= 2 ? 'rgba(255,255,255,0.70)' : 'rgba(255,255,255,0.25)', fontFamily: F, fontWeight: 700, whiteSpace: 'nowrap' }}>{s}</div>
                 </div>
-                <div style={{ fontSize: 7, color: i <= 2 ? '#fff' : 'rgba(255,255,255,0.35)', fontFamily: 'Cairo,sans-serif', fontWeight: 700 }}>{s}</div>
+                {i < 3 && <div style={{ flex: 1, height: 2, background: i < 2 ? color : 'rgba(255,255,255,0.12)', marginBottom: 12, marginRight: 2, marginLeft: 2, borderRadius: 1 }} />}
               </div>
             ))}
           </div>
-          <div style={{ fontSize: 9, color: color, fontWeight: 800, fontFamily: 'Cairo,sans-serif', textAlign: 'center' }}>السائق على بعد ١.٢ كم — وصول خلال ٨ دقائق</div>
         </div>
-        {/* Order items */}
-        {[
-          { name: 'كبسة لحم', qty: '×١', price: '٥٥' },
-          { name: 'مياه معدنية', qty: '×٢', price: '١٠' },
-          { name: 'حلى أم علي', qty: '×١', price: '٢٥' },
-        ].map((item, i) => (
-          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 12px', borderRadius: 12, background: 'rgba(255,255,255,0.04)' }}>
-            <div style={{ width: 6, height: 6, borderRadius: '50%', background: color, flexShrink: 0 }} />
-            <div style={{ flex: 1, fontSize: 9.5, fontWeight: 700, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>{item.name}</div>
-            <div style={{ fontSize: 8.5, color: 'rgba(255,255,255,0.40)', fontFamily: 'Cairo,sans-serif' }}>{item.qty}</div>
-            <div style={{ fontSize: 9.5, fontWeight: 800, color: color, fontFamily: 'Cairo,sans-serif' }}>{item.price}</div>
+
+        {/* Order list */}
+        <div style={{ borderRadius: 14, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', overflow: 'hidden' }}>
+          {[
+            { name: 'كبسة لحم ملكية', qty: '×١', price: '٥٥', emoji: '🍖' },
+            { name: 'مياه معدنية صغيرة', qty: '×٢', price: '١٠', emoji: '💧' },
+            { name: 'حلى أم علي فاخر', qty: '×١', price: '٢٨', emoji: '🍮' },
+          ].map((item, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', borderBottom: i < 2 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}>
+              <div style={{ width: 30, height: 30, borderRadius: 9, background: `${color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 15, flexShrink: 0 }}>{item.emoji}</div>
+              <div style={{ flex: 1, fontSize: 9.5, fontWeight: 700, color: '#fff', fontFamily: F }}>{item.name}</div>
+              <div style={{ fontSize: 8, color: 'rgba(255,255,255,0.35)', fontFamily: F }}>{item.qty}</div>
+              <div style={{ fontSize: 10, fontWeight: 800, color: color, fontFamily: F }}>{item.price}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Total row */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 14px', borderRadius: 12, background: 'rgba(255,255,255,0.06)' }}>
+          <span style={{ fontSize: 10, fontWeight: 800, color: 'rgba(255,255,255,0.65)', fontFamily: F }}>إجمالي الطلب</span>
+          <span style={{ fontSize: 14, fontWeight: 900, color: '#fff', fontFamily: F }}>٩٣ <span style={{ fontSize: 9, color: color }}>ر</span></span>
+        </div>
+
+        {/* WhatsApp live notif */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 13px', borderRadius: 12, background: 'rgba(37,211,102,0.10)', border: '1px solid rgba(37,211,102,0.22)' }}>
+          <div style={{ width: 28, height: 28, borderRadius: '50%', background: '#25D36622', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, flexShrink: 0 }}>💬</div>
+          <div>
+            <div style={{ fontSize: 8.5, color: '#25D366', fontFamily: F, fontWeight: 800 }}>إشعار واتساب تلقائي</div>
+            <div style={{ fontSize: 7.5, color: 'rgba(255,255,255,0.35)', fontFamily: F }}>ستصلك رسالة عند جاهزية الطلب</div>
           </div>
-        ))}
-        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 12px', borderRadius: 12, background: 'rgba(255,255,255,0.06)', borderTop: '1px solid rgba(255,255,255,0.08)' }}>
-          <span style={{ fontSize: 10, fontWeight: 800, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>الإجمالي</span>
-          <span style={{ fontSize: 12, fontWeight: 900, color: color, fontFamily: 'Cairo,sans-serif' }}>٩٠ ر</span>
-        </div>
-        {/* WhatsApp notification */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 12px', borderRadius: 12, background: 'rgba(37,211,102,0.10)', border: '1px solid rgba(37,211,102,0.20)' }}>
-          <span style={{ fontSize: 12 }}>💬</span>
-          <div style={{ fontSize: 8.5, color: '#25D366', fontFamily: 'Cairo,sans-serif', fontWeight: 700 }}>إشعار واتساب تلقائي عند وصول الطلب</div>
         </div>
       </div>
     ),
 
+    /* ══════════════════════════════════════════
+       SCREEN 4 — إدارة الفعاليات  (Resy-tier)
+    ══════════════════════════════════════════ */
     events: (
       <div style={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <div style={{ fontSize: 11, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif', padding: '4px 0 8px' }}>الفعاليات القادمة 🎉</div>
+
+        {/* Header */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+          <div>
+            <div style={{ fontSize: 11.5, fontWeight: 900, color: '#fff', fontFamily: F }}>الفعاليات القادمة</div>
+            <div style={{ fontSize: 8, color: 'rgba(255,255,255,0.38)', fontFamily: F }}>مارس ٢٠٢٥</div>
+          </div>
+          <div style={{ padding: '5px 10px', borderRadius: 99, background: 'rgba(139,92,246,0.20)', border: '1px solid rgba(139,92,246,0.40)', fontSize: 8, fontWeight: 800, color: '#A78BFA', fontFamily: F }}>٣ فعاليات</div>
+        </div>
+
         {/* Event cards */}
         {[
-          { title: 'ليلة رمضان الكريم', date: 'الجمعة ١٥ مارس', badge: 'VIP', color: '#8B5CF6', emoji: '🌙', seats: '٨ مقاعد متبقية' },
-          { title: 'حفلة عيد الأم', date: 'الأحد ٢٣ مارس', badge: 'عائلي', color: '#EC4899', emoji: '💐', seats: '١٢ مقعد متبقي' },
-          { title: 'ليلة البوفيه الملكي', date: 'كل جمعة', badge: 'أسبوعي', color: '#F59E0B', emoji: '👑', seats: 'مفتوح' },
+          { title: 'ليلة رمضان الكريم', date: 'جمعة ١٥ مارس • ٨ م', badge: 'VIP', bc: '#8B5CF6', emoji: '🌙', seats: '٨ مقاعد متبقية', seatPct: '75%' },
+          { title: 'حفلة عيد الأم الفاخرة', date: 'أحد ٢٣ مارس • ٧ م', badge: 'عائلي', bc: '#EC4899', emoji: '💐', seats: '١٢ مقعد', seatPct: '55%' },
+          { title: 'بوفيه ملكي أسبوعي', date: 'كل جمعة • ٦ م', badge: 'أسبوعي', bc: '#F59E0B', emoji: '👑', seats: 'مفتوح', seatPct: '30%' },
         ].map((ev, i) => (
-          <div key={i} style={{ padding: '12px 14px', borderRadius: 14, background: `${ev.color}14`, border: `1px solid ${ev.color}30`, position: 'relative', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg,${ev.color},transparent)` }} />
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-              <div style={{ fontSize: 22, flexShrink: 0 }}>{ev.emoji}</div>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3 }}>
-                  <div style={{ fontSize: 9.5, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>{ev.title}</div>
-                  <div style={{ padding: '2px 7px', borderRadius: 99, background: ev.color, fontSize: 7, fontWeight: 800, color: '#fff' }}>{ev.badge}</div>
+          <div key={i} style={{ padding: '12px 14px', borderRadius: 15, background: `${ev.bc}12`, border: `1px solid ${ev.bc}28`, position: 'relative', overflow: 'hidden' }}>
+            {/* top accent */}
+            <div style={{ position: 'absolute', top: 0, right: 0, left: 0, height: 2.5, background: `linear-gradient(90deg,${ev.bc},${ev.bc}44,transparent)` }} />
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 11 }}>
+              <div style={{ width: 38, height: 38, borderRadius: 12, background: `${ev.bc}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>{ev.emoji}</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 3, flexWrap: 'wrap' }}>
+                  <div style={{ fontSize: 10, fontWeight: 900, color: '#fff', fontFamily: F }}>{ev.title}</div>
+                  <div style={{ padding: '2px 8px', borderRadius: 99, background: ev.bc, fontSize: 7, fontWeight: 800, color: '#fff', flexShrink: 0 }}>{ev.badge}</div>
                 </div>
-                <div style={{ fontSize: 8, color: 'rgba(255,255,255,0.45)', fontFamily: 'Cairo,sans-serif', marginBottom: 4 }}>{ev.date}</div>
-                <div style={{ fontSize: 8, color: ev.color, fontWeight: 700, fontFamily: 'Cairo,sans-serif' }}>{ev.seats}</div>
+                <div style={{ fontSize: 8, color: 'rgba(255,255,255,0.40)', fontFamily: F, marginBottom: 6 }}>{ev.date}</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+                  <div style={{ flex: 1, height: 3.5, borderRadius: 99, background: 'rgba(255,255,255,0.10)', overflow: 'hidden' }}>
+                    <div style={{ width: ev.seatPct, height: '100%', background: ev.bc, borderRadius: 99 }} />
+                  </div>
+                  <span style={{ fontSize: 7.5, color: ev.bc, fontFamily: F, fontWeight: 800, flexShrink: 0 }}>{ev.seats}</span>
+                </div>
               </div>
             </div>
           </div>
         ))}
-        {/* Book event button */}
-        <div style={{ marginTop: 'auto', padding: '12px', borderRadius: 13, background: 'linear-gradient(135deg,#8B5CF6,#6D28D9)', textAlign: 'center', fontSize: 10, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>
-          احجز مقعدك في الفعالية
+
+        {/* CTA */}
+        <div style={{ marginTop: 'auto', padding: '11px', borderRadius: 14, background: 'linear-gradient(135deg,#8B5CF6,#5B21B6)', textAlign: 'center', fontSize: 10.5, fontWeight: 900, color: '#fff', fontFamily: F, boxShadow: '0 6px 24px rgba(139,92,246,0.45)' }}>
+          احجز مقعدك الآن ✨
         </div>
       </div>
     ),
 
+    /* ══════════════════════════════════════════
+       SCREEN 5 — لوحة التحكم  (Stripe Dashboard-tier)
+    ══════════════════════════════════════════ */
     dashboard: (
       <div style={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 8 }}>
-        <div style={{ fontSize: 11, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif', padding: '4px 0 8px' }}>لوحة التحكم 📊</div>
-        {/* Revenue card */}
-        <div style={{ padding: '14px', borderRadius: 14, background: `${color}18`, border: `1px solid ${color}30` }}>
-          <div style={{ fontSize: 8, color: 'rgba(255,255,255,0.45)', fontFamily: 'Cairo,sans-serif', marginBottom: 4 }}>إيرادات اليوم</div>
-          <div style={{ fontSize: 24, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif', lineHeight: 1 }}>٨,٤٣٠ ر</div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 6 }}>
-            <div style={{ padding: '2px 7px', borderRadius: 99, background: 'rgba(16,185,129,0.15)', fontSize: 8, fontWeight: 800, color: '#10B981' }}>↑٢٤٪</div>
-            <span style={{ fontSize: 8, color: 'rgba(255,255,255,0.35)', fontFamily: 'Cairo,sans-serif' }}>مقارنة بالأمس</span>
+
+        {/* Header */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <div style={{ fontSize: 11.5, fontWeight: 900, color: '#fff', fontFamily: F }}>لوحة التحكم</div>
+            <div style={{ fontSize: 8, color: 'rgba(255,255,255,0.40)', fontFamily: F }}>الثلاثاء ٢٩ يوليو ٢٠٢٥</div>
+          </div>
+          <div style={{ width: 30, height: 30, borderRadius: '50%', background: `${color}22`, border: `1px solid ${color}44`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14 }}>🔔</div>
+        </div>
+
+        {/* Revenue hero card */}
+        <div style={{ borderRadius: 16, background: `linear-gradient(135deg,${color} 0%,#7C1010 100%)`, padding: '14px 16px', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: -20, right: -20, width: 80, height: 80, borderRadius: '50%', background: 'rgba(255,255,255,0.07)' }} />
+          <div style={{ position: 'absolute', bottom: -25, left: 10, width: 60, height: 60, borderRadius: '50%', background: 'rgba(255,255,255,0.04)' }} />
+          <div style={{ fontSize: 8, color: 'rgba(255,255,255,0.65)', fontFamily: F, marginBottom: 3 }}>إيرادات اليوم</div>
+          <div style={{ fontSize: 26, fontWeight: 900, color: '#fff', fontFamily: F, lineHeight: 1, marginBottom: 6 }}>٨,٤٣٠ ر</div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ padding: '3px 9px', borderRadius: 99, background: 'rgba(255,255,255,0.20)', fontSize: 8, fontWeight: 800, color: '#fff', fontFamily: F }}>↑ ٢٤٪</div>
+            <span style={{ fontSize: 8, color: 'rgba(255,255,255,0.60)', fontFamily: F }}>مقارنة بالأمس</span>
+            <div style={{ marginRight: 'auto' }}><BarMini c="#ffffff" /></div>
           </div>
         </div>
-        {/* Mini stats grid */}
+
+        {/* Stats 2×2 grid */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
           {[
-            { label: 'الطلبات', val: '٦٢', icon: '📦', c: color },
-            { label: 'الحجوزات', val: '١٨', icon: '🗓️', c: '#F97316' },
-            { label: 'التوصيل', val: '٣١', icon: '🛵', c: '#F59E0B' },
-            { label: 'التقييم', val: '٤.٩★', icon: '⭐', c: '#10B981' },
+            { label: 'الطلبات', val: '٦٢', icon: '📦', c: color, sub: '+٨ من أمس' },
+            { label: 'الحجوزات', val: '١٨', icon: '🗓️', c: '#F97316', sub: 'مكتمل ١٢' },
+            { label: 'التوصيل', val: '٣١', icon: '🛵', c: '#F59E0B', sub: 'جارٍ ٥' },
+            { label: 'التقييم', val: '٤.٩', icon: '⭐', c: '#10B981', sub: '١٤٢ تقييم' },
           ].map((s, i) => (
-            <div key={i} style={{ padding: '10px 12px', borderRadius: 12, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
-              <div style={{ fontSize: 14 }}>{s.icon}</div>
-              <div style={{ fontSize: 14, fontWeight: 900, color: s.c, fontFamily: 'Cairo,sans-serif', lineHeight: 1.2, marginTop: 4 }}>{s.val}</div>
-              <div style={{ fontSize: 8, color: 'rgba(255,255,255,0.35)', fontFamily: 'Cairo,sans-serif', marginTop: 2 }}>{s.label}</div>
+            <div key={i} style={{ padding: '11px 12px', borderRadius: 13, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, right: 0, width: 30, height: 30, borderRadius: '0 13px 0 30px', background: `${s.c}14` }} />
+              <div style={{ fontSize: 15, marginBottom: 5 }}>{s.icon}</div>
+              <div style={{ fontSize: 16, fontWeight: 900, color: s.c, fontFamily: F, lineHeight: 1.1 }}>{s.val}</div>
+              <div style={{ fontSize: 8, color: 'rgba(255,255,255,0.45)', fontFamily: F, marginTop: 2 }}>{s.label}</div>
+              <div style={{ fontSize: 7, color: 'rgba(255,255,255,0.25)', fontFamily: F, marginTop: 1 }}>{s.sub}</div>
             </div>
           ))}
         </div>
+
         {/* Top dish */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', borderRadius: 12, background: 'rgba(255,255,255,0.04)' }}>
-          <span style={{ fontSize: 20 }}>🏆</span>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 9.5, fontWeight: 800, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>الأكثر طلباً اليوم</div>
-            <div style={{ fontSize: 8.5, color: 'rgba(255,255,255,0.40)', fontFamily: 'Cairo,sans-serif' }}>كبسة لحم ملكية — ٣٢ طلب</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '11px 13px', borderRadius: 13, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
+          <div style={{ width: 34, height: 34, borderRadius: 10, background: `${color}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>🏆</div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 9.5, fontWeight: 800, color: '#fff', fontFamily: F }}>الأكثر طلباً اليوم</div>
+            <div style={{ fontSize: 8, color: 'rgba(255,255,255,0.38)', fontFamily: F }}>كبسة لحم ملكية — ٣٢ طلب</div>
           </div>
-          <div style={{ fontSize: 9, fontWeight: 800, color: color, fontFamily: 'Cairo,sans-serif' }}>+١٢٪</div>
+          <div style={{ padding: '4px 9px', borderRadius: 99, background: 'rgba(16,185,129,0.15)', fontSize: 9, fontWeight: 800, color: '#10B981', fontFamily: F }}>+١٢٪</div>
         </div>
       </div>
     ),
