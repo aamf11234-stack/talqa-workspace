@@ -49,35 +49,35 @@
 }
 
 :root {
-  --background: 329 68% 6%; /* #1A0510 */
+  --background: 28 80% 5%;      /* #150900 — إسبريسو داكن */
   --foreground: 0 0% 100%;
-  --border: 330 40% 15%;
-  --input: 330 40% 15%;
-  --ring: 345 69% 63%; /* #E06080 */
+  --border: 28 35% 16%;
+  --input: 28 35% 16%;
+  --ring: 32 72% 48%;            /* #C4783A — كهرماني */
 
-  --card: 327 55% 10%; /* #260B1A */
+  --card: 28 60% 9%;             /* #201000 — بن داكن */
   --card-foreground: 0 0% 100%;
-  --card-border: 330 40% 15%;
+  --card-border: 28 35% 16%;
 
-  --popover: 327 55% 10%;
+  --popover: 28 60% 9%;
   --popover-foreground: 0 0% 100%;
-  --popover-border: 330 40% 15%;
+  --popover-border: 28 35% 16%;
 
-  --primary: 345 69% 63%; /* #E06080 */
+  --primary: 32 72% 48%;         /* #C4783A — كهرماني */
   --primary-foreground: 0 0% 100%;
-  --primary-border: 345 69% 50%;
+  --primary-border: 32 72% 36%;
 
-  --secondary: 29 44% 59%; /* #C4956A */
+  --secondary: 29 44% 58%;       /* #C4956A — كراميل */
   --secondary-foreground: 13 23% 4%;
-  --secondary-border: 29 44% 45%;
+  --secondary-border: 29 44% 44%;
 
-  --muted: 330 40% 15%;
-  --muted-foreground: 330 20% 70%;
-  --muted-border: 330 40% 25%;
+  --muted: 28 35% 16%;
+  --muted-foreground: 28 20% 68%;
+  --muted-border: 28 35% 26%;
 
-  --accent: 345 69% 63%;
+  --accent: 32 72% 48%;
   --accent-foreground: 0 0% 100%;
-  --accent-border: 345 69% 50%;
+  --accent-border: 32 72% 36%;
 
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
@@ -99,7 +99,7 @@
   }
 
   body {
-    @apply font-sans antialiased text-foreground bg-[#1A0510];
+    @apply font-sans antialiased text-foreground bg-[#150900];
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
   }
 }

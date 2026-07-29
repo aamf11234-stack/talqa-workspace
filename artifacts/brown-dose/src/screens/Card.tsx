@@ -60,10 +60,10 @@ function WalletPass({ businessName, userName, points }: { businessName: string; 
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{
               width: 38, height: 38, borderRadius: 10,
-              background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
+              background: 'linear-gradient(135deg, #C4783A, #8B5E2A)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: 14, fontWeight: 800, color: '#fff', letterSpacing: '-0.03em',
-              boxShadow: '0 4px 12px rgba(139,92,246,0.4)',
+              boxShadow: '0 4px 12px rgba(196,120,58,0.4)',
               flexShrink: 0,
             }}>
               {initials}
@@ -148,7 +148,7 @@ function WalletPass({ businessName, userName, points }: { businessName: string; 
       {/* Bottom stripe accent */}
       <div style={{
         position: 'absolute', bottom: 0, left: 0, right: 0, height: 3,
-        background: 'linear-gradient(90deg, #8B5CF6, #3B82F6, #06B6D4)',
+        background: 'linear-gradient(90deg, #C4783A, #8B5E2A, #C4956A)',
       }} />
     </div>
   );

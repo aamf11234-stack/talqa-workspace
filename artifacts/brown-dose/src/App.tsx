@@ -13,6 +13,24 @@ import {
   Coffee, Smartphone, CreditCard, Store, Bell, BarChart3,
   ShieldCheck, CheckCircle2, MessageCircle, ArrowDown, Sparkles, Pencil
 } from 'lucide-react';
+import { BookingButton, BookingModal } from './components/BookingModal';
+import { AnimatePresence as AnimatePresenceOuter } from 'framer-motion';
+
+/* ─── Coffee theme tokens ─── */
+const C = {
+  bg:       '#0E0700',
+  bgCard:   '#1A0C00',
+  primary:  '#C4783A',
+  primary2: '#8B5E2A',
+  glow:     'rgba(196,120,58,0.18)',
+  glow2:    'rgba(139,94,42,0.12)',
+  border:   'rgba(196,120,58,0.18)',
+  borderSm: 'rgba(196,120,58,0.12)',
+  grad:     'linear-gradient(135deg,#C4783A,#8B5E2A)',
+  gradText: 'linear-gradient(135deg,#E8A060,#C4783A,#8B5E2A)',
+  muted:    'rgba(255,255,255,0.45)',
+  ring:     'rgba(196,120,58,0.3)',
+};
 
 /* ─── Inner app shell ─── */
 function MainApp() {
@@ -57,7 +75,7 @@ function PersonalizeCard({
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
         <div style={{
           width: 32, height: 32, borderRadius: 10,
-          background: 'linear-gradient(135deg,#8B5CF6,#3B82F6)',
+          background: C.grad,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <Pencil size={15} color="#fff" />
@@ -113,13 +131,13 @@ function PersonalizeCard({
         onClick={onApply}
         style={{
           width: '100%', padding: '13px',
-          background: 'linear-gradient(135deg,#8B5CF6,#3B82F6)',
+          background: C.grad,
           border: 'none', borderRadius: 12,
           color: '#fff', fontSize: 14, fontWeight: 800,
           cursor: 'pointer', display: 'flex', alignItems: 'center',
           justifyContent: 'center', gap: 8,
           fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif',
-          boxShadow: '0 8px 24px rgba(139,92,246,0.35)',
+          boxShadow: '0 8px 24px rgba(196,120,58,0.35)',
           transition: 'opacity 0.2s',
         }}
         onMouseEnter={e => (e.currentTarget.style.opacity = '0.88')}
@@ -162,27 +180,26 @@ function LandingPage() {
   ];
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0d0518', color: '#fff', direction: 'rtl', overflowX: 'hidden', fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif' }}>
+    <div style={{ minHeight: '100vh', background: C.bg, color: '#fff', direction: 'rtl', overflowX: 'hidden', fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif' }}>
 
       {/* ── Header ── */}
       <header style={{
         position: 'fixed', top: 0, insetInline: 0, zIndex: 50,
-        background: 'rgba(13,5,24,0.85)', backdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(139,92,246,0.15)',
+        background: 'rgba(14,7,0,0.88)', backdropFilter: 'blur(20px)',
+        borderBottom: `1px solid ${C.borderSm}`,
         height: 64, display: 'flex', alignItems: 'center',
       }}>
         <div style={{ maxWidth: 1240, margin: '0 auto', padding: '0 24px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 36, height: 36, borderRadius: 10, background: 'linear-gradient(135deg,#8B5CF6,#3B82F6)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>☕</div>
+            <div style={{ width: 36, height: 36, borderRadius: 10, background: C.grad, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>☕</div>
             <div>
               <div style={{ fontSize: 16, fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>كافي تلقا</div>
-              <div style={{ fontSize: 10, color: 'rgba(167,139,250,0.8)', letterSpacing: '0.04em' }}>نظام الولاء الرقمي</div>
+              <div style={{ fontSize: 10, color: 'rgba(232,160,96,0.8)', letterSpacing: '0.04em' }}>نظام الولاء الرقمي</div>
             </div>
           </div>
-          <a href="https://wa.me/966551378531?text=ابغى%20نظام%20ولاء%20لنشاطي" target="_blank" rel="noopener noreferrer"
-            style={{ background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.3)', color: '#C4B5FD', padding: '8px 18px', borderRadius: 99, fontSize: 13, fontWeight: 700, textDecoration: 'none' }}>
-            تواصل معنا
-          </a>
+          <BookingButton variant="ghost" style={{ padding: '8px 18px', borderRadius: 99, fontSize: 13 }}>
+            احجز مشروعك
+          </BookingButton>
         </div>
       </header>
 
@@ -198,15 +215,15 @@ function LandingPage() {
         paddingTop: 80,
         paddingBottom: 60,
         overflow: 'hidden',
-        background: 'linear-gradient(160deg, #160824 0%, #0d0518 100%)',
+        background: `linear-gradient(160deg, #1C0C00 0%, ${C.bg} 100%)`,
         maxWidth: 1240,
         margin: '0 auto',
         padding: '80px 24px 60px',
       }}>
         {/* Ambient blobs */}
         <div style={{ position: 'fixed', inset: 0, zIndex: -1, pointerEvents: 'none' }}>
-          <div style={{ position: 'absolute', top: '-10%', right: '-5%', width: 700, height: 700, borderRadius: '50%', background: 'radial-gradient(circle,rgba(139,92,246,0.18),transparent 65%)', filter: 'blur(0px)' }} />
-          <div style={{ position: 'absolute', bottom: '-10%', left: '-5%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle,rgba(59,130,246,0.12),transparent 65%)' }} />
+          <div style={{ position: 'absolute', top: '-10%', right: '-5%', width: 700, height: 700, borderRadius: '50%', background: `radial-gradient(circle,${C.glow},transparent 65%)`, filter: 'blur(0px)' }} />
+          <div style={{ position: 'absolute', bottom: '-10%', left: '-5%', width: 600, height: 600, borderRadius: '50%', background: `radial-gradient(circle,${C.glow2},transparent 65%)` }} />
         </div>
 
         {/* ── RIGHT column — text + personalize ── */}
@@ -214,8 +231,8 @@ function LandingPage() {
           style={{ paddingLeft: 40, maxWidth: 520 }}>
 
           {/* Badge */}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 16px', borderRadius: 99, border: '1px solid rgba(139,92,246,0.3)', background: 'rgba(139,92,246,0.1)', fontSize: 12, fontWeight: 700, color: 'rgba(196,181,253,0.9)', marginBottom: 28 }}>
-            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#8B5CF6', flexShrink: 0 }} />
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 16px', borderRadius: 99, border: `1px solid ${C.border}`, background: 'rgba(196,120,58,0.10)', fontSize: 12, fontWeight: 700, color: 'rgba(232,160,96,0.9)', marginBottom: 28 }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: C.primary, flexShrink: 0 }} />
             ✦ ديمو حي — خصّصه بإسمك الآن
           </div>
 
@@ -223,7 +240,7 @@ function LandingPage() {
           <h1 style={{ fontSize: 'clamp(2.6rem,5vw,4.2rem)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.04em', marginBottom: 20 }}>
             عملاؤك يستحقون
             <br />
-            <span style={{ background: 'linear-gradient(135deg,#8B5CF6,#3B82F6,#06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            <span style={{ background: C.gradText, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
               تجربة تعيّدهم
             </span>
           </h1>
@@ -234,8 +251,8 @@ function LandingPage() {
           </p>
 
           {/* Personalize inputs */}
-          <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(139,92,246,0.2)', borderRadius: 20, padding: '22px 22px 18px', marginBottom: 28 }}>
-            <div style={{ fontSize: 12, fontWeight: 700, color: 'rgba(196,181,253,0.8)', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div style={{ background: 'rgba(196,120,58,0.05)', border: `1px solid ${C.borderSm}`, borderRadius: 20, padding: '22px 22px 18px', marginBottom: 28 }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: 'rgba(232,160,96,0.8)', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 6 }}>
               <Pencil size={13} />
               خصّص الديمو — شوف تطبيقك قبل ما تطلبه
             </div>
@@ -254,22 +271,23 @@ function LandingPage() {
             </div>
             <button onClick={applyPersonalization}
               disabled={!businessName.trim()}
-              style={{ width: '100%', padding: '12px', background: businessName.trim() ? 'linear-gradient(135deg,#8B5CF6,#3B82F6)' : 'rgba(139,92,246,0.2)', border: businessName.trim() ? 'none' : '1px solid rgba(139,92,246,0.2)', borderRadius: 12, color: businessName.trim() ? '#fff' : 'rgba(255,255,255,0.3)', fontSize: 14, fontWeight: 800, cursor: businessName.trim() ? 'pointer' : 'not-allowed', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif', boxShadow: businessName.trim() ? '0 6px 20px rgba(139,92,246,0.3)' : 'none', transition: 'all 0.2s' }}>
+              style={{ width: '100%', padding: '12px', background: businessName.trim() ? C.grad : 'rgba(196,120,58,0.15)', border: businessName.trim() ? 'none' : `1px solid ${C.borderSm}`, borderRadius: 12, color: businessName.trim() ? '#fff' : 'rgba(255,255,255,0.3)', fontSize: 14, fontWeight: 800, cursor: businessName.trim() ? 'pointer' : 'not-allowed', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif', boxShadow: businessName.trim() ? '0 6px 20px rgba(196,120,58,0.3)' : 'none', transition: 'all 0.2s' }}>
               <Sparkles size={15} />
               {businessName.trim() ? 'طبّق على الديمو' : 'أدخل اسم نشاطك أولاً'}
             </button>
           </div>
 
           {/* CTA */}
-          <a href="https://wa.me/966551378531?text=ابغى%20نظام%20ولاء%20لنشاطي" target="_blank" rel="noopener noreferrer"
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.10)', color: 'rgba(255,255,255,0.7)', padding: '13px 24px', borderRadius: 12, fontWeight: 700, fontSize: 15, textDecoration: 'none', marginBottom: 24 }}>
-            <MessageCircle size={16} />
-            تحدث معنا على واتساب
-          </a>
+          <div style={{ marginBottom: 24 }}>
+            <BookingButton variant="ghost" style={{ width: '100%', padding: '13px 24px', borderRadius: 12, fontSize: 15 }}>
+              <MessageCircle size={16} />
+              احجز مشروعك الآن
+            </BookingButton>
+          </div>
 
           {/* Trust chips */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {['✓ تسليم في ٦٠ يوم', '✓ بدون رسوم شهرية', '✓ دعم واتساب'].map(t => (
+            {['✓ تسليم في ٦٠ يوم', '✓ بدون رسوم شهرية', '✓ دعم مباشر ٦ أشهر'].map(t => (
               <span key={t} style={{ padding: '5px 12px', borderRadius: 99, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.4)' }}>{t}</span>
             ))}
           </div>
@@ -288,10 +306,10 @@ function LandingPage() {
             /* placeholder phone — before any input */
             <div style={{ position: 'relative', width: 300 }}>
               {/* ambient glow */}
-              <div style={{ position: 'absolute', inset: -60, borderRadius: '50%', background: 'radial-gradient(circle,rgba(139,92,246,0.18) 0%,transparent 65%)', pointerEvents: 'none' }} />
+              <div style={{ position: 'absolute', inset: -60, borderRadius: '50%', background: `radial-gradient(circle,${C.glow} 0%,transparent 65%)`, pointerEvents: 'none' }} />
               {/* phone shell */}
               <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                style={{ width: 300, height: 560, borderRadius: 48, background: 'linear-gradient(160deg,#1a0d2e 0%,#0a0518 100%)', border: '1.5px solid rgba(139,92,246,0.20)', boxShadow: ['0 60px 130px rgba(0,0,0,0.7)', '0 0 100px rgba(139,92,246,0.12)', 'inset 0 1px 0 rgba(255,255,255,0.06)'].join(', '), overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 0, position: 'relative' }}>
+                style={{ width: 300, height: 560, borderRadius: 48, background: 'linear-gradient(160deg,#1C0C00 0%,#0E0700 100%)', border: `1.5px solid ${C.border}`, boxShadow: ['0 60px 130px rgba(0,0,0,0.7)', `0 0 100px ${C.glow2}`, 'inset 0 1px 0 rgba(255,255,255,0.06)'].join(', '), overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 0, position: 'relative' }}>
                 {/* notch */}
                 <div style={{ position: 'absolute', top: 16, left: '50%', transform: 'translateX(-50%)', width: 80, height: 24, borderRadius: 12, background: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
                   <div style={{ width: 9, height: 9, borderRadius: '50%', background: '#1a1a1a', border: '1px solid #333' }} />
@@ -302,12 +320,12 @@ function LandingPage() {
                   <motion.div animate={{ scale: [1, 1.08, 1], opacity: [0.6, 1, 0.6] }} transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
                     style={{ fontSize: 52, marginBottom: 20 }}>☕</motion.div>
                   <div style={{ fontSize: 15, fontWeight: 800, color: 'rgba(255,255,255,0.9)', marginBottom: 10, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif' }}>اسم نشاطك هنا</div>
-                  <div style={{ fontSize: 12, color: 'rgba(139,92,246,0.8)', lineHeight: 1.7, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif' }}>أدخل اسم نشاطك على اليمين<br />وشوف تطبيقك لحظياً</div>
+                  <div style={{ fontSize: 12, color: 'rgba(196,120,58,0.8)', lineHeight: 1.7, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif' }}>أدخل اسم نشاطك على اليمين<br />وشوف تطبيقك لحظياً</div>
                   {/* fake dots */}
                   <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginTop: 28 }}>
                     {[0,1,2].map(i => (
                       <motion.div key={i} animate={{ opacity: [0.2, 0.8, 0.2] }} transition={{ duration: 1.4, repeat: Infinity, delay: i * 0.3 }}
-                        style={{ width: 7, height: 7, borderRadius: '50%', background: '#8B5CF6' }} />
+                        style={{ width: 7, height: 7, borderRadius: '50%', background: C.primary }} />
                     ))}
                   </div>
                 </div>
@@ -320,7 +338,7 @@ function LandingPage() {
       </section>
 
       {/* ── Features Grid ── */}
-      <section style={{ padding: '72px 24px', background: '#0f061e', borderTop: '1px solid rgba(139,92,246,0.1)' }}>
+      <section style={{ padding: '72px 24px', background: '#120800', borderTop: `1px solid ${C.borderSm}` }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: 44 }}>
             <h2 style={{ fontSize: 'clamp(1.8rem,4vw,2.6rem)', fontWeight: 900, letterSpacing: '-0.03em', marginBottom: 10 }}>
@@ -333,9 +351,9 @@ function LandingPage() {
               <motion.div key={i}
                 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }} transition={{ delay: i * 0.06 }}
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18, padding: '22px 20px' }}>
-                <div style={{ width: 42, height: 42, borderRadius: 12, background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
-                  <f.icon size={19} color="#A78BFA" />
+                style={{ background: 'rgba(196,120,58,0.05)', border: `1px solid ${C.borderSm}`, borderRadius: 18, padding: '22px 20px' }}>
+                <div style={{ width: 42, height: 42, borderRadius: 12, background: 'rgba(196,120,58,0.15)', border: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
+                  <f.icon size={19} color="#E8A060" />
                 </div>
                 <h3 style={{ fontSize: 14.5, fontWeight: 800, marginBottom: 6 }}>{f.title}</h3>
                 <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.45)', lineHeight: 1.65 }}>{f.desc}</p>
@@ -346,12 +364,12 @@ function LandingPage() {
       </section>
 
       {/* ── Pricing ── */}
-      <section style={{ padding: '72px 24px', background: '#0d0518', borderTop: '1px solid rgba(139,92,246,0.08)' }}>
+      <section style={{ padding: '72px 24px', background: C.bg, borderTop: `1px solid ${C.borderSm}` }}>
         <div style={{ maxWidth: 460, margin: '0 auto', textAlign: 'center' }}>
           <motion.div initial={{ opacity: 0, scale: 0.97 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
-            style={{ background: 'linear-gradient(135deg,rgba(139,92,246,0.12),rgba(59,130,246,0.08))', border: '1px solid rgba(139,92,246,0.3)', borderRadius: 32, padding: '44px 36px', position: 'relative', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', top: -60, right: -60, width: 220, height: 220, borderRadius: '50%', background: 'rgba(139,92,246,0.1)', filter: 'blur(50px)', pointerEvents: 'none' }} />
-            <div style={{ display: 'inline-block', background: 'linear-gradient(135deg,#8B5CF6,#3B82F6)', color: '#fff', padding: '5px 16px', borderRadius: 99, fontSize: 12, fontWeight: 800, marginBottom: 20 }}>
+            style={{ background: 'linear-gradient(135deg,rgba(196,120,58,0.12),rgba(139,94,42,0.08))', border: `1px solid ${C.border}`, borderRadius: 32, padding: '44px 36px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', top: -60, right: -60, width: 220, height: 220, borderRadius: '50%', background: 'rgba(196,120,58,0.1)', filter: 'blur(50px)', pointerEvents: 'none' }} />
+            <div style={{ display: 'inline-block', background: C.grad, color: '#fff', padding: '5px 16px', borderRadius: 99, fontSize: 12, fontWeight: 800, marginBottom: 20 }}>
               باقة كاملة — دفعة واحدة
             </div>
             <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 8, marginBottom: 6 }}>
@@ -362,24 +380,23 @@ function LandingPage() {
             <div style={{ textAlign: 'right', marginBottom: 32 }}>
               {['تطبيق ويب كامل بهوية نشاطك','نظام نقاط ولاء تلقائي','Apple & Google Wallet','طلب توصيل واستلام','لوحة تحكم + إحصائيات','دعم واتساب ٦ أشهر'].map((f, i) => (
                 <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, direction: 'rtl' }}>
-                  <div style={{ width: 22, height: 22, borderRadius: '50%', background: 'rgba(139,92,246,0.2)', border: '1px solid rgba(139,92,246,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <CheckCircle2 size={12} color="#A78BFA" strokeWidth={3} />
+                  <div style={{ width: 22, height: 22, borderRadius: '50%', background: 'rgba(196,120,58,0.2)', border: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <CheckCircle2 size={12} color="#E8A060" strokeWidth={3} />
                   </div>
                   <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.75)', fontWeight: 500 }}>{f}</span>
                 </div>
               ))}
             </div>
-            <a href="https://wa.me/966551378531?text=ابغى%20نظام%20ولاء%20لنشاطي" target="_blank" rel="noopener noreferrer"
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, background: 'linear-gradient(135deg,#8B5CF6,#3B82F6)', color: '#fff', padding: '15px 24px', borderRadius: 14, fontWeight: 800, fontSize: 16, textDecoration: 'none', boxShadow: '0 8px 28px rgba(139,92,246,0.35)' }}>
-              <MessageCircle size={18} />
+            <BookingButton style={{ width: '100%', padding: '15px 24px', borderRadius: 14, fontSize: 16 }}>
+              <Sparkles size={18} />
               احجز مشروعك الآن
-            </a>
+            </BookingButton>
           </motion.div>
         </div>
       </section>
 
       {/* ── Footer ── */}
-      <footer style={{ padding: '24px', background: '#080313', borderTop: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>
+      <footer style={{ padding: '24px', background: '#0A0500', borderTop: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>
         <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: 13, fontWeight: 600 }}>
           كافي تلقا · نظام الولاء الرقمي · ٢٠٢٥
         </p>
@@ -391,7 +408,7 @@ function LandingPage() {
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
         * { box-sizing: border-box; }
         input::placeholder { color: rgba(255,255,255,0.25); }
-        input:focus { border-color: rgba(139,92,246,0.5) !important; box-shadow: 0 0 0 3px rgba(139,92,246,0.12); }
+        input:focus { border-color: rgba(196,120,58,0.5) !important; box-shadow: 0 0 0 3px rgba(196,120,58,0.12); }
       `}</style>
     </div>
   );
