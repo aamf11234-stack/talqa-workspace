@@ -670,81 +670,41 @@ function RestaurantDemoSection({ isMobile }: { isMobile: boolean }) {
             </div>
           </motion.div>
 
-          {/* RIGHT — phone preview */}
+          {/* RIGHT — live haeez phone */}
           <motion.div initial={{ opacity: 0, x: 32 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }}
             style={{ display: isMobile ? 'none' : 'flex', justifyContent: 'center', position: 'relative' }}>
 
-            {/* Ambient */}
-            <div style={{ position: 'absolute', inset: -80, background: `radial-gradient(circle,${R.glow} 0%,transparent 65%)`, opacity: 0.5, pointerEvents: 'none' }} />
+            {/* Ambient glow */}
+            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 400, height: 400, background: 'radial-gradient(circle,rgba(196,120,58,0.22) 0%,transparent 70%)', filter: 'blur(40px)', pointerEvents: 'none' }} />
 
             <motion.div
-              animate={{ y: [0, -12, 0] }} transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-              style={{ width: 260, height: 520, borderRadius: 44, background: 'linear-gradient(160deg,#1a0a05,#0a0400)', border: `1.5px solid ${R.border}`, boxShadow: [`0 60px 120px rgba(0,0,0,0.75)`, `0 0 80px ${R.glow}`, 'inset 0 1px 0 rgba(255,255,255,0.05)'].join(','), padding: '16px 14px', position: 'relative', overflow: 'hidden' }}>
+              animate={{ y: [0, -10, 0] }} transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}
+              style={{ position: 'relative', width: 280, height: 570 }}>
 
-              {/* Glow overlay */}
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 180, background: `linear-gradient(180deg,${R.red}18 0%,transparent 100%)`, pointerEvents: 'none' }} />
-
-              {/* Notch */}
-              <div style={{ width: 80, height: 24, borderRadius: 12, background: '#000', margin: '0 auto 14px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-                <div style={{ width: 9, height: 9, borderRadius: '50%', background: '#1c1c1c', border: '1px solid #333' }} />
-                <div style={{ width: 34, height: 5, borderRadius: 3, background: '#111' }} />
-              </div>
-
-              {/* App preview */}
-              <div style={{ height: 430, borderRadius: 28, overflow: 'hidden', background: 'linear-gradient(160deg,rgba(220,38,38,0.10),rgba(10,4,0,0.98))', border: '1px solid rgba(220,38,38,0.15)', padding: 14, position: 'relative' }}>
-
-                {/* Status bar */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 14 }}>
-                  <span style={{ fontSize: 8, fontWeight: 700, color: 'rgba(255,255,255,0.4)', fontFamily: 'monospace' }}>9:41</span>
-                  <div style={{ display: 'flex', gap: 3, alignItems: 'center' }}>
-                    {[1,2,3].map(i => <div key={i} style={{ width: 3, height: 3, borderRadius: '50%', background: 'rgba(255,255,255,0.3)' }} />)}
-                  </div>
-                </div>
-
-                {/* Header */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
-                  <div style={{ width: 38, height: 38, borderRadius: 12, background: R.grad, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>🍽️</div>
-                  <div>
-                    <div style={{ fontSize: 12, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>{bizName || 'مطعمك'}</div>
-                    <div style={{ fontSize: 8.5, color: 'rgba(255,255,255,0.38)', fontFamily: 'Cairo,sans-serif' }}>مدعوم بتلقا تك</div>
-                  </div>
-                  <div style={{ marginRight: 'auto', display: 'flex', gap: 5, alignItems: 'center' }}>
-                    <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981', boxShadow: '0 0 6px #10B981' }} />
-                  </div>
-                </div>
-
-                {/* Points card */}
-                <div style={{ borderRadius: 14, background: `linear-gradient(135deg,${R.red}35,${R.orange}18)`, border: `1px solid ${R.border}`, padding: '14px', marginBottom: 12 }}>
-                  <div style={{ fontSize: 8.5, color: 'rgba(255,255,255,0.45)', fontFamily: 'Cairo,sans-serif', marginBottom: 4 }}>رصيد نقاطك</div>
-                  <div style={{ fontSize: 26, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif', lineHeight: 1 }}>٢٤٠ نقطة</div>
-                  <div style={{ fontSize: 8, color: R.orange, marginTop: 5, fontFamily: 'Cairo,sans-serif', fontWeight: 700 }}>٦٠ نقطة للجائزة التالية 🎁</div>
-                </div>
-
-                {/* Menu items */}
-                {[
-                  { name: 'كبسة لحم ملكية', price: '٥٥' },
-                  { name: 'مشاوي مشكلة', price: '٨٩' },
-                  { name: 'أم علي بالقشطة', price: '٢٨' },
-                ].map((item, i) => (
-                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 11px', borderRadius: 12, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)', marginBottom: 7 }}>
-                    <span style={{ fontSize: 16, flexShrink: 0 }}>🍖</span>
-                    <div style={{ flex: 1, fontSize: 10, fontWeight: 800, color: '#fff', fontFamily: 'Cairo,sans-serif' }}>{item.name}</div>
-                    <div style={{ fontSize: 11, fontWeight: 900, color: R.orange, fontFamily: 'Cairo,sans-serif' }}>{item.price} ر</div>
-                  </div>
-                ))}
-
-                {/* CTA inside phone */}
-                <div style={{ marginTop: 8, padding: '12px', borderRadius: 13, background: R.grad, textAlign: 'center', fontSize: 10, fontWeight: 900, color: '#fff', fontFamily: 'Cairo,sans-serif', boxShadow: `0 4px 20px ${R.glow}` }}>
-                  اطلب من طاولتك الآن 🛎️
+              {/* Phone shell */}
+              <div style={{ width: '100%', height: '100%', borderRadius: 48, background: 'linear-gradient(160deg,#2a2a2a,#111)', boxShadow: '0 60px 120px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.15), 0 0 0 1px rgba(255,255,255,0.06)', padding: 7, boxSizing: 'border-box' }}>
+                <div style={{ width: '100%', height: '100%', borderRadius: 42, overflow: 'hidden', background: '#150900', position: 'relative' }}>
+                  {/* Dynamic Island */}
+                  <div style={{ position: 'absolute', top: 11, left: '50%', transform: 'translateX(-50%)', width: 88, height: 26, background: '#000', borderRadius: 18, zIndex: 20 }} />
+                  <iframe
+                    src={`/haeez-loyalty/?mode=app${bizName.trim() ? `&biz=${encodeURIComponent(bizName.trim())}` : ''}`}
+                    style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
+                    title="haeez loyalty demo"
+                  />
+                  {/* Home bar */}
+                  <div style={{ position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)', width: 88, height: 3.5, borderRadius: 99, background: 'rgba(255,255,255,0.28)', zIndex: 25, pointerEvents: 'none' }} />
                 </div>
               </div>
 
-              <div style={{ width: 80, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.12)', margin: '10px auto 0' }} />
+              {/* Side buttons */}
+              <div style={{ position: 'absolute', top: 120, left: -3, width: 3, height: 30, borderRadius: '2px 0 0 2px', background: 'rgba(255,255,255,0.12)' }} />
+              <div style={{ position: 'absolute', top: 160, left: -3, width: 3, height: 30, borderRadius: '2px 0 0 2px', background: 'rgba(255,255,255,0.12)' }} />
+              <div style={{ position: 'absolute', top: 140, right: -3, width: 3, height: 56, borderRadius: '0 2px 2px 0', background: 'rgba(255,255,255,0.12)' }} />
             </motion.div>
 
             {/* Label below phone */}
             <div style={{ position: 'absolute', bottom: -36, left: '50%', transform: 'translateX(-50%)', whiteSpace: 'nowrap', padding: '5px 16px', borderRadius: 99, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.10)', fontSize: 11, fontWeight: 700, color: R.dim }}>
-              هذا ما سيراه عملاء مطعمك
+              تطبيق حقيقي — جاهز الآن ✦
             </div>
           </motion.div>
         </div>

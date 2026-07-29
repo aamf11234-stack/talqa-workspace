@@ -410,11 +410,40 @@ export default function WebsitesSection() {
         {/* ── 2-COL LAYOUT ── */}
         <div style={{ display: 'grid', gridTemplateColumns: m ? '1fr' : '1.1fr 0.9fr', gap: m ? 24 : 40, alignItems: 'start', marginBottom: 64 }}>
 
-          {/* LEFT: Browser */}
+          {/* LEFT: Browser / Phone Demo */}
           <motion.div initial={{ opacity: 0, x: -24 }} whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.65 }}>
             <AnimatePresence mode="wait">
-              <BrowserMockup key={activeId} site={active}/>
+              {activeId === 'restaurant' ? (
+                <motion.div key="restaurant-phone"
+                  initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.35, ease: [0.22,1,0.36,1] }}
+                  style={{ display: 'flex', justifyContent: 'center' }}>
+                  {/* Phone shell */}
+                  <div style={{ position: 'relative', width: 300, height: 620, borderRadius: 46, background: 'linear-gradient(160deg,#2a2a2a,#111)', boxShadow: '0 60px 120px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.15), 0 0 0 1px rgba(255,255,255,0.06)', padding: 7, boxSizing: 'border-box' }}>
+                    {/* Glow */}
+                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 340, height: 440, background: 'radial-gradient(ellipse,rgba(196,120,58,0.25) 0%,transparent 70%)', filter: 'blur(40px)', pointerEvents: 'none' }} />
+                    {/* Screen */}
+                    <div style={{ width: '100%', height: '100%', borderRadius: 40, overflow: 'hidden', position: 'relative', background: '#150900' }}>
+                      {/* Dynamic Island */}
+                      <div style={{ position: 'absolute', top: 10, left: '50%', transform: 'translateX(-50%)', width: 90, height: 26, background: '#000', borderRadius: 18, zIndex: 20 }} />
+                      <iframe
+                        src="/brown-dose/?mode=app"
+                        style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
+                        title="براون دوز — نظام الولاء"
+                      />
+                      {/* Home bar */}
+                      <div style={{ position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)', width: 90, height: 3.5, borderRadius: 99, background: 'rgba(255,255,255,0.28)', zIndex: 25, pointerEvents: 'none' }} />
+                    </div>
+                    {/* Side buttons */}
+                    <div style={{ position: 'absolute', top: 110, left: -3, width: 3, height: 28, borderRadius: '2px 0 0 2px', background: 'rgba(255,255,255,0.12)' }} />
+                    <div style={{ position: 'absolute', top: 148, left: -3, width: 3, height: 28, borderRadius: '2px 0 0 2px', background: 'rgba(255,255,255,0.12)' }} />
+                    <div style={{ position: 'absolute', top: 130, right: -3, width: 3, height: 54, borderRadius: '0 2px 2px 0', background: 'rgba(255,255,255,0.12)' }} />
+                  </div>
+                </motion.div>
+              ) : (
+                <BrowserMockup key={activeId} site={active}/>
+              )}
             </AnimatePresence>
 
             {/* Metrics strip below browser */}
