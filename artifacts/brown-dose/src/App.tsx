@@ -349,39 +349,27 @@ function LandingPage() {
         </div>
       </section>
 
-      {/* ═══ PRICING ═══ */}
+      {/* ═══ CTA ═══ */}
       <section style={{ position: 'relative', zIndex: 1, padding: '0 24px 80px' }}>
         <div style={{ maxWidth: 520, margin: '0 auto', textAlign: 'center' }}>
           <motion.div
             initial={{ opacity: 0, scale: 0.97 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
-            style={{ background: `linear-gradient(160deg,#1C0900,#2D1200)`, borderRadius: 32, padding: '48px 40px', position: 'relative', overflow: 'hidden', boxShadow: '0 40px 80px rgba(107,50,16,0.35)' }}>
-            {/* Glow */}
+            style={{ background: `linear-gradient(160deg,#1C0900,#2D1200)`, borderRadius: 32, padding: '48px 40px', position: 'relative', overflow: 'hidden', boxShadow: '0 40px 80px rgba(107,50,16,0.25)' }}>
             <div style={{ position: 'absolute', top: -60, right: -60, width: 240, height: 240, borderRadius: '50%', background: 'rgba(196,120,58,0.15)', filter: 'blur(60px)', pointerEvents: 'none' }} />
-
-            <div style={{ display: 'inline-block', background: 'rgba(196,120,58,0.2)', border: '1px solid rgba(196,120,58,0.35)', color: '#E8A060', padding: '5px 16px', borderRadius: 99, fontSize: 12, fontWeight: 800, marginBottom: 20, position: 'relative' }}>
-              باقة كاملة — دفعة واحدة
+            <div style={{ position: 'relative' }}>
+              <div style={{ fontSize: 44, marginBottom: 16 }}>☕</div>
+              <h2 style={{ fontSize: 28, fontWeight: 900, color: '#fff', marginBottom: 12, lineHeight: 1.2 }}>
+                نشاطك يستحق<br />
+                <span style={{ color: '#E8A060' }}>تطبيقه الخاص</span>
+              </h2>
+              <p style={{ color: 'rgba(255,255,255,0.5)', marginBottom: 32, fontSize: 14, lineHeight: 1.7 }}>
+                تواصل معنا وسنوضح لك كل التفاصيل
+              </p>
+              <BookingButton style={{ width: '100%', padding: '16px', borderRadius: 16, fontSize: 16 }}>
+                <Sparkles size={18} />
+                تواصل معنا الآن
+              </BookingButton>
             </div>
-            <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 8, marginBottom: 6, position: 'relative' }}>
-              <span style={{ fontSize: 72, fontWeight: 900, letterSpacing: '-0.05em', lineHeight: 1, color: '#fff' }}>٢,٠٠٠</span>
-              <span style={{ fontSize: 22, color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>ريال</span>
-            </div>
-            <p style={{ color: 'rgba(255,255,255,0.4)', marginBottom: 36, fontSize: 14, position: 'relative' }}>لا رسوم شهرية · ملكيتك الكاملة</p>
-
-            <div style={{ textAlign: 'right', marginBottom: 36, position: 'relative' }}>
-              {['تطبيق ويب كامل بهوية نشاطك','نظام نقاط ولاء تلقائي','Apple & Google Wallet','طلب توصيل واستلام','لوحة تحكم + إحصائيات','دعم مباشر ٦ أشهر'].map((f, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, direction: 'rtl' }}>
-                  <div style={{ width: 22, height: 22, borderRadius: '50%', background: 'rgba(196,120,58,0.2)', border: '1px solid rgba(196,120,58,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <CheckCircle2 size={12} color="#E8A060" strokeWidth={3} />
-                  </div>
-                  <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.75)', fontWeight: 500 }}>{f}</span>
-                </div>
-              ))}
-            </div>
-
-            <BookingButton style={{ width: '100%', padding: '16px', borderRadius: 16, fontSize: 16, position: 'relative' }}>
-              <Sparkles size={18} />
-              احجز مشروعك الآن
-            </BookingButton>
           </motion.div>
         </div>
       </section>
