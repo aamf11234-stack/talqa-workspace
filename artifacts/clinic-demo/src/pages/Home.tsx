@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation } from 'wouter';
+import { useSEO } from '../hooks/useSEO';
 import { TalqaShield } from '../components/TalqaShield';
 import { TrustSection } from '../components/TrustSection';
 import { PhoneFrame } from '../components/PhoneFrame';
@@ -302,6 +303,12 @@ export default function Home() {
  const [, navigate] = useLocation();
  const [staffModal, setStaffModal] = useState<null|'owner'|'reception'|'doctor'>(null);
  const [tourStep, setTourStep] = useState(0); // 0=waiting, 1=nav, 2=card-tab, 3=wallet, 4=qr, 99=done
+
+ useSEO({
+ title: 'تلقا للعيادات — موقعك وتطبيقك الطبي في ٦٠ يوم',
+ description: 'تلقا تك تبني لعيادتك موقعاً احترافياً وتطبيقاً للمرضى ونظام إدارة متكاملاً — حجز مواعيد، نتائج تحاليل، AI Doctor، Apple Wallet. أعلى معايير الأمان في القطاع الصحي.',
+ canonical: 'https://tlgaads.com/',
+ });
 
  useEffect(() => {
  document.documentElement.dir = 'rtl';

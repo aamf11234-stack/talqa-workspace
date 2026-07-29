@@ -1,2 +1,11 @@
 User-agent: *
 Allow: /
+
+# Block internal/demo dashboards from indexing
+Disallow: /owner
+Disallow: /reception
+Disallow: /doctor
+Disallow: /leads
+Disallow: /thank-you
+
+Sitemap: https://tlgaads.com/sitemap.xml
