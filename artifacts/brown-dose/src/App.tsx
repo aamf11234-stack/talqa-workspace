@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { AppProvider, useAppContext } from './context/AppProvider';
 import { PhoneFrame } from './components/PhoneFrame';
 import { BottomNav } from './components/BottomNav';
@@ -9,30 +9,18 @@ import { OrdersScreen } from './screens/Orders';
 import { CardScreen } from './screens/Card';
 import { AdminScreen } from './screens/Admin';
 import { AnimatePresence, motion } from 'framer-motion';
-import {
-  Coffee, Smartphone, CreditCard, Store, Bell, BarChart3,
-  ShieldCheck, CheckCircle2, MessageCircle, ArrowDown, Sparkles, Pencil
-} from 'lucide-react';
 import { BookingButton, BookingModal } from './components/BookingModal';
-import { AnimatePresence as AnimatePresenceOuter } from 'framer-motion';
+import {
+  Coffee, CreditCard, Bell, BarChart3,
+  CheckCircle2, Sparkles, ShoppingBag, Wallet,
+} from 'lucide-react';
 
-/* ─── Coffee theme tokens ─── */
-const C = {
-  bg:       '#0E0700',
-  bgCard:   '#1A0C00',
-  primary:  '#C4783A',
-  primary2: '#8B5E2A',
-  glow:     'rgba(196,120,58,0.18)',
-  glow2:    'rgba(139,94,42,0.12)',
-  border:   'rgba(196,120,58,0.18)',
-  borderSm: 'rgba(196,120,58,0.12)',
-  grad:     'linear-gradient(135deg,#C4783A,#8B5E2A)',
-  gradText: 'linear-gradient(135deg,#E8A060,#C4783A,#8B5E2A)',
-  muted:    'rgba(255,255,255,0.45)',
-  ring:     'rgba(196,120,58,0.3)',
-};
+/* ─── Brand ─── */
+const BROWN = '#6B3210';
+const BROWN_LIGHT = '#7A3B18';
+const CREAM = '#FDFBF7';
 
-/* ─── Inner app shell ─── */
+/* ─── Inner app (phone frame) ─── */
 function MainApp() {
   const { activeTab } = useAppContext();
   return (
@@ -49,372 +37,7 @@ function MainApp() {
   );
 }
 
-/* ─── Personalization input card ─── */
-function PersonalizeCard({
-  businessName, setBusinessName,
-  userName, setUserName,
-  onApply,
-}: {
-  businessName: string; setBusinessName: (v: string) => void;
-  userName: string; setUserName: (v: string) => void;
-  onApply: () => void;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-      style={{
-        background: 'rgba(255,255,255,0.04)',
-        border: '1px solid rgba(255,255,255,0.10)',
-        borderRadius: 24, padding: '28px 28px 24px',
-        width: '100%', maxWidth: 360,
-        direction: 'rtl',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
-        <div style={{
-          width: 32, height: 32, borderRadius: 10,
-          background: C.grad,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <Pencil size={15} color="#fff" />
-        </div>
-        <div>
-          <div style={{ fontSize: 14, fontWeight: 800, color: '#fff' }}>خصّص الديمو باسمك</div>
-          <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>شوف تطبيقك قبل ما تطلبه</div>
-        </div>
-      </div>
-
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 16 }}>
-        <div>
-          <label style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', marginBottom: 6, display: 'block', fontWeight: 600 }}>
-            اسم نشاطك التجاري
-          </label>
-          <input
-            value={businessName}
-            onChange={e => setBusinessName(e.target.value)}
-            placeholder="مثال: كافيه النخبة"
-            style={{
-              width: '100%', padding: '11px 14px',
-              background: 'rgba(255,255,255,0.06)',
-              border: '1px solid rgba(255,255,255,0.12)',
-              borderRadius: 12, color: '#fff',
-              fontSize: 14, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif',
-              outline: 'none', direction: 'rtl',
-              boxSizing: 'border-box',
-            }}
-          />
-        </div>
-        <div>
-          <label style={{ fontSize: 11, color: 'rgba(255,255,255,0.45)', marginBottom: 6, display: 'block', fontWeight: 600 }}>
-            اسمك
-          </label>
-          <input
-            value={userName}
-            onChange={e => setUserName(e.target.value)}
-            placeholder="مثال: سلطان الغامدي"
-            style={{
-              width: '100%', padding: '11px 14px',
-              background: 'rgba(255,255,255,0.06)',
-              border: '1px solid rgba(255,255,255,0.12)',
-              borderRadius: 12, color: '#fff',
-              fontSize: 14, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif',
-              outline: 'none', direction: 'rtl',
-              boxSizing: 'border-box',
-            }}
-          />
-        </div>
-      </div>
-
-      <button
-        onClick={onApply}
-        style={{
-          width: '100%', padding: '13px',
-          background: C.grad,
-          border: 'none', borderRadius: 12,
-          color: '#fff', fontSize: 14, fontWeight: 800,
-          cursor: 'pointer', display: 'flex', alignItems: 'center',
-          justifyContent: 'center', gap: 8,
-          fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif',
-          boxShadow: '0 8px 24px rgba(196,120,58,0.35)',
-          transition: 'opacity 0.2s',
-        }}
-        onMouseEnter={e => (e.currentTarget.style.opacity = '0.88')}
-        onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
-      >
-        <Sparkles size={16} />
-        طبّق على الديمو
-      </button>
-    </motion.div>
-  );
-}
-
-/* ─── Landing Page ─── */
-function LandingPage() {
-  const [businessName, setBusinessName] = useState('');
-  const [userName,     setUserName]     = useState('');
-  const [cityName,     setCityName]     = useState('');
-  const [appliedBiz,   setAppliedBiz]   = useState('');
-  const [appliedUser,  setAppliedUser]  = useState('');
-  const [appliedCity,  setAppliedCity]  = useState('الرياض');
-  const [flashKey,     setFlashKey]     = useState(0);
-  const [applied,      setApplied]      = useState(false);
-
-  const applyPersonalization = () => {
-    if (!businessName.trim()) return;
-    setAppliedBiz(businessName.trim());
-    setAppliedUser(userName.trim() || 'عميل مميز');
-    setAppliedCity(cityName.trim() || 'الرياض');
-    setFlashKey(k => k + 1);
-    setApplied(true);
-  };
-
-  const FEATURES = [
-    { icon: Coffee,       title: 'قائمة QR تفاعلية',      desc: 'منيو رقمي يُحدَّث فوراً بدون طباعة' },
-    { icon: CreditCard,   title: 'Apple & Google Wallet', desc: 'بطاقة ولاء رقمية بلمسة واحدة' },
-    { icon: CheckCircle2, title: 'نقاط ولاء تلقائية',     desc: 'كل طلب يكسب نقاطاً قابلة للاستبدال' },
-    { icon: Smartphone,   title: 'تطبيق بهويتك',          desc: 'ألوانك، اسمك، منيوك — لا تطبيق خارجي' },
-    { icon: Bell,         title: 'إشعارات مباشرة',        desc: 'خصومات وعروض بزر واحد لكل عملائك' },
-    { icon: BarChart3,    title: 'إحصائيات مبيعات',       desc: 'اعرف أكثر صنف وأكثر وقت طلب' },
-  ];
-
-  return (
-    <div style={{ minHeight: '100vh', background: C.bg, color: '#fff', direction: 'rtl', overflowX: 'hidden', fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif' }}>
-
-      {/* ── Header ── */}
-      <header style={{
-        position: 'fixed', top: 0, insetInline: 0, zIndex: 50,
-        background: 'rgba(14,7,0,0.88)', backdropFilter: 'blur(20px)',
-        borderBottom: `1px solid ${C.borderSm}`,
-        height: 64, display: 'flex', alignItems: 'center',
-      }}>
-        <div style={{ maxWidth: 1240, margin: '0 auto', padding: '0 24px', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 36, height: 36, borderRadius: 10, background: C.grad, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>☕</div>
-            <div>
-              <div style={{ fontSize: 16, fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>كافي تلقا</div>
-              <div style={{ fontSize: 10, color: 'rgba(232,160,96,0.8)', letterSpacing: '0.04em' }}>نظام الولاء الرقمي</div>
-            </div>
-          </div>
-          <BookingButton variant="ghost" style={{ padding: '8px 18px', borderRadius: 99, fontSize: 13 }}>
-            احجز مشروعك
-          </BookingButton>
-        </div>
-      </header>
-
-      {/* ══════════════════════════════════════════
-          HERO — نص يسار + ديمو حي يمين
-      ══════════════════════════════════════════ */}
-      <section style={{
-        minHeight: '100vh',
-        display: 'grid',
-        gridTemplateColumns: 'minmax(0,1fr) auto',
-        gap: 0,
-        alignItems: 'center',
-        paddingTop: 80,
-        paddingBottom: 60,
-        overflow: 'hidden',
-        background: `linear-gradient(160deg, #1C0C00 0%, ${C.bg} 100%)`,
-        maxWidth: 1240,
-        margin: '0 auto',
-        padding: '80px 24px 60px',
-      }}>
-        {/* Ambient blobs */}
-        <div style={{ position: 'fixed', inset: 0, zIndex: -1, pointerEvents: 'none' }}>
-          <div style={{ position: 'absolute', top: '-10%', right: '-5%', width: 700, height: 700, borderRadius: '50%', background: `radial-gradient(circle,${C.glow},transparent 65%)`, filter: 'blur(0px)' }} />
-          <div style={{ position: 'absolute', bottom: '-10%', left: '-5%', width: 600, height: 600, borderRadius: '50%', background: `radial-gradient(circle,${C.glow2},transparent 65%)` }} />
-        </div>
-
-        {/* ── RIGHT column — text + personalize ── */}
-        <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.65, ease: [0.22,1,0.36,1] }}
-          style={{ paddingLeft: 40, maxWidth: 520 }}>
-
-          {/* Badge */}
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 16px', borderRadius: 99, border: `1px solid ${C.border}`, background: 'rgba(196,120,58,0.10)', fontSize: 12, fontWeight: 700, color: 'rgba(232,160,96,0.9)', marginBottom: 28 }}>
-            <span style={{ width: 6, height: 6, borderRadius: '50%', background: C.primary, flexShrink: 0 }} />
-            ✦ ديمو حي — خصّصه بإسمك الآن
-          </div>
-
-          {/* Headline */}
-          <h1 style={{ fontSize: 'clamp(2.6rem,5vw,4.2rem)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-0.04em', marginBottom: 20 }}>
-            عملاؤك يستحقون
-            <br />
-            <span style={{ background: C.gradText, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-              تجربة تعيّدهم
-            </span>
-          </h1>
-
-          <p style={{ fontSize: 16, color: 'rgba(255,255,255,0.52)', lineHeight: 1.8, marginBottom: 36 }}>
-            تطبيق بهوية نشاطك · Apple & Google Wallet · نقاط ولاء · طلب وتوصيل.
-            <br />كل شيء في منصة واحدة تُسلَّم في ٦٠ يوم.
-          </p>
-
-          {/* Personalize inputs */}
-          <div style={{ background: 'rgba(196,120,58,0.05)', border: `1px solid ${C.borderSm}`, borderRadius: 20, padding: '22px 22px 18px', marginBottom: 28 }}>
-            <div style={{ fontSize: 12, fontWeight: 700, color: 'rgba(232,160,96,0.8)', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 6 }}>
-              <Pencil size={13} />
-              خصّص الديمو — شوف تطبيقك قبل ما تطلبه
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 14 }}>
-              <input value={businessName} onChange={e => setBusinessName(e.target.value)}
-                placeholder="اسم نشاطك (مثال: كافيه النخبة)"
-                style={{ padding: '11px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, color: '#fff', fontSize: 14, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif', outline: 'none', direction: 'rtl', width: '100%', boxSizing: 'border-box' }} />
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
-                <input value={userName} onChange={e => setUserName(e.target.value)}
-                  placeholder="اسمك"
-                  style={{ padding: '11px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, color: '#fff', fontSize: 14, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif', outline: 'none', direction: 'rtl', width: '100%', boxSizing: 'border-box' }} />
-                <input value={cityName} onChange={e => setCityName(e.target.value)}
-                  placeholder="مدينتك (الرياض)"
-                  style={{ padding: '11px 14px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, color: '#fff', fontSize: 14, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif', outline: 'none', direction: 'rtl', width: '100%', boxSizing: 'border-box' }} />
-              </div>
-            </div>
-            <button onClick={applyPersonalization}
-              disabled={!businessName.trim()}
-              style={{ width: '100%', padding: '12px', background: businessName.trim() ? C.grad : 'rgba(196,120,58,0.15)', border: businessName.trim() ? 'none' : `1px solid ${C.borderSm}`, borderRadius: 12, color: businessName.trim() ? '#fff' : 'rgba(255,255,255,0.3)', fontSize: 14, fontWeight: 800, cursor: businessName.trim() ? 'pointer' : 'not-allowed', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif', boxShadow: businessName.trim() ? '0 6px 20px rgba(196,120,58,0.3)' : 'none', transition: 'all 0.2s' }}>
-              <Sparkles size={15} />
-              {businessName.trim() ? 'طبّق على الديمو' : 'أدخل اسم نشاطك أولاً'}
-            </button>
-          </div>
-
-          {/* CTA */}
-          <div style={{ marginBottom: 24 }}>
-            <BookingButton variant="ghost" style={{ width: '100%', padding: '13px 24px', borderRadius: 12, fontSize: 15 }}>
-              <MessageCircle size={16} />
-              احجز مشروعك الآن
-            </BookingButton>
-          </div>
-
-          {/* Trust chips */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {['✓ تسليم في ٦٠ يوم', '✓ بدون رسوم شهرية', '✓ دعم مباشر ٦ أشهر'].map(t => (
-              <span key={t} style={{ padding: '5px 12px', borderRadius: 99, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)', fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.4)' }}>{t}</span>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* ── LEFT column — live phone demo ── */}
-        <motion.div key={flashKey}
-          initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.22,1,0.36,1] }}
-          style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', paddingRight: 20 }}>
-          {applied ? (
-            <AppProvider businessName={appliedBiz} userName={appliedUser} cityName={appliedCity}>
-              <MainApp />
-            </AppProvider>
-          ) : (
-            /* placeholder phone — before any input */
-            <div style={{ position: 'relative', width: 300 }}>
-              {/* ambient glow */}
-              <div style={{ position: 'absolute', inset: -60, borderRadius: '50%', background: `radial-gradient(circle,${C.glow} 0%,transparent 65%)`, pointerEvents: 'none' }} />
-              {/* phone shell */}
-              <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                style={{ width: 300, height: 560, borderRadius: 48, background: 'linear-gradient(160deg,#1C0C00 0%,#0E0700 100%)', border: `1.5px solid ${C.border}`, boxShadow: ['0 60px 130px rgba(0,0,0,0.7)', `0 0 100px ${C.glow2}`, 'inset 0 1px 0 rgba(255,255,255,0.06)'].join(', '), overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 0, position: 'relative' }}>
-                {/* notch */}
-                <div style={{ position: 'absolute', top: 16, left: '50%', transform: 'translateX(-50%)', width: 80, height: 24, borderRadius: 12, background: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
-                  <div style={{ width: 9, height: 9, borderRadius: '50%', background: '#1a1a1a', border: '1px solid #333' }} />
-                  <div style={{ width: 34, height: 5, borderRadius: 3, background: '#111' }} />
-                </div>
-                {/* content */}
-                <div style={{ textAlign: 'center', padding: '0 32px' }}>
-                  <motion.div animate={{ scale: [1, 1.08, 1], opacity: [0.6, 1, 0.6] }} transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-                    style={{ fontSize: 52, marginBottom: 20 }}>☕</motion.div>
-                  <div style={{ fontSize: 15, fontWeight: 800, color: 'rgba(255,255,255,0.9)', marginBottom: 10, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif' }}>اسم نشاطك هنا</div>
-                  <div style={{ fontSize: 12, color: 'rgba(196,120,58,0.8)', lineHeight: 1.7, fontFamily: 'Noto Kufi Arabic, Cairo, sans-serif' }}>أدخل اسم نشاطك على اليمين<br />وشوف تطبيقك لحظياً</div>
-                  {/* fake dots */}
-                  <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginTop: 28 }}>
-                    {[0,1,2].map(i => (
-                      <motion.div key={i} animate={{ opacity: [0.2, 0.8, 0.2] }} transition={{ duration: 1.4, repeat: Infinity, delay: i * 0.3 }}
-                        style={{ width: 7, height: 7, borderRadius: '50%', background: C.primary }} />
-                    ))}
-                  </div>
-                </div>
-                {/* home bar */}
-                <div style={{ position: 'absolute', bottom: 14, width: 80, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.12)' }} />
-              </motion.div>
-            </div>
-          )}
-        </motion.div>
-      </section>
-
-      {/* ── Features Grid ── */}
-      <section style={{ padding: '72px 24px', background: '#120800', borderTop: `1px solid ${C.borderSm}` }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: 44 }}>
-            <h2 style={{ fontSize: 'clamp(1.8rem,4vw,2.6rem)', fontWeight: 900, letterSpacing: '-0.03em', marginBottom: 10 }}>
-              كل شيء يحتاجه نشاطك
-            </h2>
-            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 15 }}>ميزات صُممت للأعمال السعودية</p>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 14 }}>
-            {FEATURES.map((f, i) => (
-              <motion.div key={i}
-                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }} transition={{ delay: i * 0.06 }}
-                style={{ background: 'rgba(196,120,58,0.05)', border: `1px solid ${C.borderSm}`, borderRadius: 18, padding: '22px 20px' }}>
-                <div style={{ width: 42, height: 42, borderRadius: 12, background: 'rgba(196,120,58,0.15)', border: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12 }}>
-                  <f.icon size={19} color="#E8A060" />
-                </div>
-                <h3 style={{ fontSize: 14.5, fontWeight: 800, marginBottom: 6 }}>{f.title}</h3>
-                <p style={{ fontSize: 12.5, color: 'rgba(255,255,255,0.45)', lineHeight: 1.65 }}>{f.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── Pricing ── */}
-      <section style={{ padding: '72px 24px', background: C.bg, borderTop: `1px solid ${C.borderSm}` }}>
-        <div style={{ maxWidth: 460, margin: '0 auto', textAlign: 'center' }}>
-          <motion.div initial={{ opacity: 0, scale: 0.97 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
-            style={{ background: 'linear-gradient(135deg,rgba(196,120,58,0.12),rgba(139,94,42,0.08))', border: `1px solid ${C.border}`, borderRadius: 32, padding: '44px 36px', position: 'relative', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', top: -60, right: -60, width: 220, height: 220, borderRadius: '50%', background: 'rgba(196,120,58,0.1)', filter: 'blur(50px)', pointerEvents: 'none' }} />
-            <div style={{ display: 'inline-block', background: C.grad, color: '#fff', padding: '5px 16px', borderRadius: 99, fontSize: 12, fontWeight: 800, marginBottom: 20 }}>
-              باقة كاملة — دفعة واحدة
-            </div>
-            <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 8, marginBottom: 6 }}>
-              <span style={{ fontSize: 64, fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1 }}>٢,٠٠٠</span>
-              <span style={{ fontSize: 22, color: 'rgba(255,255,255,0.5)', fontWeight: 500 }}>ريال</span>
-            </div>
-            <p style={{ color: 'rgba(255,255,255,0.4)', marginBottom: 32, fontSize: 14 }}>لا رسوم شهرية · ملكيتك الكاملة</p>
-            <div style={{ textAlign: 'right', marginBottom: 32 }}>
-              {['تطبيق ويب كامل بهوية نشاطك','نظام نقاط ولاء تلقائي','Apple & Google Wallet','طلب توصيل واستلام','لوحة تحكم + إحصائيات','دعم واتساب ٦ أشهر'].map((f, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, direction: 'rtl' }}>
-                  <div style={{ width: 22, height: 22, borderRadius: '50%', background: 'rgba(196,120,58,0.2)', border: `1px solid ${C.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <CheckCircle2 size={12} color="#E8A060" strokeWidth={3} />
-                  </div>
-                  <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.75)', fontWeight: 500 }}>{f}</span>
-                </div>
-              ))}
-            </div>
-            <BookingButton style={{ width: '100%', padding: '15px 24px', borderRadius: 14, fontSize: 16 }}>
-              <Sparkles size={18} />
-              احجز مشروعك الآن
-            </BookingButton>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ── Footer ── */}
-      <footer style={{ padding: '24px', background: '#0A0500', borderTop: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>
-        <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: 13, fontWeight: 600 }}>
-          كافي تلقا · نظام الولاء الرقمي · ٢٠٢٥
-        </p>
-        <button onClick={() => (window as any).__bdAdmin?.()}
-          className="mt-3 text-white/10 hover:text-white/25 text-xs transition-colors select-none">⚙</button>
-      </footer>
-
-      <style>{`
-        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-        * { box-sizing: border-box; }
-        input::placeholder { color: rgba(255,255,255,0.25); }
-        input:focus { border-color: rgba(196,120,58,0.5) !important; box-shadow: 0 0 0 3px rgba(196,120,58,0.12); }
-      `}</style>
-    </div>
-  );
-}
-
-/* ─── App mode (full-screen, no landing) ─── */
+/* ─── App mode ─── */
 function AppModeInner() {
   const { activeTab } = useAppContext();
   return (
@@ -431,6 +54,355 @@ function AppModeInner() {
   );
 }
 
+/* ─── Pillar card ─── */
+const PILLARS = [
+  {
+    num: '٠١', icon: Coffee,
+    title: 'تطبيقك بهويتك',
+    sub: 'ألوانك، اسمك، منيوك',
+    desc: 'مش قالب جاهز — تطبيق خاص بك تماماً',
+    grad: 'linear-gradient(145deg,#1C0900,#3D1A00)',
+    accent: '#C4783A',
+  },
+  {
+    num: '٠٢', icon: ShoppingBag,
+    title: 'طلب وتوصيل',
+    sub: 'استلام أو توصيل',
+    desc: 'الزبون يطلب من التطبيق مباشرة',
+    grad: 'linear-gradient(145deg,#0A1A0A,#1A3010)',
+    accent: '#4CAF50',
+  },
+  {
+    num: '٠٣', icon: Wallet,
+    title: 'Apple & Google Wallet',
+    sub: 'بطاقة رقمية دائمة',
+    desc: 'تظهر على شاشة القفل تلقائياً',
+    grad: 'linear-gradient(145deg,#0A0A1A,#101030)',
+    accent: '#5B8DEF',
+  },
+  {
+    num: '٠٤', icon: BarChart3,
+    title: 'نقاط الولاء',
+    sub: 'كل طلب = نقاط',
+    desc: 'زبائن راجعين وعروض مخصصة',
+    grad: 'linear-gradient(145deg,#040D08,#0D2814)',
+    accent: '#2ECC71',
+  },
+];
+
+const FEATURES = [
+  'منيو رقمي تفاعلي يُحدَّث فوراً',
+  'طلب توصيل واستلام',
+  'Apple Pay & STC Pay',
+  'نقاط ولاء تلقائية',
+  'Apple & Google Wallet',
+  'إشعارات وعروض مخصصة',
+  'لوحة تحكم + إحصائيات',
+  'هوية بصرية كاملة بالألوان واللوغو',
+  'دعم مباشر ٦ أشهر',
+  'إطلاق في ٦٠ يوم مضمون',
+];
+
+/* ─── Landing Page ─── */
+function LandingPage() {
+  const [bizName, setBizName] = useState('');
+  const [applied, setApplied] = useState('');
+  const [flashKey, setFlashKey] = useState(0);
+
+  function applyDemo() {
+    if (!bizName.trim()) return;
+    setApplied(bizName.trim());
+    setFlashKey(k => k + 1);
+  }
+
+  return (
+    <div style={{ minHeight: '100vh', background: CREAM, direction: 'rtl', fontFamily: 'Tajawal, sans-serif', overflowX: 'hidden' }}>
+
+      {/* ── Aurora background ── */}
+      <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
+        <div className="animate-aurora-1" style={{ position: 'absolute', top: '-10%', right: '-5%', width: 600, height: 600, borderRadius: '50%', background: 'radial-gradient(circle,rgba(180,90,20,0.18) 0%,rgba(140,60,10,0.06) 50%,transparent 70%)', filter: 'blur(50px)' }} />
+        <div className="animate-aurora-2" style={{ position: 'absolute', bottom: '10%', left: '-8%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle,rgba(107,50,16,0.12) 0%,transparent 70%)', filter: 'blur(45px)' }} />
+      </div>
+
+      {/* ═══ HEADER ═══ */}
+      <header style={{
+        position: 'sticky', top: 0, zIndex: 50,
+        background: 'rgba(253,251,247,0.88)', backdropFilter: 'blur(16px)',
+        borderBottom: '1px solid rgba(107,50,16,0.08)',
+      }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px', height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          {/* Logo */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 10, background: `linear-gradient(135deg,${BROWN},${BROWN_LIGHT})`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18 }}>☕</div>
+            <div>
+              <div style={{ fontSize: 15, fontWeight: 800, color: '#111', lineHeight: 1.2 }}>كافي تلقا</div>
+              <div style={{ fontSize: 10, color: BROWN, letterSpacing: '0.06em', fontWeight: 500 }}>نظام الولاء الرقمي</div>
+            </div>
+          </div>
+          <BookingButton style={{ padding: '8px 20px', borderRadius: 99, fontSize: 13, background: BROWN, color: '#fff', border: 'none', boxShadow: 'none' }}>
+            احجز مشروعك
+          </BookingButton>
+        </div>
+      </header>
+
+      {/* ═══ HERO ═══ */}
+      <section style={{ position: 'relative', zIndex: 1, maxWidth: 1200, margin: '0 auto', padding: '80px 24px 60px' }}>
+
+        {/* Badge */}
+        <div style={{ textAlign: 'center', marginBottom: 28 }}>
+          <motion.div
+            initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#fff', border: '1.5px solid rgba(107,50,16,0.15)', borderRadius: 99, padding: '6px 18px', fontSize: 12, fontWeight: 700, color: BROWN, boxShadow: '0 2px 12px rgba(107,50,16,0.08)' }}>
+            <span style={{ width: 7, height: 7, borderRadius: '50%', background: BROWN, flexShrink: 0 }} />
+            ✦ ديمو حي — خصّصه بإسمك الآن
+          </motion.div>
+        </div>
+
+        {/* Headline */}
+        <div style={{ textAlign: 'center', marginBottom: 36 }}>
+          <motion.h1
+            initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.22,1,0.36,1] }}
+            style={{ fontSize: 'clamp(2.8rem,6vw,5rem)', fontWeight: 900, lineHeight: 1.05, letterSpacing: '-0.04em', color: '#111', marginBottom: 16 }}
+          >
+            نشاطك يستحق
+            <br />
+            <span style={{ color: BROWN }}>تطبيقاً يعرّفه</span>
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
+            style={{ fontSize: 17, color: '#666', lineHeight: 1.8, maxWidth: 500, margin: '0 auto' }}>
+            تطبيق بهوية نشاطك · Apple & Google Wallet · نقاط ولاء · طلب وتوصيل
+            <br />كل شيء في منصة واحدة
+          </motion.p>
+        </div>
+
+        {/* Personalization box + phone — two columns */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1fr) auto', gap: 48, alignItems: 'center' }}>
+
+          {/* Left: inputs + CTA */}
+          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.15 }}>
+
+            {/* Input card */}
+            <div style={{ background: '#fff', border: '1.5px solid rgba(107,50,16,0.12)', borderRadius: 24, padding: '24px', marginBottom: 20, boxShadow: '0 8px 32px rgba(107,50,16,0.07)' }}>
+              <div style={{ fontSize: 12, fontWeight: 700, color: BROWN, marginBottom: 14, display: 'flex', alignItems: 'center', gap: 6 }}>
+                ✏️ خصّص الديمو — شوف تطبيقك قبل ما تطلبه
+              </div>
+              <div style={{ display: 'flex', gap: 10 }}>
+                <input
+                  value={bizName}
+                  onChange={e => setBizName(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && applyDemo()}
+                  placeholder="اسم نشاطك (مثال: كافيه النخبة)"
+                  style={{
+                    flex: 1, padding: '12px 16px',
+                    background: '#FAFAF8', border: '1.5px solid rgba(107,50,16,0.15)',
+                    borderRadius: 14, fontSize: 14, fontFamily: 'Tajawal, sans-serif',
+                    color: '#111', outline: 'none', direction: 'rtl',
+                  }}
+                />
+                <button onClick={applyDemo} disabled={!bizName.trim()} style={{
+                  padding: '12px 20px',
+                  background: bizName.trim() ? `linear-gradient(135deg,${BROWN},${BROWN_LIGHT})` : 'rgba(107,50,16,0.1)',
+                  border: 'none', borderRadius: 14, color: bizName.trim() ? '#fff' : 'rgba(107,50,16,0.4)',
+                  fontSize: 14, fontWeight: 700, cursor: bizName.trim() ? 'pointer' : 'not-allowed',
+                  fontFamily: 'Tajawal, sans-serif', whiteSpace: 'nowrap',
+                  transition: 'all 0.2s',
+                }}>
+                  طبّق ←
+                </button>
+              </div>
+            </div>
+
+            {/* Primary CTA */}
+            <BookingButton style={{ width: '100%', padding: '16px', borderRadius: 16, fontSize: 16, display: 'flex', background: `linear-gradient(135deg,${BROWN},${BROWN_LIGHT})`, boxShadow: `0 12px 36px rgba(107,50,16,0.3)` }}>
+              <Sparkles size={18} />
+              احجز تطبيقك الآن
+            </BookingButton>
+
+            {/* Trust chips */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 16, justifyContent: 'center' }}>
+              {['✓ تسليم في ٦٠ يوم', '✓ بدون رسوم شهرية', '✓ دعم مباشر ٦ أشهر'].map(t => (
+                <span key={t} style={{ padding: '5px 14px', borderRadius: 99, background: '#fff', border: '1px solid rgba(107,50,16,0.12)', fontSize: 11, fontWeight: 600, color: '#666' }}>{t}</span>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Right: phone */}
+          <motion.div
+            key={flashKey}
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.22,1,0.36,1] }}
+            className="animate-phone-float"
+            style={{ display: 'flex', justifyContent: 'center' }}
+          >
+            {applied ? (
+              <AppProvider businessName={applied} userName="زبون مميز" cityName="الرياض">
+                <MainApp />
+              </AppProvider>
+            ) : (
+              /* placeholder phone */
+              <div style={{ position: 'relative', width: 320, height: 640, borderRadius: 48, background: 'linear-gradient(160deg,#1C0C00,#0E0700)', border: '2px solid rgba(107,50,16,0.25)', boxShadow: '0 60px 120px rgba(0,0,0,0.2), 0 0 0 8px rgba(107,50,16,0.06)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 0, overflow: 'hidden' }}>
+                {/* Notch */}
+                <div style={{ position: 'absolute', top: 16, left: '50%', transform: 'translateX(-50%)', width: 80, height: 24, borderRadius: 12, background: '#000' }} />
+                {/* Content */}
+                <motion.div animate={{ scale: [1,1.06,1], opacity: [0.7,1,0.7] }} transition={{ duration: 2.5, repeat: Infinity }}>
+                  <div style={{ fontSize: 56, textAlign: 'center', marginBottom: 16 }}>☕</div>
+                </motion.div>
+                <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', textAlign: 'center', fontFamily: 'Tajawal', marginBottom: 8 }}>اسم نشاطك هنا</div>
+                <div style={{ fontSize: 12, color: 'rgba(196,120,58,0.8)', textAlign: 'center', fontFamily: 'Tajawal', lineHeight: 1.7 }}>
+                  أدخل اسمه على اليسار<br />وشوف التطبيق لحظياً
+                </div>
+                {/* dots */}
+                <div style={{ display: 'flex', gap: 6, marginTop: 24 }}>
+                  {[0,1,2].map(i => (
+                    <motion.div key={i} animate={{ opacity: [0.2,0.8,0.2] }} transition={{ duration: 1.4, repeat: Infinity, delay: i*0.3 }}
+                      style={{ width: 7, height: 7, borderRadius: '50%', background: '#C4783A' }} />
+                  ))}
+                </div>
+                {/* Home bar */}
+                <div style={{ position: 'absolute', bottom: 14, width: 80, height: 4, borderRadius: 2, background: 'rgba(255,255,255,0.15)' }} />
+              </div>
+            )}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══ PILLAR CARDS ═══ */}
+      <section style={{ position: 'relative', zIndex: 1, padding: '0 24px 80px' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          {/* Section label */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 28 }}>
+            <div style={{ height: 1, flex: 1, background: 'rgba(107,50,16,0.1)' }} />
+            <span style={{ fontSize: 11, fontWeight: 700, color: BROWN, letterSpacing: '0.08em', textTransform: 'uppercase' }}>ما يحصل عليه نشاطك</span>
+            <div style={{ height: 1, flex: 1, background: 'rgba(107,50,16,0.1)' }} />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12 }}>
+            {PILLARS.map((p, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08, duration: 0.5, ease: [0.22,1,0.36,1] }}
+                style={{
+                  borderRadius: 24, overflow: 'hidden', position: 'relative',
+                  background: p.grad, minHeight: 220,
+                  padding: '24px 20px 22px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
+                  border: '1px solid rgba(255,255,255,0.06)',
+                  boxShadow: '0 4px 24px rgba(0,0,0,0.12)',
+                  cursor: 'default',
+                }}>
+                {/* Number */}
+                <div style={{ position: 'absolute', top: 18, left: 18, fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.25)', fontFamily: 'Inter, monospace', letterSpacing: 1 }}>{p.num}</div>
+                {/* Icon */}
+                <div style={{ position: 'absolute', top: 16, right: 16, width: 40, height: 40, borderRadius: 12, background: `${p.accent}22`, border: `1px solid ${p.accent}44`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <p.icon size={20} color={p.accent} />
+                </div>
+                {/* Text */}
+                <div>
+                  <div style={{ fontSize: 9, fontWeight: 700, color: p.accent, letterSpacing: '0.06em', marginBottom: 5, textTransform: 'uppercase' }}>{p.sub}</div>
+                  <div style={{ fontSize: 17, fontWeight: 800, color: '#fff', marginBottom: 6, lineHeight: 1.2 }}>{p.title}</div>
+                  <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', lineHeight: 1.55 }}>{p.desc}</div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ FEATURES ═══ */}
+      <section style={{ position: 'relative', zIndex: 1, padding: '0 24px 80px' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          <div style={{ background: '#fff', border: '1.5px solid rgba(107,50,16,0.1)', borderRadius: 28, padding: '44px 48px', boxShadow: '0 8px 40px rgba(107,50,16,0.06)' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, alignItems: 'start' }}>
+              {/* Left: heading */}
+              <div>
+                <div style={{ fontSize: 11, fontWeight: 700, color: BROWN, letterSpacing: '0.06em', marginBottom: 14 }}>المنظومة الكاملة</div>
+                <h2 style={{ fontSize: 'clamp(1.8rem,3.5vw,2.6rem)', fontWeight: 900, color: '#111', lineHeight: 1.1, letterSpacing: '-0.03em', marginBottom: 16 }}>
+                  كل شيء يحتاجه نشاطك
+                  <br />
+                  <span style={{ color: BROWN }}>في تطبيق واحد</span>
+                </h2>
+                <p style={{ fontSize: 14, color: '#777', lineHeight: 1.75, marginBottom: 28 }}>
+                  مش مجرد تطبيق — منظومة كاملة تخلي عميلك يرجعك بدون ما تطلب منه.
+                </p>
+                <BookingButton style={{ padding: '13px 28px', borderRadius: 14, fontSize: 15 }}>
+                  ابدأ مشروعك
+                </BookingButton>
+              </div>
+              {/* Right: features list */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 16px' }}>
+                {FEATURES.map((f, i) => (
+                  <motion.div key={i} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.04 }}
+                    style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
+                    <div style={{ width: 18, height: 18, borderRadius: '50%', background: `rgba(107,50,16,0.12)`, border: `1px solid rgba(107,50,16,0.2)`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: 2 }}>
+                      <CheckCircle2 size={10} color={BROWN} strokeWidth={3} />
+                    </div>
+                    <span style={{ fontSize: 13, color: '#444', fontWeight: 500, lineHeight: 1.5 }}>{f}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ PRICING ═══ */}
+      <section style={{ position: 'relative', zIndex: 1, padding: '0 24px 80px' }}>
+        <div style={{ maxWidth: 520, margin: '0 auto', textAlign: 'center' }}>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.97 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
+            style={{ background: `linear-gradient(160deg,#1C0900,#2D1200)`, borderRadius: 32, padding: '48px 40px', position: 'relative', overflow: 'hidden', boxShadow: '0 40px 80px rgba(107,50,16,0.35)' }}>
+            {/* Glow */}
+            <div style={{ position: 'absolute', top: -60, right: -60, width: 240, height: 240, borderRadius: '50%', background: 'rgba(196,120,58,0.15)', filter: 'blur(60px)', pointerEvents: 'none' }} />
+
+            <div style={{ display: 'inline-block', background: 'rgba(196,120,58,0.2)', border: '1px solid rgba(196,120,58,0.35)', color: '#E8A060', padding: '5px 16px', borderRadius: 99, fontSize: 12, fontWeight: 800, marginBottom: 20, position: 'relative' }}>
+              باقة كاملة — دفعة واحدة
+            </div>
+            <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'center', gap: 8, marginBottom: 6, position: 'relative' }}>
+              <span style={{ fontSize: 72, fontWeight: 900, letterSpacing: '-0.05em', lineHeight: 1, color: '#fff' }}>٢,٠٠٠</span>
+              <span style={{ fontSize: 22, color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>ريال</span>
+            </div>
+            <p style={{ color: 'rgba(255,255,255,0.4)', marginBottom: 36, fontSize: 14, position: 'relative' }}>لا رسوم شهرية · ملكيتك الكاملة</p>
+
+            <div style={{ textAlign: 'right', marginBottom: 36, position: 'relative' }}>
+              {['تطبيق ويب كامل بهوية نشاطك','نظام نقاط ولاء تلقائي','Apple & Google Wallet','طلب توصيل واستلام','لوحة تحكم + إحصائيات','دعم مباشر ٦ أشهر'].map((f, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12, direction: 'rtl' }}>
+                  <div style={{ width: 22, height: 22, borderRadius: '50%', background: 'rgba(196,120,58,0.2)', border: '1px solid rgba(196,120,58,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <CheckCircle2 size={12} color="#E8A060" strokeWidth={3} />
+                  </div>
+                  <span style={{ fontSize: 14, color: 'rgba(255,255,255,0.75)', fontWeight: 500 }}>{f}</span>
+                </div>
+              ))}
+            </div>
+
+            <BookingButton style={{ width: '100%', padding: '16px', borderRadius: 16, fontSize: 16, position: 'relative' }}>
+              <Sparkles size={18} />
+              احجز مشروعك الآن
+            </BookingButton>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══ FOOTER ═══ */}
+      <footer style={{ position: 'relative', zIndex: 1, padding: '24px', background: 'rgba(107,50,16,0.04)', borderTop: '1px solid rgba(107,50,16,0.08)', textAlign: 'center' }}>
+        <p style={{ color: '#AAA', fontSize: 13, fontWeight: 500 }}>
+          كافي تلقا · نظام الولاء الرقمي · ٢٠٢٥
+        </p>
+        <button
+          onClick={() => (window as any).__bdAdmin?.()}
+          style={{ background: 'none', border: 'none', color: 'rgba(107,50,16,0.15)', fontSize: 11, cursor: 'pointer', marginTop: 8 }}>⚙</button>
+      </footer>
+
+    </div>
+  );
+}
+
+/* ════════════════════════════════
+   ROOT
+════════════════════════════════ */
 export default function App() {
   const [showAdmin, setShowAdmin] = useState(false);
   const params = new URLSearchParams(window.location.search);
@@ -439,14 +411,14 @@ export default function App() {
   const urlUser   = params.get('user') || undefined;
   const urlCity   = params.get('city') || undefined;
 
-  useEffect(() => {
+  React.useEffect(() => {
     (window as any).__bdAdmin = () => setShowAdmin(true);
     return () => { delete (window as any).__bdAdmin; };
   }, []);
 
   if (isAppMode) {
     return (
-      <div dir="rtl" style={{ width: '100%', height: '100dvh', background: 'hsl(var(--background))', overflow: 'hidden' }}>
+      <div className="app-dark" dir="rtl" style={{ width: '100%', height: '100dvh', background: '#150900', overflow: 'hidden' }}>
         <AppProvider businessName={urlBiz} userName={urlUser} cityName={urlCity}>
           <AppModeInner />
         </AppProvider>

@@ -8,7 +8,7 @@ export function PhoneFrame({ children }: PhoneFrameProps) {
   return (
     <>
       {/* ── Mobile: full-screen, no frame ─────────────────────────── */}
-      <div className="md:hidden w-full h-[750px] flex flex-col bg-background overflow-hidden relative">
+      <div className="app-dark md:hidden w-full h-[750px] flex flex-col overflow-hidden relative" style={{ background: '#150900' }}>
         {children}
       </div>
 
@@ -16,8 +16,8 @@ export function PhoneFrame({ children }: PhoneFrameProps) {
       <div className="hidden md:flex relative flex-col shrink-0" style={{ width: 390, height: 844 }}>
         {/* Phone shell */}
         <div
-          className="absolute inset-0 rounded-[54px] ring-[8px] ring-[#3a162b] shadow-[0_60px_120px_rgba(0,0,0,0.9)] overflow-hidden bg-background"
-          style={{ zIndex: 0 }}
+          className="app-dark absolute inset-0 rounded-[54px] ring-[8px] ring-[#2A1200] shadow-[0_60px_120px_rgba(0,0,0,0.5)] overflow-hidden"
+          style={{ background: '#150900', zIndex: 0 }}
         >
           {/* Dynamic Island */}
           <div className="absolute top-0 inset-x-0 flex justify-center z-50 pointer-events-none">
