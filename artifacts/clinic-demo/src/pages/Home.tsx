@@ -306,7 +306,7 @@ export default function Home() {
 
  useSEO({
  title: 'تلقا للعيادات — موقعك وتطبيقك الطبي في ٦٠ يوم',
- description: 'تلقا تك تبني لعيادتك موقعاً احترافياً وتطبيقاً للمرضى ونظام إدارة متكاملاً — حجز مواعيد، نتائج تحاليل، AI Doctor، Apple Wallet. أعلى معايير الأمان في القطاع الصحي.',
+ description: 'تلقا للعيادات تبني لعيادتك موقعاً احترافياً وتطبيقاً للمرضى ونظام إدارة متكاملاً — حجز مواعيد، نتائج تحاليل، AI Doctor، Apple Wallet. أعلى معايير الأمان في القطاع الصحي.',
  canonical: 'https://tlgaads.com/',
  });
 
@@ -323,9 +323,9 @@ export default function Home() {
  <div className="max-w-5xl mx-auto px-6 py-3.5 flex items-center justify-between">
  <div className="flex items-center gap-2">
  <TalqaShield size={28} />
- <span className="text-[14px] font-bold text-[#111]">تلقا تك</span>
+ <span className="text-[14px] font-bold text-[#111]">تلقا للعيادات</span>
  </div>
- <span className="text-[11px] text-[#AAA] font-light hidden sm:block">وكالة تصميم تطبيقات ومواقع احترافية</span>
+ <span className="text-[11px] text-[#AAA] font-light hidden sm:block">نظام المريض الرقمي · موقع + تطبيق + إدارة</span>
  <a href="https://wa.me/966" target="_blank" rel="noopener noreferrer"
  className="text-[11px] font-semibold text-[#0B4A6F] border border-[rgba(11,74,111,0.2)] px-3.5 py-1.5 rounded-full hover:bg-[#0B4A6F]/5 transition-colors">
  تواصل الآن
@@ -804,7 +804,7 @@ export default function Home() {
  <div className="max-w-5xl mx-auto px-6 mb-12">
  <div className="text-center mb-6">
  <p className="text-[11px] text-[#AAA] font-semibold uppercase mb-1.5">قالوا عنّا</p>
- <h2 className="text-[24px] font-bold text-[#111]">عيادات ومستشفيات تثق بتلقا تك</h2>
+ <h2 className="text-[24px] font-bold text-[#111]">عيادات ومستشفيات تثق بتلقا للعيادات</h2>
  </div>
  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
  {testimonials.map((t, i) => (
@@ -957,7 +957,7 @@ export default function Home() {
  <a href="https://wa.me/966551378531" target="_blank" rel="noopener noreferrer"
  className="block w-full bg-white font-bold text-[15px] py-4 rounded-[16px] hover:bg-[#F0F8FF] active:scale-95 transition-all duration-200 shadow-[0_8px_28px_rgba(0,0,0,0.2)]"
  style={{ color: '#0B4A6F' }}>
- ابدأ مشروع عيادتك مع تلقا تك 
+ ابدأ مشروع عيادتك مع تلقا للعيادات 
  </a>
  <p className="text-white/25 text-[11px] mt-3 font-light">تواصل معنا على واتساب للاستفسار المجاني</p>
  </div>
@@ -968,9 +968,9 @@ export default function Home() {
  <div className="text-center pb-10 px-6">
  <div className="flex items-center justify-center gap-2 mb-2">
  <TalqaShield size={24} />
- <span className="text-[13px] font-bold text-[#111]">تلقا تك</span>
+ <span className="text-[13px] font-bold text-[#111]">تلقا للعيادات</span>
  </div>
- <p className="text-[11px] text-[#CCC] font-light">وكالة تصميم تطبيقات ومواقع احترافية · جميع الحقوق محفوظة ٢٠٢٦</p>
+ <p className="text-[11px] text-[#CCC] font-light">تلقا للعيادات · جميع الحقوق محفوظة ٢٠٢٦</p>
 
   {/* Commercial Registration Badge */}
   <div className="inline-flex items-center gap-3 mt-4 px-5 py-3 rounded-[16px]"
