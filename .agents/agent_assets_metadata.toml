@@ -30,3 +30,10 @@ id = "D0iDnynp0IgytQhUQNuGF"
 uri = "file://talqa-proposal-cosmoline.pdf"
 type = "pdf"
 title = "عرض تلقا — Cosmoline Clinics (PDF)"
+
+[[outputs]]
+id = "P3UF5G7bMsRswtBVNXwuH"
+uri = "file://wallet-package.zip"
+type = "unspecified"
+title = "Apple Wallet — شهادات + كود"
+description = "pass-cert.pem · pass-key.pem · wwdr.pem · wallet.ts · minizip.ts"
