@@ -1,0 +1,6 @@
+{
+  "buildCommand": "echo 'Set Root Directory to artifacts/clinic-demo or artifacts/talqa-tech'",
+  "outputDirectory": ".",
+  "framework": null,
+  "ignoreCommand": "exit 0"
+}
