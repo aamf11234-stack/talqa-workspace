@@ -81,8 +81,8 @@ const CSS = `
     50%      { transform: scale(1.6); opacity: 1; }
   }
   @keyframes sp-exit {
-    0%   { opacity: 1; transform: scale(1)    blur(0); }
-    100% { opacity: 0; transform: scale(1.06) blur(8px); }
+    0%   { opacity: 1; transform: scale(1);    filter: blur(0px); }
+    100% { opacity: 0; transform: scale(1.06); filter: blur(10px); }
   }
 `;
 
