@@ -593,7 +593,7 @@ export default function WalletShowcase() {
   const ActivePass = PASSES[active]!.component;
 
   return (
-    <section style={{ padding:'clamp(80px,9vw,130px) 0', background:'var(--bg2)', position:'relative', overflow:'hidden' }}>
+    <section id="wallet" style={{ padding:'clamp(80px,9vw,130px) 0', background:'var(--bg2)', position:'relative', overflow:'hidden' }}>
       <div className="orb" style={{ width:600, height:600, top:'0%', right:'-10%', background:'rgba(139,92,246,0.06)', animationDelay:'-2s' }} />
       <div className="orb" style={{ width:500, height:500, bottom:'0%', left:'-8%', background:'rgba(6,182,212,0.05)', animationDelay:'-9s' }} />
 
