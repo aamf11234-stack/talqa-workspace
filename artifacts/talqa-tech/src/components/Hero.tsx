@@ -173,12 +173,55 @@ export default function Hero() {
 
         {/* CTAs */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65, duration: 0.5 }}
-          style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12, marginBottom: 60 }}>
+          style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12, marginBottom: 20 }}>
           <a href="#live-demo" className="btn-purple" style={{ fontSize: 'clamp(14px,1.6vw,16px)', padding: '14px 32px' }}>
             شوف الديمو مباشرة ←
           </a>
           <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-ghost" style={{ fontSize: 'clamp(14px,1.6vw,16px)', padding: '14px 28px' }}>
             تحدث معنا الآن
+          </a>
+        </motion.div>
+
+        {/* Apple Wallet button */}
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.78, duration: 0.5 }}
+          style={{ marginBottom: 44 }}>
+          <a
+            href="#wallet"
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 12,
+              background: '#000', border: '1px solid rgba(255,255,255,0.18)',
+              borderRadius: 14, padding: '11px 22px',
+              textDecoration: 'none', cursor: 'pointer',
+              boxShadow: '0 4px 24px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06)',
+              transition: 'transform .15s, box-shadow .15s',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; (e.currentTarget as HTMLElement).style.boxShadow = '0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.12)'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = ''; (e.currentTarget as HTMLElement).style.boxShadow = '0 4px 24px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06)'; }}
+          >
+            {/* Apple Wallet stacked-cards icon */}
+            <svg width="38" height="30" viewBox="0 0 38 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* Card 3 — blue (back) */}
+              <rect x="4" y="2" width="30" height="18" rx="4" fill="#4A90D9" />
+              {/* Card 2 — yellow */}
+              <rect x="4" y="6" width="30" height="18" rx="4" fill="#F5C842" />
+              {/* Card 1 — green */}
+              <rect x="4" y="10" width="30" height="18" rx="4" fill="#5CB85C" />
+              {/* Front card — beige/gray */}
+              <rect x="2" y="13" width="34" height="16" rx="4" fill="#D9D4CB" />
+              {/* Card stripe */}
+              <rect x="2" y="18" width="34" height="5" fill="rgba(0,0,0,0.12)" />
+              {/* Red chip hint */}
+              <rect x="7" y="15.5" width="8" height="6" rx="1.5" fill="#E05252" opacity="0.85" />
+            </svg>
+
+            <div style={{ textAlign: 'right' }}>
+              <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.55)', fontFamily: 'system-ui', fontWeight: 400, lineHeight: 1, marginBottom: 3 }}>
+                Add to
+              </div>
+              <div style={{ fontSize: 19, color: '#fff', fontFamily: 'system-ui, -apple-system', fontWeight: 600, lineHeight: 1, letterSpacing: '-0.01em' }}>
+                Apple Wallet
+              </div>
+            </div>
           </a>
         </motion.div>
 
