@@ -37,3 +37,10 @@ uri = "file://wallet-package.zip"
 type = "unspecified"
 title = "Apple Wallet — شهادات + كود"
 description = "pass-cert.pem · pass-key.pem · wwdr.pem · wallet.ts · minizip.ts"
+
+[[outputs]]
+id = "xp9vRPm4b8rbcc0AKCS5i"
+uri = "file://artifacts/clinic-demo/public/favicon-192.png"
+type = "image"
+title = "أيقونة تلقا للعيادات — 192×192px"
+description = "هذي الأيقونة اللي ستظهر في Google بدل الكرة الأرضية بعد إعادة النشر"
