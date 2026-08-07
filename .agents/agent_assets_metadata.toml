@@ -44,3 +44,10 @@ uri = "file://artifacts/clinic-demo/public/favicon-192.png"
 type = "image"
 title = "أيقونة تلقا للعيادات — 192×192px"
 description = "هذي الأيقونة اللي ستظهر في Google بدل الكرة الأرضية بعد إعادة النشر"
+
+[[outputs]]
+id = "P57iN9-LGUanEdrDiubLP"
+uri = "file://artifacts/talqa-tech/public/favicon-192.png"
+type = "image"
+title = "Favicon تلقا تك — 192px"
+description = "الأيقونة اللي تظهر في المتصفح وGoogle Ads وApple Touch"
