@@ -51,3 +51,17 @@ uri = "file://artifacts/talqa-tech/public/favicon-192.png"
 type = "image"
 title = "شعار تلقا تك — ارفعه في Google Ads"
 description = "اضغط Download ثم ارفعه في Google Ads ← Assets ← Images ← Business Logo"
+
+[[outputs]]
+id = "d91Nco4NwbasaEBM0gUs9"
+uri = "file://clinic-demo-deploy.zip"
+type = "unspecified"
+title = "clinic-demo — ديمو العيادات"
+description = "ارفعه على Vercel بـ drag & drop → domain: tlgaads.com"
+
+[[outputs]]
+id = "qFuNQKEW3MgQxzSjqqPFN"
+uri = "file://talqa-tech-deploy.zip"
+type = "unspecified"
+title = "talqa-tech — الموقع الرسمي"
+description = "ارفعه على Vercel بـ drag & drop → domain: tech.tlgaads.com"
