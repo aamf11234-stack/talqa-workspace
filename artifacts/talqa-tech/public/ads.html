@@ -8,6 +8,121 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Popup ── */
+    #popup-overlay {
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,0.75); backdrop-filter: blur(6px);
+      display: flex; align-items: flex-end; justify-content: center;
+      padding: 0; opacity: 0; pointer-events: none;
+      transition: opacity .35s ease;
+    }
+    #popup-overlay.show { opacity: 1; pointer-events: all; }
+    #popup {
+      background: linear-gradient(160deg, #1A1030 0%, #120E2A 60%, #0D0D1A 100%);
+      border: 1px solid rgba(167,139,250,0.35);
+      border-bottom: none;
+      border-radius: 28px 28px 0 0;
+      width: 100%; max-width: 480px;
+      padding: 28px 22px 36px;
+      position: relative;
+      transform: translateY(100%);
+      transition: transform .4s cubic-bezier(.32,1.2,.5,1);
+      text-align: center;
+    }
+    #popup-overlay.show #popup { transform: translateY(0); }
+
+    .pop-close {
+      position: absolute; top: 14px; left: 16px;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(255,255,255,0.08); border: none;
+      color: #94A3B8; font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-family: inherit; transition: background .15s;
+    }
+    .pop-close:hover { background: rgba(255,255,255,0.15); }
+
+    .pop-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.4);
+      color: #FCA5A5; border-radius: 100px; padding: 5px 14px;
+      font-size: 13px; font-weight: 700; margin-bottom: 16px;
+    }
+    .pop-badge::before { content: '🔥'; }
+
+    .pop-title {
+      font-size: 26px; font-weight: 900; color: #fff;
+      line-height: 1.25; margin-bottom: 6px;
+    }
+    .pop-title span { color: #A78BFA; }
+
+    .pop-sub { font-size: 14px; color: #94A3B8; margin-bottom: 20px; }
+
+    /* Price block */
+    .pop-price {
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      margin-bottom: 18px;
+    }
+    .pop-old {
+      font-size: 20px; font-weight: 700; color: #64748B;
+      text-decoration: line-through;
+    }
+    .pop-new {
+      font-size: 46px; font-weight: 900; color: #A78BFA;
+      line-height: 1;
+    }
+    .pop-sar { font-size: 18px; font-weight: 700; color: #A78BFA; align-self: flex-end; padding-bottom: 6px; }
+
+    .pop-note {
+      font-size: 12px; color: #64748B; margin-bottom: 20px;
+    }
+    .pop-note span { color: #A78BFA; }
+
+    /* Countdown */
+    .countdown {
+      display: flex; justify-content: center; gap: 8px;
+      margin-bottom: 22px;
+    }
+    .cd-block {
+      background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3);
+      border-radius: 12px; padding: 10px 14px; min-width: 58px;
+    }
+    .cd-num {
+      font-size: 26px; font-weight: 900; color: #fff;
+      font-variant-numeric: tabular-nums; line-height: 1;
+    }
+    .cd-lbl { font-size: 11px; color: #94A3B8; margin-top: 3px; }
+    .cd-sep { font-size: 24px; font-weight: 900; color: #A78BFA; align-self: center; padding-bottom: 14px; }
+
+    /* Features */
+    .pop-features {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      justify-content: center; margin-bottom: 22px;
+    }
+    .pop-feat {
+      display: flex; align-items: center; gap: 5px;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 100px; padding: 5px 12px;
+      font-size: 12px; color: #CBD5E1;
+    }
+    .pop-feat::before { content: '✓'; color: #22C55E; font-weight: 900; }
+
+    .pop-wa {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      background: #25D366; color: #fff; font-family: inherit;
+      font-size: 17px; font-weight: 800; padding: 16px 24px;
+      border-radius: 14px; border: none; cursor: pointer;
+      text-decoration: none; width: 100%;
+      box-shadow: 0 8px 32px rgba(37,211,102,0.4);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .pop-wa:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(37,211,102,0.5); }
+    .pop-dismiss {
+      margin-top: 12px; font-size: 12px; color: #475569;
+      cursor: pointer; text-decoration: underline; background: none;
+      border: none; font-family: inherit;
+    }
+  </style>
   <!-- Google Ads conversion tracking placeholder -->
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -280,7 +395,7 @@
     <div class="review">
       <div class="review-stars">★★★★★</div>
       <div class="review-text">"سلّمونا تطبيق العيادة في الوقت المحدد تماماً — المرضى الآن يحجزون بأنفسهم وإدارة الملفات صارت سهلة جداً."</div>
-      <div class="review-author">د. محمد — عيادة تخصصية، جازان</div>
+      <div class="review-author">د. محمد — عيادة تخصصية</div>
     </div>
     <div class="review">
       <div class="review-stars">★★★★★</div>
@@ -307,7 +422,7 @@
       <p>٦٠ يوماً من توقيع العقد — تطبيق كامل + موقع + نظام إدارة + تدريب الفريق.</p>
     </details>
     <details>
-      <summary>هل تخدمون خارج جازان؟</summary>
+      <summary>هل تخدمون خارج منطقتي؟</summary>
       <p>نعم، نخدم جميع مناطق المملكة العربية السعودية. معظم تواصلنا عن بُعد عبر واتساب وزوم.</p>
     </details>
   </div>
@@ -328,8 +443,125 @@
 </div>
 
 <footer>
-  © ٢٠٢٦ تلقا تك — صبيا وضمد، جازان — +966551378531
+  © ٢٠٢٦ تلقا تك — +966551378531
 </footer>
 
+<!-- ── Popup ───────────────────────────────── -->
+<div id="popup-overlay" role="dialog" aria-modal="true" aria-label="عرض خاص محدود">
+  <div id="popup">
+    <button class="pop-close" onclick="closePopup()" aria-label="إغلاق">✕</button>
+
+    <div class="pop-badge">عرض لفترة محدودة</div>
+
+    <div class="pop-title">تطبيقك <span>بـ ٤٩٩ ريال</span> فقط 🎉</div>
+    <p class="pop-sub">تطبيق جوال كامل لـ iOS وAndroid + موقع + Apple Wallet</p>
+
+    <div class="pop-price">
+      <span class="pop-old">١٢٠٠</span>
+      <span class="pop-new">٤٩٩</span>
+      <span class="pop-sar">ر.س</span>
+    </div>
+    <p class="pop-note">شهرياً فقط — <span>وفّر ٥٨٪</span> على السعر الأصلي</p>
+
+    <!-- عداد تنازلي -->
+    <div class="countdown">
+      <div class="cd-block">
+        <div class="cd-num" id="cd-d">00</div>
+        <div class="cd-lbl">يوم</div>
+      </div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block">
+        <div class="cd-num" id="cd-h">00</div>
+        <div class="cd-lbl">ساعة</div>
+      </div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block">
+        <div class="cd-num" id="cd-m">00</div>
+        <div class="cd-lbl">دقيقة</div>
+      </div>
+      <div class="cd-sep">:</div>
+      <div class="cd-block">
+        <div class="cd-num" id="cd-s">00</div>
+        <div class="cd-lbl">ثانية</div>
+      </div>
+    </div>
+
+    <!-- ما يشمله العرض -->
+    <div class="pop-features">
+      <span class="pop-feat">تطبيق iOS وAndroid</span>
+      <span class="pop-feat">موقع إلكتروني</span>
+      <span class="pop-feat">Apple Wallet</span>
+      <span class="pop-feat">لوحة تحكم</span>
+      <span class="pop-feat">دعم ٢٤/٧</span>
+      <span class="pop-feat">تسليم ٦٠ يوم</span>
+    </div>
+
+    <a class="pop-wa"
+       href="https://wa.me/966551378531?text=رأيت عرض الـ٤٩٩ ريال وأريد الاستفادة منه الآن"
+       target="_blank" rel="noopener"
+       onclick="closePopup()">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      احجز العرض الآن — ٤٩٩ ريال
+    </a>
+
+    <button class="pop-dismiss" onclick="closePopup()">لا شكراً، سأدفع السعر الكامل لاحقاً</button>
+  </div>
+</div>
+<!-- فوري للمعاينة فقط -->
+<script>if(new URLSearchParams(location.search).has('show')){document.getElementById('popup-overlay').style.cssText='opacity:1;pointer-events:all;';document.getElementById('popup').style.transform='translateY(0)';}</script>
+
+<script>
+  // ── عداد تنازلي ────────────────────────────────────────────────
+  // نهاية العرض: ٧ أيام من الآن (مخزّن في localStorage حتى لا يُعاد تعيينه)
+  const OFFER_KEY = 'tlga_offer_end';
+  let endTime = localStorage.getItem(OFFER_KEY);
+  if (!endTime) {
+    endTime = Date.now() + 7 * 24 * 60 * 60 * 1000; // ٧ أيام
+    localStorage.setItem(OFFER_KEY, endTime);
+  }
+  endTime = Number(endTime);
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function updateClock() {
+    const diff = Math.max(0, endTime - Date.now());
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-d').textContent = pad(d);
+    document.getElementById('cd-h').textContent = pad(h);
+    document.getElementById('cd-m').textContent = pad(m);
+    document.getElementById('cd-s').textContent = pad(s);
+    if (diff > 0) setTimeout(updateClock, 1000);
+  }
+  updateClock();
+
+  // ── إظهار الـ popup بعد ٣ ثوانٍ ──────────────────────────────
+  const overlay = document.getElementById('popup-overlay');
+
+  // لا تُظهره لو أغلقه المستخدم في نفس الجلسة
+  // preview param
+  if (new URLSearchParams(location.search).has('show') || !sessionStorage.getItem('popup_closed')) {
+    setTimeout(() => overlay.classList.add('show'), 3000);
+  }
+
+  function closePopup() {
+    overlay.classList.remove('show');
+    sessionStorage.setItem('popup_closed', '1');
+  }
+
+  // إغلاق بالضغط خارج الـ popup
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closePopup();
+  });
+
+  // إغلاق بـ Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closePopup();
+  });
+</script>
 </body>
 </html>
