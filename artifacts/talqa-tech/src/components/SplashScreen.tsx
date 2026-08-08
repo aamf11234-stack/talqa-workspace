@@ -57,12 +57,12 @@ const CSS = `
     100% { transform: translate(-50%,-50%) scale(2.2);  opacity: 0; }
   }
   @keyframes sp-orbit {
-    from { transform: rotate(0deg) translateX(82px) rotate(0deg); }
-    to   { transform: rotate(360deg) translateX(82px) rotate(-360deg); }
+    from { transform: translate(-50%,-50%) rotate(0deg) translateX(82px) rotate(0deg); }
+    to   { transform: translate(-50%,-50%) rotate(360deg) translateX(82px) rotate(-360deg); }
   }
   @keyframes sp-orbit-rev {
-    from { transform: rotate(0deg) translateX(62px) rotate(0deg); }
-    to   { transform: rotate(-360deg) translateX(62px) rotate(360deg); }
+    from { transform: translate(-50%,-50%) rotate(0deg) translateX(62px) rotate(0deg); }
+    to   { transform: translate(-50%,-50%) rotate(-360deg) translateX(62px) rotate(360deg); }
   }
   @keyframes sp-float {
     0%, 100% { transform: translateY(0) scale(1);   opacity: 0.6; }
@@ -169,6 +169,7 @@ export default function SplashScreen({ onDone }: { onDone: () => void }) {
           position: 'absolute', top: '50%', left: '50%',
           width: 150, height: 150, borderRadius: '50%',
           border: '1.5px solid rgba(124,58,237,0.55)',
+          transform: 'translate(-50%,-50%)',
           animation: 'sp-ring-1 2.8s 0.2s ease-out infinite',
           pointerEvents: 'none',
         }} />
@@ -178,6 +179,7 @@ export default function SplashScreen({ onDone }: { onDone: () => void }) {
           position: 'absolute', top: '50%', left: '50%',
           width: 140, height: 140, borderRadius: '50%',
           border: '1px solid rgba(212,175,55,0.5)',
+          transform: 'translate(-50%,-50%)',
           animation: 'sp-ring-2 2.8s 0.9s ease-out infinite',
           pointerEvents: 'none',
         }} />
@@ -187,6 +189,7 @@ export default function SplashScreen({ onDone }: { onDone: () => void }) {
           position: 'absolute', top: '50%', left: '50%',
           width: 130, height: 130, borderRadius: '50%',
           border: '1px solid rgba(255,255,255,0.15)',
+          transform: 'translate(-50%,-50%)',
           animation: 'sp-ring-3 2.8s 1.5s ease-out infinite',
           pointerEvents: 'none',
         }} />
@@ -195,7 +198,6 @@ export default function SplashScreen({ onDone }: { onDone: () => void }) {
         <div style={{
           position: 'absolute', top: '50%', left: '50%',
           width: 7, height: 7,
-          marginTop: -3.5, marginLeft: -3.5,
           animation: 'sp-orbit 3s linear infinite',
           pointerEvents: 'none',
         }}>
@@ -206,7 +208,6 @@ export default function SplashScreen({ onDone }: { onDone: () => void }) {
         <div style={{
           position: 'absolute', top: '50%', left: '50%',
           width: 5, height: 5,
-          marginTop: -2.5, marginLeft: -2.5,
           animation: 'sp-orbit-rev 4s 0.5s linear infinite',
           pointerEvents: 'none',
         }}>
