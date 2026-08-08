@@ -130,25 +130,36 @@ export default function Hero() {
         flex: 1, display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center',
       }}>
-        {/* Badge */}
+        {/* Price Badge */}
         <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-          style={{ marginBottom: 36 }}>
+          style={{ marginBottom: 28, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 10 }}>
           <span style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
             padding: '7px 20px', borderRadius: 99,
+            border: '1px solid rgba(139,92,246,0.35)',
+            background: 'rgba(139,92,246,0.12)',
+            backdropFilter: 'blur(12px)',
+            fontSize: 13, fontWeight: 800,
+            color: '#C4B5FD', letterSpacing: '0.01em',
+          }}>
+            <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#A78BFA', flexShrink: 0,
+              boxShadow: '0 0 0 3px rgba(167,139,250,0.25)', display: 'inline-block' }} />
+            🚀 تطبيقك الجوال بـ <strong style={{ color: '#fff', fontSize: 15 }}>٤٩٩ ريال</strong> — دفعة واحدة
+          </span>
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            padding: '7px 16px', borderRadius: 99,
             border: '1px solid rgba(255,255,255,0.08)',
             background: 'rgba(255,255,255,0.03)',
-            backdropFilter: 'blur(12px)',
-            fontSize: 13, fontWeight: 700,
-            color: 'var(--text2)', letterSpacing: '0.02em',
+            fontSize: 12, fontWeight: 600, color: 'var(--text3)',
           }}>
-            <span className="pulse-dot" style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--green)', flexShrink: 0 }} />
-            تلقا تك · الرياض، المملكة العربية السعودية
+            <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#10B981', flexShrink: 0 }} />
+            نعمل الآن · المملكة العربية السعودية
           </span>
         </motion.div>
 
         {/* Headline */}
-        <h1 style={{ fontWeight: 900, lineHeight: 1.1, fontSize: 'clamp(2.5rem,7.5vw,5.5rem)', letterSpacing: '-0.02em', marginBottom: 28, textShadow: '0 10px 40px rgba(0,0,0,0.5)' }}>
+        <h1 style={{ fontWeight: 900, lineHeight: 1.08, fontSize: 'clamp(2.6rem,7.5vw,5.8rem)', letterSpacing: '-0.03em', marginBottom: 24, textShadow: '0 10px 40px rgba(0,0,0,0.5)' }}>
           <span style={{ display: 'block', overflow: 'hidden' }}>
             {words.map((w, i) => (
               <motion.span key={w} initial={{ y: 90, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
@@ -167,18 +178,18 @@ export default function Hero() {
 
         {/* Sub */}
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.55, duration: 0.7 }}
-          style={{ fontSize: 'clamp(16px,2vw,19px)', fontWeight: 500, color: 'var(--text2)', lineHeight: 1.8, maxWidth: 560, margin: '0 auto 48px' }}>
-          تطبيقات جوال، محافظ رقمية، وأنظمة ذكية ترفع مبيعاتك وتعزز ولاء عملائك — نصمم ونبرمج ما يناسب طموحك.
+          style={{ fontSize: 'clamp(16px,2vw,19px)', fontWeight: 500, color: 'var(--text2)', lineHeight: 1.85, maxWidth: 540, margin: '0 auto 40px' }}>
+          تطبيق iOS وAndroid + بطاقة Apple Wallet + لوحة تحكم — كل ما يحتاجه مشروعك بـ<strong style={{ color: '#fff', fontWeight: 800 }}> ٤٩٩ ريال</strong> دفعة واحدة، كود ملكك بالكامل.
         </motion.p>
 
         {/* CTAs */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65, duration: 0.5 }}
-          style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 16, marginBottom: 48 }}>
-          <a href="#live-demo" className="btn-purple" style={{ fontSize: 'clamp(15px,1.8vw,16px)' }}>
-            شوف الديمو مباشرة
+          style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 14, marginBottom: 44 }}>
+          <a href="/food" className="btn-purple" style={{ fontSize: 'clamp(15px,1.8vw,16px)' }}>
+            🍽️ ابدأ بـ ٤٩٩ ريال
           </a>
           <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-ghost" style={{ fontSize: 'clamp(15px,1.8vw,16px)' }}>
-            استشارة مجانية
+            استشارة مجانية على واتساب
           </a>
         </motion.div>
 
