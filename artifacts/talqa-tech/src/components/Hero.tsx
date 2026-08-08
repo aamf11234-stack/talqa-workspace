@@ -186,7 +186,7 @@ export default function Hero() {
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.78, duration: 0.5 }}
           style={{ marginBottom: 44 }}>
           <a
-            href={`${typeof window !== 'undefined' ? window.location.origin : ''}/api/wallet/tlqa`}
+            href="/talqa-tech.pkpass"
             download="talqa-tech.pkpass"
             style={{
               display: 'inline-flex', alignItems: 'center', gap: 12,

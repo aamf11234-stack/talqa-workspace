@@ -113,7 +113,7 @@ export default function PhoneShowcase() {
           {/* Phone */}
           <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.65, delay: 0.1 }}
             style={{ display: 'flex', justifyContent: 'center' }}>
-            <div style={{ position: 'relative', width: 220 }}>
+            <div style={{ position: 'relative', width: 260 }}>
               <div style={{ borderRadius: 36, background: '#0C0C14', border: '2px solid #1A1A24', overflow: 'hidden', boxShadow: `0 40px 100px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.05), 0 0 60px ${SCREENS[active].color}14` }}>
                 <div style={{ height: 26, background: '#080810', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <div style={{ width: 52, height: 12, borderRadius: 8, background: '#000' }} />

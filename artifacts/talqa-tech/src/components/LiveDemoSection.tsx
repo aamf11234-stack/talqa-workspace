@@ -4,17 +4,26 @@ import { Sparkles, ArrowUpLeft, RotateCcw, Store } from 'lucide-react';
 
 const WA = 'https://wa.me/966551378531?text=' + encodeURIComponent('السلام عليكم، شفت الديمو وأبي نظام ولاء لكافيهي');
 
+const HAEEZ_BASE = (() => {
+  if (typeof window === 'undefined') return '';
+  const { origin } = window.location;
+  // On Vercel (tech.tlgaa.com) haeez-loyalty lives on the Replit deployment
+  if (origin.includes('tlgaa.com') || origin.includes('vercel.app')) {
+    return 'https://tlgaads.com/haeez-loyalty';
+  }
+  return `${origin}/haeez-loyalty`;
+})();
+
 function buildUrl(biz: string) {
-  const origin = window.location.origin;
   const p = new URLSearchParams({ mode: 'app', biz: biz || 'كافيهك', type: 'cafe' });
-  return `${origin}/haeez-loyalty/?${p.toString()}`;
+  return `${HAEEZ_BASE}/?${p.toString()}`;
 }
 
 /* ─── iPhone 17 Frame ─────────────────────────────────────────── */
 function IPhone17({ src, iframeKey }: { src: string; iframeKey: number }) {
-  // iPhone 17: ~393×852px device → scaled ×0.82 → 322×699
-  const W = 322;
-  const H = 699;
+  // iPhone 17: ~393×852px device → scaled ×0.88 → 346×751
+  const W = 346;
+  const H = 751;
   // Titanium band: 10px each side, screen fills the rest
   const BAND = 10;
   const R_OUT = 52;   // outer corner radius

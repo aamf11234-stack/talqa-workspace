@@ -7,9 +7,9 @@ import HomePage from './pages/HomePage';
 import CustomCursor from './components/CustomCursor';
 
 /* ── Per-route SEO meta ── */
-const BASE_URL = 'https://tlgaads.com/talqa-tech';
+const BASE_URL = 'https://tech.tlgaa.com';
 const SEO: Record<string, { title: string; desc: string }> = {
-  '/':                    { title: 'تلقا تك | نحوّل أفكارك التجارية إلى حلول رقمية', desc: 'شريكك التقني في المملكة — تطبيقات جوال، Apple Wallet، مواقع سريعة، وأنظمة مخصصة. جازان: صبيا وضمد.' },
+  '/':                    { title: 'تلقا تك | نحوّل أفكارك التجارية إلى حلول رقمية', desc: 'شريكك التقني في المملكة — تطبيقات جوال، Apple Wallet، مواقع سريعة، وأنظمة مخصصة. خبرة في السوق السعودي.' },
   '/services':            { title: 'الخدمات | تلقا تك', desc: 'تطوير تطبيقات iOS وAndroid، مواقع إلكترونية، بطاقات Apple Wallet، وأنظمة حجوزات متكاملة.' },
   '/pricing':             { title: 'الأسعار | تلقا تك', desc: 'خطط تسعير شفافة تبدأ من ٩٩ ريال — اختر الباقة المناسبة لمشروعك.' },
   '/projects':            { title: 'مشاريعنا | تلقا تك', desc: 'أعمالنا المنجزة: تطبيقات، مواقع، وحلول رقمية لعملاء في المملكة.' },
