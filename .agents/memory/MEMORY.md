@@ -1,0 +1,1 @@
+- [SEO Goal — talqa-tech](seo-goal-talqa-tech.md) — هدف: ترتيب أول في Google لـ "ابغى تطبيق" خلال شهر؛ حسّن تدريجياً في كل جلسة
