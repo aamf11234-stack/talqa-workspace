@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tech.tlgaads.com/sitemap.xml
+# Block non-content paths
+Disallow: /src/
+Disallow: /*.map$
+
+Sitemap: https://tech.tlgaa.com/sitemap.xml
