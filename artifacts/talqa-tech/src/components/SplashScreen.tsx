@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import TlqaLogo from './TlqaLogo';
 
 const SEEN_KEY = 'tlqa_splash_seen';
@@ -8,10 +8,10 @@ export function useSplash() {
     try { return !sessionStorage.getItem(SEEN_KEY); }
     catch { return false; }
   });
-  const dismiss = () => {
+  const dismiss = useCallback(() => {
     try { sessionStorage.setItem(SEEN_KEY, '1'); } catch {}
     setVisible(false);
-  };
+  }, []);
   return { visible, dismiss };
 }
 
