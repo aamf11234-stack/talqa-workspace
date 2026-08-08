@@ -10,11 +10,11 @@ const WA = 'https://wa.me/966551378531?text=أبي%20أعرف%20أكثر%20عن%
 /* ── SERVICES DATA ── */
 const SERVICES = [
   {
-    Icon: Smartphone, title: 'تطبيقات جوال', sub: 'iOS & Android',
-    desc: 'تطبيقات احترافية تعمل على جميع الأجهزة بتصميم Native فاخر وتجربة مستخدم لا تُنسى.',
-    tags: ['React Native', 'Push Notifications', 'App Store & Play'],
+    Icon: Smartphone, title: 'ابغى تطبيق جوال؟', sub: 'iOS & Android بـ ٤٩٩ ريال',
+    desc: 'تطبيقك الجوال iOS وAndroid + Apple Wallet + لوحة تحكم بـ ٤٩٩ ريال دفعة واحدة — كود ملكك، تسليم في ٣ أسابيع.',
+    tags: ['React Native', 'App Store & Play', '٤٩٩ ريال'],
     color: '#8B5CF6', size: 'hero',
-    stat: '٢٠٠+', statLabel: 'تطبيق مُسلَّم',
+    stat: '٤٩٩ ريال', statLabel: 'دفعة واحدة',
   },
   {
     Icon: CreditCard, title: 'Digital Wallet', sub: 'Apple & Google Wallet',

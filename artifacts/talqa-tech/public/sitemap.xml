@@ -75,6 +75,14 @@
     <priority>0.75</priority>
   </url>
 
+  <!-- صفحة ابغى تطبيق — كلمة مفتاحية رئيسية -->
+  <url>
+    <loc>https://tech.tlgaa.com/abgha-tatbeeq</loc>
+    <lastmod>2026-08-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.98</priority>
+  </url>
+
   <!-- صفحات القطاعات — كلمات مفتاحية طويلة الذيل -->
   <url>
     <loc>https://tech.tlgaa.com/sectors/restaurants</loc>

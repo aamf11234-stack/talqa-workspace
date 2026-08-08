@@ -20,6 +20,7 @@ const SEO: Record<string, { title: string; desc: string }> = {
   '/clinic':              { title: 'نظام إدارة عيادات طبية | تلقا تك', desc: 'منظومة رقمية للعيادات: ملفات مرضى إلكترونية، حجز مواعيد، تذكير تلقائي، ولوحة تحكم طبية متكاملة.' },
   '/faq':                 { title: 'الأسئلة الشائعة عن تطوير التطبيقات | تلقا تك', desc: 'إجابات واضحة: كم يستغرق المشروع؟ ما الأسعار؟ هل الكود ملكي؟ كيف يعمل Apple Wallet؟ — كل ما تريد معرفته.' },
   '/food':                { title: 'تطبيق مطعم أو كافيه iOS وAndroid | تلقا تك — 499 ريال', desc: 'تطبيق iOS وAndroid كامل للمطاعم والكافيهات: Apple Wallet، قائمة QR، طلب وتوصيل، نقاط ولاء — بـ 499 ريال دفعة واحدة. كود ملكك، بدون رسوم شهرية.' },
+  '/abgha-tatbeeq':       { title: 'ابغى تطبيق جوال في السعودية؟ | تلقا تك — 499 ريال', desc: 'ابغى تطبيق iOS وAndroid لمشروعي؟ تلقا تك تبنيه في 3 أسابيع بـ 499 ريال دفعة واحدة. Apple Wallet + لوحة تحكم + ضمان رضا. ابدأ اليوم.' },
   '/sectors/restaurants': { title: 'تطبيق ونظام للمطاعم | تلقا تك', desc: 'حلول رقمية متكاملة للمطاعم: تطبيق جوال، قائمة QR، حجوزات أونلاين، نقاط ولاء، وتوصيل — نبني لمطعمك في أسابيع.' },
   '/sectors/cafes':       { title: 'تطبيق وموقع الكافيه | تلقا تك', desc: 'تطبيق كافيه احترافي مع Apple Wallet وبطاقات ولاء — يزيد من العملاء المتكررين ويرفع متوسط الفاتورة.' },
   '/sectors/clinics':     { title: 'موقع وتطبيق للعيادات الطبية | تلقا تك', desc: 'موقع احترافي للعيادة مع نظام حجز مواعيد أونلاين، ملفات مرضى، وتذكير تلقائي — متوافق مع معايير الأمان الصحي.' },
@@ -72,6 +73,7 @@ const FaqPage       = lazy(() => import('./pages/FaqPage'));
 
 // Sector pages — all lazy loaded (16 pages, heavy bundle)
 const FoodPage        = lazy(() => import('./pages/FoodPage'));
+const AbghaTatbeeqPage = lazy(() => import('./pages/AbghaTatbeeqPage'));
 const CafesPage       = lazy(() => import('./pages/sectors/CafesPage'));
 const RestaurantsPage = lazy(() => import('./pages/sectors/RestaurantsPage'));
 const ClinicsPage     = lazy(() => import('./pages/sectors/ClinicsPage'));
@@ -125,6 +127,7 @@ export default function App() {
 
             {/* Food landing */}
             <Route path="/food"            component={FoodPage}          />
+            <Route path="/abgha-tatbeeq"  component={AbghaTatbeeqPage}  />
 
             {/* Sector pages */}
             <Route path="/sectors/cafes"       component={CafesPage}       />
