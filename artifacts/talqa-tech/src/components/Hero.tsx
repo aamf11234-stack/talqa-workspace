@@ -135,19 +135,20 @@ export default function Hero() {
           style={{ marginBottom: 36 }}>
           <span style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
-            padding: '7px 18px', borderRadius: 99,
-            border: '1px solid rgba(139,92,246,0.3)',
-            background: 'rgba(139,92,246,0.08)',
-            fontSize: 12, fontWeight: 700,
-            color: 'rgba(167,139,250,0.9)', letterSpacing: '0.05em',
+            padding: '7px 20px', borderRadius: 99,
+            border: '1px solid rgba(255,255,255,0.08)',
+            background: 'rgba(255,255,255,0.03)',
+            backdropFilter: 'blur(12px)',
+            fontSize: 13, fontWeight: 700,
+            color: 'var(--text2)', letterSpacing: '0.02em',
           }}>
-            <span className="pulse-dot" style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--purple)', flexShrink: 0 }} />
+            <span className="pulse-dot" style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--green)', flexShrink: 0 }} />
             تلقا تك · الرياض، المملكة العربية السعودية
           </span>
         </motion.div>
 
         {/* Headline */}
-        <h1 style={{ fontWeight: 900, lineHeight: 1.05, fontSize: 'clamp(2.8rem,8vw,6.5rem)', letterSpacing: '-0.035em', marginBottom: 24 }}>
+        <h1 style={{ fontWeight: 900, lineHeight: 1.1, fontSize: 'clamp(2.5rem,7.5vw,5.5rem)', letterSpacing: '-0.02em', marginBottom: 28, textShadow: '0 10px 40px rgba(0,0,0,0.5)' }}>
           <span style={{ display: 'block', overflow: 'hidden' }}>
             {words.map((w, i) => (
               <motion.span key={w} initial={{ y: 90, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
@@ -166,19 +167,18 @@ export default function Hero() {
 
         {/* Sub */}
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.55, duration: 0.7 }}
-          style={{ fontSize: 'clamp(15px,1.9vw,18px)', fontWeight: 500, color: 'var(--text2)', lineHeight: 1.85, maxWidth: 500, margin: '0 auto 48px' }}>
-          تطبيقات جوال · Apple & Google Wallet · مواقع · أتمتة
-          <br />نبني معك ما يجعل عميلك يعود دائماً.
+          style={{ fontSize: 'clamp(16px,2vw,19px)', fontWeight: 500, color: 'var(--text2)', lineHeight: 1.8, maxWidth: 560, margin: '0 auto 48px' }}>
+          تطبيقات جوال، محافظ رقمية، وأنظمة ذكية ترفع مبيعاتك وتعزز ولاء عملائك — نصمم ونبرمج ما يناسب طموحك.
         </motion.p>
 
         {/* CTAs */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.65, duration: 0.5 }}
-          style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 12, marginBottom: 20 }}>
-          <a href="#live-demo" className="btn-purple" style={{ fontSize: 'clamp(14px,1.6vw,16px)', padding: '14px 32px' }}>
-            شوف الديمو مباشرة ←
+          style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 16, marginBottom: 48 }}>
+          <a href="#live-demo" className="btn-purple" style={{ fontSize: 'clamp(15px,1.8vw,16px)' }}>
+            شوف الديمو مباشرة
           </a>
-          <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-ghost" style={{ fontSize: 'clamp(14px,1.6vw,16px)', padding: '14px 28px' }}>
-            تحدث معنا الآن
+          <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-ghost" style={{ fontSize: 'clamp(15px,1.8vw,16px)' }}>
+            استشارة مجانية
           </a>
         </motion.div>
 
@@ -249,10 +249,10 @@ export default function Hero() {
       </motion.div>
 
       {/* Stats bar */}
-      <div style={{ position: 'relative', zIndex: 2, width: '100%', borderTop: '1px solid var(--border)', background: 'rgba(255,255,255,0.02)', backdropFilter: 'blur(10px)' }}>
-        <div style={{ maxWidth: 720, margin: '0 auto', padding: '0 24px', display: 'grid', gridTemplateColumns: m ? 'repeat(2,1fr)' : 'repeat(4,1fr)' }}>
+      <div style={{ position: 'relative', zIndex: 2, width: '100%', borderTop: '1px solid var(--border)', background: 'rgba(11, 5, 20, 0.4)', backdropFilter: 'blur(20px)' }}>
+        <div style={{ maxWidth: 860, margin: '0 auto', padding: '12px 24px', display: 'grid', gridTemplateColumns: m ? 'repeat(2,1fr)' : 'repeat(4,1fr)', gap: m ? 16 : 0 }}>
           {[{ end: 14, label: 'مشروع مُنجز' }, { end: 3, label: 'قطاعات مخدومة' }, { end: 95, label: 'رضا العملاء', suffix: '٪' }, { end: 24, label: 'دعم فني', suffix: '/٧' }].map((s, i) => (
-            <div key={s.label} style={{ borderLeft: i > 0 ? '1px solid var(--border)' : 'none' }}>
+            <div key={s.label} style={{ borderLeft: i > 0 && !m ? '1px solid var(--border)' : 'none' }}>
               <Stat end={s.end} label={s.label} suffix={s.suffix ?? ''} />
             </div>
           ))}

@@ -162,14 +162,14 @@ export default function WhyUs() {
 
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          style={{ textAlign: 'center', marginBottom: 56 }}>
+          style={{ textAlign: 'center', marginBottom: 64 }}>
           <div className="section-label">لماذا تلقا تك</div>
-          <h2 style={{ fontWeight: 900, fontSize: 'clamp(2rem,4.5vw,3.4rem)', letterSpacing: '-0.035em', lineHeight: 1.1 }}>
+          <h2 style={{ fontWeight: 900, fontSize: 'clamp(2.2rem,5vw,4rem)', letterSpacing: '-0.03em', lineHeight: 1.15 }}>
             ليس مجرد شركة برمجة —{' '}
             <span className="grad">شريكك الرقمي</span>
           </h2>
-          <p style={{ color: 'var(--text2)', fontSize: 16, marginTop: 14, maxWidth: 460, margin: '14px auto 0' }}>
-            نبني منتجات تشتغل، تُرضي العميل، وتكبر معك.
+          <p style={{ color: 'var(--text2)', fontSize: 17, marginTop: 16, maxWidth: 500, margin: '16px auto 0' }}>
+            نبني منتجات تشتغل بقوة، تُرضي العميل من أول استخدام، وتكبر مع طموح أعمالك.
           </p>
         </motion.div>
 

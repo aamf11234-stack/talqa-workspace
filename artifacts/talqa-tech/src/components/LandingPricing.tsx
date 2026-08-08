@@ -67,36 +67,28 @@ export default function LandingPricing() {
     }}>
       <div style={{ maxWidth: 1100, margin: '0 auto' }}>
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: 56 }}>
+        <div style={{ textAlign: 'center', marginBottom: 64 }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}>
-            <span style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6,
-              padding: '5px 16px', borderRadius: 99,
-              border: '1px solid rgba(139,92,246,0.25)',
-              background: 'rgba(139,92,246,0.08)',
-              fontSize: 12, fontWeight: 700,
-              color: 'rgba(167,139,250,0.9)', letterSpacing: '0.05em',
-              marginBottom: 20,
-            }}>
+            <div className="section-label">
               تسعير شفاف بلا مفاجآت
-            </span>
+            </div>
             <h2 style={{
-              fontSize: 'clamp(1.8rem, 4vw, 3rem)',
+              fontSize: 'clamp(2.2rem, 4.5vw, 3.8rem)',
               fontWeight: 900, color: '#fff',
-              lineHeight: 1.2, letterSpacing: '-0.03em',
-              marginBottom: 16,
+              lineHeight: 1.15, letterSpacing: '-0.03em',
+              marginBottom: 20,
             }}>
               استثمر في{' '}<span className="grad">نمو عملك</span>
             </h2>
             <p style={{
-              fontSize: 16, color: 'var(--text2)',
-              lineHeight: 1.7, maxWidth: 420, margin: '0 auto 36px',
+              fontSize: 17, color: 'var(--text2)',
+              lineHeight: 1.7, maxWidth: 460, margin: '0 auto 40px',
             }}>
-              ادفع مرة واحدة، وامتلك مشروعك كاملاً — بلا رسوم خفية.
+              ادفع مرة واحدة، وامتلك مشروعك كاملاً — مع استضافة مجانية ودعم فني ممتد.
             </p>
 
             {/* Toggle */}
@@ -139,8 +131,8 @@ export default function LandingPricing() {
         {/* Cards */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))',
-          gap: 20, alignItems: 'stretch',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(310px, 1fr))',
+          gap: 24, alignItems: 'stretch',
         }}>
           {PLANS.map((plan, i) => (
             <motion.div
@@ -205,7 +197,7 @@ export default function LandingPricing() {
               </div>
 
               {/* Price */}
-              <div style={{ marginBottom: 28 }}>
+              <div style={{ marginBottom: 32 }}>
                 {plan.monthlyPrice === 0 ? (
                   <div style={{ fontSize: 28, fontWeight: 900, color: plan.color }}>
                     حسب المشروع
@@ -213,12 +205,12 @@ export default function LandingPricing() {
                 ) : (
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
                     <span style={{
-                      fontSize: '2.8rem', fontWeight: 900, color: '#fff',
+                      fontSize: '3.2rem', fontWeight: 900, color: '#fff',
                       letterSpacing: '-0.04em', lineHeight: 1,
                     }}>
                       {yearly ? plan.yearlyPrice.toLocaleString('ar-SA') : plan.monthlyPrice}
                     </span>
-                    <span style={{ fontSize: 14, color: 'var(--text3)', fontWeight: 500 }}>
+                    <span style={{ fontSize: 15, color: 'var(--text3)', fontWeight: 600 }}>
                       ريال / {yearly ? 'سنة' : 'شهر'}
                     </span>
                   </div>
@@ -258,8 +250,7 @@ export default function LandingPricing() {
                 className={plan.featured ? 'btn-purple' : 'btn-ghost'}
                 style={{
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  padding: '13px 24px', borderRadius: 12,
-                  fontSize: 15, fontWeight: 700, textDecoration: 'none',
+                  width: '100%',
                 }}>
                 {plan.cta}
               </a>

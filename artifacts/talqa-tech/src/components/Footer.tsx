@@ -10,36 +10,36 @@ export default function Footer() {
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 24px', position: 'relative' }}>
         {/* Top CTA banner */}
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          style={{ marginBottom: 72, padding: 'clamp(28px,5vw,48px)', borderRadius: 24, background: 'linear-gradient(135deg, rgba(139,92,246,0.15), rgba(59,130,246,0.10))', border: '1px solid rgba(139,92,246,0.2)', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: -40, right: -40, width: 200, height: 200, borderRadius: '50%', background: 'rgba(139,92,246,0.12)', filter: 'blur(40px)' }} />
+          style={{ marginBottom: 80, padding: 'clamp(32px,6vw,56px)', borderRadius: 28, background: 'linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01))', border: '1px solid rgba(255,255,255,0.08)', backdropFilter: 'blur(16px)', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: -60, right: -60, width: 250, height: 250, borderRadius: '50%', background: 'rgba(139,92,246,0.15)', filter: 'blur(60px)' }} />
           <div style={{ position: 'relative' }}>
-            <div style={{ fontSize: 'clamp(1.6rem,3vw,2.4rem)', fontWeight: 900, letterSpacing: '-0.03em', marginBottom: 14 }}>
-              جاهز تبدأ مشروعك؟ <span className="grad">تحدث معنا الآن.</span>
+            <div style={{ fontSize: 'clamp(1.8rem,3.5vw,2.8rem)', fontWeight: 900, letterSpacing: '-0.02em', marginBottom: 16 }}>
+              جاهز لتوسيع <span className="grad">أعمالك؟</span>
             </div>
-            <p style={{ color: 'var(--text2)', fontSize: 15, marginBottom: 24 }}>مشاورة مجانية — بدون التزام. نرد خلال ساعات.</p>
-            <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-purple" style={{ fontSize: 15 }}>
-              ابدأ مشروعك على واتساب ←
+            <p style={{ color: 'var(--text2)', fontSize: 16, marginBottom: 32, maxWidth: 500, margin: '0 auto 32px' }}>ندرس فكرتك ونعطيك خطة عمل واضحة وتسعير دقيق — مجاناً وبدون أي التزام.</p>
+            <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-purple" style={{ fontSize: 16 }}>
+              ابدأ مشروعك على واتساب
             </a>
           </div>
         </motion.div>
 
         {/* Links grid */}
-        <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: '1.8fr 1fr 1fr 1fr', gap: 'clamp(28px,4vw,52px)', marginBottom: 52 }}>
+        <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 'clamp(32px,5vw,64px)', marginBottom: 64 }}>
           {/* Brand */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-              <div style={{ width: 36, height: 36, borderRadius: 10, background: 'linear-gradient(135deg, var(--purple), var(--blue))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 16, color: '#fff' }}>ت</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+              <div style={{ width: 40, height: 40, borderRadius: 12, background: 'linear-gradient(135deg, var(--purple), #7C3AED)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: 18, color: '#fff', boxShadow: '0 4px 12px rgba(139,92,246,0.3)' }}>ت</div>
               <div>
-                <div style={{ fontSize: 15, fontWeight: 900, color: '#fff', lineHeight: 1 }}>تلقا تك</div>
-                <div style={{ fontSize: 9, fontWeight: 600, color: 'var(--text3)', letterSpacing: '0.08em' }}>TLGA TECH</div>
+                <div style={{ fontSize: 18, fontWeight: 900, color: '#fff', lineHeight: 1.1 }}>تلقا تك</div>
+                <div style={{ fontSize: 10, fontWeight: 700, color: 'var(--text3)', letterSpacing: '0.12em', marginTop: 4 }}>TLGA TECH</div>
               </div>
             </div>
-            <p style={{ fontSize: 13, color: 'var(--text2)', lineHeight: 1.85, maxWidth: 220, marginBottom: 16 }}>
-              شركة برمجة سعودية في الرياض. نبني تطبيقات جوال ومواقع وأنظمة Apple Wallet.
+            <p style={{ fontSize: 14, color: 'var(--text2)', lineHeight: 1.85, maxWidth: 280, marginBottom: 20 }}>
+              شركة تقنية سعودية تبني تجارب رقمية فاخرة — تطبيقات، مواقع، وبطاقات أعمال تحول الزوار إلى عملاء دائمين.
             </p>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, padding: '5px 12px', borderRadius: 99, background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, padding: '6px 14px', borderRadius: 99, background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)' }}>
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10B981', flexShrink: 0 }} className="pulse-dot" />
-              <span style={{ fontSize: 11, fontWeight: 700, color: '#10B981' }}>س.ت. 7054835322</span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: '#10B981' }}>س.ت. 7054835322</span>
             </div>
           </div>
 
@@ -50,13 +50,13 @@ export default function Footer() {
             { title: 'تواصل',   links: [['واتساب', WA], ['الرياض، المملكة العربية السعودية', '#'], ['+966551378531', WA]] },
           ].map(({ title, links }) => (
             <div key={title}>
-              <div style={{ fontSize: 11, fontWeight: 800, color: '#fff', letterSpacing: '0.08em', marginBottom: 16, textTransform: 'uppercase' }}>{title}</div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <div style={{ fontSize: 13, fontWeight: 800, color: '#fff', letterSpacing: '0.05em', marginBottom: 20, textTransform: 'uppercase' }}>{title}</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
                 {links.map(([label, href]) => (
                   <a key={label} href={href} target={href.startsWith('http') ? '_blank' : '_self'} rel="noopener noreferrer"
-                    style={{ fontSize: 13, color: 'var(--text2)', textDecoration: 'none', transition: 'color 0.15s', fontWeight: 500 }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'var(--purple2)'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'var(--text2)'; }}>
+                    style={{ fontSize: 14, color: 'var(--text2)', textDecoration: 'none', transition: 'color 0.2s, transform 0.2s', fontWeight: 500, display: 'inline-block' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#fff'; (e.currentTarget as HTMLElement).style.transform = 'translateX(-4px)'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'var(--text2)'; (e.currentTarget as HTMLElement).style.transform = 'translateX(0)'; }}>
                     {label}
                   </a>
                 ))}

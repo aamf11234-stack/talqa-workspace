@@ -300,27 +300,25 @@ export default function HorizontalServices() {
 
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', justifyContent: 'space-between', gap: 20, marginBottom: 52 }}>
+          style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', justifyContent: 'space-between', gap: 24, marginBottom: 64 }}>
           <div>
-            <div className="section-label" style={{ color: '#8B5CF6', borderColor: 'rgba(139,92,246,0.4)', background: 'rgba(139,92,246,0.08)', marginBottom: 16 }}>
+            <div className="section-label">
               ١٢ خدمة متكاملة
             </div>
-            <h2 style={{ fontWeight: 900, fontSize: 'clamp(2rem,4vw,3.2rem)', letterSpacing: '-0.035em', lineHeight: 1.1, margin: 0 }}>
+            <h2 style={{ fontWeight: 900, fontSize: 'clamp(2.2rem,4.5vw,3.6rem)', letterSpacing: '-0.03em', lineHeight: 1.15, margin: 0 }}>
               كل ما تحتاجه{' '}
-              <span style={{ background: 'linear-gradient(135deg,#8B5CF6,#06B6D4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              <span className="grad">
                 تحت سقف واحد
               </span>
             </h2>
-            <p style={{ color: 'var(--text2)', fontSize: 15, marginTop: 12, maxWidth: 440, lineHeight: 1.7 }}>
-              من الفكرة إلى الإطلاق — تطبيقات، مواقع، بطاقات، أتمتة، وكل شيء بينهم.
+            <p style={{ color: 'var(--text2)', fontSize: 16, marginTop: 16, maxWidth: 500, lineHeight: 1.8 }}>
+              من الفكرة إلى الإطلاق — تطبيقات ذكية، مواقع مبهرة، بطاقات ولاء، وأتمتة تربط كل أنظمتك ببعضها.
             </p>
           </div>
-          <a href={WA} target="_blank" rel="noopener noreferrer"
-            style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 22px', borderRadius: 13, background: 'rgba(139,92,246,0.12)', border: '1px solid rgba(139,92,246,0.35)', color: '#C4B5FD', fontFamily: 'Cairo,sans-serif', fontSize: 14, fontWeight: 800, textDecoration: 'none', whiteSpace: 'nowrap', flexShrink: 0, transition: 'background 0.2s' }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background='rgba(139,92,246,0.22)'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background='rgba(139,92,246,0.12)'; }}
+          <a href={WA} target="_blank" rel="noopener noreferrer" className="btn-ghost"
+            style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 24px', borderRadius: 14, flexShrink: 0 }}
           >
-            استشارة مجانية <ArrowUpRight size={14} />
+            استشارة مجانية <ArrowUpRight size={16} />
           </a>
         </motion.div>
 

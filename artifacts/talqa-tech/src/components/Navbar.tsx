@@ -51,11 +51,11 @@ export default function Navbar({ accent = '#8B5CF6' }: Props) {
 
       <header style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
-        transition: 'background 0.3s, border-color 0.3s',
-        background: scrolled ? 'rgba(7,7,15,0.92)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(16px)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(16px)' : 'none',
-        borderBottom: `1px solid ${scrolled ? 'rgba(255,255,255,0.07)' : 'transparent'}`,
+        transition: 'background 0.4s, border-color 0.4s, backdrop-filter 0.4s',
+        background: scrolled ? 'rgba(11, 5, 20, 0.75)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(20px) saturate(150%)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(20px) saturate(150%)' : 'none',
+        borderBottom: `1px solid ${scrolled ? 'rgba(255,255,255,0.06)' : 'transparent'}`,
       }}>
         <div style={{
           maxWidth: 1200, margin: '0 auto', padding: '0 24px',
@@ -100,10 +100,10 @@ export default function Navbar({ accent = '#8B5CF6' }: Props) {
           </nav>
 
           {/* Desktop CTA */}
-          <a href={WA} target="_blank" rel="noopener noreferrer" className="nav-cta btn-blue"
-            style={{ padding: '9px 18px', borderRadius: 9, fontSize: 12.5, gap: 6, flexShrink: 0 }}>
+          <a href={WA} target="_blank" rel="noopener noreferrer" className="nav-cta btn-purple"
+            style={{ padding: '10px 20px', borderRadius: 12, fontSize: 13, gap: 6, flexShrink: 0 }}>
             <span className="holo-shimmer" />
-            ابدأ مشروعك ←
+            تواصل معنا
           </a>
 
           {/* Mobile burger */}
